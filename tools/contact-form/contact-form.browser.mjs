@@ -268,6 +268,7 @@ for (const [path, locale, want] of [['/es/', 'en-US', 'es'], ['/es/estimado/', '
       // Widget buttons are background var(--el-btn-color) with text var(--el-btn-text-color);
       // the panel and secondary buttons are var(--el-text-color) on var(--el-bg-color).
       const v = await fil.evaluate((el) => { const cs = getComputedStyle(el); return Object.fromEntries(['btn-color', 'btn-text-color', 'bg-color', 'text-color', 'focus-color'].map((n) => [n, cs.getPropertyValue(`--el-${n}`).trim()])); });
+      for (const [n, c] of Object.entries(v)) assert.match(c, /^#[0-9a-f]{6}$/i, `--el-${n} is set by the site (got "${c}")`);
       assert.ok(contrast(v['btn-text-color'], v['btn-color']) >= 4.5, `button text ${v['btn-text-color']} on ${v['btn-color']}`);
       assert.ok(contrast(v['text-color'], v['bg-color']) >= 4.5, `panel text ${v['text-color']} on ${v['bg-color']}`);
       assert.ok(contrast(v['focus-color'], v['bg-color']) >= 3, `focus ring ${v['focus-color']} on ${v['bg-color']}`);
