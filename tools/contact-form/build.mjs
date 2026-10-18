@@ -1,14 +1,7 @@
-import assert from 'node:assert/strict';
-import { readFile, writeFile } from 'node:fs/promises';
-import { minify } from 'terser';
-const source = new URL('../../assets/js/main.js', import.meta.url);
-const output = new URL('../../assets/js/main.min.js', import.meta.url);
-const { code } = await minify(await readFile(source, 'utf8'), { compress: true, mangle: true, format: { comments: false } });
-const asset = code + '\n';
-if (process.argv.includes('--check')) {
-  assert.equal(await readFile(output, 'utf8'), asset, 'main.min.js must be regenerated from main.js');
-  console.log('Source/minified asset parity verified (terser 5.44.0).');
-} else {
-  await writeFile(output, asset);
-  console.log('Generated assets/js/main.min.js (terser 5.44.0).');
-}
+// The estimate form now lives in the built pages (tools/site). This wrapper keeps the
+// package's build/check commands working:
+//   npm run build        -> node tools/site/build.mjs
+//   npm run check:asset  -> node tools/site/build.mjs --check (built HTML matches sources)
+import { execFileSync } from 'node:child_process';
+const build = new URL('../site/build.mjs', import.meta.url).pathname;
+execFileSync(process.execPath, [build, ...(process.argv.includes('--check') ? ['--check'] : [])], { stdio: 'inherit' });

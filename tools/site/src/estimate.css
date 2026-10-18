@@ -1,0 +1,121 @@
+/* ===================== Estimate page (tools/site/build.mjs inlines after base.css) ===================== */
+.est { padding-block: var(--s-24) var(--s-64); }
+.est__grid { display: grid; gap: var(--s-32); }
+.est__h1 { font-size: var(--t-48); line-height: 1; }
+.est__lead { margin-top: var(--s-16); }
+.callbox { display: grid; gap: var(--s-12); margin-top: var(--s-24); padding: var(--s-16); border-radius: var(--r-14); background: rgba(38,38,38,.06); box-shadow: inset 0 0 0 1px var(--c-hair); }
+.callbox p { font-size: var(--t-14); color: var(--c-ink-2); }
+.callbox .h3 { font-size: var(--t-18); }
+.next { margin-top: var(--s-32); }
+.next ol { counter-reset: n; margin-top: var(--s-16); display: grid; gap: var(--s-16); }
+.next li { position: relative; padding-left: 40px; }
+.next li::before { counter-increment: n; content: counter(n); position: absolute; left: 0; top: -2px; font-size: var(--t-24); font-weight: 300; font-stretch: 125%; line-height: 1.2; font-variant-numeric: tabular-nums; }
+.next h3 { font-size: var(--t-16); font-weight: 700; }
+.next p { font-size: var(--t-14); color: var(--c-ink-2); }
+.est__photo { display: none; }
+
+/* Form plate: machined double bezel */
+.formplate { padding: 6px; border-radius: 20px; background: rgba(38,38,38,.07); box-shadow: inset 0 0 0 1px var(--c-hair); }
+.formplate__core { position: relative; padding: var(--s-24) var(--s-16); border-radius: 14px; background: var(--c-plate); box-shadow: inset 0 1px 0 #fff, 0 1px 2px rgba(38,30,24,.08), 0 24px 48px -32px rgba(38,30,24,.35); }
+@media (min-width: 600px) { .formplate__core { padding: var(--s-32); } }
+
+fieldset { margin: 0; padding: 0; border: 0; min-width: 0; }
+legend + * { clear: both; }
+fieldset + fieldset { margin-top: var(--s-16); padding-top: var(--s-24); border-top: 1px solid var(--c-hair); }
+legend { float: left; width: 100%; padding: 0; margin-bottom: var(--s-16); font-size: var(--t-21); font-weight: 700; font-stretch: 110%; }
+.fields { display: grid; gap: var(--s-8) var(--s-16); }
+@media (min-width: 600px) { .fields--2 { grid-template-columns: 1fr 1fr; } }
+.field { display: grid; align-content: start; }
+.field label, .field .label { font-weight: 600; font-size: var(--t-16); }
+.req { color: var(--c-ink-2); font-weight: 500; font-size: var(--t-14); }
+.hint { font-size: var(--t-14); color: var(--c-ink-2); margin-top: 2px; }
+.control { margin-top: var(--s-8); }
+
+/* Form-control contrast fence: explicit colors + color-scheme + autofill override */
+input[type="text"], input[type="tel"], input[type="email"], textarea, select {
+  width: 100%; min-height: 52px; padding: 12px 16px;
+  font: inherit; font-size: var(--t-16); line-height: 1.4;
+  color: var(--c-ink); background-color: var(--c-field); caret-color: var(--c-ink);
+  border: 1.5px solid var(--c-field-line); border-radius: var(--r-8);
+  -webkit-appearance: none; appearance: none;
+}
+textarea { min-height: 128px; resize: vertical; }
+select { background-image: none; }
+input::placeholder, textarea::placeholder { color: #6B675F; opacity: 1; }
+input:hover, textarea:hover, select:hover { border-color: var(--c-ink); }
+input:focus-visible, textarea:focus-visible, select:focus-visible { border-color: var(--c-ink); border-radius: var(--r-8); }
+input:-webkit-autofill, input:-webkit-autofill:hover, textarea:-webkit-autofill, select:-webkit-autofill {
+  -webkit-text-fill-color: var(--c-ink); caret-color: var(--c-ink);
+  -webkit-box-shadow: 0 0 0 1000px var(--c-field) inset; box-shadow: 0 0 0 1000px var(--c-field) inset;
+}
+input:-webkit-autofill:focus-visible {
+  -webkit-box-shadow: 0 0 0 1000px var(--c-field) inset, 0 0 0 6px var(--c-yellow);
+  box-shadow: 0 0 0 1000px var(--c-field) inset, 0 0 0 6px var(--c-yellow);
+}
+[aria-invalid="true"] { border-color: var(--c-error) !important; box-shadow: inset 0 0 0 1px var(--c-error); }
+
+/* Reserved error slot: always one line tall, so showing an error never shifts layout */
+.err { display: flex; gap: 6px; align-items: flex-start; min-height: 1.5em; margin-top: 4px; font-size: var(--t-14); font-weight: 600; line-height: 1.5; color: var(--c-error); }
+.err svg { width: 16px; height: 16px; flex: none; margin-top: 2px; opacity: 0; transform: translateY(-2px); transition: opacity var(--d-fast) var(--ease-out), transform var(--d-fast) var(--ease-out); }
+.err.has svg { opacity: 1; transform: none; }
+
+/* Chips: real radios, visually styled labels */
+.chips { display: flex; flex-wrap: wrap; gap: var(--s-8); margin-top: var(--s-8); }
+.chip { position: relative; }
+.chip input { position: absolute; left: 0; top: 0; opacity: 0; width: 1px; height: 1px; margin: 0; }
+.chip span {
+  position: relative; isolation: isolate; display: inline-flex; align-items: center; min-height: 44px; padding: 0 16px;
+  border-radius: var(--r-8); background: var(--c-field); color: var(--c-ink);
+  box-shadow: inset 0 0 0 1.5px var(--c-field-line);
+  font-weight: 600; font-stretch: 104%; cursor: pointer; user-select: none;
+  transition: transform var(--d-fast) var(--ease-out);
+}
+.chip span::before { content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit; background: var(--c-ink); opacity: 0; transform: scale(.92); transition: opacity var(--d-med) var(--ease-out), transform var(--d-med) var(--ease-out); }
+.chip input:checked + span { color: #fff; box-shadow: inset 0 0 0 1.5px var(--c-ink); }
+.chip input:checked + span::before { opacity: 1; transform: none; }
+.chip span:active { transform: scale(.97); }
+.chip input:focus-visible + span { outline: 2px solid var(--c-ink); outline-offset: 2px; box-shadow: inset 0 0 0 1.5px var(--c-ink), 0 0 0 6px var(--c-yellow); }
+
+.notice { margin-top: var(--s-24); font-size: var(--t-14); color: var(--c-ink-2); }
+.notice a { color: var(--c-ink); }
+
+/* Submit with a continuous progress sweep (transform only) */
+.submit { margin-top: var(--s-24); overflow: hidden; }
+.submit__bar { position: absolute; left: 0; bottom: 0; height: 3px; width: 40%; background: rgba(255,255,255,.85); transform: translateX(-100%); opacity: 0; }
+.submit[aria-busy="true"] { cursor: progress; }
+.submit[aria-busy="true"] .submit__bar { opacity: 1; animation: sweep 1.2s var(--ease-io) infinite; }
+@keyframes sweep { from { transform: translateX(-100%); } to { transform: translateX(250%); } }
+
+/* Banners */
+.banner { display: grid; grid-template-columns: auto 1fr; gap: var(--s-12); padding: var(--s-16); border-radius: var(--r-8); margin-bottom: var(--s-24); animation: banner-in 320ms var(--ease-out) both; }
+.banner svg { width: 22px; height: 22px; margin-top: 1px; }
+.banner--error { background: #FBE6E5; color: #5E0006; box-shadow: inset 0 0 0 1.5px var(--c-error), inset 6px 0 0 var(--c-error); }
+.banner--error a { color: #5E0006; font-weight: 700; }
+.banner h2 { font-size: var(--t-16); font-weight: 700; }
+.banner ul { margin-top: var(--s-4); }
+.banner li a { color: inherit; }
+.banner .btn { margin-top: var(--s-12); }
+@keyframes banner-in { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
+
+/* Success panel occupies the same region the form did */
+.region { position: relative; }
+.success { animation: banner-in 420ms var(--ease-out) both; }
+.success__mark { display: grid; place-items: center; width: 56px; height: 56px; border-radius: var(--r-14); background: var(--c-ok); color: #fff; }
+.success__mark svg { width: 28px; height: 28px; }
+.success h2 { margin-top: var(--s-24); }
+.success p { margin-top: var(--s-12); }
+.success .ref { margin-top: var(--s-24); padding: var(--s-12) var(--s-16); border-radius: var(--r-8); background: rgba(38,38,38,.06); font-size: var(--t-14); }
+.success .btn { margin-top: var(--s-24); }
+.form-out { animation: form-out 200ms var(--ease-io) both; }
+@keyframes form-out { to { opacity: 0; transform: translateY(-4px); } }
+
+@media (min-width: 900px) {
+  .est { padding-block: var(--s-48) var(--s-96); }
+  .est__grid { grid-template-columns: 5fr 7fr; gap: var(--s-64); align-items: start; }
+  .est__aside { position: sticky; top: var(--s-32); }
+  .est__h1 { font-size: var(--t-72); font-stretch: 112%; }
+  .est__photo { display: block; margin-top: var(--s-32); }
+  .est__photo .frame { aspect-ratio: 4 / 3; overflow: hidden; border-radius: var(--r-8) var(--r-8) var(--r-8) 0; background: #B9A99A;
+    clip-path: polygon(0 0, 100% 0, 100% 100%, calc(var(--step) * 4) 100%, calc(var(--step) * 4) calc(100% - var(--step)), calc(var(--step) * 2) calc(100% - var(--step)), calc(var(--step) * 2) calc(100% - var(--step) * 2), 0 calc(100% - var(--step) * 2)); }
+  .est__photo img { width: 100%; height: 100%; object-fit: cover; }
+}
