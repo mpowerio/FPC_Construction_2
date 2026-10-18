@@ -182,11 +182,7 @@
         <details><summary>{{t.faq.2q}}<span class="faq__nub" aria-hidden="true"><svg><use href="#i-chev"/></svg></span></summary><div class="faq__a"><p>{{t.faq.2a}}</p></div></details>
         <details><summary>{{t.faq.3q}}<span class="faq__nub" aria-hidden="true"><svg><use href="#i-chev"/></svg></span></summary><div class="faq__a"><p>{{t.faq.3a}}</p></div></details>
         <details data-paypal><summary>{{t.faq.4q}}<span class="faq__nub" aria-hidden="true"><svg><use href="#i-chev"/></svg></span></summary><div class="faq__a"><p>{{t.faq.4a}}</p>
-          <!-- PayPal Pay Later messaging. The SDK loads only when this answer is opened
-               (assets/site/core.js), never on page load. No data-pp-amount on purpose:
-               this page quotes no prices. Text color is black because this sits on the
-               light concrete background. -->
-          <div class="pp-slot" data-pp-message data-pp-style-layout="text" data-pp-style-logo-type="inline" data-pp-style-text-color="black"></div>
+          {{v.ppSlot}}
         </div></details>
       </div>
     </div>

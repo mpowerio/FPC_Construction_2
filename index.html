@@ -1112,10 +1112,6 @@ html.motion-ok .hero__after { animation: fade 600ms var(--ease-out) 420ms both; 
         <details><summary>Where do you work?<span class="faq__nub" aria-hidden="true"><svg><use href="#i-chev"/></svg></span></summary><div class="faq__a"><p>About 50 miles around North Augusta, SC, on both sides of the Savannah River. Not sure you are in range? Call and ask.</p></div></details>
         <details><summary>Do you speak Spanish?<span class="faq__nub" aria-hidden="true"><svg><use href="#i-chev"/></svg></span></summary><div class="faq__a"><p>Yes. The phone is answered in English or Spanish, and you can choose your language on the estimate form.</p></div></details>
         <details data-paypal><summary>What payment methods do you accept?<span class="faq__nub" aria-hidden="true"><svg><use href="#i-chev"/></svg></span></summary><div class="faq__a"><p>We accept cash, checks, and all major credit cards. Through PayPal you can also split the cost over time — interest-free installments on smaller jobs, or monthly financing on larger projects. Terms and eligibility are set by PayPal and shown before you commit.</p>
-          <!-- PayPal Pay Later messaging. The SDK loads only when this answer is opened
-               (assets/site/core.js), never on page load. No data-pp-amount on purpose:
-               this page quotes no prices. Text color is black because this sits on the
-               light concrete background. -->
           <div class="pp-slot" data-pp-message data-pp-style-layout="text" data-pp-style-logo-type="inline" data-pp-style-text-color="black"></div>
         </div></details>
       </div>
@@ -1205,9 +1201,6 @@ html.motion-ok .hero__after { animation: fade 600ms var(--ease-out) 420ms both; 
   <a class="btn btn--red" href="/estimate/"><span>Free estimate</span><span class="btn__nub" aria-hidden="true"><svg><use href="#i-chev"/></svg></span></a>
 </div>
 <script src="/assets/site/core.js" defer></script>
-<!-- Cloudflare Web Analytics: TOKEN PLACEHOLDER. No token exists yet, so the beacon is off.
-     To turn it on, set CF_WEB_ANALYTICS_TOKEN in tools/site/build.mjs and run node tools/site/build.mjs.
-     It will emit:
-     <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token":"CF_WEB_ANALYTICS_TOKEN"}'></script> -->
+<!-- Web analytics: OFF (no token; see tools/site/build.mjs). -->
 </body>
 </html>

@@ -130,12 +130,29 @@ function jsonld(page, lang, t, url) {
 }
 
 // ---------- Analytics ----------
+// OFF until a token exists AND privacy.html discloses it. privacy.html currently says the site
+// has no analytics, and the A2P texting campaign relies on that page, so the build refuses to
+// emit the beacon while the policy does not name Cloudflare Web Analytics. With no token, no
+// beacon markup is emitted at all (not even commented out).
+if (CF_WEB_ANALYTICS_TOKEN && !/Cloudflare Web Analytics/i.test(readFileSync(join(root, 'privacy.html'), 'utf8'))) {
+  throw new Error('CF_WEB_ANALYTICS_TOKEN is set but privacy.html does not disclose Cloudflare Web Analytics. Update privacy.html first.');
+}
 const analytics = CF_WEB_ANALYTICS_TOKEN
   ? `<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='${JSON.stringify({ token: CF_WEB_ANALYTICS_TOKEN })}'></script>`
-  : `<!-- Cloudflare Web Analytics: TOKEN PLACEHOLDER. No token exists yet, so the beacon is off.
-     To turn it on, set CF_WEB_ANALYTICS_TOKEN in tools/site/build.mjs and run node tools/site/build.mjs.
-     It will emit:
-     <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token":"CF_WEB_ANALYTICS_TOKEN"}'></script> -->`;
+  : '<!-- Web analytics: OFF (no token; see tools/site/build.mjs). -->';
+
+// ---------- PayPal Pay Later message ----------
+// Languages whose pages carry the message. PayPal renders this US Pay Later message in English
+// even with locale=es_US on the SDK and data-pp-locale/data-pp-language on the message
+// (measured 2026-10-18, phase1-r1/vendors-live-r1.json), so Spanish pages leave it out and
+// rely on the Spanish FAQ answer, which already explains paying over time through PayPal.
+// Add 'es' here once PayPal renders it in Spanish; core.js already passes es_US.
+const PAYPAL_MESSAGE_LANGS = ['en'];
+// The SDK loads only when the answer is opened (assets/site/core.js), never on page load.
+// No data-pp-amount on purpose: the page quotes no prices. Black text: light concrete background.
+const ppSlot = (lang) => PAYPAL_MESSAGE_LANGS.includes(lang)
+  ? '<div class="pp-slot" data-pp-message data-pp-style-layout="text" data-pp-style-logo-type="inline" data-pp-style-text-color="black"></div>'
+  : '<!-- PayPal Pay Later message: English pages only until PayPal renders it in Spanish (tools/site/build.mjs). -->';
 
 // ---------- Pages ----------
 const PAGES = [
@@ -168,6 +185,7 @@ function render(page, lang) {
     css: (baseCss + '\n' + src(page.css)).trim(),
     jsonld: jsonld(page.key, lang, t, ORIGIN + page.url[lang]),
     analytics,
+    ppSlot: ppSlot(lang),
     endpoint: LEAD_ENDPOINT,
     langEnChecked: lang === 'en' ? ' checked' : '', langEsChecked: lang === 'es' ? ' checked' : '',
     formMsgs: page.key === 'estimate' ? JSON.stringify(Object.fromEntries(S.FORM_RUNTIME_KEYS.map((k) => [k, t(k)]))).replace(/</g, '\\u003c') : '',

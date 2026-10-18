@@ -254,7 +254,7 @@ const lum = (hex) => {
 };
 const contrast = (a, b) => { const [x, y] = [lum(a), lum(b)].sort((m, n) => n - m); return (x + 0.05) / (y + 0.05); };
 for (const [path, locale, want] of [['/es/', 'en-US', 'es'], ['/es/estimado/', 'en-US', 'es'], ['/', 'es-MX', 'en'], ['/estimate/', 'es-MX', 'en']]) {
-  test(`${path} with a ${locale} browser initializes Fil${path.length < 5 ? ' and PayPal' : ''} in ${want === 'es' ? 'Spanish' : 'English'}`, async () => {
+  test(`${path} with a ${locale} browser initializes Fil${path === '/' ? ' and PayPal' : path === '/es/' ? ' (and no English PayPal message)' : ''} in ${want === 'es' ? 'Spanish' : 'English'}`, async () => {
     const { page, context, externals } = await setup(json(201, accepted), { path, locale });
     try {
       assert.equal(await page.locator('elevenlabs-convai').count(), 0, 'Fil waits for the first interaction');
@@ -272,16 +272,25 @@ for (const [path, locale, want] of [['/es/', 'en-US', 'es'], ['/es/estimado/', '
       assert.ok(contrast(v['btn-text-color'], v['btn-color']) >= 4.5, `button text ${v['btn-text-color']} on ${v['btn-color']}`);
       assert.ok(contrast(v['text-color'], v['bg-color']) >= 4.5, `panel text ${v['text-color']} on ${v['bg-color']}`);
       assert.ok(contrast(v['focus-color'], v['bg-color']) >= 3, `focus ring ${v['focus-color']} on ${v['bg-color']}`);
-      if (path === '/' || path === '/es/') {
-        const ppLocale = want === 'es' ? 'es_US' : 'en_US';
+      if (path === '/') {
         assert.equal(externals.some((u) => u.includes('paypal.com')), false, 'PayPal waits for the payment answer');
         await page.locator('details[data-paypal] summary').click();
         await page.waitForFunction(() => [...document.scripts].some((s) => s.src.includes('paypal.com/sdk/js')));
         const sdk = await page.evaluate(() => [...document.scripts].map((s) => s.src).find((s) => s.includes('paypal.com/sdk/js')));
-        assert.equal(new URL(sdk).searchParams.get('locale'), ppLocale, 'SDK locale follows the page');
+        assert.equal(new URL(sdk).searchParams.get('locale'), 'en_US', 'SDK locale follows the page, not the es-MX browser');
         assert.equal(new URL(sdk).searchParams.get('components'), 'messages');
-        assert.equal(await page.locator('[data-pp-message]').getAttribute('data-pp-locale'), ppLocale, 'message locale follows the page');
+        assert.equal(await page.locator('[data-pp-message]').getAttribute('data-pp-locale'), 'en_US', 'message locale follows the page');
       }
+      if (path === '/es/') {
+        // PayPal renders this message in English even with es_US, so the Spanish page carries
+        // no message and never loads the SDK; the Spanish answer explains PayPal itself.
+        assert.equal(await page.locator('[data-pp-message]').count(), 0, 'no English PayPal message slot on the Spanish page');
+        await page.locator('details[data-paypal] summary').click();
+        await page.waitForTimeout(300);
+        assert.equal(externals.some((u) => u.includes('paypal.com')), false, 'no PayPal SDK request on the Spanish page');
+        assert.match(await page.locator('details[data-paypal] .faq__a').innerText(), /Con PayPal también puede pagar en partes/);
+      }
+      assert.equal(externals.some((u) => u.includes('cloudflareinsights')), false, 'no analytics beacon while analytics is OFF');
     } finally { await context.close(); }
   });
 }

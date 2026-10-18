@@ -41,6 +41,12 @@ for (const page of PAGES) {
   const webpage = graphs.find((n) => types(n).includes('WebPage'));
   if (!webpage || webpage.inLanguage !== (page.lang === 'es' ? 'es-US' : 'en-US')) fail(page, 'WebPage JSON-LD missing or wrong inLanguage');
 
+  // Analytics stays OFF until privacy.html discloses it (the policy currently says there is none).
+  if (/cloudflareinsights|data-cf-beacon/.test(html) && !/Cloudflare Web Analytics/i.test(fs.readFileSync(path.join(root, 'privacy.html'), 'utf8'))) {
+    fail(page, 'analytics beacon present but privacy.html does not disclose Cloudflare Web Analytics');
+  }
+  // PayPal renders its Pay Later message in English only, so Spanish pages must not carry it.
+  if (page.lang === 'es' && /data-pp-message/.test(html)) fail(page, 'Spanish page carries the English-only PayPal message');
   if (page.home) {
     // Every fragment the old home page published (its nav, footer and section ids) must still
     // resolve, so existing links and bookmarks land on a section instead of the top of the page.

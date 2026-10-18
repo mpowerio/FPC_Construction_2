@@ -94,8 +94,9 @@
   }
 
   // ---------- PayPal Pay Later message: load the SDK only when the payment answer opens ----------
+  // Only pages that carry the message slot load the SDK (English pages today; see build.mjs).
   var pp = document.querySelector('details[data-paypal]');
-  if (pp) {
+  if (pp && pp.querySelector('[data-pp-message]')) {
     pp.addEventListener('toggle', function once() {
       if (!pp.open) return;
       pp.removeEventListener('toggle', once);
