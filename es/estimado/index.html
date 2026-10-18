@@ -484,6 +484,12 @@ input:-webkit-autofill:focus-visible {
   box-shadow: 0 0 0 1000px var(--c-field) inset, 0 0 0 6px var(--c-yellow);
 }
 [aria-invalid="true"] { border-color: var(--c-error) !important; box-shadow: inset 0 0 0 1px var(--c-error); }
+/* Locked while sending (disabled fieldsets): same explicit colors, so the fence holds; no edits */
+fieldset:disabled input, fieldset:disabled textarea { opacity: 1; color: var(--c-ink); -webkit-text-fill-color: var(--c-ink); cursor: not-allowed; }
+fieldset:disabled input::placeholder, fieldset:disabled textarea::placeholder { color: #6B675F; -webkit-text-fill-color: #6B675F; }
+fieldset:disabled input:hover, fieldset:disabled textarea:hover { border-color: var(--c-field-line); }
+fieldset:disabled .chip span { cursor: not-allowed; }
+fieldset:disabled .chip span:active { transform: none; }
 
 /* Reserved error slot. Every message a field can show is stacked, invisible, in the same grid
    cell as the live message, so the slot is always as tall as that field's longest message at
@@ -542,6 +548,13 @@ input:-webkit-autofill:focus-visible {
 .success p { margin-top: var(--s-12); }
 .success .ref { margin-top: var(--s-24); padding: var(--s-12) var(--s-16); border-radius: var(--r-8); background: rgba(38,38,38,.06); font-size: var(--t-14); }
 .success .btn { margin-top: var(--s-24); }
+/* What was sent: exactly the snapshot the request carried */
+.success .sent-h { margin-top: var(--s-24); font-size: var(--t-16); font-weight: 700; }
+.sent { display: grid; gap: var(--s-8); margin: var(--s-8) 0 0; font-size: var(--t-14); }
+.sent div { display: grid; gap: 2px; }
+.sent dt { color: var(--c-ink-2); font-weight: 600; }
+.sent dd { margin: 0; overflow-wrap: anywhere; white-space: pre-line; }
+@media (min-width: 600px) { .sent div { grid-template-columns: 11em minmax(0, 1fr); gap: var(--s-16); } }
 .form-out { animation: form-out 200ms var(--ease-io) both; }
 @keyframes form-out { to { opacity: 0; transform: translateY(-4px); } }
 
@@ -809,7 +822,7 @@ input:-webkit-autofill:focus-visible {
     <a class="muted" href="https://mpowerio.ai" rel="noopener">Desarrollado por mpowerio.ai</a>
   </div>
 </footer>
-<script type="application/json" id="form-msgs">{"err.first":"Escriba su nombre.","err.last":"Escriba su apellido.","err.phone.req":"Escriba un número de teléfono para poder llamarle.","err.phone.bad":"Escriba un número de 10 dígitos, por ejemplo (803) 555-0123.","err.email":"Este correo parece incompleto. Revise la @ y lo que va después.","sum.h":"Revise esto antes de enviar:","fail.h":"No pudimos confirmar que recibimos su solicitud.","fail.p":"Sus datos siguen aquí. Intente de nuevo o llame al \u003ca class=\"num\" href=\"tel:+18038849305\">(803) 884-9305\u003c/a>.","fail.retry":"Intentar de nuevo","ok.h":"Listo. Recibimos su solicitud.","ok.p":"Filemon le va a llamar para quedar en una hora para la visita.","ok.ref":"Número de referencia","ok.sooner":"¿Lo necesita antes? Llame al \u003ca class=\"num\" href=\"tel:+18038849305\">(803) 884-9305\u003c/a>.","ok.home":"Volver a la página principal","e.submit":"Enviar mi solicitud de estimado","e.sending":"Enviando su solicitud…"}</script>
+<script type="application/json" id="form-msgs">{"err.first":"Escriba su nombre.","err.last":"Escriba su apellido.","err.phone.req":"Escriba un número de teléfono para poder llamarle.","err.phone.bad":"Escriba un número de 10 dígitos, por ejemplo (803) 555-0123.","err.email":"Este correo parece incompleto. Revise la @ y lo que va después.","sum.h":"Revise esto antes de enviar:","fail.h":"No pudimos confirmar que recibimos su solicitud.","fail.p":"Sus datos siguen aquí. Intente de nuevo o llame al \u003ca class=\"num\" href=\"tel:+18038849305\">(803) 884-9305\u003c/a>.","fail.retry":"Intentar de nuevo","ok.h":"Listo. Recibimos su solicitud.","ok.p":"Filemon le va a llamar para quedar en una hora para la visita.","ok.ref":"Número de referencia","ok.sooner":"¿Lo necesita antes? Llame al \u003ca class=\"num\" href=\"tel:+18038849305\">(803) 884-9305\u003c/a>.","ok.home":"Volver a la página principal","e.submit":"Enviar mi solicitud de estimado","e.sending":"Enviando su solicitud…","ok.sent":"Lo que nos mandó","ok.s.name":"Nombre","ok.s.phone":"Teléfono","ok.s.email":"Correo electrónico","ok.s.addr":"Dirección de la propiedad","ok.s.type":"Trabajo","ok.s.best":"Hora para llamarle","ok.s.lang":"Idioma preferido","ok.s.details":"Sobre el trabajo"}</script>
 <script src="/assets/site/estimate.js" defer></script>
 <script src="/assets/site/core.js" defer></script>
 <!-- Web analytics: OFF (no token; see tools/site/build.mjs). -->

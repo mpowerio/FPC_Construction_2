@@ -395,3 +395,199 @@ test('negative control: removing the booking_id check makes a receipt-less 200 l
     assert.equal(await page.locator('.success').count(), 1, 'the unpatched check would claim delivery');
   } finally { await context.close(); }
 });
+
+// ----- Language switch keeps the visitor's answers (per-tab draft, cleared once a send is captured) -----
+const choice = { project_type: 'outdoor-living', best_time: 'afternoon' };
+async function fillAll(page) {
+  for (const [field, value] of Object.entries(inquiry)) await page.locator(`#${field}`).fill(value);
+  for (const [name, value] of Object.entries(choice)) await page.locator(`label.chip:has(input[name="${name}"][value="${value}"]) span`).click();
+}
+async function kept(page, extra = {}) {
+  for (const [field, value] of Object.entries(inquiry)) assert.equal(await page.locator(`#${field}`).inputValue(), value, `keep ${field}`);
+  for (const [name, value] of Object.entries({ ...choice, ...extra })) assert.equal(await page.locator(`input[name="${name}"]:checked`).inputValue(), value, `keep ${name}`);
+}
+// The header toggle (a real click event, so core.js handles it exactly as for a visitor).
+async function switchTo(page, to) { await page.locator(`.lang a[data-lang="${to}"]`).first().evaluate((a) => a.click()); }
+async function landed(page, path) { await page.waitForURL((u) => u.pathname === path); await page.waitForLoadState('load'); }
+const drafts = (page) => page.evaluate(() => Object.keys(sessionStorage).filter((k) => k.startsWith('fpc-estimate')));
+function held(final) {
+  let release;
+  const gate = new Promise((r) => { release = r; });
+  return { release: () => release(), respond: async (route) => { await gate; await final(route); } };
+}
+
+test('switching language after a failed send keeps every answer, both chips and the failure banner; the retry sends the original answers', async () => {
+  let count = 0;
+  const { page, context, payloads } = await setup((route) => json(++count === 1 ? 503 : 201, count === 1 ? { error: 'Unavailable' } : accepted)(route), { path: '/estimate/?type=concrete' });
+  try {
+    await fillAll(page); await submit(page); await settled(page);
+    assert.equal(await page.locator('#failure[role="alert"]').isVisible(), true);
+    await switchTo(page, 'es'); await landed(page, '/es/estimado/');
+    assert.equal(new URL(page.url()).search, '?type=concrete', 'the query rides along');
+    await kept(page);
+    assert.equal(await page.locator('input[name="language_preference"]:checked').inputValue(), 'es', 'untouched language follows the new page');
+    const banner = page.locator('#failure[role="alert"]');
+    assert.equal(await banner.isVisible(), true, 'failure banner carried over');
+    assert.match(await banner.innerText(), /No pudimos confirmar/);
+    await page.locator('#failure [data-retry]').click(); await succeeded(page);
+    assert.equal(payloads.length, 2);
+    const body = payloads[1].body;
+    assert.equal(body.first_name, inquiry.first_name); assert.equal(body.last_name, inquiry.last_name);
+    assert.equal(body.phone, '8035550123'); assert.equal(body.email, inquiry.email);
+    assert.equal(body.project_type, 'outdoor-living', 'the chip the visitor chose, not ?type=');
+    assert.equal(body.language_preference, 'es');
+    assert.match(body.notes, /^Synthetic local-only inquiry retained on failure\.\nProperty address: 1 Placeholder Rd, North Augusta\nBest time to call: Afternoon\n/);
+    assert.deepEqual(await drafts(page), [], 'draft cleared once the request is captured');
+    await switchTo(page, 'en'); await landed(page, '/estimate/');
+    assert.equal(await page.locator('#first_name').inputValue(), '', 'a captured request is not refilled');
+  } finally { await context.close(); }
+});
+
+test('switching EN -> ES -> EN after validation keeps answers, shows errors in each language, keeps an explicit language choice', async () => {
+  const { page, context, requests } = await setup(json(201, accepted));
+  try {
+    await page.locator('#first_name').fill('Synthetic');
+    await page.locator('#phone').fill('555');
+    await page.locator('#details').fill('Línea uno\nLínea dos');
+    await page.locator('label.chip:has(input[name="language_preference"][value="es"]) span').click();
+    await submit(page);
+    assert.equal(requests(), 0);
+    await switchTo(page, 'es'); await landed(page, '/es/estimado/');
+    assert.equal(await page.locator('#first_name').inputValue(), 'Synthetic');
+    assert.equal(await page.locator('#phone').inputValue(), '(555');
+    assert.equal(await page.locator('#details').inputValue(), 'Línea uno\nLínea dos');
+    assert.match(await page.locator('#last_name-err').innerText(), /Escriba su apellido/);
+    assert.match(await page.locator('#phone-err').innerText(), /número de 10 dígitos/);
+    assert.match(await page.locator('#summary').innerText(), /Revise esto antes de enviar/);
+    assert.equal(await page.locator('#failure[role="alert"]').count(), 0, 'no failure banner: nothing was sent');
+    await switchTo(page, 'en'); await landed(page, '/estimate/');
+    assert.equal(await page.locator('#first_name').inputValue(), 'Synthetic');
+    assert.match(await page.locator('#phone-err').innerText(), /10-digit phone number/);
+    assert.equal(await page.locator('input[name="language_preference"]:checked').inputValue(), 'es', 'explicit Español choice survives the round trip');
+  } finally { await context.close(); }
+});
+
+test('a language switch during a send waits for it, then carries the answers and the failure banner', async () => {
+  const gate = held(json(503, { error: 'Unavailable' }));
+  const { page, context, requests } = await setup(gate.respond);
+  try {
+    await fillAll(page); await submit(page);
+    await page.waitForFunction(() => document.querySelector('#submit').disabled);
+    await switchTo(page, 'es');
+    await page.waitForTimeout(500);
+    assert.equal(new URL(page.url()).pathname, '/estimate/', 'switch held while sending');
+    gate.release();
+    await landed(page, '/es/estimado/');
+    await kept(page);
+    assert.match(await page.locator('#failure[role="alert"]').innerText(), /No pudimos confirmar/);
+    assert.equal(requests(), 1);
+  } finally { gate.release(); await context.close(); }
+});
+
+test('a language switch during a send that succeeds lands on the success panel in the new language', async () => {
+  const gate = held(json(201, accepted));
+  const { page, context, requests } = await setup(gate.respond);
+  try {
+    await fillAll(page); await submit(page);
+    await page.waitForFunction(() => document.querySelector('#submit').disabled);
+    await switchTo(page, 'es');
+    await page.waitForTimeout(500);
+    assert.equal(new URL(page.url()).pathname, '/estimate/', 'switch held while sending');
+    gate.release();
+    await landed(page, '/es/estimado/');
+    await succeeded(page);
+    assert.match(await page.locator('.success').innerText(), /Recibimos su solicitud/);
+    assert.match(await page.locator('.success .sent').innerText(), /Espacios al aire libre/);
+    assert.deepEqual(await drafts(page), []);
+    assert.equal(requests(), 1);
+    await page.reload(); await page.waitForLoadState('load');
+    assert.equal(await page.locator('.success').count(), 0, 'the hand-over is shown once');
+    assert.equal(await page.locator('#first_name').inputValue(), '');
+  } finally { gate.release(); await context.close(); }
+});
+
+// ----- Nothing can change while a request is sending; success shows exactly what was sent -----
+const fieldsLocked = (page) => page.evaluate(() => [...document.querySelectorAll('#estimate-form fieldset input, #estimate-form fieldset textarea')].every((el) => el.matches(':disabled')));
+async function attemptEdits(page) {
+  await assert.rejects(page.locator('#phone').fill('(706) 555-0199', { timeout: 300 }), 'phone is not editable while sending');
+  await assert.rejects(page.locator('#details').fill('Changed while sending', { timeout: 300 }), 'details are not editable while sending');
+  await page.locator('label.chip:has(input[name="best_time"][value="morning"]) span').click({ force: true });
+}
+test('every field is locked while sending; success lists exactly what was sent', async () => {
+  const gate = held(json(201, accepted));
+  const { page, context, payloads } = await setup(gate.respond);
+  try {
+    await fillAll(page);
+    const before = await layout(page);
+    await submit(page);
+    await page.waitForFunction(() => document.querySelector('#submit').disabled);
+    assert.equal(await fieldsLocked(page), true, 'all fields disabled while sending');
+    assertSame(before, await layout(page), 'y', 'locking the form');
+    // Contrast fence: locked fields keep the explicit ink text, unfaded.
+    for (const id of FIELD_IDS) {
+      const cs = await page.locator(`#${id}`).evaluate((el) => { const c = getComputedStyle(el); return [c.color, c.webkitTextFillColor, c.opacity]; });
+      assert.deepEqual(cs, ['rgb(38, 38, 38)', 'rgb(38, 38, 38)', '1'], `#${id} text while locked`);
+    }
+    await attemptEdits(page);
+    assert.equal(await page.locator('#phone').inputValue(), inquiry.phone);
+    assert.equal(await page.locator('input[name="best_time"]:checked').inputValue(), 'afternoon');
+    gate.release(); await succeeded(page);
+    const body = payloads[0].body;
+    const rows = await page.locator('.success .sent').evaluate((dl) => Object.fromEntries([...dl.querySelectorAll('div')].map((d) => [d.dataset.k, d.querySelector('dd').textContent])));
+    assert.deepEqual(rows, {
+      name: `${body.first_name} ${body.last_name}`, phone: '(803) 555-0123', email: body.email,
+      address: inquiry.address, type: 'Outdoor living', best: 'Afternoon', lang: 'English', details: inquiry.details,
+    });
+    assert.equal(body.phone, '8035550123');
+    assert.match(await page.locator('.success').innerText(), /What you sent us/);
+  } finally { gate.release(); await context.close(); }
+});
+
+test('a failed send unlocks the form, and the retry sends the corrections', async () => {
+  let count = 0;
+  const { page, context, payloads } = await setup((route) => json(++count === 1 ? 503 : 201, count === 1 ? { error: 'Unavailable' } : accepted)(route));
+  try {
+    await fillAll(page); await submit(page); await settled(page);
+    assert.equal(await page.locator('#failure[role="alert"]').isVisible(), true);
+    await kept(page);
+    assert.equal(await page.evaluate(() => [...document.querySelectorAll('#estimate-form fieldset input, #estimate-form fieldset textarea')].some((el) => el.matches(':disabled'))), false, 'unlocked after failure');
+    await page.locator('#phone').fill('(706) 555-0199');
+    await page.locator('#failure [data-retry]').click(); await succeeded(page);
+    assert.equal(payloads[1].body.phone, '7065550199');
+    assert.match(await page.locator('.success .sent [data-k="phone"] dd').innerText(), /\(706\) 555-0199/);
+  } finally { await context.close(); }
+});
+
+// Negative controls: prove the lock and draft tests above can fail. Without the fieldset lock an
+// edit made while sending is accepted on screen but never sent; without restore() a language
+// switch empties the form.
+test('negative control: removing the fieldset lock lets an edit during sending go unsent', async () => {
+  const mutate = (src) => {
+    const out = src.replace("form.querySelectorAll('fieldset').forEach(function (f) { f.disabled = on; });", '');
+    assert.notEqual(out, src, 'mutation applied');
+    return out;
+  };
+  const gate = held(json(201, accepted));
+  const { page, context, payloads } = await setup(gate.respond, { mutate });
+  try {
+    await fillAll(page); await submit(page);
+    await page.waitForFunction(() => document.querySelector('#submit').disabled);
+    assert.equal(await fieldsLocked(page), false);
+    await page.locator('#phone').fill('(706) 555-0199', { timeout: 1000 });
+    gate.release(); await succeeded(page);
+    assert.equal(payloads[0].body.phone, '8035550123', 'the visible correction was silently dropped');
+  } finally { gate.release(); await context.close(); }
+});
+test('negative control: removing the draft restore empties the form on a language switch', async () => {
+  const mutate = (src) => {
+    const out = src.replace(/\n  restore\(\);\n/, '\n');
+    assert.notEqual(out, src, 'mutation applied');
+    return out;
+  };
+  const { page, context } = await setup(json(503, { error: 'Unavailable' }), { mutate });
+  try {
+    await fillAll(page); await submit(page); await settled(page);
+    await switchTo(page, 'es'); await landed(page, '/es/estimado/');
+    await assert.rejects(kept(page), /keep first_name/);
+  } finally { await context.close(); }
+});

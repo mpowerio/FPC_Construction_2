@@ -259,6 +259,9 @@ export const estimate = {
     'ok.ref': 'Reference number',
     'ok.sooner': 'Need it sooner? Call <a class="num" href="tel:+18038849305">(803) 884-9305</a>.',
     'ok.home': 'Back to the home page',
+    'ok.sent': 'What you sent us',
+    'ok.s.name': 'Name', 'ok.s.phone': 'Phone', 'ok.s.email': 'Email', 'ok.s.addr': 'Property address',
+    'ok.s.type': 'Job', 'ok.s.best': 'Best time to call', 'ok.s.lang': 'Preferred language', 'ok.s.details': 'About the job',
   },
   es: {
     'meta.title': 'Estimado gratis | FPC Construction, North Augusta, SC',
@@ -301,9 +304,13 @@ export const estimate = {
     'ok.ref': 'Número de referencia',
     'ok.sooner': '¿Lo necesita antes? Llame al <a class="num" href="tel:+18038849305">(803) 884-9305</a>.',
     'ok.home': 'Volver a la página principal',
+    'ok.sent': 'Lo que nos mandó',
+    'ok.s.name': 'Nombre', 'ok.s.phone': 'Teléfono', 'ok.s.email': 'Correo electrónico', 'ok.s.addr': 'Dirección de la propiedad',
+    'ok.s.type': 'Trabajo', 'ok.s.best': 'Hora para llamarle', 'ok.s.lang': 'Idioma preferido', 'ok.s.details': 'Sobre el trabajo',
   },
 };
 
 // Keys the estimate script needs at runtime (emitted as a JSON block on the page).
 export const FORM_RUNTIME_KEYS = ['err.first', 'err.last', 'err.phone.req', 'err.phone.bad', 'err.email', 'sum.h', 'fail.h', 'fail.p', 'fail.retry',
-  'ok.h', 'ok.p', 'ok.ref', 'ok.sooner', 'ok.home', 'e.submit', 'e.sending'];
+  'ok.h', 'ok.p', 'ok.ref', 'ok.sooner', 'ok.home', 'e.submit', 'e.sending',
+  'ok.sent', 'ok.s.name', 'ok.s.phone', 'ok.s.email', 'ok.s.addr', 'ok.s.type', 'ok.s.best', 'ok.s.lang', 'ok.s.details'];

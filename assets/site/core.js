@@ -19,6 +19,10 @@
     if (to === lang) { e.preventDefault(); return; }
     e.preventDefault();
     var href = a.getAttribute('href') + location.search + location.hash;
+    // Page scripts get a say before the page is left: the estimate form saves its draft here,
+    // and holds the switch (preventDefault) while a request is sending, then navigates itself.
+    var leave = new CustomEvent('fpc:lang-leave', { cancelable: true, detail: { href: href, to: to } });
+    if (!document.dispatchEvent(leave)) return;
     if (reduce) { location.href = href; return; }
     document.querySelectorAll('.lang a[data-lang="' + to + '"]').forEach(function (x) { x.classList.add('is-target'); });
     root.classList.add('lang-going');

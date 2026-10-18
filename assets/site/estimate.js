@@ -7,7 +7,11 @@
    language_preference, service_area, company_website (honeypot). Unknown keys are dropped
    WITHOUT an error, so address and best time are folded into `notes` until the CRM stores
    them. A lead counts as captured only on a 2xx whose JSON has success === true and a
-   non-empty booking_id string (same rule as capturedLeadBody() on the server). */
+   non-empty booking_id string (same rule as capturedLeadBody() on the server).
+
+   Answers survive the EN/ES toggle: a per-tab draft (sessionStorage) is saved when the page
+   is left and restored on the twin page, then cleared once a request is captured. While a
+   request is sending, every field is locked and a language switch waits for the result. */
 (function () {
   'use strict';
   var TIMEOUT_MS = 15000;
@@ -25,6 +29,14 @@
   var attempted = false;
   var busy = false;
   var errorKey = {};
+  var failedShown = false;   // the failure banner is up (carried over by the draft)
+  var sentDone = false;      // a request was captured: nothing more to save
+  var langTouched = false;   // the visitor picked a preferred language themselves
+  var pendingLeave = null;   // language switch held until the send settles
+  var DRAFT = 'fpc-estimate-draft';
+  var DONE = 'fpc-estimate-done';
+  var FIELDS = ['first_name', 'last_name', 'phone', 'email', 'address', 'details'];
+  var CHOICES = ['best_time', 'project_type', 'language_preference'];
 
   // Endpoint: data attribute set by the build; window.FPC_LEAD_URL can override (tests).
   function endpoint() {
@@ -109,7 +121,8 @@
     e.preventDefault();
     var el = document.getElementById(a.getAttribute('href').slice(1)); if (el) el.focus();
   });
-  function showFailure() {
+  function showFailure(quiet) {
+    failedShown = true;
     var body = banner(failure, 'error');
     var h = document.createElement('h2'); h.textContent = t('fail.h'); body.appendChild(h);
     var p = document.createElement('p'); p.innerHTML = t('fail.p'); body.appendChild(p);
@@ -119,9 +132,9 @@
     b.firstChild.textContent = t('fail.retry');
     body.appendChild(b);
     failure.hidden = false;
-    failure.focus();
+    if (!quiet) failure.focus();
   }
-  function hideFailure() { failure.hidden = true; failure.innerHTML = ''; failure.removeAttribute('role'); }
+  function hideFailure() { failedShown = false; failure.hidden = true; failure.innerHTML = ''; failure.removeAttribute('role'); }
   failure.addEventListener('click', function (e) {
     if (e.target.closest('[data-retry]')) { if (form.requestSubmit) form.requestSubmit(); else submit.click(); }
   });
@@ -185,16 +198,56 @@
       typeof receipt.booking_id === 'string' && receipt.booking_id.trim().length > 0;
   }
 
+  // Sending locks every field (disabled fieldsets), so what was sent is what the visitor sees.
   function setBusy(on) {
     busy = on;
     submit.setAttribute('aria-busy', String(on));
     submit.disabled = on;
     submitLabel.textContent = on ? t('e.sending') : t('e.submit');
+    form.querySelectorAll('fieldset').forEach(function (f) { f.disabled = on; });
   }
 
-  function showSuccess(receipt) {
-    var ref = 'FPC-' + receipt.booking_id.trim().replace(/[^A-Za-z0-9]/g, '').slice(0, 8).toUpperCase();
-    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // ----- What was sent, for the success panel (raw values; labels come from this page) -----
+  function snapshot(payload) {
+    return {
+      first_name: payload.first_name, last_name: payload.last_name, phone: payload.phone, email: payload.email,
+      address: val('address'), project_type: payload.project_type, best_time: val('best_time'),
+      language: payload.language_preference, details: val('details')
+    };
+  }
+  function chipText(name, value) {
+    var hit = '';
+    form.querySelectorAll('input[name="' + name + '"]').forEach(function (r) { if (r.value === value) hit = r.nextElementSibling.textContent; });
+    return hit || value || '';
+  }
+  function phoneText(d) { return d.length === 10 ? '(' + d.slice(0, 3) + ') ' + d.slice(3, 6) + '-' + d.slice(6) : d; }
+  function sentList(sent) {
+    var rows = [
+      ['name', 'ok.s.name', ((sent.first_name || '') + ' ' + (sent.last_name || '')).trim()],
+      ['phone', 'ok.s.phone', phoneText(String(sent.phone || ''))],
+      ['email', 'ok.s.email', sent.email],
+      ['address', 'ok.s.addr', sent.address],
+      ['type', 'ok.s.type', sent.project_type ? chipText('project_type', sent.project_type) : ''],
+      ['best', 'ok.s.best', chipText('best_time', sent.best_time)],
+      ['lang', 'ok.s.lang', chipText('language_preference', sent.language)],
+      ['details', 'ok.s.details', sent.details]
+    ];
+    var frag = document.createDocumentFragment();
+    var h = document.createElement('h3'); h.className = 'sent-h'; h.textContent = t('ok.sent'); frag.appendChild(h);
+    var dl = document.createElement('dl'); dl.className = 'sent';
+    rows.forEach(function (r) {
+      if (!r[2]) return;
+      var row = document.createElement('div'); row.setAttribute('data-k', r[0]);
+      var dt = document.createElement('dt'); dt.textContent = t(r[1]);
+      var dd = document.createElement('dd'); dd.textContent = String(r[2]);
+      row.appendChild(dt); row.appendChild(dd); dl.appendChild(row);
+    });
+    frag.appendChild(dl);
+    return frag;
+  }
+
+  function showSuccess(ref, sent, instant) {
+    var reduce = instant || window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     region.style.minHeight = Math.min(region.offsetHeight, 560) + 'px';
     form.classList.add('form-out');
     setTimeout(function () {
@@ -210,6 +263,7 @@
       box.querySelector('#ok-p').textContent = t('ok.p');
       box.querySelector('#ok-ref-l').textContent = t('ok.ref');
       box.querySelector('#ok-ref').textContent = ref;
+      box.querySelector('.ref').after(sentList(sent));
       box.querySelector('#ok-sooner').innerHTML = t('ok.sooner');
       var home = box.querySelector('#ok-home');
       home.href = form.getAttribute('data-home') || '/';
@@ -222,7 +276,7 @@
 
   form.addEventListener('submit', function (e) {
     e.preventDefault();
-    if (busy) return;
+    if (busy || sentDone) return;
     attempted = true;
     hideFailure();
     var bad = Object.keys(rules).filter(function (id) { return !check(id); });
@@ -230,14 +284,77 @@
     if (bad.length) return;
 
     var payload = buildPayload();
+    var sent = snapshot(payload);
     setBusy(true);
     send(payload).then(function (receipt) {
       // A 200 alone is not proof of a captured lead (the honeypot ack is a 200 too).
       if (!captured(receipt)) throw new Error('no booking receipt');
-      showSuccess(receipt);
+      sentDone = true;
+      busy = false; // the send is over; fields stay locked and the form is replaced below
+      store.drop(DRAFT);
+      var ref = 'FPC-' + receipt.booking_id.trim().replace(/[^A-Za-z0-9]/g, '').slice(0, 8).toUpperCase();
+      // A held language switch goes ahead now; the twin page shows this success once.
+      if (pendingLeave && store.put(DONE, { ref: ref, sent: sent })) { location.href = pendingLeave; return; }
+      pendingLeave = null;
+      showSuccess(ref, sent);
     }).catch(function () {
       setBusy(false);
       showFailure();
+      if (pendingLeave) { var href = pendingLeave; pendingLeave = null; saveDraft(); location.href = href; }
     });
   });
+
+  // ----- Draft: survives the EN/ES toggle (and leaving the page), per tab, until captured -----
+  var store = {
+    get: function (k) { try { return JSON.parse(sessionStorage.getItem(k) || 'null'); } catch (e) { return null; } },
+    put: function (k, v) { try { sessionStorage.setItem(k, JSON.stringify(v)); return true; } catch (e) { return false; } },
+    drop: function (k) { try { sessionStorage.removeItem(k); } catch (e) {} }
+  };
+  form.querySelectorAll('input[name="language_preference"]').forEach(function (r) {
+    r.addEventListener('change', function () { langTouched = true; });
+  });
+  function saveDraft() {
+    // Nothing to keep once captured; while sending the outcome is unknown, so leave it alone.
+    if (sentDone || busy) return;
+    var d = { v: 1, f: {}, r: {}, attempted: attempted, failed: failedShown };
+    var typed = false;
+    FIELDS.forEach(function (id) { d.f[id] = document.getElementById(id).value; if (d.f[id]) typed = true; });
+    CHOICES.forEach(function (n) {
+      if (n === 'language_preference' && !langTouched) return; // untouched: the twin page's default applies
+      var c = form.querySelector('input[name="' + n + '"]:checked');
+      if (c) d.r[n] = c.value;
+    });
+    var picked = d.r.best_time !== 'any' || !!d.r.language_preference || (!!d.r.project_type && d.r.project_type !== qType);
+    if (typed || picked || attempted || failedShown) store.put(DRAFT, d); else store.drop(DRAFT);
+  }
+  function restore() {
+    var done = store.get(DONE);
+    store.drop(DONE);
+    if (done && typeof done.ref === 'string' && done.sent && typeof done.sent === 'object') {
+      sentDone = true;
+      store.drop(DRAFT);
+      showSuccess(done.ref, done.sent, true);
+      return;
+    }
+    var d = store.get(DRAFT);
+    if (!d || d.v !== 1 || typeof d.f !== 'object' || typeof d.r !== 'object' || !d.f || !d.r) return;
+    FIELDS.forEach(function (id) { if (typeof d.f[id] === 'string') document.getElementById(id).value = d.f[id]; });
+    CHOICES.forEach(function (n) {
+      if (typeof d.r[n] !== 'string') return;
+      form.querySelectorAll('input[name="' + n + '"]').forEach(function (r) { if (r.value === d.r[n]) r.checked = true; });
+      if (n === 'language_preference') langTouched = true;
+    });
+    if (d.attempted) {
+      attempted = true;
+      showSummary(Object.keys(rules).filter(function (id) { return !check(id); }), true);
+    }
+    if (d.failed) showFailure(true);
+  }
+  // The toggle asks first (assets/site/core.js): save now, or hold the switch while sending.
+  document.addEventListener('fpc:lang-leave', function (e) {
+    if (busy) { e.preventDefault(); pendingLeave = (e.detail && e.detail.href) || null; return; }
+    saveDraft();
+  });
+  window.addEventListener('pagehide', saveDraft);
+  restore();
 })();
