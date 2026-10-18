@@ -52,12 +52,12 @@
               <div class="field">
                 <label for="first_name">{{t.e.first}} <span class="req">{{t.e.req}}</span></label>
                 <div class="control"><input id="first_name" name="first_name" type="text" autocomplete="given-name" required aria-describedby="first_name-err" maxlength="60"></div>
-                <p class="err" id="first_name-err" aria-live="polite"><svg aria-hidden="true"><use href="#i-alert"/></svg><span></span></p>
+                <p class="err" id="first_name-err" aria-live="polite"><svg aria-hidden="true"><use href="#i-alert"/></svg><span class="err__msg"></span><span class="err__size" aria-hidden="true"><span>{{t.err.first}}</span></span></p>
               </div>
               <div class="field">
                 <label for="last_name">{{t.e.last}} <span class="req">{{t.e.req}}</span></label>
                 <div class="control"><input id="last_name" name="last_name" type="text" autocomplete="family-name" required aria-describedby="last_name-err" maxlength="60"></div>
-                <p class="err" id="last_name-err" aria-live="polite"><svg aria-hidden="true"><use href="#i-alert"/></svg><span></span></p>
+                <p class="err" id="last_name-err" aria-live="polite"><svg aria-hidden="true"><use href="#i-alert"/></svg><span class="err__msg"></span><span class="err__size" aria-hidden="true"><span>{{t.err.last}}</span></span></p>
               </div>
             </div>
           </fieldset>
@@ -69,13 +69,13 @@
                 <label for="phone">{{t.e.phone}} <span class="req">{{t.e.req}}</span></label>
                 <p class="hint" id="phone-hint">{{t.e.phone.hint}}</p>
                 <div class="control"><input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel-national" required aria-describedby="phone-hint phone-err" placeholder="(803) 555-0123"></div>
-                <p class="err" id="phone-err" aria-live="polite"><svg aria-hidden="true"><use href="#i-alert"/></svg><span></span></p>
+                <p class="err" id="phone-err" aria-live="polite"><svg aria-hidden="true"><use href="#i-alert"/></svg><span class="err__msg"></span><span class="err__size" aria-hidden="true"><span>{{t.err.phone.req}}</span><span>{{t.err.phone.bad}}</span></span></p>
               </div>
               <div class="field">
                 <label for="email">{{t.e.email}} <span class="req">{{t.e.opt}}</span></label>
                 <p class="hint" id="email-hint">{{t.e.email.hint}}</p>
                 <div class="control"><input id="email" name="email" type="email" inputmode="email" autocomplete="email" autocapitalize="off" spellcheck="false" aria-describedby="email-hint email-err" maxlength="120"></div>
-                <p class="err" id="email-err" aria-live="polite"><svg aria-hidden="true"><use href="#i-alert"/></svg><span></span></p>
+                <p class="err" id="email-err" aria-live="polite"><svg aria-hidden="true"><use href="#i-alert"/></svg><span class="err__msg"></span><span class="err__size" aria-hidden="true"><span>{{t.err.email}}</span></span></p>
               </div>
             </div>
             <div class="fields" style="margin-top:var(--s-8)">

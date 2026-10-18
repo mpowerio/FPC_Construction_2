@@ -347,7 +347,16 @@ html.js.motion-ok [data-reveal].is-in { opacity: 1; transform: none; }
 /* ---------- Fil voice widget (ElevenLabs, injected after first interaction) ----------
    Its shadow :host is position:fixed at right/bottom 32px; outer styles win over :host.
    On phones it sits above the call bar so the two never overlap. */
-elevenlabs-convai { right: 12px; bottom: calc(80px + env(safe-area-inset-bottom)); }
+elevenlabs-convai {
+  right: 12px; bottom: calc(80px + env(safe-area-inset-bottom));
+  /* The widget themes itself with --el-* custom properties declared on its :host; these outer
+     declarations win. Vendor default was white on #3B82F6 (3.68:1). Bench Cut: white on ink
+     (15.1:1) for primary buttons, ink on the plate (13.9:1) for the panel and secondary
+     buttons, red focus ring (4.2:1 against the plate, above the 3:1 non-text minimum). */
+  --el-btn-color: #262626; --el-btn-text-color: #FFFFFF;
+  --el-bg-color: #F4F3F0; --el-text-color: #262626; --el-border-color: #D4D2CC;
+  --el-focus-color: #ED000C;
+}
 @media (min-width: 900px) { elevenlabs-convai { right: 32px; bottom: 32px; } }
 
 /* ---------- Language suggestion (only when the browser prefers Spanish and no choice is stored) ---------- */

@@ -28,11 +28,12 @@ async function resolve(pathname) {
   return null;
 }
 
-async function setup(respond, { path = '/estimate/', clock = false, mutate, noEndpoint = false, locale } = {}) {
-  const context = await browser.newContext(locale ? { locale } : {});
+async function setup(respond, { path = '/estimate/', clock = false, mutate, mutateFiles = {}, noEndpoint = false, locale, viewport } = {}) {
+  const context = await browser.newContext({ ...(locale ? { locale } : {}), ...(viewport ? { viewport } : {}) });
   const page = await context.newPage();
   let requests = 0;
   const payloads = [];
+  const externals = [];
   await page.route('**/*', async route => {
     const url = new URL(route.request().url());
     if (url.pathname.endsWith('/webhook/lead-intake')) {
@@ -40,17 +41,18 @@ async function setup(respond, { path = '/estimate/', clock = false, mutate, noEn
       payloads.push({ url: url.href, body: route.request().postDataJSON() });
       return respond(route);
     }
-    if (url.hostname !== 'fpc.test') return route.abort(); // no production traffic, ever
+    if (url.hostname !== 'fpc.test') { externals.push(url.href); return route.abort(); } // no production traffic, ever
     const rel = await resolve(url.pathname);
     if (!rel) return route.fulfill({ status: 404, body: '' });
     let body = await readFile(new URL(rel, root));
     if (mutate && rel === 'assets/site/estimate.js') body = Buffer.from(mutate(body.toString()));
+    if (mutateFiles[rel]) body = Buffer.from(mutateFiles[rel](body.toString()));
     await route.fulfill({ body, contentType: TYPES[rel.split('.').pop()] || 'application/octet-stream' });
   });
   await page.goto(`https://fpc.test${path}`, { waitUntil: 'load' });
   if (noEndpoint) await page.evaluate(() => { globalThis.FPC_LEAD_URL = ''; });
   if (clock) await page.clock.install();
-  return { page, context, requests: () => requests, payloads };
+  return { page, context, requests: () => requests, payloads, externals };
 }
 async function fill(page) {
   for (const [field, value] of Object.entries(inquiry)) await page.locator(`#${field}`).fill(value);
@@ -182,19 +184,106 @@ test('email is optional; phone, first and last name are required with inline err
   } finally { await context.close(); }
 });
 
-test('showing an inline error does not move the layout (reserved error slot)', async () => {
-  const { page, context } = await setup(json(201, accepted));
-  try {
-    const before = await page.locator('#email').boundingBox();
-    await submit(page);
-    const afterBox = await page.locator('#email').boundingBox();
-    assert.equal(afterBox.x, before.x);
-    // The summary banner sits above the fields, so only the summary's own height may move them.
-    const summaryH = (await page.locator('#summary').boundingBox()).height;
-    const margin = await page.evaluate(() => parseFloat(getComputedStyle(document.querySelector('#summary')).marginBottom));
-    assert.ok(Math.abs(afterBox.y - before.y - summaryH - margin) < 1, 'fields moved only by the summary height');
-  } finally { await context.close(); }
+// ----- Zero layout shift when inline errors appear, change or wrap (EN + ES, phone + desktop) -----
+const FIELD_IDS = ['first_name', 'last_name', 'phone', 'email', 'address', 'details'];
+async function layout(page) {
+  return page.evaluate((ids) => {
+    const ref = document.querySelector('#estimate-form fieldset').getBoundingClientRect().top;
+    return ids.map((id) => {
+      const r = document.getElementById(id).getBoundingClientRect();
+      return { id, x: r.x, y: r.top + scrollY, rel: r.top - ref };
+    });
+  }, FIELD_IDS);
+}
+function assertSame(before, after, key, step) {
+  before.forEach((b, i) => {
+    const a = after[i];
+    assert.ok(Math.abs(a.x - b.x) < 0.5 && Math.abs(a[key] - b[key]) < 0.5,
+      `${step}: #${b.id} moved ${(a[key] - b[key]).toFixed(1)}px vertically, ${(a.x - b.x).toFixed(1)}px horizontally`);
+  });
+}
+async function errorShift(page) {
+  // Shift-free blur-driven errors (no summary involved): absolute positions must not change.
+  const start = await layout(page);
+  await page.locator('#phone').fill('5'); await page.locator('#phone').blur();
+  assert.ok((await page.locator('#phone-err .err__msg').innerText()).length > 10, 'phone error shown');
+  assertSame(start, await layout(page), 'y', 'phone error on blur');
+  await page.locator('#email').fill('x'); await page.locator('#email').blur();
+  assert.ok((await page.locator('#email-err .err__msg').innerText()).length > 10, 'email error shown');
+  assertSame(start, await layout(page), 'y', 'email error on blur');
+  // Submit with everything empty: the summary banner appears above the fields (that move is the
+  // banner's own height); below it, required errors on every field must not move anything.
+  for (const id of ['phone', 'email']) await page.locator(`#${id}`).fill('');
+  await submit(page);
+  assert.equal(await page.locator('#summary[role="alert"]').isVisible(), true);
+  const withSummary = await layout(page);
+  assertSame(start, withSummary, 'rel', 'required errors after submit');
+  await page.locator('#phone').fill('5');
+  assertSame(withSummary, await layout(page), 'y', 'phone error swaps from required to invalid');
+  await page.locator('#email').fill('x');
+  assertSame(withSummary, await layout(page), 'y', 'email error appears after submit');
+}
+for (const path of ['/estimate/', '/es/estimado/']) {
+  for (const width of [320, 390, 1440]) {
+    test(`inline errors never move the layout: ${path} at ${width}px`, async () => {
+      const { page, context } = await setup(json(201, accepted), { path, viewport: { width, height: 900 } });
+      try { await errorShift(page); } finally { await context.close(); }
+    });
+  }
+}
+// Negative control: without the stacked sizer messages the slot is one line tall, and the
+// wrapped phone error at 390px pushes the fields below it down. Proves errorShift() can fail.
+test('negative control: removing the reserved error sizers makes the 390px phone error shift layout', async () => {
+  const strip = (html) => {
+    const out = html.replace(/<span class="err__size" aria-hidden="true">(?:<span>[^<]*<\/span>)+<\/span>/g, '');
+    assert.notEqual(out, html, 'mutation applied');
+    return out;
+  };
+  const { page, context } = await setup(json(201, accepted), { path: '/es/estimado/', viewport: { width: 390, height: 900 }, mutateFiles: { 'es/estimado/index.html': strip } });
+  try { await assert.rejects(errorShift(page), /moved/); } finally { await context.close(); }
 });
+
+// ----- Third-party controls start in the page language, whatever the browser prefers -----
+const FIL_TEXT = {
+  en: { 'expand-text': 'Chat with Fil', 'action-text': 'Questions? Ask Fil', 'start-call-text': 'Start a call', 'end-call-text': 'End call', 'listening-text': 'Listening', 'speaking-text': 'Talk to interrupt' },
+  es: { 'expand-text': 'Hablar con Fil', 'action-text': '¿Preguntas? Pregúntele a Fil', 'start-call-text': 'Iniciar llamada', 'end-call-text': 'Colgar', 'listening-text': 'Escuchando', 'speaking-text': 'Hable para interrumpir' }
+};
+const lum = (hex) => {
+  const [r, g, b] = hex.trim().replace('#', '').match(/../g).map((h) => parseInt(h, 16) / 255).map((v) => v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4);
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+};
+const contrast = (a, b) => { const [x, y] = [lum(a), lum(b)].sort((m, n) => n - m); return (x + 0.05) / (y + 0.05); };
+for (const [path, locale, want] of [['/es/', 'en-US', 'es'], ['/es/estimado/', 'en-US', 'es'], ['/', 'es-MX', 'en'], ['/estimate/', 'es-MX', 'en']]) {
+  test(`${path} with a ${locale} browser initializes Fil${path.length < 5 ? ' and PayPal' : ''} in ${want === 'es' ? 'Spanish' : 'English'}`, async () => {
+    const { page, context, externals } = await setup(json(201, accepted), { path, locale });
+    try {
+      assert.equal(await page.locator('elevenlabs-convai').count(), 0, 'Fil waits for the first interaction');
+      await page.keyboard.press('Shift');
+      await page.locator('elevenlabs-convai').waitFor({ state: 'attached' });
+      const fil = page.locator('elevenlabs-convai');
+      const attrs = await fil.evaluate((el) => Object.fromEntries([...el.attributes].map((a) => [a.name, a.value])));
+      assert.equal(attrs['override-language'], want, 'Fil language comes from <html lang>');
+      for (const [k, v] of Object.entries(FIL_TEXT[want])) assert.equal(attrs[k], v, `${k} in the page language`);
+      assert.ok(externals.some((u) => u === 'https://elevenlabs.io/convai-widget/index.js'), 'widget script requested (and blocked here)');
+      // Widget buttons are background var(--el-btn-color) with text var(--el-btn-text-color);
+      // the panel and secondary buttons are var(--el-text-color) on var(--el-bg-color).
+      const v = await fil.evaluate((el) => { const cs = getComputedStyle(el); return Object.fromEntries(['btn-color', 'btn-text-color', 'bg-color', 'text-color', 'focus-color'].map((n) => [n, cs.getPropertyValue(`--el-${n}`).trim()])); });
+      assert.ok(contrast(v['btn-text-color'], v['btn-color']) >= 4.5, `button text ${v['btn-text-color']} on ${v['btn-color']}`);
+      assert.ok(contrast(v['text-color'], v['bg-color']) >= 4.5, `panel text ${v['text-color']} on ${v['bg-color']}`);
+      assert.ok(contrast(v['focus-color'], v['bg-color']) >= 3, `focus ring ${v['focus-color']} on ${v['bg-color']}`);
+      if (path === '/' || path === '/es/') {
+        const ppLocale = want === 'es' ? 'es_US' : 'en_US';
+        assert.equal(externals.some((u) => u.includes('paypal.com')), false, 'PayPal waits for the payment answer');
+        await page.locator('details[data-paypal] summary').click();
+        await page.waitForFunction(() => [...document.scripts].some((s) => s.src.includes('paypal.com/sdk/js')));
+        const sdk = await page.evaluate(() => [...document.scripts].map((s) => s.src).find((s) => s.includes('paypal.com/sdk/js')));
+        assert.equal(new URL(sdk).searchParams.get('locale'), ppLocale, 'SDK locale follows the page');
+        assert.equal(new URL(sdk).searchParams.get('components'), 'messages');
+        assert.equal(await page.locator('[data-pp-message]').getAttribute('data-pp-locale'), ppLocale, 'message locale follows the page');
+      }
+    } finally { await context.close(); }
+  });
+}
 
 test('?type= preselects the job type', async () => {
   const { page, context } = await setup(json(201, accepted), { path: '/estimate/?type=septic-systems' });

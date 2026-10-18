@@ -54,9 +54,14 @@ input:-webkit-autofill:focus-visible {
 }
 [aria-invalid="true"] { border-color: var(--c-error) !important; box-shadow: inset 0 0 0 1px var(--c-error); }
 
-/* Reserved error slot: always one line tall, so showing an error never shifts layout */
-.err { display: flex; gap: 6px; align-items: flex-start; min-height: 1.5em; margin-top: 4px; font-size: var(--t-14); font-weight: 600; line-height: 1.5; color: var(--c-error); }
-.err svg { width: 16px; height: 16px; flex: none; margin-top: 2px; opacity: 0; transform: translateY(-2px); transition: opacity var(--d-fast) var(--ease-out), transform var(--d-fast) var(--ease-out); }
+/* Reserved error slot. Every message a field can show is stacked, invisible, in the same grid
+   cell as the live message, so the slot is always as tall as that field's longest message at
+   the current width and language. Showing, swapping or clearing an error never moves layout. */
+.err { display: grid; grid-template-columns: 16px minmax(0, 1fr); column-gap: 6px; align-items: start; min-height: 1.5em; margin-top: 4px; font-size: var(--t-14); font-weight: 600; line-height: 1.5; color: var(--c-error); }
+.err svg { grid-area: 1 / 1; width: 16px; height: 16px; margin-top: 2px; opacity: 0; transform: translateY(-2px); transition: opacity var(--d-fast) var(--ease-out), transform var(--d-fast) var(--ease-out); }
+.err__msg, .err__size > span { grid-area: 1 / 2; }
+.err__size { display: contents; }
+.err__size > span { visibility: hidden; }
 .err.has svg { opacity: 1; transform: none; }
 
 /* Chips: real radios, visually styled labels */

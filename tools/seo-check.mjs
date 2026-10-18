@@ -42,6 +42,15 @@ for (const page of PAGES) {
   if (!webpage || webpage.inLanguage !== (page.lang === 'es' ? 'es-US' : 'en-US')) fail(page, 'WebPage JSON-LD missing or wrong inLanguage');
 
   if (page.home) {
+    // Every fragment the old home page published (its nav, footer and section ids) must still
+    // resolve, so existing links and bookmarks land on a section instead of the top of the page.
+    for (const id of ['main', 'home', 'about', 'services', 'projects', 'testimonials', 'featured', 'faq', 'contact']) {
+      const n = (html.match(new RegExp(` id="${id}"`, 'g')) || []).length;
+      if (n !== 1) fail(page, `legacy fragment #${id} must exist exactly once (found ${n})`);
+    }
+    // No testimonials are shown, so #testimonials must land on real job photos, never on the reviews block.
+    const work = (html.match(/<section class="work" id="work"[\s\S]*?<\/section>/) || [''])[0];
+    if (!work.includes(' id="testimonials"')) fail(page, '#testimonials must point into the Recent work section');
     const business = graphs.find((n) => types(n).includes('LocalBusiness'));
     if (!business) { fail(page, 'LocalBusiness JSON-LD missing'); continue; }
     if (!types(business).includes('HomeAndConstructionBusiness')) fail(page, 'LocalBusiness should also be HomeAndConstructionBusiness');

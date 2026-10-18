@@ -55,7 +55,7 @@
     errorKey[id] = key || '';
     input.setAttribute('aria-invalid', key ? 'true' : 'false');
     slot.classList.toggle('has', !!key);
-    slot.querySelector('span').textContent = key ? t(key) : '';
+    slot.querySelector('.err__msg').textContent = key ? t(key) : '';
   }
   function check(id) { var k = rules[id](document.getElementById(id).value); setError(id, k); return !k; }
 

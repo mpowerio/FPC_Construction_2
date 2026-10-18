@@ -400,7 +400,16 @@ html.js.motion-ok [data-reveal].is-in { opacity: 1; transform: none; }
 /* ---------- Fil voice widget (ElevenLabs, injected after first interaction) ----------
    Its shadow :host is position:fixed at right/bottom 32px; outer styles win over :host.
    On phones it sits above the call bar so the two never overlap. */
-elevenlabs-convai { right: 12px; bottom: calc(80px + env(safe-area-inset-bottom)); }
+elevenlabs-convai {
+  right: 12px; bottom: calc(80px + env(safe-area-inset-bottom));
+  /* The widget themes itself with --el-* custom properties declared on its :host; these outer
+     declarations win. Vendor default was white on #3B82F6 (3.68:1). Bench Cut: white on ink
+     (15.1:1) for primary buttons, ink on the plate (13.9:1) for the panel and secondary
+     buttons, red focus ring (4.2:1 against the plate, above the 3:1 non-text minimum). */
+  --el-btn-color: #262626; --el-btn-text-color: #FFFFFF;
+  --el-bg-color: #F4F3F0; --el-text-color: #262626; --el-border-color: #D4D2CC;
+  --el-focus-color: #ED000C;
+}
 @media (min-width: 900px) { elevenlabs-convai { right: 32px; bottom: 32px; } }
 
 /* ---------- Language suggestion (only when the browser prefers Spanish and no choice is stored) ---------- */
@@ -934,7 +943,10 @@ html.motion-ok .hero__after { animation: fade 600ms var(--ease-out) 420ms both; 
 
 <main id="main">
   <!-- ======================= HERO ======================= -->
-  <section class="hero" aria-labelledby="h1">
+  <!-- Old-site fragment aliases are kept so published links still land somewhere honest:
+       #home = hero, #about = the "who FPC is" lead, #projects/#testimonials/#featured = Recent work
+       (no testimonials are shown, so #testimonials lands on real job photos, never on reviews). -->
+  <section class="hero" id="home" aria-labelledby="h1">
     <div class="wrap hero__grid">
       <div class="hero__text">
         <!-- Locked slogan: English, verbatim, on every language (operator decision 2026-10-18). -->
@@ -944,7 +956,7 @@ html.motion-ok .hero__after { animation: fade 600ms var(--ease-out) 420ms both; 
         </h1>
         <div class="grade" aria-hidden="true"></div>
         <div class="hero__after">
-          <p class="lead">Sistemas sépticos, drenaje y trabajos de terreno para casas y terrenos en toda la zona del CSRA. FPC empezó con maquinaria pesada, y los sistemas sépticos y el drenaje siguen siendo el corazón del negocio.</p>
+          <p class="lead" id="about">Sistemas sépticos, drenaje y trabajos de terreno para casas y terrenos en toda la zona del CSRA. FPC empezó con maquinaria pesada, y los sistemas sépticos y el drenaje siguen siendo el corazón del negocio.</p>
           <div class="hero__actions" data-bar-sentinel>
             <a class="btn btn--red" href="/es/estimado/"><span>Pida un estimado gratis</span><span class="btn__nub" aria-hidden="true"><svg><use href="#i-chev"/></svg></span></a>
             <a class="btn btn--line" href="tel:+18038849305"><span>Llame al <span class="num">(803) 884-9305</span></span><span class="btn__nub" aria-hidden="true"><svg><use href="#i-phone"/></svg></span></a>
@@ -1032,7 +1044,7 @@ html.motion-ok .hero__after { animation: fade 600ms var(--ease-out) 420ms both; 
 
   <!-- ======================= WORK ======================= -->
   <section class="work" id="work" aria-labelledby="work-h">
-    <span id="projects" class="vh"></span>
+    <span id="projects" class="vh"></span><span id="testimonials" class="vh"></span><span id="featured" class="vh"></span>
     <div class="wrap">
       <div class="work__head">
         <h2 id="work-h" class="h2">Trabajos recientes</h2>

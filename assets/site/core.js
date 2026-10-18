@@ -101,8 +101,12 @@
       pp.removeEventListener('toggle', once);
       // FPC CONSTRUCTION account, "FPC CRM" app. The client id is public by design.
       // components=messages only; if a checkout button is ever added, extend this one tag.
+      // Locale follows the page, not the browser: es_US on /es/, en_US elsewhere. It goes on
+      // the SDK URL and on the message itself (data-pp-locale), which PayPal reads separately.
+      var ppLocale = lang === 'es' ? 'es_US' : 'en_US';
+      pp.querySelectorAll('[data-pp-message]').forEach(function (m) { m.setAttribute('data-pp-locale', ppLocale); });
       var s = document.createElement('script');
-      s.src = 'https://www.paypal.com/sdk/js?client-id=BAAR3Vl31fha6z66-3iPRDebA0XeLs0NZ5mWddS4yqkaHwtCmwyi3bCPIy306QQIcDbHzyYe89p0KN8F2c&components=messages';
+      s.src = 'https://www.paypal.com/sdk/js?client-id=BAAR3Vl31fha6z66-3iPRDebA0XeLs0NZ5mWddS4yqkaHwtCmwyi3bCPIy306QQIcDbHzyYe89p0KN8F2c&components=messages&locale=' + ppLocale;
       s.setAttribute('data-namespace', 'PayPalSDK');
       s.async = true;
       document.head.appendChild(s);
@@ -117,8 +121,22 @@
     ['pointerdown', 'keydown', 'touchstart', 'scroll'].forEach(function (ev) { window.removeEventListener(ev, loadFil, true); });
     var el = document.createElement('elevenlabs-convai');
     el.setAttribute('agent-id', 'agent_5801kehtxvkzenwvpc48t3sr5n56');
-    // No override-language: the agent detects English/Spanish itself, and an override the
-    // agent config does not allow would stop the widget from connecting.
+    // Language follows the page. The widget always sends agent.language at call start
+    // (default "en"); the agent's published config lists "en" and "es" as supported language
+    // overrides with an "es" preset, so "es" is an allowed value. override-language (rather
+    // than language) also hides the vendor's language picker, whose labels are English-only
+    // ("Spanish"); visitors switch language with the page toggle instead.
+    el.setAttribute('override-language', lang);
+    // Every visible control string, in the page language (the widget's documented *-text attributes).
+    var FIL_TEXT = {
+      en: { 'expand-text': 'Chat with Fil', 'action-text': 'Questions? Ask Fil', 'start-call-text': 'Start a call', 'end-call-text': 'End call', 'listening-text': 'Listening', 'speaking-text': 'Talk to interrupt' },
+      es: { 'expand-text': 'Hablar con Fil', 'action-text': '¿Preguntas? Pregúntele a Fil', 'start-call-text': 'Iniciar llamada', 'end-call-text': 'Colgar', 'listening-text': 'Escuchando', 'speaking-text': 'Hable para interrumpir' }
+    }[lang];
+    Object.keys(FIL_TEXT).forEach(function (k) { el.setAttribute(k, FIL_TEXT[k]); });
+    // Orb in FPC red and yellow instead of the vendor blue/green. Button and panel colors are
+    // set in base.css through the widget's --el-* variables (white on ink, 15:1).
+    el.setAttribute('avatar-orb-color-1', '#ED000C');
+    el.setAttribute('avatar-orb-color-2', '#F4B80C');
     document.body.appendChild(el);
     var s = document.createElement('script');
     s.src = 'https://elevenlabs.io/convai-widget/index.js';
