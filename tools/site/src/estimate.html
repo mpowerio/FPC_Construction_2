@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="{{v.lang}}">
+<head>
+{{> head}}
+<style>
+{{v.css}}
+</style>
+{{v.jsonld}}
+</head>
+<body>
+{{> icons}}
+{{> header}}
+
+<main id="main" class="est">
+  <div class="wrap est__grid">
+    <aside class="est__aside">
+      <h1 class="display est__h1">{{t.e.h1}}</h1>
+      <p class="lead est__lead">{{t.e.lead}}</p>
+
+      <div class="callbox">
+        <h2 class="h3">{{t.e.call.h}}</h2>
+        <p>{{t.e.call.p}}</p>
+        <a class="btn btn--line btn--block" href="tel:+18038849305"><span>{{t.cta.callpre}} <span class="num">(803) 884-9305</span></span><span class="btn__nub" aria-hidden="true"><svg><use href="#i-phone"/></svg></span></a>
+      </div>
+
+      <figure class="est__photo" style="margin-inline:0;margin-bottom:0">
+        <div class="frame">{{img.estimate}}</div>
+      </figure>
+
+      <section class="next" aria-labelledby="next-h">
+        <h2 id="next-h" class="h3">{{t.e.next.h}}</h2>
+        <ol>
+          <li><h3>{{t.e.next.1h}}</h3><p>{{t.e.next.1p}}</p></li>
+          <li><h3>{{t.e.next.2h}}</h3><p>{{t.e.next.2p}}</p></li>
+          <li><h3>{{t.e.next.3h}}</h3><p>{{t.e.next.3p}}</p></li>
+        </ol>
+      </section>
+    </aside>
+
+    <div class="formplate">
+      <div class="formplate__core region" id="region">
+        <!-- Lead form. POSTs JSON to the CRM lead-intake route (data-endpoint). Only a 2xx with
+             success === true AND a non-empty booking_id string counts as captured.
+             No SMS opt-in here: the form never signs anyone up for texts. -->
+        <form id="estimate-form" novalidate aria-describedby="form-note" data-endpoint="{{v.endpoint}}" data-home="{{v.home}}">
+          <div id="summary" tabindex="-1" hidden></div>
+          <div id="failure" tabindex="-1" hidden></div>
+
+          <fieldset>
+            <legend>{{t.e.fs.you}}</legend>
+            <div class="fields fields--2">
+              <div class="field">
+                <label for="first_name">{{t.e.first}} <span class="req">{{t.e.req}}</span></label>
+                <div class="control"><input id="first_name" name="first_name" type="text" autocomplete="given-name" required aria-describedby="first_name-err" maxlength="60"></div>
+                <p class="err" id="first_name-err" aria-live="polite"><svg aria-hidden="true"><use href="#i-alert"/></svg><span class="err__msg"></span><span class="err__size" aria-hidden="true"><span>{{t.err.first}}</span></span></p>
+              </div>
+              <div class="field">
+                <label for="last_name">{{t.e.last}} <span class="req">{{t.e.req}}</span></label>
+                <div class="control"><input id="last_name" name="last_name" type="text" autocomplete="family-name" required aria-describedby="last_name-err" maxlength="60"></div>
+                <p class="err" id="last_name-err" aria-live="polite"><svg aria-hidden="true"><use href="#i-alert"/></svg><span class="err__msg"></span><span class="err__size" aria-hidden="true"><span>{{t.err.last}}</span></span></p>
+              </div>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>{{t.e.fs.reach}}</legend>
+            <div class="fields fields--2">
+              <div class="field">
+                <label for="phone">{{t.e.phone}} <span class="req">{{t.e.req}}</span></label>
+                <p class="hint" id="phone-hint">{{t.e.phone.hint}}</p>
+                <div class="control"><input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel-national" required aria-describedby="phone-hint phone-err" placeholder="(803) 555-0123"></div>
+                <p class="err" id="phone-err" aria-live="polite"><svg aria-hidden="true"><use href="#i-alert"/></svg><span class="err__msg"></span><span class="err__size" aria-hidden="true"><span>{{t.err.phone.req}}</span><span>{{t.err.phone.bad}}</span></span></p>
+              </div>
+              <div class="field">
+                <label for="email">{{t.e.email}} <span class="req">{{t.e.opt}}</span></label>
+                <p class="hint" id="email-hint">{{t.e.email.hint}}</p>
+                <div class="control"><input id="email" name="email" type="email" inputmode="email" autocomplete="email" autocapitalize="off" spellcheck="false" aria-describedby="email-hint email-err" maxlength="120"></div>
+                <p class="err" id="email-err" aria-live="polite"><svg aria-hidden="true"><use href="#i-alert"/></svg><span class="err__msg"></span><span class="err__size" aria-hidden="true"><span>{{t.err.email}}</span></span></p>
+              </div>
+            </div>
+            <div class="fields" style="margin-top:var(--s-8)">
+              <div class="field">
+                <span class="label" id="best-l">{{t.e.best}}</span>
+                <div class="chips" role="radiogroup" aria-labelledby="best-l">
+                  <label class="chip"><input type="radio" name="best_time" value="morning"><span>{{t.e.best.m}}</span></label>
+                  <label class="chip"><input type="radio" name="best_time" value="midday"><span>{{t.e.best.d}}</span></label>
+                  <label class="chip"><input type="radio" name="best_time" value="afternoon"><span>{{t.e.best.a}}</span></label>
+                  <label class="chip"><input type="radio" name="best_time" value="any" checked><span>{{t.e.best.any}}</span></label>
+                </div>
+                <p class="err" aria-hidden="true"></p>
+              </div>
+              <div class="field">
+                <span class="label" id="lang-l">{{t.e.lang}}</span>
+                <div class="chips" role="radiogroup" aria-labelledby="lang-l">
+                  <label class="chip"><input type="radio" name="language_preference" value="en"{{v.langEnChecked}}><span lang="en">English</span></label>
+                  <label class="chip"><input type="radio" name="language_preference" value="es"{{v.langEsChecked}}><span lang="es">Español</span></label>
+                </div>
+              </div>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>{{t.e.fs.job}}</legend>
+            <div class="fields">
+              <div class="field">
+                <label for="address">{{t.e.addr}} <span class="req">{{t.e.opt}}</span></label>
+                <p class="hint" id="addr-hint">{{t.e.addr.hint}}</p>
+                <div class="control"><input id="address" name="address" type="text" autocomplete="street-address" aria-describedby="addr-hint" maxlength="200"></div>
+                <p class="err" aria-hidden="true"></p>
+              </div>
+              <div class="field">
+                <span class="label" id="type-l">{{t.e.type}}</span>
+                <div class="chips" role="radiogroup" aria-labelledby="type-l" id="type-chips">
+                  {{chip septic-systems septic}}
+                  {{chip drainage-and-site-work drainage}}
+                  {{chip excavation excavation}}
+                  {{chip land-grading grading}}
+                  {{chip land-clearing clearing}}
+                  {{chip concrete concrete}}
+                  {{chip asphalt-and-road-work asphalt}}
+                  {{chip roofing roofing}}
+                  {{chip decks decks}}
+                  {{chip carpentry carpentry}}
+                  {{chip outdoor-living outdoor}}
+                  {{chip fencing fencing}}
+                  {{chip brick-and-tile-flooring flooring}}
+                  {{chip demolition demo}}
+                  {{chip electrical electrical}}
+                  {{chip other other}}
+                </div>
+                <p class="err" aria-hidden="true"></p>
+              </div>
+              <div class="field">
+                <label for="details">{{t.e.details}} <span class="req">{{t.e.opt}}</span></label>
+                <div class="control"><textarea id="details" name="details" rows="5" maxlength="2000" placeholder="{{t.e.details.ph}}"></textarea></div>
+              </div>
+            </div>
+          </fieldset>
+
+          <!-- Honeypot: hidden from people, filled by bots. The CRM never writes a lead with a value here. -->
+          <div aria-hidden="true" style="position:absolute;left:-5000px;width:1px;height:1px;overflow:hidden">
+            <label for="company_website">Company website</label>
+            <input type="text" id="company_website" name="company_website" tabindex="-1" autocomplete="off">
+          </div>
+
+          <button class="btn btn--red btn--block submit" type="submit" id="submit">
+            <span id="submit-label">{{t.e.submit}}</span>
+            <span class="btn__nub" aria-hidden="true"><svg><use href="#i-chev"/></svg></span>
+            <span class="submit__bar" aria-hidden="true"></span>
+          </button>
+
+          <p class="notice" id="form-note">{{t.e.notice}}</p>
+        </form>
+      </div>
+    </div>
+  </div>
+</main>
+
+{{> footer}}
+<script type="application/json" id="form-msgs">{{v.formMsgs}}</script>
+<script src="/assets/site/estimate.js" defer></script>
+{{> scripts}}
+</body>
+</html>

@@ -1,71 +1,668 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="FPC Construction LLC provides land clearing, grading, driveways, septic, foundations, and fencing in North Augusta, Aiken, Augusta, and the CSRA.">
-    <meta name="keywords" content="construction, land clearing, grading, driveways, foundations, septic, North Augusta, SC">
-    <meta name="author" content="FPC Construction LLC">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>FPC Construction | Septic, drainage and site work in North Augusta, SC</title>
+<meta name="description" content="Septic systems, drainage and site work across the CSRA, from North Augusta, SC. Free estimates. Call (803) 884-9305, answered 24/7 in English or Spanish.">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="theme-color" content="#E7E6E2">
+<link rel="canonical" href="https://fpcconstructions.com/">
+<link rel="alternate" hreflang="en-US" href="https://fpcconstructions.com/">
+<link rel="alternate" hreflang="es-US" href="https://fpcconstructions.com/es/">
+<link rel="alternate" hreflang="x-default" href="https://fpcconstructions.com/">
+<script>
+/* Runs before first paint: JS + motion flags, and the remembered language choice.
+   A stored choice (set only by the EN/ES toggle) sends the visitor to the twin page.
+   There is no redirect by browser language. */
+(function (d) {
+  var r = d.documentElement; r.classList.add('js');
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches) r.classList.add('motion-ok');
+  try {
+    var s = localStorage.getItem('fpc-lang');
+    if ((s === 'en' || s === 'es') && s !== r.lang) {
+      var t = d.querySelector('link[hreflang="' + s + '-US"]');
+      if (t) location.replace(new URL(t.href).pathname + location.search + location.hash);
+    }
+  } catch (e) {}
+})(document);
+</script>
+<link rel="preload" as="image" type="image/avif" imagesrcset="/assets/img/gallery-19-480.avif 480w, /assets/img/gallery-19-800.avif 800w, /assets/img/gallery-19-1200.avif 1200w" imagesizes="(min-width: 1280px) 480px, (min-width: 900px) 38vw, 100vw" fetchpriority="high">
+<link rel="preload" href="/assets/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="FPC Construction LLC">
+<meta property="og:title" content="FPC Construction | Septic, drainage and site work in North Augusta, SC">
+<meta property="og:description" content="Septic systems, drainage and site work across the CSRA, from North Augusta, SC. Free estimates. Call (803) 884-9305, answered 24/7 in English or Spanish.">
+<meta property="og:url" content="https://fpcconstructions.com/">
+<meta property="og:image" content="https://fpcconstructions.com/assets/img/og-1200x630.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="es_US">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="FPC Construction | Septic, drainage and site work in North Augusta, SC">
+<meta name="twitter:description" content="Septic systems, drainage and site work across the CSRA, from North Augusta, SC. Free estimates. Call (803) 884-9305, answered 24/7 in English or Spanish.">
+<meta name="twitter:image" content="https://fpcconstructions.com/assets/img/og-1200x630.jpg">
+<meta name="geo.region" content="US-SC">
+<meta name="geo.placename" content="North Augusta">
+<meta name="geo.position" content="33.5018;-81.9651">
+<meta name="ICBM" content="33.5018, -81.9651">
+<style>
+/* ==========================================================================
+   FPC Construction, Direction A "Bench Cut": shared tokens + components.
+   Source of truth for every built page (tools/site/build.mjs inlines it).
+   One type scale (--t-*), one spacing rhythm (--s-*), one easing family.
+   Animated properties: transform + opacity only.
+   ========================================================================== */
 
-    <!-- Canonical URL -->
-    <link rel="canonical" href="https://fpcconstructions.com/">
+@font-face {
+  font-family: "Archivo";
+  src: url("/assets/fonts/archivo-var-latin.woff2") format("woff2");
+  font-weight: 100 900;
+  font-stretch: 100% 125%;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* The woff2 is Archivo (OFL) with the width axis limited to 100-125% (nothing here is
+   narrower), weight axis untouched: 62 KB instead of 90 KB. Renders pixel-identical to the
+   full font at every weight/width this CSS uses (48-combination diff, 0 pixels). */
+/* Metric-matched fallback so a late font swap does not reflow (CLS guard).
+   size-adjust tuned by measurement against Archivo at wdth 100
+   (agent-out/fpc-site-redesign-20261018/SEO-AND-PERF.md section 4). */
+@font-face {
+  font-family: "Archivo Fallback";
+  src: local("Arial"), local("Liberation Sans");
+  size-adjust: 98%;
+  ascent-override: 89%;
+  descent-override: 22%;
+  line-gap-override: 0%;
+}
 
-    <!-- Open Graph / Social Media -->
-    <meta property="og:title" content="FPC Construction — No job too small, no dream too big.">
-    <meta property="og:description" content="FPC Construction LLC provides land clearing, grading, driveways, septic, foundations, and fencing in North Augusta, Aiken, Augusta, and the CSRA.">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://fpcconstructions.com/">
-    <meta property="og:image" content="https://fpcconstructions.com/assets/images/logo.png">
-    <meta property="og:locale" content="en_US">
-    <meta property="og:locale:alternate" content="es_US">
-    <meta property="og:site_name" content="FPC Construction LLC">
+/* Display fallback for wide/heavy headings. Measured on a 100px test string:
+   Archivo 800 @ wdth 112% = 1.150x Arial Bold, (1.15-1.20 across test strings), so size-adjust 118% keeps the
+   112%-stretch headlines (hero H1 desktop, estimate H1) on the same line breaks
+   when Archivo swaps in. Line boxes use unitless line-height, so heights hold. */
+@font-face {
+  font-family: "Archivo Display Fallback";
+  src: local("Arial Bold"), local("Arial-BoldMT"), local("Liberation Sans Bold"), local("LiberationSans-Bold");
+  font-weight: 600 900;
+  size-adjust: 118%;
+  ascent-override: 82%;
+  descent-override: 20%;
+  line-gap-override: 0%;
+}
 
-    <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="FPC Construction — No job too small, no dream too big.">
-    <meta name="twitter:description" content="FPC Construction LLC provides land clearing, grading, driveways, septic, foundations, and fencing in North Augusta, Aiken, Augusta, and the CSRA.">
-    <meta name="twitter:image" content="https://fpcconstructions.com/assets/images/logo.png">
+:root {
+  color-scheme: light;
 
-    <!-- Geo meta (complements JSON-LD for legacy crawlers) -->
-    <meta name="geo.region" content="US-SC">
-    <meta name="geo.placename" content="North Augusta">
-    <meta name="geo.position" content="33.5018;-81.9651">
-    <meta name="ICBM" content="33.5018, -81.9651">
-    <meta name="robots" content="index, follow, max-image-preview:large">
+  /* Palette — three FPC logo colors + concrete + clay */
+  --c-concrete: #E7E6E2;
+  --c-pour: #D4D2CC;
+  --c-ink: #262626;
+  --c-ink-2: #55524D;
+  --c-red: #ED000C;
+  --c-yellow: #F4B80C;
+  --c-clay: #8E3B22;
+  --c-field: #FBFBFA;      /* input well */
+  --c-field-line: #8F8C86; /* 3.2:1 against the well (non-text UI) */
+  --c-error: #A3000A;      /* 7:1 on the form plate */
+  --c-ok: #1F5E3A;
+  --c-hair: rgba(38, 38, 38, .14);
+  --c-plate: #F4F3F0;
 
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" href="assets/images/favicon.png">
+  /* Type scale (classic typographic scale) */
+  --t-14: .875rem;
+  --t-16: 1rem;
+  --t-18: 1.125rem;
+  --t-21: 1.3125rem;
+  --t-24: 1.5rem;
+  --t-36: 2.25rem;
+  --t-48: 3rem;
+  --t-72: 4.5rem;
 
-    <title>FPC Construction LLC | Professional Construction Services | North Augusta, SC</title>
+  /* Spacing rhythm (8px base) */
+  --s-4: 4px;  --s-8: 8px;  --s-12: 12px; --s-16: 16px; --s-24: 24px;
+  --s-32: 32px; --s-48: 48px; --s-64: 64px; --s-96: 96px;
 
-    <link rel="stylesheet" href="assets/css/styles.min.css">
+  /* Radii — tiered, not uniform */
+  --r-4: 4px; --r-8: 8px; --r-14: 14px; --r-pill: 999px;
 
-    <!-- LocalBusiness Structured Data (JSON-LD) -->
-    <script type="application/ld+json">
+  /* Motion — one easing family */
+  --ease-out: cubic-bezier(.22, 1, .36, 1);
+  --ease-io: cubic-bezier(.65, 0, .35, 1);
+  --d-fast: 160ms;
+  --d-med: 240ms;
+  --d-slow: 800ms;
+
+  /* The bench cut */
+  --step: 24px;
+
+  /* Layers */
+  --z-bar: 30;
+  --z-skip: 40;
+
+  --wrap: 1280px;
+  --gutter: 20px;
+}
+@media (min-width: 900px) { :root { --gutter: 40px; --step: 32px; } }
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body {
+  margin: 0;
+  font-family: "Archivo", "Archivo Fallback", system-ui, sans-serif;
+  font-size: var(--t-16);
+  font-stretch: 100%;
+  line-height: 1.55;
+  color: var(--c-ink);
+  background: var(--c-concrete);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+img { display: block; max-width: 100%; height: auto; }
+picture { display: contents; }
+img[data-src] { visibility: hidden; } /* deferred image not loaded yet: show the frame fill, not alt text */
+a { color: inherit; }
+p { margin: 0; max-width: 62ch; text-wrap: pretty; }
+h1, h2, h3 { margin: 0; text-wrap: balance; }
+ul, ol { margin: 0; padding: 0; list-style: none; }
+.num { font-variant-numeric: tabular-nums; }
+.wrap { width: 100%; max-width: var(--wrap); margin-inline: auto; padding-inline: var(--gutter); }
+[hidden] { display: none !important; }
+.vh { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+/* ---------- One focus style, everywhere ---------- */
+:focus-visible {
+  outline: 2px solid var(--c-ink);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 6px var(--c-yellow);
+  border-radius: var(--r-4);
+}
+.on-dark :focus-visible { outline-color: var(--c-yellow); box-shadow: 0 0 0 5px rgba(244,184,12,.35); }
+
+.skip {
+  position: fixed; left: var(--s-16); top: var(--s-16); z-index: var(--z-skip);
+  background: var(--c-ink); color: #fff; padding: var(--s-12) var(--s-16);
+  border-radius: var(--r-8); text-decoration: none; font-weight: 700;
+  transform: translateY(-200%);
+  transition: transform var(--d-med) var(--ease-out);
+}
+.skip:focus-visible { transform: none; }
+
+/* ---------- Type roles ---------- */
+.display, .h2, .h3, legend {
+  font-family: "Archivo", "Archivo Display Fallback", system-ui, sans-serif;
+}
+.display {
+  font-weight: 800;
+  font-stretch: 112%;
+  letter-spacing: -.015em;
+  line-height: 1.02;
+}
+.h2 { font-size: var(--t-36); font-weight: 800; font-stretch: 108%; letter-spacing: -.012em; line-height: 1.05; }
+.h3 { font-size: var(--t-21); font-weight: 700; font-stretch: 110%; letter-spacing: -.005em; line-height: 1.2; }
+.lead { font-size: var(--t-18); line-height: 1.55; color: var(--c-ink); }
+.muted { color: var(--c-ink-2); }
+.small { font-size: var(--t-14); line-height: 1.5; }
+@media (min-width: 900px) {
+  .h2 { font-size: var(--t-48); font-stretch: 116%; }
+  .h3 { font-size: var(--t-24); }
+  .lead { font-size: var(--t-21); }
+}
+
+/* ---------- Buttons: stamped tag with an icon nub ---------- */
+.btn {
+  position: relative; isolation: isolate;
+  display: inline-flex; align-items: center; justify-content: space-between; gap: var(--s-16);
+  min-height: 52px; padding: 6px 6px 6px 20px;
+  border: 0; border-radius: var(--r-8);
+  font: inherit; font-weight: 700; font-stretch: 106%; font-size: var(--t-16); line-height: 1.2;
+  text-decoration: none; cursor: pointer;
+  transform: translateZ(0);
+  transition: transform var(--d-fast) var(--ease-out);
+  -webkit-tap-highlight-color: transparent;
+}
+.btn::after { /* hover wash: opacity only */
+  content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit;
+  background: rgba(0,0,0,.14); opacity: 0;
+  transition: opacity var(--d-fast) var(--ease-out);
+}
+.btn:hover::after { opacity: 1; }
+.btn:active { transform: scale(.98); }
+.btn__nub {
+  display: grid; place-items: center; flex: none;
+  width: 40px; height: 40px; border-radius: var(--r-4);
+  background: rgba(0,0,0,.2);
+  transition: transform var(--d-med) var(--ease-out);
+}
+.btn:hover .btn__nub { transform: translateX(2px); }
+.btn__nub svg { width: 18px; height: 18px; }
+.btn--red { background: var(--c-red); color: #fff; }
+.btn--line { background: transparent; color: var(--c-ink); box-shadow: inset 0 0 0 1.5px var(--c-ink); }
+.btn--line .btn__nub { background: var(--c-ink); color: #fff; }
+.btn--line::after { background: rgba(38,38,38,.07); }
+.btn--light { background: var(--c-concrete); color: var(--c-ink); }
+.btn--light .btn__nub { background: var(--c-ink); color: #fff; }
+.btn--block { width: 100%; }
+
+.icon { width: 18px; height: 18px; flex: none; }
+
+/* ---------- Placeholder tag (must be unmistakable) ---------- */
+.ph {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 2px 8px; border-radius: var(--r-4);
+  font-size: var(--t-14); font-weight: 600; line-height: 1.5;
+  color: var(--c-ink); background: #FFF3C9;
+  border: 1.5px dashed var(--c-ink);
+}
+.ph::before { content: ""; width: 8px; height: 8px; border-radius: 2px; background: var(--c-yellow); box-shadow: 0 0 0 1px var(--c-ink); }
+
+/* ---------- Logo plate (machined double bezel; logo PNG has white bg) ---------- */
+.plate {
+  display: inline-block; padding: 4px; border-radius: var(--r-14);
+  background: rgba(38,38,38,.06); box-shadow: inset 0 0 0 1px var(--c-hair);
+  text-decoration: none;
+}
+.plate__core {
+  display: block; padding: 6px 10px; border-radius: calc(var(--r-14) - 4px);
+  background: #FEFEFE; box-shadow: inset 0 1px 0 #fff, 0 1px 2px rgba(38,38,38,.08);
+}
+.plate img { width: 72px; height: auto; aspect-ratio: 264 / 164; }
+@media (min-width: 900px) { .plate img { width: 88px; } }
+
+/* ---------- Language toggle (sliding thumb = transform) ---------- */
+.lang {
+  position: relative; display: inline-grid; grid-template-columns: 1fr 1fr;
+  padding: 3px; border-radius: var(--r-pill);
+  background: var(--c-pour); box-shadow: inset 0 0 0 1px var(--c-hair);
+}
+.lang__thumb {
+  position: absolute; top: 3px; bottom: 3px; left: 3px; width: calc(50% - 3px);
+  border-radius: var(--r-pill); background: var(--c-ink);
+  transition: transform var(--d-med) var(--ease-out);
+}
+html[lang="es"] .lang__thumb { transform: translateX(100%); }
+html[lang="es"].lang-going .lang__thumb { transform: translateX(0); }
+html[lang="en"].lang-going .lang__thumb { transform: translateX(100%); }
+
+/* Each language is its own URL; the toggle is a link. Same-origin page changes
+   crossfade (cross-document view transitions, opacity only) where supported. */
+@media (prefers-reduced-motion: no-preference) { @view-transition { navigation: auto; } }
+.lang a {
+  position: relative; z-index: 1; display: grid; place-items: center; min-width: 44px; min-height: 36px; padding: 0 10px;
+  border-radius: var(--r-pill); text-decoration: none;
+  font-size: var(--t-14); font-weight: 700; font-stretch: 110%; letter-spacing: .02em; color: var(--c-ink);
+}
+.lang a[aria-current="true"] { color: #fff; }
+html.lang-going .lang a { color: var(--c-ink); }
+html.lang-going .lang a.is-target { color: #fff; }
+
+/* ---------- Site header ---------- */
+.site-header { padding-block: var(--s-16); }
+.site-header .wrap { display: flex; align-items: center; justify-content: space-between; gap: var(--s-16); }
+.site-nav { display: none; }
+.site-header__right { display: flex; align-items: center; gap: var(--s-12); }
+.call-icon {
+  display: grid; place-items: center; width: 44px; height: 44px; border-radius: var(--r-8);
+  background: var(--c-ink); color: #fff; text-decoration: none;
+  transition: transform var(--d-fast) var(--ease-out);
+}
+.call-icon:active { transform: scale(.96); }
+.header-phone { display: none; }
+@media (min-width: 900px) {
+  .site-nav { display: flex; gap: var(--s-32); }
+  .site-nav a { position: relative; text-decoration: none; font-weight: 600; font-stretch: 104%; padding-block: var(--s-8); }
+  .site-nav a::after {
+    content: ""; position: absolute; left: 0; right: 0; bottom: 2px; height: 2px; background: var(--c-ink);
+    transform: scaleX(0); transform-origin: left; transition: transform var(--d-med) var(--ease-out);
+  }
+  .site-nav a:hover::after, .site-nav a[aria-current="page"]::after { transform: scaleX(1); }
+  .call-icon { display: none; }
+  .header-phone { display: inline-flex; }
+}
+
+/* ---------- Bench-cut edges (the one bold motif) ---------- */
+.cut-top {
+  clip-path: polygon(0 calc(var(--step) * 2), 26% calc(var(--step) * 2), 26% var(--step), 52% var(--step), 52% 0, 100% 0, 100% 100%, 0 100%);
+}
+.cut-both {
+  clip-path: polygon(
+    0 calc(var(--step) * 2), 26% calc(var(--step) * 2), 26% var(--step), 52% var(--step), 52% 0, 100% 0,
+    100% calc(100% - var(--step) * 2), 74% calc(100% - var(--step) * 2), 74% calc(100% - var(--step)), 48% calc(100% - var(--step)), 48% 100%, 0 100%);
+}
+
+/* ---------- Mobile action bar / desktop island (fixed => blur allowed) ---------- */
+.action-bar {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: var(--z-bar);
+  display: grid; grid-template-columns: 1fr 1.25fr; gap: var(--s-8);
+  padding: var(--s-8) var(--s-12) calc(var(--s-8) + env(safe-area-inset-bottom));
+  background: rgba(231, 230, 226, .86);
+  -webkit-backdrop-filter: blur(14px) saturate(1.2); backdrop-filter: blur(14px) saturate(1.2);
+  box-shadow: 0 -1px 0 var(--c-hair);
+  transform: translateY(110%);
+  transition: transform 420ms var(--ease-out);
+}
+.action-bar.is-shown { transform: none; }
+.action-bar .btn { min-height: 48px; padding-left: 14px; font-size: var(--t-16); }
+.action-bar .btn__nub { width: 36px; height: 36px; }
+@media (min-width: 900px) { .action-bar { display: none; } }
+
+.island { display: none; }
+@media (min-width: 900px) {
+  .island {
+    position: fixed; top: var(--s-16); left: 50%; z-index: var(--z-bar);
+    display: flex; align-items: center; gap: var(--s-12);
+    padding: 6px 6px 6px 8px; border-radius: var(--r-14);
+    background: rgba(231, 230, 226, .82);
+    -webkit-backdrop-filter: blur(16px) saturate(1.2); backdrop-filter: blur(16px) saturate(1.2);
+    box-shadow: 0 0 0 1px var(--c-hair), 0 18px 40px -18px rgba(38, 30, 24, .35);
+    transform: translate(-50%, calc(-100% - 24px)); opacity: 0;
+    transition: transform 520ms var(--ease-out), opacity 300ms var(--ease-out);
+  }
+  .island.is-shown { transform: translate(-50%, 0); opacity: 1; }
+  .island .plate img { width: 56px; }
+  .island .plate__core { padding: 3px 6px; }
+  .island .btn { min-height: 44px; }
+  .island .btn__nub { width: 32px; height: 32px; }
+  .island__phone { font-weight: 700; font-stretch: 104%; text-decoration: none; padding-inline: var(--s-8); }
+}
+
+/* ---------- Footer (bottom of the dig) ---------- */
+.site-footer { color-scheme: dark; background: var(--c-ink); color: #EDECE8; }
+.site-footer a:not(.btn) { color: #fff; }
+.site-footer .muted { color: #B9B6AF; }
+.footer-cta { padding-top: calc(var(--step) * 2 + var(--s-64)); padding-bottom: var(--s-64); }
+.footer-cta__actions { display: grid; gap: var(--s-12); margin-top: var(--s-32); }
+.footer-grid { display: grid; gap: var(--s-32); padding-block: var(--s-48); border-top: 1px solid rgba(255,255,255,.14); }
+.footer-grid h3 { font-size: var(--t-16); font-weight: 700; font-stretch: 108%; margin-bottom: var(--s-8); color: #fff; }
+.footer-grid li + li { margin-top: var(--s-4); }
+.footer-legal { display: flex; flex-wrap: wrap; gap: var(--s-8) var(--s-24); padding-block: var(--s-24) calc(var(--s-96) + env(safe-area-inset-bottom)); border-top: 1px solid rgba(255,255,255,.14); font-size: var(--t-14); }
+.footer-legal nav { display: flex; flex-wrap: wrap; gap: var(--s-8) var(--s-24); }
+.social { display: flex; gap: var(--s-8); margin-top: var(--s-16); }
+.social a { display: grid; place-items: center; width: 44px; height: 44px; border-radius: var(--r-8); background: rgba(255,255,255,.08); color: #fff; }
+.social svg { width: 20px; height: 20px; }
+@media (min-width: 900px) {
+  .footer-cta { display: grid; grid-template-columns: 7fr 5fr; align-items: end; gap: var(--s-48); }
+  .footer-cta__actions { margin-top: 0; }
+  .footer-grid { grid-template-columns: 1.2fr 1fr 1fr 1fr; }
+  .footer-legal { padding-bottom: var(--s-32); justify-content: space-between; }
+}
+
+/* ---------- Quiet reveal (photo groups only) ---------- */
+html.js.motion-ok [data-reveal] { opacity: 0; transform: translateY(16px); transition: opacity 700ms var(--ease-out), transform 700ms var(--ease-out); }
+html.js.motion-ok [data-reveal].is-in { opacity: 1; transform: none; }
+
+/* ---------- Fil voice widget (ElevenLabs, injected after first interaction) ----------
+   Its shadow :host is position:fixed at right/bottom 32px; outer styles win over :host.
+   On phones it sits above the call bar so the two never overlap. */
+elevenlabs-convai {
+  right: 12px; bottom: calc(80px + env(safe-area-inset-bottom));
+  /* The widget themes itself with --el-* custom properties declared on its :host; these outer
+     declarations win. Vendor default was white on #3B82F6 (3.68:1). Bench Cut: white on ink
+     (15.1:1) for primary buttons, ink on the plate (13.9:1) for the panel and secondary
+     buttons, red focus ring (4.2:1 against the plate, above the 3:1 non-text minimum). */
+  --el-btn-color: #262626; --el-btn-text-color: #FFFFFF;
+  --el-bg-color: #F4F3F0; --el-text-color: #262626; --el-border-color: #D4D2CC;
+  --el-focus-color: #ED000C;
+}
+@media (min-width: 900px) { elevenlabs-convai { right: 32px; bottom: 32px; } }
+
+/* ---------- Language suggestion (only when the browser prefers Spanish and no choice is stored) ---------- */
+.lang-hint {
+  position: fixed; left: var(--s-12); right: var(--s-12); top: var(--s-12); z-index: var(--z-bar);
+  display: flex; align-items: center; justify-content: space-between; gap: var(--s-12);
+  max-width: 440px; margin-inline: auto; padding: 8px 8px 8px 16px; border-radius: var(--r-14);
+  background: var(--c-ink); color: #fff; box-shadow: 0 18px 40px -18px rgba(38, 30, 24, .5);
+  transform: translateY(calc(-100% - 24px)); transition: transform 420ms var(--ease-out);
+}
+.lang-hint.is-shown { transform: none; }
+.lang-hint a { color: #fff; font-weight: 700; }
+.lang-hint button { display: grid; place-items: center; width: 40px; height: 40px; border: 0; border-radius: var(--r-8); background: rgba(255,255,255,.12); color: #fff; cursor: pointer; }
+.lang-hint button svg { width: 18px; height: 18px; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .001ms !important; animation-delay: 0ms !important; transition-duration: .001ms !important; }
+}
+
+/* ===================== Home page (tools/site/build.mjs inlines after base.css) ===================== */
+
+/* ---- Hero ---- */
+.hero { padding-top: var(--s-24); }
+.hero__grid { display: grid; gap: var(--s-32); }
+.hero__h1 { font-size: var(--t-36); font-stretch: 104%; }
+.hero__h1 .clause { display: block; overflow: hidden; padding-bottom: .06em; }
+.hero__h1 .clause > span { display: block; }
+.hero__h1 .clause--2 { margin-top: var(--s-12); font-size: var(--t-24); font-weight: 700; font-stretch: 108%; line-height: 1.15; }
+.grade { height: 2px; margin-block: var(--s-24); background: var(--c-ink); transform-origin: left center; }
+.hero__actions { display: grid; gap: var(--s-12); margin-top: var(--s-32); }
+.hero__fil { display: flex; gap: var(--s-12); align-items: flex-start; margin-top: var(--s-24); font-size: var(--t-14); color: var(--c-ink-2); }
+.hero__fil b { color: var(--c-ink); font-weight: 700; }
+.fil-dot { flex: none; width: 10px; height: 10px; margin-top: 6px; border-radius: 3px; background: var(--c-yellow); box-shadow: 0 0 0 1.5px var(--c-ink); }
+
+.hero__photo { position: relative; margin-inline: calc(var(--gutter) * -1); }
+.hero__photo .frame {
+  aspect-ratio: 4 / 3; overflow: hidden; background: #B9A99A;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, calc(var(--step) * 6) 100%, calc(var(--step) * 6) calc(100% - var(--step)), calc(var(--step) * 3) calc(100% - var(--step)), calc(var(--step) * 3) calc(100% - var(--step) * 2), 0 calc(100% - var(--step) * 2));
+}
+.hero__photo img { width: 100%; height: 100%; object-fit: cover; object-position: 62% 55%; }
+.cap { display: flex; flex-wrap: wrap; gap: var(--s-8); align-items: center; margin-top: var(--s-12); font-size: var(--t-14); color: var(--c-ink-2); }
+.hero__photo .cap { padding-inline: var(--gutter); justify-content: flex-end; }
+
+@media (min-width: 900px) {
+  .hero { padding-top: var(--s-48); }
+  .hero__grid { grid-template-columns: 7fr 5fr; gap: var(--s-48); align-items: start; }
+  .hero__h1 { font-size: var(--t-72); font-stretch: 112%; }
+  .hero__h1 .clause--2 { font-size: var(--t-36); margin-top: var(--s-16); }
+  .grade { margin-block: var(--s-32); }
+  .hero__actions { grid-auto-flow: column; justify-content: start; }
+  .hero__photo { margin-inline: 0; margin-top: var(--s-8); }
+  .hero__photo .frame { aspect-ratio: 4 / 5; border-radius: var(--r-8) var(--r-8) var(--r-8) 0; }
+  .hero__photo .cap { padding-inline: 0; }
+}
+
+/* Hero load: string line, then lift (transform/opacity only, once) */
+@keyframes draw { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@keyframes lift { from { transform: translateY(105%); } to { transform: translateY(0); } }
+@keyframes settle { from { transform: scale(1.045); } to { transform: scale(1); } }
+@keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+html.motion-ok .grade { animation: draw 620ms var(--ease-out) 60ms both; }
+html.motion-ok .hero__h1 .clause > span { animation: lift 760ms var(--ease-out) both; }
+html.motion-ok .hero__h1 .clause--1 > span { animation-delay: 120ms; }
+html.motion-ok .hero__h1 .clause--2 > span { animation-delay: 260ms; }
+html.motion-ok .hero__photo img { animation: settle 1100ms var(--ease-out) both; }
+html.motion-ok .hero__after { animation: fade 600ms var(--ease-out) 420ms both; }
+
+/* ---- Core trades band (clay, bench cut both edges) ---- */
+.core { margin-top: var(--s-64); background: var(--c-clay); color: #fff; padding-block: calc(var(--step) * 2 + var(--s-64)); }
+.core .muted { color: #F1DED6; }
+.core__intro { display: grid; gap: var(--s-16); }
+.core__grid { display: grid; gap: var(--s-48); margin-top: var(--s-48); }
+.trade figure { margin: 0; }
+.trade .frame { aspect-ratio: 4 / 3; overflow: hidden; border-radius: var(--r-8); background: #6F2E1B; }
+.trade img { width: 100%; height: 100%; object-fit: cover; }
+.trade figcaption { margin-top: var(--s-8); font-size: var(--t-14); color: #F1DED6; }
+.trade h3 { margin-top: var(--s-24); }
+.trade p { margin-top: var(--s-8); }
+.textlink {
+  display: inline-flex; align-items: center; gap: var(--s-12); margin-top: var(--s-16);
+  min-height: 44px; font-weight: 700; font-stretch: 106%; text-decoration: none;
+}
+.textlink__nub { display: grid; place-items: center; width: 32px; height: 32px; border-radius: var(--r-4); background: rgba(255,255,255,.16); transition: transform var(--d-med) var(--ease-out); }
+.textlink__nub svg { width: 16px; height: 16px; }
+.textlink:hover .textlink__nub { transform: translateX(3px); }
+.textlink__label { background-image: linear-gradient(currentColor, currentColor); background-size: 100% 1.5px; background-repeat: no-repeat; background-position: 0 100%; padding-bottom: 2px; }
+@media (min-width: 900px) {
+  .core { margin-top: var(--s-96); padding-block: calc(var(--step) * 2 + var(--s-96)); }
+  .core__intro { grid-template-columns: 7fr 5fr; align-items: end; gap: var(--s-48); }
+  .core__grid { grid-template-columns: 7fr 5fr; gap: var(--s-48); align-items: start; }
+  .trade--b { margin-top: var(--s-96); }
+}
+
+/* ---- Trade index ---- */
+.index { padding-block: var(--s-64); }
+.index__grid { display: grid; gap: var(--s-32); }
+.index__aside p { margin-top: var(--s-16); }
+.index__group + .index__group { margin-top: var(--s-48); }
+.index__group h3 { padding-bottom: var(--s-12); }
+.row {
+  position: relative; isolation: isolate;
+  display: grid; grid-template-columns: 1fr auto; align-items: center; gap: var(--s-4) var(--s-16);
+  padding: var(--s-16) 0; border-top: 1px solid var(--c-hair);
+  text-decoration: none;
+}
+.row:last-child { border-bottom: 1px solid var(--c-hair); }
+.row::before { content: ""; position: absolute; inset: 0 calc(var(--s-12) * -1); z-index: -1; border-radius: var(--r-8); background: rgba(38,38,38,.05); opacity: 0; transition: opacity var(--d-fast) var(--ease-out); }
+.row:hover::before { opacity: 1; }
+.row__name { font-weight: 700; font-stretch: 106%; font-size: var(--t-18); }
+.row__desc { grid-column: 1; font-size: var(--t-14); color: var(--c-ink-2); }
+.row__nub { grid-column: 2; grid-row: 1 / span 2; display: grid; place-items: center; width: 36px; height: 36px; border-radius: var(--r-4); box-shadow: inset 0 0 0 1.5px var(--c-ink); transition: transform var(--d-med) var(--ease-out); }
+.row__nub svg { width: 16px; height: 16px; }
+.row:hover .row__nub { transform: translateX(3px); }
+@media (min-width: 900px) {
+  .index { padding-block: var(--s-96); }
+  .index__grid { grid-template-columns: 4fr 8fr; gap: var(--s-64); }
+  .index__aside { position: sticky; top: 104px; align-self: start; }
+  .index__groups { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-48) var(--s-48); }
+  .index__group + .index__group { margin-top: 0; }
+  .index__group--wide { grid-column: 1 / -1; }
+  .index__group--wide ul { display: grid; grid-template-columns: 1fr 1fr; column-gap: var(--s-48); }
+  .index__group--wide .row:nth-last-child(2) { border-bottom: 1px solid var(--c-hair); }
+}
+
+/* ---- Work ---- */
+.work { padding-block: var(--s-64); border-top: 1px solid var(--c-hair); }
+.work__head { display: grid; gap: var(--s-12); }
+.work__strip {
+  display: grid; grid-auto-flow: column; grid-auto-columns: 82%; gap: var(--s-16);
+  margin-top: var(--s-32); padding-inline: var(--gutter); margin-inline: calc(var(--gutter) * -1);
+  overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: var(--gutter);
+  scrollbar-width: none; overscroll-behavior-x: contain;
+}
+.work__strip::-webkit-scrollbar { display: none; }
+.shot { margin: 0; scroll-snap-align: start; }
+.shot .frame { aspect-ratio: 4 / 3; overflow: hidden; border-radius: var(--r-8); background: #B9A99A; }
+.shot img { width: 100%; height: 100%; object-fit: cover; transition: transform 900ms var(--ease-out); }
+.shot:hover img { transform: scale(1.03); }
+.shot figcaption { margin-top: var(--s-8); display: grid; gap: var(--s-4); justify-items: start; }
+.shot .what { font-weight: 600; font-size: var(--t-16); }
+@media (min-width: 900px) {
+  .work { padding-block: var(--s-96); }
+  .work__head { grid-template-columns: 7fr 5fr; align-items: end; gap: var(--s-48); }
+  .work__strip {
+    grid-auto-flow: row; grid-auto-columns: auto; overflow: visible; margin-inline: 0; padding-inline: 0;
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-areas: "a a a a b b" "a a a a c c" "d d e e f f";
+    gap: var(--s-24);
+  }
+  .shot:nth-child(1) { grid-area: a; } .shot:nth-child(2) { grid-area: b; } .shot:nth-child(3) { grid-area: c; }
+  .shot:nth-child(4) { grid-area: d; } .shot:nth-child(5) { grid-area: e; } .shot:nth-child(6) { grid-area: f; }
+  .shot:nth-child(1) { display: flex; flex-direction: column; }
+  .shot:nth-child(1) .frame { aspect-ratio: auto; flex: 1; min-height: 0; }
+}
+
+/* ---- Steps (a real sequence, so numbers are earned) ---- */
+.steps { padding-block: var(--s-64); background: var(--c-pour); }
+.steps ol { display: grid; gap: var(--s-32); margin-top: var(--s-32); counter-reset: step; }
+.steps li { position: relative; padding-left: 64px; }
+.steps li::before {
+  counter-increment: step; content: counter(step);
+  position: absolute; left: 0; top: -6px;
+  font-size: var(--t-48); font-weight: 300; font-stretch: 125%; line-height: 1; color: var(--c-ink);
+  font-variant-numeric: tabular-nums;
+}
+.steps h3 { font-size: var(--t-18); font-weight: 700; font-stretch: 108%; }
+.steps p { margin-top: var(--s-4); color: var(--c-ink-2); }
+@media (min-width: 900px) {
+  .steps { padding-block: var(--s-96); }
+  .steps ol { grid-template-columns: repeat(4, 1fr); gap: var(--s-32); margin-top: var(--s-48); }
+  .steps li { padding-left: 0; padding-top: 72px; border-top: 2px solid var(--c-ink); }
+  .steps li::before { top: var(--s-16); }
+}
+
+/* ---- Service area: two banks of the river ---- */
+.area { padding-block: var(--s-64); }
+.area__banks { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-24); margin-top: var(--s-32); }
+.bank h3 { font-size: var(--t-16); font-weight: 700; font-stretch: 112%; letter-spacing: .01em; color: var(--c-ink-2); margin-bottom: var(--s-12); }
+.bank ul { display: flex; flex-wrap: wrap; gap: var(--s-8); }
+.bank li { padding: 6px 12px; border-radius: var(--r-4); background: rgba(38,38,38,.06); font-weight: 500; }
+.bank li.home { background: var(--c-ink); color: #fff; font-weight: 700; }
+.river { display: flex; align-items: center; gap: var(--s-12); color: var(--c-ink-2); font-size: var(--t-14); }
+.river svg { flex: 1 1 0; width: 0; height: 16px; min-width: 0; }
+.river span { flex: none; }
+.river__v { display: none; }
+.area__note { margin-top: var(--s-24); }
+@media (min-width: 900px) {
+  .area { padding-block: var(--s-96); }
+  .area__banks { grid-template-columns: minmax(0, 1fr) 96px minmax(0, 1fr); gap: var(--s-32); align-items: stretch; }
+  .river { position: relative; display: block; min-height: 240px; }
+  .river .river__h { display: none; }
+  .river .river__v { display: block; position: absolute; top: 0; bottom: 0; left: calc(50% - 8px); width: 16px; height: 100%; }
+  .river span { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(180deg); writing-mode: vertical-rl; padding: var(--s-12) 0; background: var(--c-concrete); white-space: nowrap; }
+}
+
+/* ---- Reviews placeholder ---- */
+.reviews { padding-block: 0 var(--s-64); }
+.reviews__ph { margin-top: var(--s-24); padding: var(--s-24); border-radius: var(--r-14); border: 2px dashed var(--c-ink-2); background: rgba(255,243,201,.45); }
+.reviews__ph p + p { margin-top: var(--s-8); }
+@media (min-width: 900px) { .reviews { padding-block: 0 var(--s-96); } }
+
+/* ---- Common questions (native <details>: no JS needed to open) ---- */
+.faq { padding-block: 0 var(--s-64); }
+.faq__list { margin-top: var(--s-32); border-top: 1px solid var(--c-hair); }
+.faq details { border-bottom: 1px solid var(--c-hair); }
+.faq summary {
+  display: grid; grid-template-columns: 1fr auto; align-items: center; gap: var(--s-16);
+  min-height: 56px; padding-block: var(--s-16); cursor: pointer; list-style: none;
+  font-weight: 700; font-stretch: 106%; font-size: var(--t-18); line-height: 1.3;
+}
+.faq summary::-webkit-details-marker { display: none; }
+.faq__nub { display: grid; place-items: center; width: 32px; height: 32px; border-radius: var(--r-4); box-shadow: inset 0 0 0 1.5px var(--c-ink); transition: transform var(--d-med) var(--ease-out); }
+.faq__nub svg { width: 16px; height: 16px; transform: rotate(90deg); }
+.faq details[open] .faq__nub { transform: rotate(180deg); }
+.faq__a { padding-bottom: var(--s-24); color: var(--c-ink-2); }
+.faq details[open] .faq__a { animation: fade 260ms var(--ease-out) both; }
+.faq__a p + p, .faq__a p + div { margin-top: var(--s-12); }
+.pp-slot { min-height: 22px; }
+@media (min-width: 900px) {
+  .faq { padding-block: 0 var(--s-96); }
+  .faq__grid { display: grid; grid-template-columns: 4fr 8fr; gap: var(--s-64); }
+  .faq__list { margin-top: 0; }
+}
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
     {
-      "@context": "https://schema.org",
-      "@type": ["LocalBusiness", "GeneralContractor"],
+      "@type": [
+        "LocalBusiness",
+        "HomeAndConstructionBusiness"
+      ],
       "@id": "https://fpcconstructions.com/#business",
       "name": "FPC Construction LLC",
       "alternateName": "FPC Construction",
       "slogan": "No job too small, no dream too big — FPC Construction for all your needs.",
-      "description": "Family-owned general contractor serving the CSRA since 2020. Bilingual (English/Spanish) crew specializing in land clearing, grading, driveways, foundations, septic systems, and privacy fencing across North Augusta SC, Aiken, Edgefield, Augusta GA, and surrounding counties.",
-      "url": "https://fpcconstructions.com",
+      "description": "Septic systems, drainage and site work for homes and land across the CSRA, from North Augusta, SC. Concrete, asphalt, roofing, decks, carpentry, outdoor living, fencing, flooring, demolition and electrical work too.",
+      "url": "https://fpcconstructions.com/",
       "telephone": "+1-803-884-9305",
       "email": "info@fpcconstructions.com",
+      "logo": "https://fpcconstructions.com/assets/img/logo-600.png",
       "image": [
-        "https://fpcconstructions.com/assets/images/logo.png"
+        "https://fpcconstructions.com/assets/img/og-1200x630.jpg"
       ],
-      "logo": "https://fpcconstructions.com/assets/images/logo.png",
-      "foundingDate": "2020",
-      "priceRange": "$$",
-      "paymentAccepted": ["Cash", "Check", "Credit Card", "PayPal"],
-      "currenciesAccepted": "USD",
-      "knowsLanguage": ["en-US", "es-US"],
+      "knowsLanguage": [
+        "en-US",
+        "es-US"
+      ],
       "founder": {
         "@type": "Person",
         "name": "Filemon Pineda",
-        "jobTitle": "Founder & Owner"
+        "jobTitle": "Owner"
       },
       "address": {
         "@type": "PostalAddress",
@@ -80,80 +677,174 @@
         "longitude": -81.9651
       },
       "areaServed": [
-        { "@type": "City", "name": "North Augusta", "sameAs": "https://en.wikipedia.org/wiki/North_Augusta,_South_Carolina" },
-        { "@type": "City", "name": "Aiken", "sameAs": "https://en.wikipedia.org/wiki/Aiken,_South_Carolina" },
-        { "@type": "City", "name": "Edgefield", "sameAs": "https://en.wikipedia.org/wiki/Edgefield,_South_Carolina" },
-        { "@type": "City", "name": "Augusta", "sameAs": "https://en.wikipedia.org/wiki/Augusta,_Georgia" },
-        { "@type": "City", "name": "Evans" },
-        { "@type": "City", "name": "Martinez" },
-        { "@type": "City", "name": "Grovetown" },
-        { "@type": "City", "name": "Thomson" },
-        { "@type": "City", "name": "Waynesboro" },
-        { "@type": "AdministrativeArea", "name": "Washington County, Georgia" },
-        { "@type": "AdministrativeArea", "name": "Edgefield County, South Carolina" },
-        { "@type": "AdministrativeArea", "name": "CSRA (Central Savannah River Area)" }
+        {
+          "@type": "GeoCircle",
+          "geoMidpoint": {
+            "@type": "GeoCoordinates",
+            "latitude": 33.5018,
+            "longitude": -81.9651
+          },
+          "geoRadius": "80467"
+        },
+        {
+          "@type": "City",
+          "name": "North Augusta, SC"
+        },
+        {
+          "@type": "City",
+          "name": "Aiken, SC"
+        },
+        {
+          "@type": "City",
+          "name": "Edgefield, SC"
+        },
+        {
+          "@type": "City",
+          "name": "Augusta, GA"
+        },
+        {
+          "@type": "City",
+          "name": "Martinez, GA"
+        },
+        {
+          "@type": "City",
+          "name": "Evans, GA"
+        },
+        {
+          "@type": "City",
+          "name": "Grovetown, GA"
+        },
+        {
+          "@type": "City",
+          "name": "Thomson, GA"
+        },
+        {
+          "@type": "City",
+          "name": "Waynesboro, GA"
+        }
       ],
       "openingHoursSpecification": [
         {
           "@type": "OpeningHoursSpecification",
-          "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+          "dayOfWeek": [
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday",
+            "Saturday"
+          ],
           "opens": "07:00",
-          "closes": "18:00"
+          "closes": "19:00"
         }
-      ],
-      "makesOffer": [
-        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Land Clearing", "serviceType": "Site preparation" } },
-        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Land Grading", "serviceType": "Excavation & Grading" } },
-        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Gravel Driveways", "serviceType": "Driveway installation" } },
-        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Concrete Driveways", "serviceType": "Driveway installation" } },
-        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Concrete Foundations", "serviceType": "Foundation work" } },
-        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Septic Tank Install & Repair", "serviceType": "Septic systems" } },
-        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Privacy Fencing", "serviceType": "Fence installation" } }
       ],
       "hasOfferCatalog": {
         "@type": "OfferCatalog",
-        "name": "Construction Services",
+        "name": "Services",
         "itemListElement": [
           {
             "@type": "Offer",
             "itemOffered": {
               "@type": "Service",
-              "name": "Land Clearing"
+              "name": "Septic system installation and repair"
             }
           },
           {
             "@type": "Offer",
             "itemOffered": {
               "@type": "Service",
-              "name": "Privacy Fencing"
+              "name": "Drainage and water control"
             }
           },
           {
             "@type": "Offer",
             "itemOffered": {
               "@type": "Service",
-              "name": "Septic Tank Services"
+              "name": "Excavation"
             }
           },
           {
             "@type": "Offer",
             "itemOffered": {
               "@type": "Service",
-              "name": "Land Grading"
+              "name": "Land grading"
             }
           },
           {
             "@type": "Offer",
             "itemOffered": {
               "@type": "Service",
-              "name": "Driveways"
+              "name": "Land clearing"
             }
           },
           {
             "@type": "Offer",
             "itemOffered": {
               "@type": "Service",
-              "name": "Foundations"
+              "name": "Demolition"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Concrete"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Asphalt paving"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Roofing"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Decks"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Carpentry"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Outdoor living"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Fencing"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Brick and tile flooring"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Electrical"
             }
           }
         ]
@@ -162,45 +853,44 @@
         "https://www.facebook.com/p/FPC-Construction-LLC-100066373038903/",
         "https://www.instagram.com/fpcconstructions"
       ]
-    }
-    </script>
-
-    <!-- FAQ Structured Data (JSON-LD) -->
-    <script type="application/ld+json">
+    },
     {
-      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "@id": "https://fpcconstructions.com/#webpage",
+      "url": "https://fpcconstructions.com/",
+      "name": "FPC Construction | Septic, drainage and site work in North Augusta, SC",
+      "inLanguage": "en-US",
+      "about": {
+        "@id": "https://fpcconstructions.com/#business"
+      }
+    },
+    {
       "@type": "FAQPage",
+      "@id": "https://fpcconstructions.com/#faq",
+      "inLanguage": "en-US",
       "mainEntity": [
         {
           "@type": "Question",
-          "name": "How long does a typical project take?",
+          "name": "Is the estimate free?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Project timelines vary based on scope and complexity. A standard residential driveway typically takes 2-3 days, while larger commercial projects may take 1-2 weeks. We'll provide a detailed timeline during your free estimate consultation."
+            "text": "Yes. Filemon comes out, looks at the job in person and gives you a written estimate. There is no charge for the visit."
           }
         },
         {
           "@type": "Question",
-          "name": "Do you offer free estimates?",
+          "name": "Where do you work?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Yes! We provide free, no-obligation estimates for all projects. Contact us to schedule a site visit where we'll assess your needs and provide a detailed quote with no pressure or hidden fees."
+            "text": "About 50 miles around North Augusta, SC, on both sides of the Savannah River. Not sure you are in range? Call and ask."
           }
         },
         {
           "@type": "Question",
-          "name": "What areas do you serve?",
+          "name": "Do you speak Spanish?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "We serve North Augusta, SC and surrounding communities within a 50-mile radius, including Aiken, Augusta, Evans, Martinez, and the greater CSRA region."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Are you licensed and insured?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Yes, FPC Construction is fully licensed and insured. We carry comprehensive liability insurance and workers' compensation coverage to protect both our team and your property throughout every project."
+            "text": "Yes. The phone is answered in English or Spanish, and you can choose your language on the estimate form."
           }
         },
         {
@@ -210,1028 +900,307 @@
             "@type": "Answer",
             "text": "We accept cash, checks, and all major credit cards. Through PayPal you can also split the cost over time — interest-free installments on smaller jobs, or monthly financing on larger projects. Terms and eligibility are set by PayPal and shown before you commit."
           }
-        },
-        {
-          "@type": "Question",
-          "name": "Do you offer warranties on your work?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Yes, we stand behind our work with comprehensive warranties. The specific warranty terms depend on the type of project and are clearly outlined in your contract."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Do I need a permit for driveway installation in Augusta, GA?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Yes, Augusta GA requires permits for new driveways. FPC Construction handles permitting for driveways in Grovetown GA and Martinez GA, ensuring compliance with local codes in the CSRA region."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "How long does septic tank installation take in Washington County, GA?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Septic tank installation in Washington County GA typically takes 1-3 days, depending on soil conditions. Our team serves Waynesboro GA and Thomson GA with efficient, licensed solutions."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Can you grade land for a foundation near the Savannah River?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Yes, we specialize in land grading for foundations along the Savannah River, including areas like Thomson GA and North Augusta SC. Proper drainage is prioritized to prevent future issues."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "What's the difference between land clearing and land grading?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Land clearing removes vegetation; land grading levels the soil for construction. Both services are offered for projects in Edgefield SC and Grovetown GA to prepare building sites."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Can you install gravel driveways year-round?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Yes, we install gravel driveways year-round across the CSRA, including Thomson GA and North Augusta SC. Proper base compaction ensures long-term durability."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "¿Requiere permiso la construcción de cercas en Georgia?",
-          "inLanguage": "es",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Sí, depende del municipio. Nuestro equipo maneja trámites para cercas en Martinez GA, Evans GA y Waynesboro GA, garantizando cumplimiento legal."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Do you have Spanish-speaking team members?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Yes, our bilingual team communicates in English and Spanish for clients across the CSRA, ensuring clear project understanding from estimate through completion."
-          }
         }
       ]
     }
-    </script>
-
-    <!-- PayPal Pay Later messaging SDK (FPC CONSTRUCTION account, "FPC CRM"
-         application). The client id is public by design — it ships in the
-         page source on every PayPal integration and is not a secret.
-
-         `components=messages` loads ONLY the messaging component. If a
-         checkout button is ever added to this page, add `buttons` to this
-         same tag rather than adding a second <script> — two SDK loads on
-         one page race each other. -->
-    <script
-        src="https://www.paypal.com/sdk/js?client-id=BAAR3Vl31fha6z66-3iPRDebA0XeLs0NZ5mWddS4yqkaHwtCmwyi3bCPIy306QQIcDbHzyYe89p0KN8F2c&components=messages"
-        data-namespace="PayPalSDK"></script>
+  ]
+}
+</script>
 </head>
 <body>
-    <!-- Skip to main content for accessibility -->
-    <a href="#main" class="skip-link">Skip to main content</a>
-
-    <!-- Header / Navigation -->
-    <header class="header" id="header">
-        <nav class="nav container">
-            <a href="#home" class="nav__logo">
-                <img src="assets/images/logo.png" alt="FPC Construction LLC Logo" class="nav__logo-img">
-            </a>
-
-            <button class="nav__toggle" id="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
-                <span class="nav__toggle-bar"></span>
-                <span class="nav__toggle-bar"></span>
-                <span class="nav__toggle-bar"></span>
-            </button>
-
-            <ul class="nav__menu" id="nav-menu">
-                <li class="nav__item"><a href="#home" class="nav__link">Home</a></li>
-                <li class="nav__item"><a href="#about" class="nav__link">About</a></li>
-                <li class="nav__item"><a href="#services" class="nav__link">Services</a></li>
-                <li class="nav__item"><a href="#projects" class="nav__link">Projects</a></li>
-                <li class="nav__item"><a href="#testimonials" class="nav__link">Reviews</a></li>
-                <li class="nav__item"><a href="#contact" class="nav__link">Contact</a></li>
-                <li class="nav__item nav__item--operator">
-                    <a href="https://fpc-construction-crm.vercel.app/login" class="nav__link nav__link--operator">
-                        Sign In
-                    </a>
-                </li>
-                <li class="nav__item nav__item--cta">
-                    <a href="tel:8038849305" class="btn btn--primary nav__cta">
-                        <svg class="btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
-                        </svg>
-                        Call Now
-                    </a>
-                </li>
-            </ul>
-        </nav>
-    </header>
-
-    <main id="main">
-        <!-- Hero Section -->
-        <section class="hero" id="home">
-            <div class="hero__overlay"></div>
-            <div class="hero__content container">
-                <h1 class="hero__title">No job too small, no dream too big — FPC Construction for all your needs.</h1>
-                <p class="hero__subtitle">Professional construction services transforming visions into lasting structures since 2020</p>
-
-                <div class="hero__stats">
-                    <div class="hero__stat">
-                        <span class="hero__stat-number" data-count="15" data-suffix="+">15+</span>
-                        <span class="hero__stat-label">Years Experience</span>
-                    </div>
-                    <div class="hero__stat">
-                        <span class="hero__stat-number" data-count="500" data-suffix="+">500+</span>
-                        <span class="hero__stat-label">Projects Completed</span>
-                    </div>
-                    <div class="hero__stat">
-                        <span class="hero__stat-number" data-count="100" data-suffix="%">100%</span>
-                        <span class="hero__stat-label">Satisfaction Rate</span>
-                    </div>
-                </div>
-
-                <div class="hero__cta">
-                    <a href="#contact" class="btn btn--primary btn--large">Get Free Estimate</a>
-                    <a href="#projects" class="btn btn--outline-light btn--large">View Our Work</a>
-                </div>
-            </div>
-        </section>
-
-        <!-- About Section -->
-        <section class="about section" id="about">
-            <div class="container">
-                <div class="about__grid">
-                    <div class="about__image">
-                        <picture>
-                            <source srcset="assets/images/placeholder/about-team.webp" type="image/webp">
-                            <img src="assets/images/placeholder/about-team.jpg" alt="FPC Construction team at work" loading="lazy">
-                        </picture>
-                    </div>
-                    <div class="about__content">
-                        <span class="section__label">About Us</span>
-                        <h2 class="section__title">15+ Years in the Field. FPC Construction LLC, Est. 2020.</h2>
-                        <p class="about__text">Filemon brings over 15 years of hands-on experience in the field. FPC Construction LLC was established in 2020 and serves North Augusta, SC and the surrounding CSRA. What started as a heavy-equipment and site-work operation has grown into a full construction outfit &mdash; with septic and drainage as our specialty.</p>
-                        <p class="about__text">Our team of experienced professionals is committed to delivering quality workmanship on every project, big or small. We take pride in transforming our clients' visions into reality while maintaining the highest standards of safety and craftsmanship.</p>
-
-                        <div class="about__features">
-                            <div class="about__feature">
-                                <svg class="about__feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
-                                    <polyline points="22 4 12 14.01 9 11.01"/>
-                                </svg>
-                                <span>Fully Licensed & Insured</span>
-                            </div>
-                            <div class="about__feature">
-                                <svg class="about__feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
-                                    <polyline points="22 4 12 14.01 9 11.01"/>
-                                </svg>
-                                <span>Free No-Obligation Estimates</span>
-                            </div>
-                            <div class="about__feature">
-                                <svg class="about__feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
-                                    <polyline points="22 4 12 14.01 9 11.01"/>
-                                </svg>
-                                <span>Comprehensive Warranties</span>
-                            </div>
-                            <div class="about__feature">
-                                <svg class="about__feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
-                                    <polyline points="22 4 12 14.01 9 11.01"/>
-                                </svg>
-                                <span>Flexible Payment Options</span>
-                            </div>
-                        </div>
-
-                        <a href="#contact" class="btn btn--primary">Request a Quote</a>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Services Section -->
-        <section class="services section section--dark" id="services">
-            <div class="container">
-                <div class="section__header">
-                    <span class="section__label section__label--light">Our Services</span>
-                    <h2 class="section__title section__title--light">Professional Construction Services</h2>
-                    <p class="section__description section__description--light">We offer a comprehensive range of construction services to meet all your residential and commercial needs.</p>
-                </div>
-
-
-                <!-- ═══════════════════════════════════════════════════════════════
-                     👇 EDIT HERE — WHAT'S HOT RIGHT NOW  👇
-                     Change the three cards below whenever the season or the demand
-                     changes. Just edit the <h3> title and the <p> line. Nothing else
-                     on this page needs to change.
-
-                     RIGHT NOW (summer):  Septic · Drainage · Driveways
-                     COMING THIS FALL:    Roofing, then Decks as it cools down
-                     WHEN JOSE IS LICENSED: Interior rehab + commercial projects
-                     ═══════════════════════════════════════════════════════════════ -->
-                <p class="services__eyebrow" style="text-align:center;font-weight:700;letter-spacing:.08em;text-transform:uppercase;opacity:.85;margin-bottom:1rem;">In season now</p>
-                <div class="services__grid services__grid--featured">
-                    <div class="service-card service-card--featured">
-                        <h3 class="service-card__title">Septic Systems</h3>
-                        <p class="service-card__description">Our specialty. Tank installation, repair, pumping, and full drain-field replacement &mdash; residential and commercial.</p>
-                        <a href="#contact" class="service-card__link">Get an estimate &rarr;</a>
-                    </div>
-                    <div class="service-card service-card--featured">
-                        <h3 class="service-card__title">Drainage &amp; Water Control</h3>
-                        <p class="service-card__description">Standing water, a yard that won't dry out, erosion. French drains, stormwater, site drainage &mdash; done with our own equipment.</p>
-                        <a href="#contact" class="service-card__link">Get an estimate &rarr;</a>
-                    </div>
-                    <div class="service-card service-card--featured">
-                        <h3 class="service-card__title">Driveways</h3>
-                        <p class="service-card__description">Concrete and gravel, standard or heavy duty, new installs and repairs. Grading and base prep included &mdash; one crew, one job.</p>
-                        <a href="#contact" class="service-card__link">Get an estimate &rarr;</a>
-                    </div>
-                </div>
-                <!-- ═══════════════ END EDIT-HERE BLOCK ═══════════════ -->
-
-                <p class="services__eyebrow" style="text-align:center;margin:3rem 0 .5rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;opacity:.85;">Everything we do</p>
-                <p style="text-align:center;max-width:60ch;margin:0 auto 2rem;opacity:.8;">38 job types across 11 trades. If it isn't listed, ask anyway &mdash; Filemon will come look and price it.</p>
-                <div class="services__grid">
-                    <div class="service-card">
-                        <h3 class="service-card__title">Septic Systems</h3>
-                        <p class="service-card__description">Tank installation, tank repair, tank pumping, drain field replacement.</p>
-                        <a href="#contact" class="service-card__link">Learn More &rarr;</a>
-                    </div>
-
-                    <div class="service-card">
-                        <h3 class="service-card__title">Drainage &amp; Site Work</h3>
-                        <p class="service-card__description">French drains, stormwater management, site drainage, erosion control, excavation.</p>
-                        <a href="#contact" class="service-card__link">Learn More &rarr;</a>
-                    </div>
-
-                    <div class="service-card">
-                        <h3 class="service-card__title">Land Grading</h3>
-                        <p class="service-card__description">Residential grading, commercial site grading, driveway and pad grading.</p>
-                        <a href="#contact" class="service-card__link">Learn More &rarr;</a>
-                    </div>
-
-                    <div class="service-card">
-                        <h3 class="service-card__title">Land Clearing</h3>
-                        <p class="service-card__description">Residential and commercial clearing, tree removal, stump grinding, brush and debris.</p>
-                        <a href="#contact" class="service-card__link">Learn More &rarr;</a>
-                    </div>
-
-                    <div class="service-card">
-                        <h3 class="service-card__title">Concrete</h3>
-                        <p class="service-card__description">Driveways (standard and heavy duty), sidewalks, patios, retaining walls, stem-wall foundations, floating monolithic slabs, stamped and decorative.</p>
-                        <a href="#contact" class="service-card__link">Learn More &rarr;</a>
-                    </div>
-
-                    <div class="service-card">
-                        <h3 class="service-card__title">Roofing</h3>
-                        <p class="service-card__description">Shingle tear-off and replacement, metal roof installation, roof repair.</p>
-                        <a href="#contact" class="service-card__link">Learn More &rarr;</a>
-                    </div>
-
-                    <div class="service-card">
-                        <h3 class="service-card__title">Decks</h3>
-                        <p class="service-card__description">Wood decks and composite decks, built to last in CSRA weather.</p>
-                        <a href="#contact" class="service-card__link">Learn More &rarr;</a>
-                    </div>
-
-                    <div class="service-card">
-                        <h3 class="service-card__title">Carpentry</h3>
-                        <p class="service-card__description">Deck framing, patio covers, pergolas, gazebos, handrails and railings.</p>
-                        <a href="#contact" class="service-card__link">Learn More &rarr;</a>
-                    </div>
-
-                    <div class="service-card">
-                        <h3 class="service-card__title">Electrical</h3>
-                        <p class="service-card__description">Panel upgrades, sub-panel installs, dedicated circuits, conduit runs, outlets.</p>
-                        <a href="#contact" class="service-card__link">Learn More &rarr;</a>
-                    </div>
-
-                    <div class="service-card">
-                        <h3 class="service-card__title">Fencing</h3>
-                        <p class="service-card__description">Wood privacy, vinyl privacy, and chain link.</p>
-                        <a href="#contact" class="service-card__link">Learn More &rarr;</a>
-                    </div>
-
-                    <div class="service-card">
-                        <h3 class="service-card__title">Demolition</h3>
-                        <p class="service-card__description">Structure demolition, concrete demolition, debris removal and haul-off.</p>
-                        <a href="#contact" class="service-card__link">Learn More &rarr;</a>
-                    </div>
-
-                    <div class="service-card">
-                        <h3 class="service-card__title">General Contracting</h3>
-                        <p class="service-card__description">Residential and commercial projects managed end to end &mdash; one point of contact.</p>
-                        <a href="#contact" class="service-card__link">Learn More &rarr;</a>
-                    </div>
-
-                    <div class="service-card">
-                        <h3 class="service-card__title">Asphalt &amp; Road Work</h3>
-                        <p class="service-card__description">Paving, resurfacing, parking lots, and road work. We manage the job start to finish.</p>
-                        <a href="#contact" class="service-card__link">Learn More &rarr;</a>
-                    </div>
-
-                    <div class="service-card">
-                        <h3 class="service-card__title">Brick &amp; Tile Flooring</h3>
-                        <p class="service-card__description">Interior and exterior brick and tile work.</p>
-                        <a href="#contact" class="service-card__link">Learn More &rarr;</a>
-                    </div>
-
-                    <div class="service-card">
-                        <h3 class="service-card__title">Outdoor Living</h3>
-                        <p class="service-card__description">Outdoor kitchens, fire pits, hardscaping, awnings, overhangs, screened-in porches.</p>
-                        <a href="#contact" class="service-card__link">Learn More &rarr;</a>
-                    </div>
-
-                </div>
-
-                <p style="text-align:center;margin:3rem auto 0;max-width:60ch;opacity:.75;">
-                    <strong>Coming up:</strong> roofing ramps up this fall, decks as the weather cools,
-                    and interior rehab plus larger commercial work as our team credentials expand.
-                </p>
-            </div>
-        </section>
-
-        <!-- Stats Counter Section -->
-        <section class="stats section">
-            <div class="container">
-                <div class="stats__grid">
-                    <div class="stats__item">
-                        <span class="stats__number" data-count="15">15</span>
-                        <span class="stats__suffix">+</span>
-                        <span class="stats__label">Years of Experience</span>
-                    </div>
-                    <div class="stats__item">
-                        <span class="stats__number" data-count="500">500</span>
-                        <span class="stats__suffix">+</span>
-                        <span class="stats__label">Projects Completed</span>
-                    </div>
-                    <div class="stats__item">
-                        <span class="stats__number" data-count="50">50</span>
-                        <span class="stats__suffix">mi</span>
-                        <span class="stats__label">Service Radius</span>
-                    </div>
-                    <div class="stats__item">
-                        <span class="stats__number" data-count="100">100</span>
-                        <span class="stats__suffix">%</span>
-                        <span class="stats__label">Client Satisfaction</span>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Projects/Portfolio Section -->
-        <section class="projects section section--gray" id="projects">
-            <div class="container">
-                <div class="section__header">
-                    <span class="section__label">Our Work</span>
-                    <h2 class="section__title">Featured Projects</h2>
-                    <p class="section__description">Browse our portfolio of completed projects and see the quality of our workmanship.</p>
-                </div>
-
-                <div class="projects__filters">
-                    <button class="projects__filter projects__filter--active" data-filter="all">All Projects</button>
-                    <button class="projects__filter" data-filter="driveways">Driveways</button>
-                    <button class="projects__filter" data-filter="land-clearing">Land Clearing</button>
-                    <button class="projects__filter" data-filter="foundations">Foundations</button>
-                    <button class="projects__filter" data-filter="grading">Grading</button>
-                    <button class="projects__filter" data-filter="septic">Septic</button>
-                </div>
-
-                <div class="projects__grid">
-                    <div class="project-card" data-category="driveways">
-                        <div class="project-card__image">
-                            <picture>
-                                <source srcset="assets/images/projects/project-1.webp" type="image/webp">
-                                <img src="assets/images/projects/project-1.jpg" alt="Residential driveway installation" loading="lazy">
-                            </picture>
-                            <div class="project-card__overlay">
-                                <span class="project-card__category">Driveways</span>
-                            </div>
-                        </div>
-                        <div class="project-card__content">
-                            <h3 class="project-card__title">Residential Driveway</h3>
-                            <p class="project-card__location">North Augusta, SC</p>
-                        </div>
-                    </div>
-
-                    <div class="project-card" data-category="septic">
-                        <div class="project-card__image">
-                            <picture>
-                                <source srcset="assets/images/projects/project-2.webp" type="image/webp">
-                                <img src="assets/images/projects/project-2.jpg" alt="Septic system installation" loading="lazy">
-                            </picture>
-                            <div class="project-card__overlay">
-                                <span class="project-card__category">Septic</span>
-                            </div>
-                        </div>
-                        <div class="project-card__content">
-                            <h3 class="project-card__title">Septic Installation</h3>
-                            <p class="project-card__location">Aiken, SC</p>
-                        </div>
-                    </div>
-
-                    <div class="project-card" data-category="foundations">
-                        <div class="project-card__image">
-                            <picture>
-                                <source srcset="assets/images/projects/project-3.webp" type="image/webp">
-                                <img src="assets/images/projects/project-3.jpg" alt="Foundation construction" loading="lazy">
-                            </picture>
-                            <div class="project-card__overlay">
-                                <span class="project-card__category">Foundations</span>
-                            </div>
-                        </div>
-                        <div class="project-card__content">
-                            <h3 class="project-card__title">Foundation Work</h3>
-                            <p class="project-card__location">Augusta, GA</p>
-                        </div>
-                    </div>
-
-                    <div class="project-card" data-category="septic">
-                        <div class="project-card__image">
-                            <picture>
-                                <source srcset="assets/images/projects/project-4.webp" type="image/webp">
-                                <img src="assets/images/projects/project-4.jpg" alt="Septic system project" loading="lazy">
-                            </picture>
-                            <div class="project-card__overlay">
-                                <span class="project-card__category">Septic</span>
-                            </div>
-                        </div>
-                        <div class="project-card__content">
-                            <h3 class="project-card__title">Septic System</h3>
-                            <p class="project-card__location">Evans, GA</p>
-                        </div>
-                    </div>
-
-                    <div class="project-card" data-category="driveways">
-                        <div class="project-card__image">
-                            <picture>
-                                <source srcset="assets/images/projects/project-5.webp" type="image/webp">
-                                <img src="assets/images/projects/project-5.jpg" alt="Concrete driveway" loading="lazy">
-                            </picture>
-                            <div class="project-card__overlay">
-                                <span class="project-card__category">Driveways</span>
-                            </div>
-                        </div>
-                        <div class="project-card__content">
-                            <h3 class="project-card__title">Concrete Driveway</h3>
-                            <p class="project-card__location">Martinez, GA</p>
-                        </div>
-                    </div>
-
-                    <div class="project-card" data-category="land-clearing">
-                        <div class="project-card__image">
-                            <picture>
-                                <source srcset="assets/images/projects/project-6.webp" type="image/webp">
-                                <img src="assets/images/projects/project-6.jpg" alt="Land clearing project" loading="lazy">
-                            </picture>
-                            <div class="project-card__overlay">
-                                <span class="project-card__category">Land Clearing</span>
-                            </div>
-                        </div>
-                        <div class="project-card__content">
-                            <h3 class="project-card__title">Land Clearing</h3>
-                            <p class="project-card__location">North Augusta, SC</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Testimonials Section -->
-        <section class="testimonials section" id="testimonials">
-            <div class="container">
-                <div class="section__header">
-                    <span class="section__label">Testimonials</span>
-                    <h2 class="section__title">What Our Clients Say</h2>
-                    <p class="section__description">Don't just take our word for it - hear from our satisfied customers.</p>
-                </div>
-
-                <div class="testimonials__carousel">
-                    <div class="testimonials__track">
-                        <!-- Reviews are dynamically loaded and randomized via JS -->
-                    </div>
-
-                    <div class="testimonials__nav">
-                        <button class="testimonials__btn testimonials__btn--prev" aria-label="Previous testimonial">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
-                        </button>
-                        <div class="testimonials__dots"></div>
-                        <button class="testimonials__btn testimonials__btn--next" aria-label="Next testimonial">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
-                        </button>
-                    </div>
-                </div>
-
-                <div class="testimonials__cta">
-                    <a href="https://www.google.com/search?q=FPC+Construction+Reviews&si=AL3DRZEsmMGCryMMFSHJ3StBhOdZ2-6yYkXd_doETEE1OR-qOa52NiG5jcIeJzVbHJr3QWYz2zeM4RAeHHgV45bU-rkcMVLVHPVQb2KynWvxU1cD58mYMtE0fLgoerquXM5FLJvL927YVAGD-vUpALB5I0oIzTiLLQ%3D%3D" target="_blank" rel="noopener" class="btn btn--google-review">
-                        <svg class="btn__icon" viewBox="0 0 24 24" width="20" height="20">
-                            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"/>
-                            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-                            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
-                            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
-                        </svg>
-                        Leave Us a Google Review
-                    </a>
-                </div>
-            </div>
-        </section>
-
-        <!-- Featured Reel Section (FB Reel poster — harvested 2026-06-24) -->
-        <section class="featured-reel section section--dark" id="featured">
-            <div class="container">
-                <div class="section__header">
-                    <span class="section__label section__label--light">Latest from the Field</span>
-                    <h2 class="section__title section__title--light">Watch Us Work</h2>
-                    <p class="section__description section__description--light">Fresh project footage from FPC's active job sites.</p>
-                </div>
-                <div style="display:flex;flex-direction:column;align-items:center;gap:1.5rem;">
-                    <a href="https://www.facebook.com/reel/970257139208234" target="_blank" rel="noopener" style="position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;max-width:400px;aspect-ratio:400 / 710;border-radius:12px;overflow:hidden;box-shadow:0 10px 40px rgba(0,0,0,.35);background:radial-gradient(circle at 50% 14%, rgba(212,169,55,.28), transparent 36%), linear-gradient(180deg, #233653 0%, #0f1a2e 100%);border:1px solid rgba(255,255,255,.18);color:#fff;text-align:center;padding:2rem 1.5rem;">
-                        <span aria-hidden="true" style="position:absolute;inset:0;background:linear-gradient(160deg, rgba(255,255,255,.12), transparent 32%, rgba(212,169,55,.12) 100%);"></span>
-                        <img src="assets/images/logo.png" alt="" aria-hidden="true" loading="lazy" style="position:relative;width:min(72%,220px);height:auto;margin-bottom:2rem;filter:drop-shadow(0 12px 24px rgba(0,0,0,.35));">
-                        <span aria-hidden="true" style="position:relative;display:grid;place-items:center;width:76px;height:76px;border-radius:9999px;background:var(--color-accent);color:var(--color-primary-dark);box-shadow:0 12px 30px rgba(0,0,0,.3);margin-bottom:1.5rem;">
-                            <svg viewBox="0 0 24 24" fill="currentColor" style="width:34px;height:34px;margin-left:4px;">
-                                <path d="M8 5v14l11-7z"></path>
-                            </svg>
-                        </span>
-                        <span style="position:relative;display:block;font-size:1.25rem;font-weight:700;line-height:1.25;margin-bottom:.5rem;">Watch FPC in action on Facebook</span>
-                        <span style="position:relative;display:block;font-size:.95rem;color:rgba(255,255,255,.78);">Tap to open the latest field reel</span>
-                    </a>
-                    <a href="https://www.facebook.com/reel/970257139208234" target="_blank" rel="noopener" class="btn btn--outline-light">Watch on Facebook</a>
-                </div>
-            </div>
-        </section>
-
-        <!-- CTA Banner Section -->
-        <section class="cta-banner">
-            <div class="cta-banner__overlay"></div>
-            <div class="container cta-banner__content">
-                <h2 class="cta-banner__title">Ready to Start Your Project?</h2>
-                <p class="cta-banner__text">Contact us today for a free, no-obligation estimate. Let's build something great together.</p>
-                <div class="cta-banner__buttons">
-                    <a href="https://elevenlabs.io/convai/agent_5801kehtxvkzenwvpc48t3sr5n56" target="_blank" rel="noopener" class="btn btn--primary btn--large">
-                        <svg class="btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
-                            <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
-                            <line x1="12" y1="19" x2="12" y2="23"/>
-                            <line x1="8" y1="23" x2="16" y2="23"/>
-                        </svg>
-                        Talk to Fil — Get Your Free Estimate
-                    </a>
-                    <a href="tel:8038849305" class="btn btn--outline-light btn--large">
-                        <svg class="btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
-                        </svg>
-                        (803) 884-9305
-                    </a>
-                </div>
-                <p class="cta-banner__subtext">Available in English &amp; Spanish &middot; No hold times</p>
-            </div>
-        </section>
-
-        <!-- Contact Section -->
-        <section class="contact section" id="contact">
-            <div class="container">
-                <div class="section__header">
-                    <span class="section__label">Contact Us</span>
-                    <h2 class="section__title">Get Your Free Estimate</h2>
-                    <p class="section__description">Fill out the form below and we'll get back to you within 24 hours.</p>
-                </div>
-
-                <div class="contact__grid">
-                    <div class="contact__info">
-                        <div class="contact__info-item">
-                            <div class="contact__info-icon">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
-                                    <circle cx="12" cy="10" r="3"/>
-                                </svg>
-                            </div>
-                            <div class="contact__info-content">
-                                <h3 class="contact__info-title">Our Location</h3>
-                                <p>North Augusta, SC 29860</p>
-                                <p>Serving the CSRA region</p>
-                            </div>
-                        </div>
-
-                        <div class="contact__info-item">
-                            <div class="contact__info-icon">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
-                                </svg>
-                            </div>
-                            <div class="contact__info-content">
-                                <h3 class="contact__info-title">Phone</h3>
-                                <p><a href="tel:8038849305">(803) 884-9305</a></p>
-                            </div>
-                        </div>
-
-                        <div class="contact__info-item">
-                            <div class="contact__info-icon">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-                                    <polyline points="22,6 12,13 2,6"/>
-                                </svg>
-                            </div>
-                            <div class="contact__info-content">
-                                <h3 class="contact__info-title">Email</h3>
-                                <p><a href="mailto:info@fpcconstructions.com">info@fpcconstructions.com</a></p>
-                            </div>
-                        </div>
-
-                        <div class="contact__info-item">
-                            <div class="contact__info-icon">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <circle cx="12" cy="12" r="10"/>
-                                    <polyline points="12 6 12 12 16 14"/>
-                                </svg>
-                            </div>
-                            <div class="contact__info-content">
-                                <h3 class="contact__info-title">Business Hours</h3>
-                                <p>Monday - Saturday: 7AM - 6PM</p>
-                                <p>Sunday: Closed</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="contact__form-wrapper">
-                        <!-- TODO: Configure form action for backend integration (Formspree, Netlify Forms, etc.) -->
-                        <form class="contact__form" id="contact-form" action="#" method="POST">
-                            <div class="form__group">
-                                <label for="name" class="form__label">Full Name *</label>
-                                <input type="text" id="name" name="name" class="form__input" required placeholder="John Doe" autocomplete="name">
-                            </div>
-
-                            <div class="form__row">
-                                <div class="form__group">
-                                    <label for="email" class="form__label">Email Address *</label>
-                                    <input type="email" id="email" name="email" class="form__input" required placeholder="john@example.com" autocomplete="email">
-                                </div>
-                                <div class="form__group">
-                                    <label for="phone" class="form__label">Phone Number *</label>
-                                    <input type="tel" id="phone" name="phone" class="form__input" required placeholder="(803) 555-0123" autocomplete="tel">
-                                </div>
-                            </div>
-
-                            <div class="form__group">
-                                <label for="service" class="form__label">Service Needed *</label>
-                                <select id="service" name="service" class="form__select" required>
-                                    <option value="">Select a service...</option>
-                                    <option value="septic-systems">Septic Systems</option>
-                                    <option value="drainage-and-site-work">Drainage &amp; Site Work</option>
-                                    <option value="land-grading">Land Grading</option>
-                                    <option value="land-clearing">Land Clearing</option>
-                                    <option value="concrete">Concrete</option>
-                                    <option value="roofing">Roofing</option>
-                                    <option value="decks">Decks</option>
-                                    <option value="carpentry">Carpentry</option>
-                                    <option value="electrical">Electrical</option>
-                                    <option value="fencing">Fencing</option>
-                                    <option value="demolition">Demolition</option>
-                                    <option value="general-contracting">General Contracting</option>
-                                    <option value="asphalt-and-road-work">Asphalt &amp; Road Work</option>
-                                    <option value="brick-and-tile-flooring">Brick &amp; Tile Flooring</option>
-                                    <option value="outdoor-living">Outdoor Living</option>
-                                    <option value="other">Other</option>
-                                </select>
-                            </div>
-
-                            <div class="form__group">
-                                <label for="message" class="form__label">Project Details</label>
-                                <textarea id="message" name="message" class="form__textarea" rows="5" placeholder="Tell us about your project..."></textarea>
-                            </div>
-
-                            <!-- Honeypot: hidden from humans, bots fill it. The CRM lead route
-                                 rejects any submission where company_website is non-empty.
-                                 aria-hidden + tabindex=-1 + autocomplete=off keep it off the a11y
-                                 tree and out of password managers. -->
-                            <div class="form__hp" aria-hidden="true" style="position:absolute;left:-5000px;height:0;width:0;overflow:hidden;">
-                                <label for="company_website">Company Website</label>
-                                <input type="text" id="company_website" name="company_website" tabindex="-1" autocomplete="off">
-                            </div>
-
-                            <button type="submit" class="btn btn--primary btn--large btn--full">
-                                Request Free Estimate
-                            </button>
-
-                            <p class="form__note">We use your phone number and email to respond to your request and to serve you as a customer. We send text messages only if you ask us to or agree to receive them. See our <a href="/privacy" style="color:var(--color-primary);text-decoration:underline;">Privacy Policy</a>, <a href="/terms" style="color:var(--color-primary);text-decoration:underline;">Terms</a> and <a href="/sms-opt-in" style="color:var(--color-primary);text-decoration:underline;">SMS Terms</a>.</p>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Dynamic Gallery Section (populated from Google Drive) -->
-        <section class="dynamic-gallery section" id="dynamic-gallery" style="display: none;">
-            <div class="container">
-                <div class="section__header">
-                    <span class="section__label">Photo Gallery</span>
-                    <h2 class="section__title">More Project Photos</h2>
-                    <p class="section__description">Browse our latest project photos from the field.</p>
-                </div>
-                <div class="gallery__grid">
-                    <!-- Gallery items will be populated dynamically from gallery-config.json -->
-                </div>
-            </div>
-        </section>
-
-        <!-- FAQ Section -->
-        <section class="faq section section--gray" id="faq">
-            <div class="container">
-                <div class="section__header">
-                    <span class="section__label">FAQ</span>
-                    <h2 class="section__title">Frequently Asked Questions</h2>
-                    <p class="section__description">Find answers to common questions about our services and process.</p>
-                </div>
-
-                <div class="faq__list">
-                    <div class="faq__item">
-                        <button class="faq__question" aria-expanded="false">
-                            <span>How long does a typical project take?</span>
-                            <svg class="faq__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <polyline points="6 9 12 15 18 9"/>
-                            </svg>
-                        </button>
-                        <div class="faq__answer">
-                            <p>Project timelines vary based on scope and complexity. A standard residential driveway typically takes 2-3 days, while larger commercial projects may take 1-2 weeks. We'll provide a detailed timeline during your free estimate consultation.</p>
-                        </div>
-                    </div>
-
-                    <div class="faq__item">
-                        <button class="faq__question" aria-expanded="false">
-                            <span>Do you offer free estimates?</span>
-                            <svg class="faq__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <polyline points="6 9 12 15 18 9"/>
-                            </svg>
-                        </button>
-                        <div class="faq__answer">
-                            <p>Yes! We provide free, no-obligation estimates for all projects. Contact us to schedule a site visit where we'll assess your needs and provide a detailed quote with no pressure or hidden fees.</p>
-                        </div>
-                    </div>
-
-                    <div class="faq__item">
-                        <button class="faq__question" aria-expanded="false">
-                            <span>What areas do you serve?</span>
-                            <svg class="faq__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <polyline points="6 9 12 15 18 9"/>
-                            </svg>
-                        </button>
-                        <div class="faq__answer">
-                            <p>We serve North Augusta, SC and surrounding communities within a 50-mile radius, including Aiken, Augusta, Evans, Martinez, and the greater CSRA region. Contact us to confirm service availability in your area.</p>
-                        </div>
-                    </div>
-
-                    <div class="faq__item">
-                        <button class="faq__question" aria-expanded="false">
-                            <span>Are you licensed and insured?</span>
-                            <svg class="faq__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <polyline points="6 9 12 15 18 9"/>
-                            </svg>
-                        </button>
-                        <div class="faq__answer">
-                            <p>Yes, FPC Construction is fully licensed and insured. We carry comprehensive liability insurance and workers' compensation coverage to protect both our team and your property throughout every project.</p>
-                        </div>
-                    </div>
-
-                    <div class="faq__item">
-                        <button class="faq__question" aria-expanded="false">
-                            <span>What payment methods do you accept?</span>
-                            <svg class="faq__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <polyline points="6 9 12 15 18 9"/>
-                            </svg>
-                        </button>
-                        <div class="faq__answer">
-                            <p>We accept cash, checks, and all major credit cards. Through PayPal you can also split the cost over time — interest-free installments on smaller jobs, or monthly financing on larger projects. Terms and eligibility are set by PayPal and shown before you commit.</p>
-                            <!-- Live Pay Later messaging. No data-pp-amount is set on
-                                 purpose: this page quotes no prices, so PayPal renders
-                                 its generic offer instead of a payment figure computed
-                                 from a number we do not have. On the estimate surface,
-                                 where a real total exists, set data-pp-amount to it.
-                                 text-color is black because this FAQ sits on
-                                 section--gray, a LIGHT background. On the dark sections
-                                 of this site it must be white or the required financing
-                                 disclosure renders invisible. -->
-                            <div
-                                data-pp-message
-                                data-pp-style-layout="text"
-                                data-pp-style-logo-type="inline"
-                                data-pp-style-text-color="black"></div>
-                        </div>
-                    </div>
-
-                    <div class="faq__item">
-                        <button class="faq__question" aria-expanded="false">
-                            <span>Do you offer warranties on your work?</span>
-                            <svg class="faq__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <polyline points="6 9 12 15 18 9"/>
-                            </svg>
-                        </button>
-                        <div class="faq__answer">
-                            <p>Yes, we stand behind our work with comprehensive warranties. The specific warranty terms depend on the type of project and are clearly outlined in your contract. We're committed to your long-term satisfaction.</p>
-                        </div>
-                    </div>
-
-                    <div class="faq__item">
-                        <button class="faq__question" aria-expanded="false">
-                            <span>Do I need a permit for driveway installation in Augusta, GA?</span>
-                            <svg class="faq__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <polyline points="6 9 12 15 18 9"/>
-                            </svg>
-                        </button>
-                        <div class="faq__answer">
-                            <p>Yes, Augusta GA requires permits for new driveways. FPC Construction handles permitting for driveways in Grovetown GA and Martinez GA, ensuring compliance with local codes in the CSRA region.</p>
-                        </div>
-                    </div>
-
-                    <div class="faq__item">
-                        <button class="faq__question" aria-expanded="false">
-                            <span>How long does septic tank installation take in Washington County, GA?</span>
-                            <svg class="faq__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <polyline points="6 9 12 15 18 9"/>
-                            </svg>
-                        </button>
-                        <div class="faq__answer">
-                            <p>Septic tank installation in Washington County GA typically takes 1-3 days, depending on soil conditions. Our team serves Waynesboro GA and Thomson GA with efficient, licensed solutions.</p>
-                        </div>
-                    </div>
-
-                    <div class="faq__item">
-                        <button class="faq__question" aria-expanded="false">
-                            <span>Can you grade land for a foundation near the Savannah River?</span>
-                            <svg class="faq__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <polyline points="6 9 12 15 18 9"/>
-                            </svg>
-                        </button>
-                        <div class="faq__answer">
-                            <p>Yes, we specialize in land grading for foundations along the Savannah River, including areas like Thomson GA and North Augusta SC. Proper drainage is prioritized to prevent future issues.</p>
-                        </div>
-                    </div>
-
-                    <div class="faq__item">
-                        <button class="faq__question" aria-expanded="false">
-                            <span>What's the difference between land clearing and land grading?</span>
-                            <svg class="faq__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <polyline points="6 9 12 15 18 9"/>
-                            </svg>
-                        </button>
-                        <div class="faq__answer">
-                            <p>Land clearing removes vegetation; land grading levels the soil for construction. Both services are offered for projects in Edgefield SC and Grovetown GA to prepare building sites.</p>
-                        </div>
-                    </div>
-
-                    <div class="faq__item">
-                        <button class="faq__question" aria-expanded="false">
-                            <span>Can you install gravel driveways year-round?</span>
-                            <svg class="faq__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <polyline points="6 9 12 15 18 9"/>
-                            </svg>
-                        </button>
-                        <div class="faq__answer">
-                            <p>Yes, we install gravel driveways year-round across the CSRA, including Thomson GA and North Augusta SC. Proper base compaction ensures long-term durability.</p>
-                        </div>
-                    </div>
-
-                    <div class="faq__item">
-                        <button class="faq__question" aria-expanded="false">
-                            <span>¿Requiere permiso la construcción de cercas en Georgia?</span>
-                            <svg class="faq__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <polyline points="6 9 12 15 18 9"/>
-                            </svg>
-                        </button>
-                        <div class="faq__answer">
-                            <p>Sí, depende del municipio. Nuestro equipo maneja trámites para cercas en Martinez GA, Evans GA y Waynesboro GA, garantizando cumplimiento legal.</p>
-                        </div>
-                    </div>
-
-                    <div class="faq__item">
-                        <button class="faq__question" aria-expanded="false">
-                            <span>Do you have Spanish-speaking team members?</span>
-                            <svg class="faq__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <polyline points="6 9 12 15 18 9"/>
-                            </svg>
-                        </button>
-                        <div class="faq__answer">
-                            <p>Yes, our bilingual team communicates in English and Spanish for clients across the CSRA, ensuring clear project understanding from estimate through completion.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer__grid">
-                <div class="footer__brand">
-                    <a href="#home" class="footer__logo">
-                        <img src="assets/images/logo.png" alt="FPC Construction LLC Logo">
-                    </a>
-                    <p class="footer__tagline">Building Dreams Into Reality</p>
-                    <p class="footer__description">Professional construction services in North Augusta, SC and the surrounding CSRA region since 2020.</p>
-                    <div class="footer__social" style="display:flex;gap:12px;margin-top:18px;">
-                        <a href="https://www.facebook.com/p/FPC-Construction-LLC-100066373038903/" target="_blank" rel="noopener" aria-label="FPC on Facebook" style="display:inline-flex;width:40px;height:40px;align-items:center;justify-content:center;border-radius:8px;background:rgba(255,255,255,.08);color:#fff;">
-                            <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20" aria-hidden="true"><path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"/></svg>
-                        </a>
-                        <a href="https://www.instagram.com/fpcconstructions" target="_blank" rel="noopener" aria-label="FPC on Instagram" style="display:inline-flex;width:40px;height:40px;align-items:center;justify-content:center;border-radius:8px;background:rgba(255,255,255,.08);color:#fff;">
-                            <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20" aria-hidden="true"><path d="M12 2.16c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.43.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.43.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41-.56-.22-.96-.48-1.38-.9-.42-.42-.68-.82-.9-1.38-.16-.43-.36-1.06-.41-2.23-.06-1.27-.07-1.65-.07-4.85s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.43-.16 1.06-.36 2.23-.41 1.27-.06 1.65-.07 4.85-.07M12 0C8.74 0 8.33.01 7.05.07 5.78.13 4.9.33 4.14.63c-.79.31-1.46.72-2.13 1.38C1.35 2.68.94 3.35.63 4.14.33 4.9.13 5.78.07 7.05.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.06 1.27.26 2.15.56 2.91.31.79.72 1.46 1.38 2.13.67.66 1.34 1.07 2.13 1.38.76.3 1.64.5 2.91.56C8.33 23.99 8.74 24 12 24s3.67-.01 4.95-.07c1.27-.06 2.15-.26 2.91-.56.79-.31 1.46-.72 2.13-1.38.66-.67 1.07-1.34 1.38-2.13.3-.76.5-1.64.56-2.91.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95c-.06-1.27-.26-2.15-.56-2.91-.31-.79-.72-1.46-1.38-2.13-.67-.66-1.34-1.07-2.13-1.38-.76-.3-1.64-.5-2.91-.56C15.67.01 15.26 0 12 0m0 5.84A6.16 6.16 0 1 0 18.16 12 6.16 6.16 0 0 0 12 5.84M12 16a4 4 0 1 1 4-4 4 4 0 0 1-4 4m6.41-10.85a1.44 1.44 0 1 0 1.44 1.44 1.44 1.44 0 0 0-1.44-1.44"/></svg>
-                        </a>
-                        <a href="https://wa.me/18036402595" target="_blank" rel="noopener" aria-label="FPC on WhatsApp" style="display:inline-flex;width:40px;height:40px;align-items:center;justify-content:center;border-radius:8px;background:rgba(255,255,255,.08);color:#fff;">
-                            <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
-                        </a>
-                    </div>
-                </div>
-
-                <div class="footer__links">
-                    <h3 class="footer__title">Quick Links</h3>
-                    <ul class="footer__nav">
-                        <li><a href="#home">Home</a></li>
-                        <li><a href="#about">About Us</a></li>
-                        <li><a href="#services">Services</a></li>
-                        <li><a href="#projects">Projects</a></li>
-                        <li><a href="#testimonials">Reviews</a></li>
-                        <li><a href="#contact">Contact</a></li>
-                    </ul>
-                </div>
-
-                <div class="footer__services">
-                    <h3 class="footer__title">Our Services</h3>
-                    <ul class="footer__nav">
-                        <li><a href="#services">Land Clearing</a></li>
-                        <li><a href="#services">Privacy Fencing</a></li>
-                        <li><a href="#services">Septic Services</a></li>
-                        <li><a href="#services">Land Grading</a></li>
-                        <li><a href="#services">Driveways</a></li>
-                        <li><a href="#services">Foundations</a></li>
-                    </ul>
-                </div>
-
-                <div class="footer__contact">
-                    <h3 class="footer__title">Contact Info</h3>
-                    <ul class="footer__contact-list">
-                        <li>
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
-                                <circle cx="12" cy="10" r="3"/>
-                            </svg>
-                            North Augusta, SC 29860
-                        </li>
-                        <li>
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
-                            </svg>
-                            <a href="tel:8038849305">(803) 884-9305</a>
-                        </li>
-                        <li>
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-                                <polyline points="22,6 12,13 2,6"/>
-                            </svg>
-                            <a href="mailto:info@fpcconstructions.com">info@fpcconstructions.com</a>
-                        </li>
-                        <li>
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <circle cx="12" cy="12" r="10"/>
-                                <polyline points="12 6 12 12 16 14"/>
-                            </svg>
-                            Mon-Fri: 7AM - 6PM
-                        </li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="footer__bottom">
-                <p class="footer__copyright">&copy; <span id="current-year">2025</span> FPC Construction LLC. All rights reserved.</p>
-                <p class="footer__powered footer__legal"><a href="/privacy">Privacy</a> &middot; <a href="/terms">Terms</a> &middot; <a href="/sms-opt-in">SMS Terms</a></p>
-                <!-- Optional: Remove or keep powered by line based on client preference -->
-                <p class="footer__powered">
-                    <a href="https://mpowerio.ai" target="_blank" rel="noopener">Powered by mpowerio.ai</a>
-                </p>
-            </div>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="i-phone" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" d="M5 4h3.2l1.9 4.6-2.4 1.6a11.5 11.5 0 0 0 6.1 6.1l1.6-2.4 4.6 1.9V19a2 2 0 0 1-2.1 2A16 16 0 0 1 3 6.1 2 2 0 0 1 5 4z"/></symbol>
+  <symbol id="i-chev" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" d="M9.5 6l6 6-6 6"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" d="M7 7l10 10M17 7L7 17"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" d="M5 12.5l4.2 4.2L19 7"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><path d="M12 4l9 16H3z" stroke-linejoin="round"/><path d="M12 10v4.5M12 17.4v.1"/></g></symbol>
+  <symbol id="i-fb" viewBox="0 0 24 24"><path fill="currentColor" d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.99 3.66 9.13 8.44 9.88v-6.99H7.9V12h2.54V9.8c0-2.51 1.49-3.89 3.78-3.89 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56V12h2.77l-.44 2.89h-2.33v6.99C18.34 21.13 22 16.99 22 12z"/></symbol>
+  <symbol id="i-ig" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r=".6" fill="currentColor"/></g></symbol>
+</svg>
+<a class="skip" href="#main">Skip to main content</a>
+<header class="site-header">
+  <div class="wrap">
+    <a class="plate" href="/" aria-label="FPC Construction home">
+      <span class="plate__core"><img src="/assets/img/logo-176.webp" srcset="/assets/img/logo-176.webp 176w, /assets/img/logo-264.webp 264w" sizes="(min-width: 900px) 88px, 72px" width="264" height="164" alt="FPC Construction"></span>
+    </a>
+    <nav class="site-nav" aria-label="Main">
+      <a href="/#services">Services</a>
+      <a href="/#work">Our work</a>
+      <a href="/#area">Service area</a>
+      <a href="/estimate/">Free estimate</a>
+    </nav>
+    <div class="site-header__right">
+      <nav class="lang" aria-label="Language / Idioma">
+  <span class="lang__thumb" aria-hidden="true"></span>
+  <a href="/" hreflang="en" lang="en" data-lang="en" aria-current="true">EN<span class="vh"> English</span></a>
+  <a href="/es/" hreflang="es" lang="es" data-lang="es">ES<span class="vh"> Español</span></a>
+</nav>
+      <a class="call-icon" href="tel:+18038849305" aria-label="Call (803) 884-9305"><svg class="icon" aria-hidden="true"><use href="#i-phone"/></svg></a>
+      <a class="btn btn--line header-phone" href="tel:+18038849305"><span class="num">(803) 884-9305</span><span class="btn__nub" aria-hidden="true"><svg><use href="#i-phone"/></svg></span></a>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <!-- ======================= HERO ======================= -->
+  <!-- Old-site fragment aliases are kept so published links still land somewhere honest:
+       #home = hero, #about = the "who FPC is" lead, #projects/#testimonials/#featured = Recent work
+       (no testimonials are shown, so #testimonials lands on real job photos, never on reviews). -->
+  <section class="hero" id="home" aria-labelledby="h1">
+    <div class="wrap hero__grid">
+      <div class="hero__text">
+        <!-- Locked slogan: English, verbatim, on every language (operator decision 2026-10-18). -->
+        <h1 id="h1" class="display hero__h1" lang="en">
+          <span class="clause clause--1"><span>No job too small, no dream too big</span></span>
+          <span class="clause clause--2"><span>— FPC Construction for all your needs.</span></span>
+        </h1>
+        <div class="grade" aria-hidden="true"></div>
+        <div class="hero__after">
+          <p class="lead" id="about">Septic, drainage and site work for homes and land across the CSRA. FPC grew out of heavy equipment, and septic and drainage are still the core of the business.</p>
+          <div class="hero__actions" data-bar-sentinel>
+            <a class="btn btn--red" href="/estimate/"><span>Get a free estimate</span><span class="btn__nub" aria-hidden="true"><svg><use href="#i-chev"/></svg></span></a>
+            <a class="btn btn--line" href="tel:+18038849305"><span>Call <span class="num">(803) 884-9305</span></span><span class="btn__nub" aria-hidden="true"><svg><use href="#i-phone"/></svg></span></a>
+          </div>
+          <p class="hero__fil"><span class="fil-dot" aria-hidden="true"></span><span><b>Fil, our AI assistant,</b> answers the phone 24/7 in English or Spanish. Filemon follows up.</span></p>
         </div>
-    </footer>
+      </div>
+      <figure class="hero__photo" style="margin-block:0">
+        <div class="frame"><picture><source type="image/avif" srcset="/assets/img/gallery-19-480.avif 480w, /assets/img/gallery-19-800.avif 800w, /assets/img/gallery-19-1200.avif 1200w" sizes="(min-width: 1280px) 480px, (min-width: 900px) 38vw, 100vw"><img src="/assets/img/gallery-19-800.webp" srcset="/assets/img/gallery-19-480.webp 480w, /assets/img/gallery-19-800.webp 800w, /assets/img/gallery-19-1200.webp 1200w" sizes="(min-width: 1280px) 480px, (min-width: 900px) 38vw, 100vw" width="1200" height="900" fetchpriority="high" decoding="async" alt="An orange excavator parked on a freshly poured concrete slab while a crew member works beside it"></picture></div>
+        <figcaption class="cap"><span>Slab pour with the excavator on site</span><span class="ph">Placeholder: town, month</span></figcaption>
+      </figure>
+    </div>
+  </section>
 
-    <!--
-      Lead intake target. Website contact-form leads POST to
-      FPC_BOOKING_URL + "/webhook/lead-intake" (see assets/js/main.js).
-      Pointed at the always-on Vercel CRM public route, which writes the lead
-      directly into the CRM's Supabase (source of truth) — no dependency on the
-      Butch booking service or the Cloudflare tunnel. Resolves to:
-        https://fpc-construction-crm.vercel.app/api/public/webhook/lead-intake
-      NOTE: this route must be deployed before the form will deliver. See the
-      cross-linked CRM PR (feat/fpc-public-lead-route).
-    -->
-    <script>window.FPC_BOOKING_URL = "https://fpc-construction-crm.vercel.app/api/public";</script>
-    <script src="assets/js/main.min.js"></script>
+  <!-- ======================= CORE TRADES (clay band) ======================= -->
+  <section class="core cut-both on-dark" id="services" aria-labelledby="core-h">
+    <div class="wrap">
+      <div class="core__intro">
+        <h2 id="core-h" class="h2">Septic and drainage come first.</h2>
+        <p class="lead muted">This is the core of what FPC does. When a tank backs up or a yard won't drain, call first and Filemon will come look.</p>
+      </div>
+      <div class="core__grid">
+        <article class="trade trade--a" data-reveal>
+          <figure>
+            <div class="frame"><picture data-defer><source type="image/avif" data-srcset="/assets/img/gallery-12-480.avif 480w, /assets/img/gallery-12-800.avif 800w, /assets/img/gallery-12-1200.avif 1200w" sizes="(min-width: 1280px) 672px, (min-width: 900px) 52vw, calc(100vw - 40px)"><img data-src="/assets/img/gallery-12-800.webp" data-srcset="/assets/img/gallery-12-480.webp 480w, /assets/img/gallery-12-800.webp 800w, /assets/img/gallery-12-1200.webp 1200w" sizes="(min-width: 1280px) 672px, (min-width: 900px) 52vw, calc(100vw - 40px)" width="1200" height="900" decoding="async" alt="Gravel bed and black drain pipe laid in a new drain field"></picture><noscript><picture><source type="image/avif" srcset="/assets/img/gallery-12-480.avif 480w, /assets/img/gallery-12-800.avif 800w, /assets/img/gallery-12-1200.avif 1200w" sizes="(min-width: 1280px) 672px, (min-width: 900px) 52vw, calc(100vw - 40px)"><img src="/assets/img/gallery-12-800.webp" srcset="/assets/img/gallery-12-480.webp 480w, /assets/img/gallery-12-800.webp 800w, /assets/img/gallery-12-1200.webp 1200w" sizes="(min-width: 1280px) 672px, (min-width: 900px) 52vw, calc(100vw - 40px)" width="1200" height="900" loading="lazy" decoding="async" alt="Gravel bed and black drain pipe laid in a new drain field"></picture></noscript></div>
+            <figcaption><span>Gravel bed and pipe in a new drain field</span></figcaption>
+          </figure>
+          <h3 class="h3">Septic systems</h3>
+          <p>New tanks, repairs, pumping, and drain field replacement, for homes and businesses.</p>
+          <a class="textlink" href="/estimate/?type=septic-systems"><span class="textlink__label">Get a septic estimate</span><span class="textlink__nub" aria-hidden="true"><svg><use href="#i-chev"/></svg></span></a>
+        </article>
+        <article class="trade trade--b" data-reveal>
+          <figure>
+            <div class="frame"><picture data-defer><source type="image/avif" data-srcset="/assets/img/gallery-9-480.avif 480w, /assets/img/gallery-9-800.avif 800w, /assets/img/gallery-9-1200.avif 1200w" sizes="(min-width: 1280px) 480px, (min-width: 900px) 38vw, calc(100vw - 40px)"><img data-src="/assets/img/gallery-9-800.webp" data-srcset="/assets/img/gallery-9-480.webp 480w, /assets/img/gallery-9-800.webp 800w, /assets/img/gallery-9-1200.webp 1200w" sizes="(min-width: 1280px) 480px, (min-width: 900px) 38vw, calc(100vw - 40px)" width="1200" height="900" decoding="async" alt="Drain pipe in a red clay trench beside a metal building"></picture><noscript><picture><source type="image/avif" srcset="/assets/img/gallery-9-480.avif 480w, /assets/img/gallery-9-800.avif 800w, /assets/img/gallery-9-1200.avif 1200w" sizes="(min-width: 1280px) 480px, (min-width: 900px) 38vw, calc(100vw - 40px)"><img src="/assets/img/gallery-9-800.webp" srcset="/assets/img/gallery-9-480.webp 480w, /assets/img/gallery-9-800.webp 800w, /assets/img/gallery-9-1200.webp 1200w" sizes="(min-width: 1280px) 480px, (min-width: 900px) 38vw, calc(100vw - 40px)" width="1200" height="900" loading="lazy" decoding="async" alt="Drain pipe in a red clay trench beside a metal building"></picture></noscript></div>
+            <figcaption><span>Drain pipe in a red clay trench</span></figcaption>
+          </figure>
+          <h3 class="h3">Drainage and water control</h3>
+          <p>Standing water, a yard that never dries out, erosion. French drains, stormwater and site drainage, dug with our own equipment.</p>
+          <a class="textlink" href="/estimate/?type=drainage-and-site-work"><span class="textlink__label">Get a drainage estimate</span><span class="textlink__nub" aria-hidden="true"><svg><use href="#i-chev"/></svg></span></a>
+        </article>
+      </div>
+    </div>
+  </section>
 
-    <!-- FPC Construction — Fil Voice Agent (ElevenLabs) -->
-    <elevenlabs-convai agent-id="agent_5801kehtxvkzenwvpc48t3sr5n56"></elevenlabs-convai>
-    <script src="https://elevenlabs.io/convai-widget/index.js" async type="text/javascript"></script>
+  <!-- ======================= TRADE INDEX ======================= -->
+  <section class="index" aria-labelledby="index-h">
+    <div class="wrap index__grid">
+      <div class="index__aside">
+        <h2 id="index-h" class="h2">Everything else we do</h2>
+        <p class="muted">If your job isn't on the list, ask anyway. Filemon comes out and looks at it.</p>
+        <p class="muted">FPC also takes county and state contract work.</p>
+      </div>
+      <div class="index__groups">
+        <div class="index__group">
+          <h3 class="h3">Site work</h3>
+          <ul>
+            <li><a class="row" href="/estimate/?type=excavation"><span class="row__name">Excavation</span><span class="row__desc">Digging, trenching, hauling dirt</span><span class="row__nub" aria-hidden="true"><svg><use href="#i-chev"/></svg></span></a></li>
+            <li><a class="row" href="/estimate/?type=land-grading"><span class="row__name">Grading</span><span class="row__desc">Yards, pads, driveways, commercial sites</span><span class="row__nub" aria-hidden="true"><svg><use href="#i-chev"/></svg></span></a></li>
+            <li><a class="row" href="/estimate/?type=land-clearing"><span class="row__name">Land clearing</span><span class="row__desc">Trees, stumps, brush and debris</span><span class="row__nub" aria-hidden="true"><svg><use href="#i-chev"/></svg></span></a></li>
+            <li><a class="row" href="/estimate/?type=demolition"><span class="row__name">Demolition</span><span class="row__desc">Structures, old concrete, haul-off</span><span class="row__nub" aria-hidden="true"><svg><use href="#i-chev"/></svg></span></a></li>
+          </ul>
+        </div>
+        <div class="index__group">
+          <h3 class="h3">Concrete and paving</h3>
+          <ul>
+            <li><a class="row" href="/estimate/?type=concrete"><span class="row__name">Concrete</span><span class="row__desc">Driveways, patios, sidewalks, slabs</span><span class="row__nub" aria-hidden="true"><svg><use href="#i-chev"/></svg></span></a></li>
+            <li><a class="row" href="/estimate/?type=asphalt-and-road-work"><span class="row__name">Asphalt paving</span><span class="row__desc">Filemon runs the job and brings in the paving crew</span><span class="row__nub" aria-hidden="true"><svg><use href="#i-chev"/></svg></span></a></li>
+          </ul>
+        </div>
+        <div class="index__group index__group--wide">
+          <h3 class="h3">Building and finish work</h3>
+          <ul>
+            <li><a class="row" href="/estimate/?type=roofing"><span class="row__name">Roofing</span><span class="row__desc">Shingle replacement, metal roofs, repairs</span><span class="row__nub" aria-hidden="true"><svg><use href="#i-chev"/></svg></span></a></li>
+            <li><a class="row" href="/estimate/?type=decks"><span class="row__name">Decks</span><span class="row__desc">Wood and composite</span><span class="row__nub" aria-hidden="true"><svg><use href="#i-chev"/></svg></span></a></li>
+            <li><a class="row" href="/estimate/?type=carpentry"><span class="row__name">Carpentry</span><span class="row__desc">Patio covers, pergolas, gazebos, railings</span><span class="row__nub" aria-hidden="true"><svg><use href="#i-chev"/></svg></span></a></li>
+            <li><a class="row" href="/estimate/?type=outdoor-living"><span class="row__name">Outdoor living</span><span class="row__desc">Outdoor kitchens, fire pits, hardscaping, screened porches</span><span class="row__nub" aria-hidden="true"><svg><use href="#i-chev"/></svg></span></a></li>
+            <li><a class="row" href="/estimate/?type=fencing"><span class="row__name">Fencing</span><span class="row__desc">Wood, vinyl and chain link</span><span class="row__nub" aria-hidden="true"><svg><use href="#i-chev"/></svg></span></a></li>
+            <li><a class="row" href="/estimate/?type=brick-and-tile-flooring"><span class="row__name">Flooring and tile</span><span class="row__desc">Brick and tile, inside and out</span><span class="row__nub" aria-hidden="true"><svg><use href="#i-chev"/></svg></span></a></li>
+            <li><a class="row" href="/estimate/?type=electrical"><span class="row__name">Electrical</span><span class="row__desc">Panels, circuits, outlets</span><span class="row__nub" aria-hidden="true"><svg><use href="#i-chev"/></svg></span></a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================= WORK ======================= -->
+  <section class="work" id="work" aria-labelledby="work-h">
+    <span id="projects" class="vh"></span><span id="testimonials" class="vh"></span><span id="featured" class="vh"></span>
+    <div class="wrap">
+      <div class="work__head">
+        <h2 id="work-h" class="h2">Recent work</h2>
+        <p class="muted">Every photo on this page is an FPC job.</p>
+      </div>
+      <div class="work__strip" data-reveal>
+        <figure class="shot"><div class="frame"><picture><source type="image/avif" srcset="/assets/img/gallery-3-480.avif 480w, /assets/img/gallery-3-800.avif 800w, /assets/img/gallery-3-1200.avif 1200w" sizes="(min-width: 1280px) 784px, (min-width: 900px) 62vw, 82vw"><img src="/assets/img/gallery-3-800.webp" srcset="/assets/img/gallery-3-480.webp 480w, /assets/img/gallery-3-800.webp 800w, /assets/img/gallery-3-1200.webp 1200w" sizes="(min-width: 1280px) 784px, (min-width: 900px) 62vw, 82vw" width="1200" height="900" loading="lazy" decoding="async" alt="Concrete truck pouring a large slab on a cleared lot"></picture></div><figcaption><span class="what">Concrete truck pouring a slab</span><span class="ph">Placeholder: town, month</span></figcaption></figure>
+        <figure class="shot"><div class="frame"><picture><source type="image/avif" srcset="/assets/img/gallery-8-480.avif 480w, /assets/img/gallery-8-800.avif 800w, /assets/img/gallery-8-1200.avif 1200w" sizes="(min-width: 1280px) 384px, (min-width: 900px) 31vw, 82vw"><img src="/assets/img/gallery-8-800.webp" srcset="/assets/img/gallery-8-480.webp 480w, /assets/img/gallery-8-800.webp 800w, /assets/img/gallery-8-1200.webp 1200w" sizes="(min-width: 1280px) 384px, (min-width: 900px) 31vw, 82vw" width="1200" height="900" loading="lazy" decoding="async" alt="New concrete septic tank set in the ground beside a house"></picture></div><figcaption><span class="what">New septic tank set beside the house</span><span class="ph">Placeholder: town, month</span></figcaption></figure>
+        <figure class="shot"><div class="frame"><picture><source type="image/avif" srcset="/assets/img/project-1-480.avif 480w, /assets/img/project-1-800.avif 800w" sizes="(min-width: 1280px) 384px, (min-width: 900px) 31vw, 82vw"><img src="/assets/img/project-1-800.webp" srcset="/assets/img/project-1-480.webp 480w, /assets/img/project-1-800.webp 800w" sizes="(min-width: 1280px) 384px, (min-width: 900px) 31vw, 82vw" width="800" height="600" loading="lazy" decoding="async" alt="Long concrete driveway with red brick bands"></picture></div><figcaption><span class="what">Concrete driveway with brick bands</span><span class="ph">Placeholder: town, month</span></figcaption></figure>
+        <figure class="shot"><div class="frame"><picture><source type="image/avif" srcset="/assets/img/gallery-7-480.avif 480w, /assets/img/gallery-7-800.avif 800w, /assets/img/gallery-7-1200.avif 1200w" sizes="(min-width: 1280px) 384px, (min-width: 900px) 31vw, 82vw"><img src="/assets/img/gallery-7-800.webp" srcset="/assets/img/gallery-7-480.webp 480w, /assets/img/gallery-7-800.webp 800w, /assets/img/gallery-7-1200.webp 1200w" sizes="(min-width: 1280px) 384px, (min-width: 900px) 31vw, 82vw" width="1200" height="900" loading="lazy" decoding="async" alt="Chamber pipe laid in a fresh drain field trench"></picture></div><figcaption><span class="what">Chamber drain field going in</span><span class="ph">Placeholder: town, month</span></figcaption></figure>
+        <figure class="shot"><div class="frame"><picture><source type="image/avif" srcset="/assets/img/project-5-480.avif 480w, /assets/img/project-5-800.avif 800w" sizes="(min-width: 1280px) 384px, (min-width: 900px) 31vw, 82vw"><img src="/assets/img/project-5-800.webp" srcset="/assets/img/project-5-480.webp 480w, /assets/img/project-5-800.webp 800w" sizes="(min-width: 1280px) 384px, (min-width: 900px) 31vw, 82vw" width="800" height="600" loading="lazy" decoding="async" alt="Excavator clearing a wooded lot on a misty morning"></picture></div><figcaption><span class="what">Clearing a wooded lot</span><span class="ph">Placeholder: town, month</span></figcaption></figure>
+        <figure class="shot"><div class="frame"><picture><source type="image/avif" srcset="/assets/img/gallery-15-480.avif 480w, /assets/img/gallery-15-800.avif 800w, /assets/img/gallery-15-1200.avif 1200w" sizes="(min-width: 1280px) 384px, (min-width: 900px) 31vw, 82vw"><img src="/assets/img/gallery-15-800.webp" srcset="/assets/img/gallery-15-480.webp 480w, /assets/img/gallery-15-800.webp 800w, /assets/img/gallery-15-1200.webp 1200w" sizes="(min-width: 1280px) 384px, (min-width: 900px) 31vw, 82vw" width="1200" height="900" loading="lazy" decoding="async" alt="Crew member finishing fresh concrete next to an excavator bucket"></picture></div><figcaption><span class="what">Finishing a slab next to the excavator</span><span class="ph">Placeholder: town, month</span></figcaption></figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================= STEPS (a real sequence, so numbers are earned) ======================= -->
+  <section class="steps" aria-labelledby="steps-h">
+    <div class="wrap">
+      <h2 id="steps-h" class="h2">How an estimate works</h2>
+      <ol>
+        <li><h3>Call or send the form</h3><p>Fil answers any time, day or night.</p></li>
+        <li><h3>Filemon comes out</h3><p>He looks at the site in person. The estimate is free.</p></li>
+        <li><h3>You get a written estimate</h3><p>You see the price before any work starts.</p></li>
+        <li><h3>We do the work</h3><p>Filemon runs the job.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ======================= AREA ======================= -->
+  <section class="area" id="area" aria-labelledby="area-h">
+    <div class="wrap">
+      <h2 id="area-h" class="h2">Where we work</h2>
+      <p class="lead muted" style="margin-top:var(--s-16)">About 50 miles around North Augusta, on both sides of the Savannah River.</p>
+      <div class="area__banks">
+        <div class="bank">
+          <h3>South Carolina</h3>
+          <ul>
+            <li class="home"><span>North Augusta</span> <span class="vh">(home base)</span></li>
+            <li>Aiken</li><li>Beech Island</li><li>Graniteville</li><li>Edgefield</li><li>Modoc</li><li>McCormick</li><li>Greenwood</li><li>Trenton</li><li>Johnston</li><li>Saluda</li><li>Ridge Spring</li><li>Ward</li><li>Batesburg-Leesville</li>
+          </ul>
+        </div>
+        <div class="river" aria-hidden="true">
+          <svg viewBox="0 0 400 16" preserveAspectRatio="none" class="river__h"><path d="M0 8 C 40 14, 80 2, 120 8 S 200 14, 240 8 S 320 2, 400 8" fill="none" stroke="currentColor" stroke-width="2" vector-effect="non-scaling-stroke"/></svg>
+          <svg viewBox="0 0 16 400" preserveAspectRatio="none" class="river__v"><path d="M8 0 C 14 40, 2 80, 8 120 S 14 200, 8 240 S 2 320, 8 400" fill="none" stroke="currentColor" stroke-width="2" vector-effect="non-scaling-stroke"/></svg>
+          <span>Savannah River</span>
+        </div>
+        <div class="bank">
+          <h3>Georgia</h3>
+          <ul>
+            <li>Augusta</li><li>Martinez</li><li>Evans</li><li>Grovetown</li><li>Hephzibah</li><li>Wrens</li><li>Thomson</li><li>Waynesboro</li><li>Washington</li>
+          </ul>
+        </div>
+      </div>
+      <p class="area__note muted">Don't see your town? Call and ask.</p>
+    </div>
+  </section>
+
+  <!-- ======================= COMMON QUESTIONS ======================= -->
+  <section class="faq" id="faq" aria-labelledby="faq-h">
+    <div class="wrap faq__grid">
+      <h2 id="faq-h" class="h2">Common questions</h2>
+      <div class="faq__list">
+        <details><summary>Is the estimate free?<span class="faq__nub" aria-hidden="true"><svg><use href="#i-chev"/></svg></span></summary><div class="faq__a"><p>Yes. Filemon comes out, looks at the job in person and gives you a written estimate. There is no charge for the visit.</p></div></details>
+        <details><summary>Where do you work?<span class="faq__nub" aria-hidden="true"><svg><use href="#i-chev"/></svg></span></summary><div class="faq__a"><p>About 50 miles around North Augusta, SC, on both sides of the Savannah River. Not sure you are in range? Call and ask.</p></div></details>
+        <details><summary>Do you speak Spanish?<span class="faq__nub" aria-hidden="true"><svg><use href="#i-chev"/></svg></span></summary><div class="faq__a"><p>Yes. The phone is answered in English or Spanish, and you can choose your language on the estimate form.</p></div></details>
+        <details data-paypal><summary>What payment methods do you accept?<span class="faq__nub" aria-hidden="true"><svg><use href="#i-chev"/></svg></span></summary><div class="faq__a"><p>We accept cash, checks, and all major credit cards. Through PayPal you can also split the cost over time — interest-free installments on smaller jobs, or monthly financing on larger projects. Terms and eligibility are set by PayPal and shown before you commit.</p>
+          <div class="pp-slot" data-pp-message data-pp-style-layout="text" data-pp-style-logo-type="inline" data-pp-style-text-color="black"></div>
+        </div></details>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================= REVIEWS (placeholder) ======================= -->
+  <section class="reviews" aria-labelledby="rev-h">
+    <div class="wrap">
+      <h2 id="rev-h" class="h2">What customers say</h2>
+      <div class="reviews__ph">
+        <p><span class="ph">Placeholder: no reviews shown yet</span></p>
+        <p>Real Google reviews go here once FPC's two Google Business listings are merged. Nothing is written or shown until then.</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer on-dark cut-top" id="contact">
+  <div class="wrap footer-cta">
+    <div>
+      <h2 class="h2">Tell us about the job.</h2>
+      <p class="lead muted" style="margin-top:var(--s-16)">Call, or send the estimate form. Filemon comes out and looks at it, free.</p>
+    </div>
+    <div class="footer-cta__actions">
+      <a class="btn btn--red btn--block" href="/estimate/"><span>Get a free estimate</span><span class="btn__nub" aria-hidden="true"><svg><use href="#i-chev"/></svg></span></a>
+      <a class="btn btn--light btn--block" href="tel:+18038849305"><span>Call <span class="num">(803) 884-9305</span></span><span class="btn__nub" aria-hidden="true"><svg><use href="#i-phone"/></svg></span></a>
+    </div>
+  </div>
+  <div class="wrap footer-grid">
+    <div>
+      <a class="plate" href="/" aria-label="FPC Construction home"><span class="plate__core"><img src="/assets/img/logo-176.webp" srcset="/assets/img/logo-176.webp 176w, /assets/img/logo-264.webp 264w" sizes="(min-width: 900px) 88px, 72px" width="264" height="164" alt="FPC Construction" loading="lazy" decoding="async"></span></a>
+      <p class="small muted" style="margin-top:var(--s-16)">The phone is answered 24/7 by Fil, our AI assistant, in English or Spanish.</p>
+      <div class="social">
+        <a href="https://www.facebook.com/p/FPC-Construction-LLC-100066373038903/" aria-label="FPC on Facebook" rel="noopener"><svg aria-hidden="true"><use href="#i-fb"/></svg></a>
+        <a href="https://www.instagram.com/fpcconstructions" aria-label="FPC on Instagram" rel="noopener"><svg aria-hidden="true"><use href="#i-ig"/></svg></a>
+      </div>
+    </div>
+    <div>
+      <h3>Contact</h3>
+      <ul class="small">
+        <li><a class="num" href="tel:+18038849305">(803) 884-9305</a></li>
+        <li><a href="mailto:info@fpcconstructions.com">info@fpcconstructions.com</a></li>
+        <li class="muted">North Augusta, SC 29860</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Hours</h3>
+      <ul class="small">
+        <li>Monday to Saturday, 7 AM to 7 PM</li>
+        <li>Sunday closed</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Pages</h3>
+      <ul class="small">
+        <li><a href="/#services">Services</a></li>
+        <li><a href="/#work">Our work</a></li>
+        <li><a href="/#area">Service area</a></li>
+        <li><a href="/estimate/">Free estimate</a></li>
+        <li><a class="muted" href="https://fpc-construction-crm.vercel.app/login" rel="nofollow">Team sign-in</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="wrap footer-legal">
+    <p class="muted">&copy; <span data-year>2026</span> FPC Construction LLC</p>
+    <nav aria-label="Legal">
+      <a href="/privacy">Privacy</a>
+      <a href="/terms">Terms</a>
+      <a href="/sms-opt-in">SMS terms</a>
+    </nav>
+    <a class="muted" href="https://mpowerio.ai" rel="noopener">Powered by mpowerio.ai</a>
+  </div>
+</footer>
+<div class="island" role="region" aria-label="Quick actions">
+  <a class="plate" href="/" aria-label="FPC Construction home"><span class="plate__core"><img src="/assets/img/logo-176.webp" srcset="/assets/img/logo-176.webp 176w, /assets/img/logo-264.webp 264w" sizes="56px" width="264" height="164" alt=""></span></a>
+  <a class="island__phone num" href="tel:+18038849305">(803) 884-9305</a>
+  <nav class="lang" aria-label="Language / Idioma">
+  <span class="lang__thumb" aria-hidden="true"></span>
+  <a href="/" hreflang="en" lang="en" data-lang="en" aria-current="true">EN<span class="vh"> English</span></a>
+  <a href="/es/" hreflang="es" lang="es" data-lang="es">ES<span class="vh"> Español</span></a>
+</nav>
+  <a class="btn btn--red" href="/estimate/"><span>Get a free estimate</span><span class="btn__nub" aria-hidden="true"><svg><use href="#i-chev"/></svg></span></a>
+</div>
+<div class="action-bar" role="region" aria-label="Quick actions">
+  <a class="btn btn--line" href="tel:+18038849305"><span>Call</span><span class="btn__nub" aria-hidden="true"><svg><use href="#i-phone"/></svg></span></a>
+  <a class="btn btn--red" href="/estimate/"><span>Free estimate</span><span class="btn__nub" aria-hidden="true"><svg><use href="#i-chev"/></svg></span></a>
+</div>
+<script src="/assets/site/core.js" defer></script>
+<!-- Web analytics: OFF (no token; see tools/site/build.mjs). -->
 </body>
 </html>

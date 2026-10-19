@@ -1,4 +1,4 @@
-# Contact-form delivery regression
+# Estimate-form delivery regression
 
 From the repository root, with Node.js 22+:
 
@@ -6,22 +6,23 @@ From the repository root, with Node.js 22+:
 npm ci --prefix tools/contact-form
 npm exec --prefix tools/contact-form -- playwright install chromium
 npm test --prefix tools/contact-form
-npm run build --prefix tools/contact-form
-npm run check:asset --prefix tools/contact-form
+npm run check:asset --prefix tools/contact-form   # built pages match tools/site sources
 ```
 
-The build uses pinned Terser 5.44.0 to regenerate `assets/js/main.min.js` from
-`assets/js/main.js` with compression, mangling, and no comments. Commit both files.
-The site serves the minified file directly; it has no deployment-time build step.
-`check:asset` checks byte-for-byte regeneration.
+The browser suite loads the built `/estimate/` and `/es/estimado/` pages from this checkout
+(GitHub Pages-style path resolution). Every network request is intercepted: lead POSTs get
+synthetic local responses and every other external request is aborted. It sends no leads or
+emails to production.
 
-The browser suite loads the actual `index.html` and assets with both JS variants.
-Every network request is intercepted: synthetic lead responses are returned locally
-and other external requests are blocked. It sends no leads or emails to production.
-Tests cover acceptance receipts, HTTP/JSON/network errors, missing configuration,
-timeout, validation, retry, and ten concurrent submit events. Browser time advances
-locally for the timeout check rather than waiting fifteen seconds.
+Cases: receipt acceptance (200/201 with `booking_id`), HTTP / JSON / network errors,
+success-shaped bodies on error statuses, missing endpoint, timeout (including a pending JSON
+body and a late receipt), validation with inline errors and a focused summary, retry, ten
+repeated submits, the exact CRM payload (only accepted keys; address, best time and language
+folded into `notes`), Spanish `language_preference`, no SMS opt-in or photo upload, answers,
+chips, errors and the failure banner kept across EN/ES switches (sessionStorage draft, cleared
+once captured), a language switch held while a request is sending, every field locked while
+sending (unlocked on failure) with the success panel listing exactly what was sent, and
+negative controls proving the receipt, error-slot, lock and draft tests can fail.
 
-The existing GitHub workflow only generates example SLSA release artifacts, and
-`deno.json` excludes site assets from its checks. These commands are the focused
-checks for this form; they do not prove live CRM capture or owner email delivery.
+Browser time advances locally for the timeout checks rather than waiting fifteen seconds.
+These checks do not prove live CRM capture or owner email delivery.

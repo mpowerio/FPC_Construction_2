@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="{{v.lang}}">
+<head>
+{{> head}}
+<style>
+{{v.css}}
+</style>
+{{v.jsonld}}
+</head>
+<body>
+{{> icons}}
+{{> header}}
+
+<main id="main">
+  <!-- ======================= HERO ======================= -->
+  <!-- Old-site fragment aliases are kept so published links still land somewhere honest:
+       #home = hero, #about = the "who FPC is" lead, #projects/#testimonials/#featured = Recent work
+       (no testimonials are shown, so #testimonials lands on real job photos, never on reviews). -->
+  <section class="hero" id="home" aria-labelledby="h1">
+    <div class="wrap hero__grid">
+      <div class="hero__text">
+        <!-- Locked slogan: English, verbatim, on every language (operator decision 2026-10-18). -->
+        <h1 id="h1" class="display hero__h1" lang="en">
+          <span class="clause clause--1"><span>No job too small, no dream too big</span></span>
+          <span class="clause clause--2"><span>— FPC Construction for all your needs.</span></span>
+        </h1>
+        <div class="grade" aria-hidden="true"></div>
+        <div class="hero__after">
+          <p class="lead" id="about">{{t.hero.lead}}</p>
+          <div class="hero__actions" data-bar-sentinel>
+            <a class="btn btn--red" href="{{v.estimate}}"><span>{{t.cta.estimate}}</span><span class="btn__nub" aria-hidden="true"><svg><use href="#i-chev"/></svg></span></a>
+            <a class="btn btn--line" href="tel:+18038849305"><span>{{t.cta.callpre}} <span class="num">(803) 884-9305</span></span><span class="btn__nub" aria-hidden="true"><svg><use href="#i-phone"/></svg></span></a>
+          </div>
+          <p class="hero__fil"><span class="fil-dot" aria-hidden="true"></span><span>{{t.hero.fil}}</span></p>
+        </div>
+      </div>
+      <figure class="hero__photo" style="margin-block:0">
+        <div class="frame">{{img.hero}}</div>
+        <figcaption class="cap"><span>{{t.hero.cap}}</span><span class="ph">{{t.ph.townmonth}}</span></figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ======================= CORE TRADES (clay band) ======================= -->
+  <section class="core cut-both on-dark" id="services" aria-labelledby="core-h">
+    <div class="wrap">
+      <div class="core__intro">
+        <h2 id="core-h" class="h2">{{t.core.h}}</h2>
+        <p class="lead muted">{{t.core.p}}</p>
+      </div>
+      <div class="core__grid">
+        <article class="trade trade--a" data-reveal>
+          <figure>
+            <div class="frame">{{img.septic}}</div>
+            <figcaption><span>{{t.core.s.cap}}</span></figcaption>
+          </figure>
+          <h3 class="h3">{{t.core.s.h}}</h3>
+          <p>{{t.core.s.p}}</p>
+          <a class="textlink" href="{{v.estimate}}?type=septic-systems"><span class="textlink__label">{{t.core.s.cta}}</span><span class="textlink__nub" aria-hidden="true"><svg><use href="#i-chev"/></svg></span></a>
+        </article>
+        <article class="trade trade--b" data-reveal>
+          <figure>
+            <div class="frame">{{img.drainage}}</div>
+            <figcaption><span>{{t.core.d.cap}}</span></figcaption>
+          </figure>
+          <h3 class="h3">{{t.core.d.h}}</h3>
+          <p>{{t.core.d.p}}</p>
+          <a class="textlink" href="{{v.estimate}}?type=drainage-and-site-work"><span class="textlink__label">{{t.core.d.cta}}</span><span class="textlink__nub" aria-hidden="true"><svg><use href="#i-chev"/></svg></span></a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================= TRADE INDEX ======================= -->
+  <section class="index" aria-labelledby="index-h">
+    <div class="wrap index__grid">
+      <div class="index__aside">
+        <h2 id="index-h" class="h2">{{t.idx.h}}</h2>
+        <p class="muted">{{t.idx.p1}}</p>
+        <p class="muted">{{t.idx.p2}}</p>
+      </div>
+      <div class="index__groups">
+        <div class="index__group">
+          <h3 class="h3">{{t.idx.g1}}</h3>
+          <ul>
+            {{row excavation excavation}}
+            {{row land-grading grading}}
+            {{row land-clearing clearing}}
+            {{row demolition demo}}
+          </ul>
+        </div>
+        <div class="index__group">
+          <h3 class="h3">{{t.idx.g2}}</h3>
+          <ul>
+            {{row concrete concrete}}
+            {{row asphalt-and-road-work asphalt}}
+          </ul>
+        </div>
+        <div class="index__group index__group--wide">
+          <h3 class="h3">{{t.idx.g3}}</h3>
+          <ul>
+            {{row roofing roofing}}
+            {{row decks decks}}
+            {{row carpentry carpentry}}
+            {{row outdoor-living outdoor}}
+            {{row fencing fencing}}
+            {{row brick-and-tile-flooring flooring}}
+            {{row electrical electrical}}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================= WORK ======================= -->
+  <section class="work" id="work" aria-labelledby="work-h">
+    <span id="projects" class="vh"></span><span id="testimonials" class="vh"></span><span id="featured" class="vh"></span>
+    <div class="wrap">
+      <div class="work__head">
+        <h2 id="work-h" class="h2">{{t.work.h}}</h2>
+        <p class="muted">{{t.work.p}}</p>
+      </div>
+      <div class="work__strip" data-reveal>
+        <figure class="shot"><div class="frame">{{img.w1}}</div><figcaption><span class="what">{{t.w1}}</span><span class="ph">{{t.ph.townmonth}}</span></figcaption></figure>
+        <figure class="shot"><div class="frame">{{img.w2}}</div><figcaption><span class="what">{{t.w2}}</span><span class="ph">{{t.ph.townmonth}}</span></figcaption></figure>
+        <figure class="shot"><div class="frame">{{img.w3}}</div><figcaption><span class="what">{{t.w3}}</span><span class="ph">{{t.ph.townmonth}}</span></figcaption></figure>
+        <figure class="shot"><div class="frame">{{img.w4}}</div><figcaption><span class="what">{{t.w4}}</span><span class="ph">{{t.ph.townmonth}}</span></figcaption></figure>
+        <figure class="shot"><div class="frame">{{img.w5}}</div><figcaption><span class="what">{{t.w5}}</span><span class="ph">{{t.ph.townmonth}}</span></figcaption></figure>
+        <figure class="shot"><div class="frame">{{img.w6}}</div><figcaption><span class="what">{{t.w6}}</span><span class="ph">{{t.ph.townmonth}}</span></figcaption></figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================= STEPS (a real sequence, so numbers are earned) ======================= -->
+  <section class="steps" aria-labelledby="steps-h">
+    <div class="wrap">
+      <h2 id="steps-h" class="h2">{{t.steps.h}}</h2>
+      <ol>
+        <li><h3>{{t.steps.1h}}</h3><p>{{t.steps.1p}}</p></li>
+        <li><h3>{{t.steps.2h}}</h3><p>{{t.steps.2p}}</p></li>
+        <li><h3>{{t.steps.3h}}</h3><p>{{t.steps.3p}}</p></li>
+        <li><h3>{{t.steps.4h}}</h3><p>{{t.steps.4p}}</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ======================= AREA ======================= -->
+  <section class="area" id="area" aria-labelledby="area-h">
+    <div class="wrap">
+      <h2 id="area-h" class="h2">{{t.area.h}}</h2>
+      <p class="lead muted" style="margin-top:var(--s-16)">{{t.area.p}}</p>
+      <div class="area__banks">
+        <div class="bank">
+          <h3>{{t.area.sc}}</h3>
+          <ul>
+            <li class="home"><span>North Augusta</span> <span class="vh">{{t.area.home}}</span></li>
+            <li>Aiken</li><li>Beech Island</li><li>Graniteville</li><li>Edgefield</li><li>Modoc</li><li>McCormick</li><li>Greenwood</li><li>Trenton</li><li>Johnston</li><li>Saluda</li><li>Ridge Spring</li><li>Ward</li><li>Batesburg-Leesville</li>
+          </ul>
+        </div>
+        <div class="river" aria-hidden="true">
+          <svg viewBox="0 0 400 16" preserveAspectRatio="none" class="river__h"><path d="M0 8 C 40 14, 80 2, 120 8 S 200 14, 240 8 S 320 2, 400 8" fill="none" stroke="currentColor" stroke-width="2" vector-effect="non-scaling-stroke"/></svg>
+          <svg viewBox="0 0 16 400" preserveAspectRatio="none" class="river__v"><path d="M8 0 C 14 40, 2 80, 8 120 S 14 200, 8 240 S 2 320, 8 400" fill="none" stroke="currentColor" stroke-width="2" vector-effect="non-scaling-stroke"/></svg>
+          <span>{{t.area.river}}</span>
+        </div>
+        <div class="bank">
+          <h3>{{t.area.ga}}</h3>
+          <ul>
+            <li>Augusta</li><li>Martinez</li><li>Evans</li><li>Grovetown</li><li>Hephzibah</li><li>Wrens</li><li>Thomson</li><li>Waynesboro</li><li>Washington</li>
+          </ul>
+        </div>
+      </div>
+      <p class="area__note muted">{{t.area.note}}</p>
+    </div>
+  </section>
+
+  <!-- ======================= COMMON QUESTIONS ======================= -->
+  <section class="faq" id="faq" aria-labelledby="faq-h">
+    <div class="wrap faq__grid">
+      <h2 id="faq-h" class="h2">{{t.faq.h}}</h2>
+      <div class="faq__list">
+        <details><summary>{{t.faq.1q}}<span class="faq__nub" aria-hidden="true"><svg><use href="#i-chev"/></svg></span></summary><div class="faq__a"><p>{{t.faq.1a}}</p></div></details>
+        <details><summary>{{t.faq.2q}}<span class="faq__nub" aria-hidden="true"><svg><use href="#i-chev"/></svg></span></summary><div class="faq__a"><p>{{t.faq.2a}}</p></div></details>
+        <details><summary>{{t.faq.3q}}<span class="faq__nub" aria-hidden="true"><svg><use href="#i-chev"/></svg></span></summary><div class="faq__a"><p>{{t.faq.3a}}</p></div></details>
+        <details data-paypal><summary>{{t.faq.4q}}<span class="faq__nub" aria-hidden="true"><svg><use href="#i-chev"/></svg></span></summary><div class="faq__a"><p>{{t.faq.4a}}</p>
+          {{v.ppSlot}}
+        </div></details>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================= REVIEWS (placeholder) ======================= -->
+  <section class="reviews" aria-labelledby="rev-h">
+    <div class="wrap">
+      <h2 id="rev-h" class="h2">{{t.rev.h}}</h2>
+      <div class="reviews__ph">
+        <p><span class="ph">{{t.ph.reviews}}</span></p>
+        <p>{{t.rev.p}}</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+{{> footer}}
+{{> bars}}
+{{> scripts}}
+</body>
+</html>
