@@ -1,6 +1,8 @@
 import assert from 'node:assert/strict';
 import { after, before, test } from 'node:test';
 import { readFile, stat } from 'node:fs/promises';
+import { spawn } from 'node:child_process';
+import { createServer } from 'node:net';
 import { chromium } from 'playwright';
 
 // Browser regression suite for the estimate form (/estimate/ and /es/estimado/).
@@ -14,8 +16,22 @@ const inquiry = {
   details: 'Synthetic local-only inquiry retained on failure.'
 };
 let browser;
-before(async () => { browser = await chromium.launch({ headless: true }); });
-after(async () => { await browser?.close(); });
+// The language-hint tests run against the real local preview server (tools/site/serve.mjs) over HTTP.
+let site;
+async function freePort() {
+  return new Promise((res, rej) => { const s = createServer().once('error', rej).listen(0, '127.0.0.1', () => { const { port } = s.address(); s.close(() => res(port)); }); });
+}
+async function startSite() {
+  const port = await freePort();
+  const proc = spawn(process.execPath, [new URL('../site/serve.mjs', import.meta.url).pathname, String(port)], { stdio: ['ignore', 'pipe', 'inherit'] });
+  await new Promise((res, rej) => {
+    proc.once('exit', (code) => rej(new Error(`serve.mjs exited ${code}`)));
+    proc.stdout.on('data', (b) => { if (String(b).includes('serving')) res(); });
+  });
+  return { proc, origin: `http://127.0.0.1:${port}` };
+}
+before(async () => { browser = await chromium.launch({ headless: true }); site = await startSite(); });
+after(async () => { await browser?.close(); site?.proc.kill(); });
 
 const TYPES = { html: 'text/html', js: 'text/javascript', css: 'text/css', json: 'application/json', svg: 'image/svg+xml', webp: 'image/webp', avif: 'image/avif', woff2: 'font/woff2', png: 'image/png', ico: 'image/x-icon' };
 async function resolve(pathname) {
@@ -28,7 +44,7 @@ async function resolve(pathname) {
   return null;
 }
 
-async function setup(respond, { path = '/estimate/', clock = false, mutate, mutateFiles = {}, noEndpoint = false, locale, viewport } = {}) {
+async function setup(respond, { path = '/estimate/', clock = false, mutate, mutateFiles = {}, noEndpoint = false, locale, viewport, http = false } = {}) {
   const context = await browser.newContext({ ...(locale ? { locale } : {}), ...(viewport ? { viewport } : {}) });
   const page = await context.newPage();
   let requests = 0;
@@ -41,6 +57,7 @@ async function setup(respond, { path = '/estimate/', clock = false, mutate, muta
       payloads.push({ url: url.href, body: route.request().postDataJSON() });
       return respond(route);
     }
+    if (http && url.origin === site.origin) return route.continue(); // served by tools/site/serve.mjs
     if (url.hostname !== 'fpc.test') { externals.push(url.href); return route.abort(); } // no production traffic, ever
     const rel = await resolve(url.pathname);
     if (!rel) return route.fulfill({ status: 404, body: '' });
@@ -49,7 +66,7 @@ async function setup(respond, { path = '/estimate/', clock = false, mutate, muta
     if (mutateFiles[rel]) body = Buffer.from(mutateFiles[rel](body.toString()));
     await route.fulfill({ body, contentType: TYPES[rel.split('.').pop()] || 'application/octet-stream' });
   });
-  await page.goto(`https://fpc.test${path}`, { waitUntil: 'load' });
+  await page.goto(`${http ? site.origin : 'https://fpc.test'}${path}`, { waitUntil: 'load' });
   if (noEndpoint) await page.evaluate(() => { globalThis.FPC_LEAD_URL = ''; });
   if (clock) await page.clock.install();
   return { page, context, requests: () => requests, payloads, externals };
@@ -590,4 +607,130 @@ test('negative control: removing the draft restore empties the form on a languag
     await switchTo(page, 'es'); await landed(page, '/es/estimado/');
     await assert.rejects(kept(page), /keep first_name/);
   } finally { await context.close(); }
+});
+
+// ----- "¿Prefiere español?" hint: the same guarded switch as the header toggle -----
+// A first-time visitor whose browser prefers Spanish (es-MX, nothing saved in fpc-lang) gets the
+// hint on the English page. Served over HTTP by tools/site/serve.mjs; the lead route is a
+// synthetic in-test backend that records each POST on arrival and holds its receipt.
+async function hint(page) {
+  const a = page.locator('.lang-hint a');
+  await a.waitFor();
+  assert.equal(await page.evaluate(() => localStorage.getItem('fpc-lang')), null, 'no saved language');
+  return a;
+}
+test('the Spanish hint during a send waits for it, then lands on the Spanish success panel (one POST, no blank form)', async () => {
+  const gate = held(json(201, accepted));
+  const { page, context, requests } = await setup(gate.respond, { http: true, locale: 'es-MX' });
+  try {
+    const a = await hint(page);
+    await fillAll(page); await submit(page);
+    await page.waitForFunction(() => document.querySelector('#submit').disabled);
+    assert.equal(requests(), 1, 'the lead reached the backend before the hint was clicked');
+    await a.click();
+    await page.waitForTimeout(500);
+    assert.equal(new URL(page.url()).pathname, '/estimate/', 'hint switch held while sending');
+    gate.release();
+    await landed(page, '/es/estimado/');
+    await succeeded(page);
+    assert.match(await page.locator('.success').innerText(), /Recibimos su solicitud/);
+    assert.match(await page.locator('.success .sent').innerText(), /Espacios al aire libre/);
+    assert.equal(await page.evaluate(() => localStorage.getItem('fpc-lang')), 'es', 'the hint remembers Spanish');
+    assert.deepEqual(await drafts(page), []);
+    assert.equal(requests(), 1, 'exactly one POST in total');
+  } finally { gate.release(); await context.close(); }
+});
+test('the Spanish hint during a send that fails carries every answer and the failure banner; the retry sends one POST', async () => {
+  let count = 0;
+  const gate = held((route) => json(count === 1 ? 503 : 201, count === 1 ? { error: 'Unavailable' } : accepted)(route));
+  const { page, context, requests, payloads } = await setup(async (route) => { count++; await gate.respond(route); }, { http: true, locale: 'es-MX' });
+  try {
+    const a = await hint(page);
+    await fillAll(page); await submit(page);
+    await page.waitForFunction(() => document.querySelector('#submit').disabled);
+    await a.click();
+    await page.waitForTimeout(500);
+    assert.equal(new URL(page.url()).pathname, '/estimate/', 'hint switch held while sending');
+    gate.release();
+    await landed(page, '/es/estimado/');
+    await kept(page);
+    assert.match(await page.locator('#failure[role="alert"]').innerText(), /No pudimos confirmar/);
+    assert.equal(await page.locator('.success').count(), 0);
+    assert.equal(requests(), 1);
+    await page.locator('#failure [data-retry]').click(); await succeeded(page);
+    assert.equal(requests(), 2, 'the retry sends exactly one more POST');
+    assert.equal(payloads[1].body.first_name, inquiry.first_name);
+    assert.equal(payloads[1].body.project_type, 'outdoor-living');
+    assert.equal(payloads[1].body.language_preference, 'es');
+  } finally { gate.release(); await context.close(); }
+});
+test('the Spanish hint with nothing sending carries the answers to the Spanish page', async () => {
+  const { page, context, requests } = await setup(json(201, accepted), { http: true, locale: 'es-MX', path: '/estimate/?type=concrete' });
+  try {
+    const a = await hint(page);
+    await fillAll(page);
+    await a.click(); await landed(page, '/es/estimado/');
+    assert.equal(new URL(page.url()).search, '?type=concrete', 'the query rides along');
+    await kept(page);
+    assert.equal(requests(), 0);
+  } finally { await context.close(); }
+});
+test('with the hint showing, the header toggle still holds a send and carries its success', async () => {
+  const gate = held(json(201, accepted));
+  const { page, context, requests } = await setup(gate.respond, { http: true, locale: 'es-MX' });
+  try {
+    await hint(page);
+    await fillAll(page); await submit(page);
+    await page.waitForFunction(() => document.querySelector('#submit').disabled);
+    await switchTo(page, 'es');
+    await page.waitForTimeout(500);
+    assert.equal(new URL(page.url()).pathname, '/estimate/', 'header switch held while sending');
+    gate.release();
+    await landed(page, '/es/estimado/');
+    await succeeded(page);
+    assert.equal(requests(), 1);
+    await switchTo(page, 'en'); await landed(page, '/estimate/');
+    assert.equal(await page.locator('.success').count(), 0, 'the hand-over is shown once');
+    assert.equal(requests(), 1, 'going back sends nothing');
+  } finally { gate.release(); await context.close(); }
+});
+test('an inline error from blur (before any submit) survives the language switch, in the new language', async () => {
+  const { page, context, requests } = await setup(json(201, accepted), { http: true });
+  try {
+    await page.locator('#phone').fill('555'); await page.locator('#phone').blur();
+    assert.match(await page.locator('#phone-err').innerText(), /10-digit phone number/);
+    await switchTo(page, 'es'); await landed(page, '/es/estimado/');
+    assert.equal(await page.locator('#phone').inputValue(), '(555');
+    assert.match(await page.locator('#phone-err').innerText(), /número de 10 dígitos/);
+    assert.equal(await page.locator('#phone').getAttribute('aria-invalid'), 'true');
+    assert.equal(await page.locator('#summary').isHidden(), true, 'no summary: nothing was submitted');
+    for (const id of ['first_name', 'last_name', 'email']) assert.equal(await page.locator(`#${id}-err`).innerText(), '', `untouched #${id} stays quiet`);
+    await switchTo(page, 'en'); await landed(page, '/estimate/');
+    assert.match(await page.locator('#phone-err').innerText(), /10-digit phone number/);
+    await page.locator('#phone').fill('(803) 555-0123');
+    assert.equal(await page.locator('#phone-err').innerText(), '', 'fixing it clears the error as before');
+    assert.equal(requests(), 0);
+  } finally { await context.close(); }
+});
+// Negative control: proves the hint tests can fail. With the hint as a plain link again (no
+// data-lang, so core.js does not route it through the guarded switch), it leaves mid-send.
+test('negative control: a hint outside the guarded switch abandons a pending send', async () => {
+  const strip = (src) => {
+    const out = src.replace("link.setAttribute('data-lang', 'es');", '');
+    assert.notEqual(out, src, 'mutation applied');
+    return out;
+  };
+  const gate = held(json(201, accepted));
+  const { page, context } = await setup(gate.respond, { locale: 'es-MX', mutateFiles: { 'assets/site/core.js': strip } });
+  try {
+    const a = await hint(page);
+    await fillAll(page); await submit(page);
+    await page.waitForFunction(() => document.querySelector('#submit').disabled);
+    await a.click();
+    await landed(page, '/es/estimado/');
+    gate.release();
+    await page.waitForTimeout(500);
+    assert.equal(await page.locator('.success').count(), 0, 'receipt lost');
+    assert.equal(await page.locator('#first_name').inputValue(), '', 'blank Spanish form');
+  } finally { gate.release(); await context.close(); }
 });

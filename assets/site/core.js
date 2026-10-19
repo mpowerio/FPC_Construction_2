@@ -10,15 +10,17 @@
   function store(v) { try { localStorage.setItem(STORE, v); } catch (e) {} }
   function stored() { try { return localStorage.getItem(STORE); } catch (e) { return null; } }
 
-  // ---------- Language toggle: a link to the twin page; the choice is remembered ----------
+  // ---------- Language switch: a link to the twin page; the choice is remembered ----------
+  // Every a[data-lang] goes through here (header toggle and the "¿Prefiere español?" hint), so
+  // no language link can leave the page without asking the page scripts first.
   document.addEventListener('click', function (e) {
-    var a = e.target.closest && e.target.closest('.lang a[data-lang]');
+    var a = e.target.closest && e.target.closest('a[data-lang]');
     if (!a || e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
     var to = a.getAttribute('data-lang');
     store(to);
     if (to === lang) { e.preventDefault(); return; }
     e.preventDefault();
-    var href = a.getAttribute('href') + location.search + location.hash;
+    var href = a.pathname + location.search + location.hash;
     // Page scripts get a say before the page is left: the estimate form saves its draft here,
     // and holds the switch (preventDefault) while a request is sending, then navigates itself.
     var leave = new CustomEvent('fpc:lang-leave', { cancelable: true, detail: { href: href, to: to } });
@@ -47,7 +49,8 @@
     var link = document.createElement('a');
     link.href = new URL(twinEs.href).pathname + location.search + location.hash;
     link.textContent = '¿Prefiere español? Ver esta página en español';
-    link.addEventListener('click', function () { store('es'); });
+    // data-lang: handled by the language switch above (remembers Spanish, waits for a send).
+    link.setAttribute('data-lang', 'es');
     var close = document.createElement('button');
     close.type = 'button';
     close.setAttribute('aria-label', 'Cerrar / Close');

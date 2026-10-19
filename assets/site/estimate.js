@@ -10,8 +10,9 @@
    non-empty booking_id string (same rule as capturedLeadBody() on the server).
 
    Answers survive the EN/ES toggle: a per-tab draft (sessionStorage) is saved when the page
-   is left and restored on the twin page, then cleared once a request is captured. While a
-   request is sending, every field is locked and a language switch waits for the result. */
+   is left and restored on the twin page (with any inline errors already shown), then cleared
+   once a request is captured. While a request is sending, every field is locked and a
+   language switch waits for the result. */
 (function () {
   'use strict';
   var TIMEOUT_MS = 15000;
@@ -316,7 +317,10 @@
   function saveDraft() {
     // Nothing to keep once captured; while sending the outcome is unknown, so leave it alone.
     if (sentDone || busy) return;
-    var d = { v: 1, f: {}, r: {}, attempted: attempted, failed: failedShown };
+    // touched: fields showing an inline error from blur/typing (before any submit), so the twin
+    // page shows the same errors, in its own language.
+    var touched = Object.keys(rules).filter(function (id) { return !!errorKey[id]; });
+    var d = { v: 1, f: {}, r: {}, attempted: attempted, failed: failedShown, touched: touched };
     var typed = false;
     FIELDS.forEach(function (id) { d.f[id] = document.getElementById(id).value; if (d.f[id]) typed = true; });
     CHOICES.forEach(function (n) {
@@ -325,7 +329,7 @@
       if (c) d.r[n] = c.value;
     });
     var picked = d.r.best_time !== 'any' || !!d.r.language_preference || (!!d.r.project_type && d.r.project_type !== qType);
-    if (typed || picked || attempted || failedShown) store.put(DRAFT, d); else store.drop(DRAFT);
+    if (typed || picked || attempted || failedShown || touched.length) store.put(DRAFT, d); else store.drop(DRAFT);
   }
   function restore() {
     var done = store.get(DONE);
@@ -347,10 +351,13 @@
     if (d.attempted) {
       attempted = true;
       showSummary(Object.keys(rules).filter(function (id) { return !check(id); }), true);
+    } else if (Array.isArray(d.touched)) {
+      d.touched.forEach(function (id) { if (rules.hasOwnProperty(id)) check(id); });
     }
     if (d.failed) showFailure(true);
   }
-  // The toggle asks first (assets/site/core.js): save now, or hold the switch while sending.
+  // Every language link asks first (assets/site/core.js, header toggle and Spanish hint):
+  // save now, or hold the switch while sending.
   document.addEventListener('fpc:lang-leave', function (e) {
     if (busy) { e.preventDefault(); pendingLeave = (e.detail && e.detail.href) || null; return; }
     saveDraft();
