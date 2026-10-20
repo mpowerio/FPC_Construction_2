@@ -228,7 +228,7 @@ function sitemap() {
   }
   for (const legal of ['privacy', 'terms', 'sms-opt-in']) rows.push(`  <url>
     <loc>${ORIGIN}/${legal}</loc>
-    <lastmod>2026-10-18</lastmod>
+    <lastmod>2026-10-19</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>`);
