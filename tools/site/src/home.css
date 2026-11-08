@@ -31,7 +31,7 @@
 .estimate-start label { display: block; font-size: var(--t-14); font-weight: 600; margin-bottom: var(--s-8); }
 .estimate-start__row { display: grid; gap: var(--s-8); }
 .estimate-start select { min-height: 52px; width: 100%; min-width: 0; padding: 12px; border-radius: 12px; border: 1px solid #898A7E; background: #FBFBFA; color: #20251F; }
-.estimate-start__note { margin-top: var(--s-8); font-size: .75rem; color: #55584C; }
+.estimate-start__note { margin-top: var(--s-8); font-size: var(--t-14); color: #55584C; }
 .hero__photo { position: relative; margin: 0; padding: 6px; background: linear-gradient(145deg, #D4A93790, #BFC5B720 50%, #E8C55A60); border-radius: 32px; }
 .hero__photo .frame { border-radius: 26px; overflow: hidden; aspect-ratio: 4/5; background: #394033; }
 .hero__photo img { width: 100%; height: 100%; object-fit: cover; object-position: 59% 50%; }

@@ -1,8 +1,9 @@
 // Set only after the operator verifies FPC's own profile URL. Empty hides every TikTok slot.
 // No embed script is loaded. A specific approved post and permission are separate decisions.
 export const TIKTOK_PROFILE_URL = '';
-// Historical published destination. It differs from the call number; do not normalize it.
-export const WHATSAPP_URL = 'https://wa.me/18036402595';
+// Empty until the operator confirms the WhatsApp destination recorded in PLAN.md.
+// The historical candidate is absent from the current live site and base.
+export const WHATSAPP_URL = '';
 
 export function tiktokProfile(value = TIKTOK_PROFILE_URL) {
   if (!value) return '';
@@ -12,4 +13,12 @@ export function tiktokProfile(value = TIKTOK_PROFILE_URL) {
     throw new Error('TikTok must be a verified HTTPS profile URL, without query parameters');
   }
   return url.href;
+}
+
+export function whatsappUrl(value = WHATSAPP_URL) {
+  if (!value) return '';
+  if (!/^https:\/\/wa\.me\/[1-9]\d{7,14}$/.test(value)) {
+    throw new Error('WhatsApp must be an operator-confirmed HTTPS wa.me number');
+  }
+  return value;
 }

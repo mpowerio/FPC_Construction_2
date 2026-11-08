@@ -12,8 +12,9 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import * as S from './strings.mjs';
 import { services, serviceLabels } from './services.mjs';
-import { WHATSAPP_URL, tiktokProfile } from './social.mjs';
+import { whatsappUrl, tiktokProfile } from './social.mjs';
 const TIKTOK = tiktokProfile();
+const WHATSAPP = whatsappUrl();
 
 // ---------- Configuration ----------
 const ORIGIN = 'https://fpcconstructions.com';
@@ -121,7 +122,7 @@ function business(lang) {
 }
 const ldScript = (obj) => `<script type="application/ld+json">\n${JSON.stringify(obj, null, 2).replace(/</g, '\\u003c')}\n</script>`;
 const strip = (html) => html.replace(/<[^>]+>/g, '');
-function jsonld(page, lang, t, url, serviceType) {
+function jsonld(page, lang, t, url) {
   const graph = [];
   const webpage = { '@type': 'WebPage', '@id': `${url}#webpage`, url, name: t('meta.title'), inLanguage: lang === 'es' ? 'es-US' : 'en-US', about: { '@id': `${ORIGIN}/#business` } };
   if (page === 'home') {
@@ -130,7 +131,7 @@ function jsonld(page, lang, t, url, serviceType) {
       mainEntity: [1, 2, 3, 4].map((n) => ({ '@type': 'Question', name: t(`faq.${n}q`), acceptedAnswer: { '@type': 'Answer', text: strip(t(`faq.${n}a`)) } })) });
   } else {
     graph.push(webpage);
-    if (page === 'service') graph.push({ '@type': 'Service', '@id': `${url}#service`, name: t('service.label'), serviceType, description: t('service.intro'), url, provider: { '@id': `${ORIGIN}/#business` }, areaServed: ['North Augusta, SC', 'Augusta, GA', 'Evans, GA', 'Martinez, GA', 'Aiken, SC'].map(name => ({ '@type': 'City', name })) });
+    if (page === 'service') graph.push(business(lang), { '@type': 'Service', '@id': `${url}#service`, name: t('service.label'), serviceType: t('service.label'), description: t('service.intro'), url, provider: { '@id': `${ORIGIN}/#business` }, areaServed: ['North Augusta, SC', 'Augusta, GA', 'Evans, GA', 'Martinez, GA', 'Aiken, SC'].map(name => ({ '@type': 'City', name })) });
   }
   return ldScript({ '@context': 'https://schema.org', '@graph': graph });
 }
@@ -190,9 +191,10 @@ function render(page, lang) {
       ? `<link rel="preload" as="image" type="image/avif" imagesrcset="${srcset(hero.id, 'avif')}" imagesizes="${hero.sizes}" fetchpriority="high">`
       : '',
     css: (baseCss + '\n' + (page.key === 'service' ? src('home.css') + '\n' : '') + src(page.css)).trim(),
-    jsonld: jsonld(page.key, lang, t, ORIGIN + page.url[lang], page.service?.type),
+    jsonld: jsonld(page.key, lang, t, ORIGIN + page.url[lang]),
     analytics,
-    whatsapp: WHATSAPP_URL,
+    whatsappHero: WHATSAPP ? `<a class="hero__wa" href="${esc(WHATSAPP)}" rel="noopener">WhatsApp <span aria-hidden="true">↗</span></a>` : '',
+    whatsappFooter: WHATSAPP ? `<a class="social__text" href="${esc(WHATSAPP)}" rel="noopener">WhatsApp<span class="vh"> FPC Construction</span></a>` : '',
     tiktok: TIKTOK ? `<a class="social__text" href="${esc(TIKTOK)}" rel="noopener">TikTok<span class="vh"> FPC Construction</span></a>` : '',
     tiktokStory: TIKTOK && page.key !== 'estimate' ? `<a class="social-story" href="${esc(TIKTOK)}" rel="noopener"><span>TikTok</span><span>${t('field.watch')} <span aria-hidden="true">↗</span></span></a>` : '',
     septicUrl: services.find(s => s.id === 'septic').url[lang],

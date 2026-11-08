@@ -492,7 +492,7 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill { -we
 .estimate-start label { display: block; font-size: var(--t-14); font-weight: 600; margin-bottom: var(--s-8); }
 .estimate-start__row { display: grid; gap: var(--s-8); }
 .estimate-start select { min-height: 52px; width: 100%; min-width: 0; padding: 12px; border-radius: 12px; border: 1px solid #898A7E; background: #FBFBFA; color: #20251F; }
-.estimate-start__note { margin-top: var(--s-8); font-size: .75rem; color: #55584C; }
+.estimate-start__note { margin-top: var(--s-8); font-size: var(--t-14); color: #55584C; }
 .hero__photo { position: relative; margin: 0; padding: 6px; background: linear-gradient(145deg, #D4A93790, #BFC5B720 50%, #E8C55A60); border-radius: 32px; }
 .hero__photo .frame { border-radius: 26px; overflow: hidden; aspect-ratio: 4/5; background: #394033; }
 .hero__photo img { width: 100%; height: 100%; object-fit: cover; object-position: 59% 50%; }
@@ -906,7 +906,8 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill { -we
           <div class="estimate-start__heading"><h2 id="start-h">¿Qué proyecto tiene?</h2><span class="gold-label">Estimado gratis</span></div>
           <label for="start-type">Elija su proyecto</label>
           <div class="estimate-start__row">
-            <select id="start-type" name="type">
+            <select id="start-type" name="type" required>
+              <option value="" disabled selected>Elija su proyecto</option>
               <option value="septic-systems">Sistemas sépticos</option>
               <option value="drainage-and-site-work">Drenaje y terreno</option>
               <option value="concrete">Concreto</option>
@@ -918,7 +919,7 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill { -we
         </form>
         <div class="hero__actions">
           <a class="hero__call" href="tel:+18038849305"><svg class="icon" aria-hidden="true"><use href="#i-phone"/></svg><span class="num">(803) 884-9305</span></a>
-          <a class="hero__wa" href="https://wa.me/18036402595" rel="noopener">WhatsApp <span aria-hidden="true">↗</span></a>
+
         </div>
         <p class="hero__fil"><b>Fil, nuestro asistente virtual con inteligencia artificial,</b> contesta el teléfono las 24 horas, en inglés o en español. Después Filemon le da seguimiento.</p>
       </div>
@@ -1106,7 +1107,7 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill { -we
       <div class="social">
         <a href="https://www.facebook.com/p/FPC-Construction-LLC-100066373038903/" aria-label="FPC en Facebook" rel="noopener"><svg aria-hidden="true"><use href="#i-fb"/></svg></a>
         <a href="https://www.instagram.com/fpcconstructions" aria-label="FPC en Instagram" rel="noopener"><svg aria-hidden="true"><use href="#i-ig"/></svg></a>
-        <a class="social__text" href="https://wa.me/18036402595" rel="noopener">WhatsApp<span class="vh"> FPC Construction</span></a>
+
 
       </div>
     </div>

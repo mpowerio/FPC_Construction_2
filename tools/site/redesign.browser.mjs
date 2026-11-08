@@ -6,7 +6,7 @@ import { createRequire } from 'node:module';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { services } from './services.mjs';
-import { tiktokProfile, WHATSAPP_URL } from './social.mjs';
+import { tiktokProfile, whatsappUrl, WHATSAPP_URL } from './social.mjs';
 
 const { chromium } = createRequire(new URL('../contact-form/package.json', import.meta.url))('playwright');
 const root = fileURLToPath(new URL('../../', import.meta.url));
@@ -33,6 +33,10 @@ async function fixture(context) {
 function slug(path) { return path === '/' ? 'home-en' : path.replace(/^\//, '').replaceAll('/', '-').replace(/-$/, ''); }
 try {
   // Profile allowlist and red controls: an arbitrary URL cannot become a social link.
+  assert.equal(WHATSAPP_URL, '');
+  assert.equal(whatsappUrl(), '');
+  assert.equal(whatsappUrl('https://wa.me/18035550123'), 'https://wa.me/18035550123');
+  for (const url of ['javascript:alert(1)', 'https://example.com/18035550123', 'https://wa.me/18035550123?text=hello', 'https://wa.me/012345678', 'https://user@wa.me/18035550123']) assert.throws(() => whatsappUrl(url));
   assert.equal(tiktokProfile(), '');
   assert.equal(tiktokProfile('https://www.tiktok.com/@synthetic_fixture'), 'https://www.tiktok.com/@synthetic_fixture');
   for (const url of ['javascript:alert(1)', 'https://example.com/@fpc', 'https://tiktok.com.evil.invalid/@fpc', 'https://www.tiktok.com/@fpc?redirect=bad', 'https://user@www.tiktok.com/@fpc', 'https://www.tiktok.com/@fpc/video/1']) assert.throws(() => tiktokProfile(url));
@@ -59,8 +63,16 @@ try {
       if (layout.form) assert.ok(layout.form.y < 1000, `Real form below first viewport: ${path} ${width}`);
       if (layout.starter) assert.ok(layout.starter.y + layout.starter.height < 1000, `Estimate starter below first viewport: ${path} ${width}`);
       assert.equal(await page.locator('a[href*="tiktok.com"]').count(), 0, 'Unverified TikTok must be absent');
-      assert.ok(await page.locator(`a[href="${WHATSAPP_URL}"]`).count() >= 1);
-      for (const ld of await page.locator('script[type="application/ld+json"]').allTextContents()) assert.ok(JSON.parse(ld)['@graph']);
+      assert.equal(await page.locator('a[href*="wa.me"]').count(), 0, 'Unconfirmed WhatsApp must be absent');
+      for (const ld of await page.locator('script[type="application/ld+json"]').allTextContents()) {
+        const graph = JSON.parse(ld)['@graph']; assert.ok(graph);
+        for (const service of graph.filter(n => n['@type'] === 'Service')) {
+          const provider = graph.find(n => n['@id'] === service.provider['@id']);
+          assert.ok(provider?.name && provider.telephone && provider.address, 'Service provider resolves with NAP on this page');
+          assert.ok(provider['@type'].includes('LocalBusiness'));
+          assert.equal(service.serviceType, service.name, 'Human service type matches the localized service name');
+        }
+      }
       const alternate = await page.locator(`link[hreflang="${path.startsWith('/es/') ? 'en' : 'es'}-US"]`).getAttribute('href');
       assert.ok(pages.includes(new URL(alternate).pathname), `Missing language twin: ${path}`);
       const missing = await page.evaluate(async () => {
@@ -76,6 +88,10 @@ try {
       }
       if (path === '/' || path === '/es/') {
         assert.ok((await page.locator('.hero__slogan').innerText()).includes('No job too small, no dream too big — FPC Construction for all your needs.'));
+        assert.equal(await page.locator('.estimate-start').getAttribute('method'), 'get');
+        assert.equal(await page.locator('#start-type').inputValue(), '');
+        await page.locator('.estimate-start button').click();
+        assert.equal(new URL(page.url()).pathname, path, 'Empty project cannot silently submit a septic selection');
         await page.selectOption('#start-type', 'concrete');
         await Promise.all([page.waitForURL(/(?:estimate|estimado)\/\?type=concrete/), page.locator('.estimate-start button').click()]);
         assert.equal(await page.locator('input[name="project_type"][value="concrete"]').isChecked(), true);
@@ -91,6 +107,7 @@ try {
   await fixture(nojs);
   const p = await nojs.newPage(); await p.goto('https://fpc.test/');
   assert.ok(await p.locator('a[href="/services/septic-systems/"]').count());
+  await p.selectOption('#start-type', 'concrete');
   // In a scripts-disabled context Playwright's rAF stability probe can stall.
   // Use a real pointer after checking the painted hit target instead.
   await p.locator('.estimate-start button').evaluate(e => e.scrollIntoView({ behavior:'instant', block:'center' }));

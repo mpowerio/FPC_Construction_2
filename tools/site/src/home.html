@@ -23,7 +23,8 @@
           <div class="estimate-start__heading"><h2 id="start-h">{{t.start.h}}</h2><span class="gold-label">{{t.start.free}}</span></div>
           <label for="start-type">{{t.start.label}}</label>
           <div class="estimate-start__row">
-            <select id="start-type" name="type">
+            <select id="start-type" name="type" required>
+              <option value="" disabled selected>{{t.start.label}}</option>
               <option value="septic-systems">{{t.start.septic}}</option>
               <option value="drainage-and-site-work">{{t.start.drainage}}</option>
               <option value="concrete">{{t.svc.concrete}}</option>
@@ -35,7 +36,7 @@
         </form>
         <div class="hero__actions">
           <a class="hero__call" href="tel:+18038849305"><svg class="icon" aria-hidden="true"><use href="#i-phone"/></svg><span class="num">(803) 884-9305</span></a>
-          <a class="hero__wa" href="{{v.whatsapp}}" rel="noopener">WhatsApp <span aria-hidden="true">↗</span></a>
+          {{v.whatsappHero}}
         </div>
         <p class="hero__fil">{{t.hero.fil}}</p>
       </div>
