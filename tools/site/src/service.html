@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="{{v.lang}}">
+<head>
+{{> head}}
+<style>
+{{v.css}}
+</style>
+{{v.jsonld}}
+</head>
+<body class="page-home page-service">
+{{> icons}}
+{{> header}}
+<main id="main">
+  <section class="service-hero wrap" aria-labelledby="h1">
+    <div>
+      <a class="service-back" href="{{v.home}}#services">← {{t.service.back}}</a>
+      <p class="eyebrow">{{t.service.label}}</p>
+      <h1 id="h1" class="display">{{t.service.h}}</h1>
+      <p class="lead">{{t.service.intro}}</p>
+      <div class="service-actions" data-bar-sentinel><a class="btn btn--red" href="{{v.estimate}}?type={{v.serviceType}}"><span>{{t.cta.estimate}}</span><span class="btn__nub" aria-hidden="true"><svg><use href="#i-chev"/></svg></span></a><a class="hero__call" href="tel:+18038849305"><span class="num">(803) 884-9305</span></a></div>
+    </div>
+    <figure class="service-photo"><div class="frame">{{v.servicePhoto}}</div></figure>
+  </section>
+  <div class="service-detail wrap">
+    <div class="service-detail__body">
+      <section><h2 class="h2">{{t.service.detail.h}}</h2><p class="lead">{{t.service.detail}}</p></section>
+      <section><h2 class="h2">{{t.service.scope.h}}</h2><p class="lead">{{t.service.scope}}</p></section>
+      <section><p class="eyebrow">{{t.service.before}}</p><h2 class="h2">{{t.service.prepare.h}}</h2><p class="lead">{{t.service.prepare}}</p></section>
+      <section><p class="eyebrow">{{t.service.question.h}}</p><h2 class="h3">{{t.service.question}}</h2><p class="lead">{{t.service.answer}}</p></section>
+    </div>
+    <aside class="service-aside"><p class="eyebrow">CSRA / GA + SC</p><h2 class="h3">{{t.service.area.h}}</h2><p>{{t.service.area.p}}</p><a class="textlink" href="{{v.home}}#area">{{t.nav.area}} <span aria-hidden="true">↗</span></a><h2 class="h3">{{t.service.related}}</h2>{{v.relatedServices}}</aside>
+  </div>
+</main>
+{{> footer}}
+{{> bars}}
+{{> scripts}}
+</body>
+</html>

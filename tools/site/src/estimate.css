@@ -137,3 +137,20 @@ fieldset:disabled .chip span:active { transform: none; }
     clip-path: polygon(0 0, 100% 0, 100% 100%, calc(var(--step) * 4) 100%, calc(var(--step) * 4) calc(100% - var(--step)), calc(var(--step) * 2) calc(100% - var(--step)), calc(var(--step) * 2) calc(100% - var(--step) * 2), 0 calc(100% - var(--step) * 2)); }
   .est__photo img { width: 100%; height: 100%; object-fit: cover; }
 }
+
+/* Keep the real form near the first viewport on phones. The explanatory aside remains below it. */
+.est__h1 { font-size: var(--t-36); }
+.formplate { border-radius: 26px; background: linear-gradient(145deg, #E8C55A, #B78B2B 35%, #E9E3D6 70%); }
+.formplate__core { border-radius: 20px; }
+.est__photo .frame { clip-path: none; border-radius: 20px; }
+@media (max-width: 899px) {
+  .est__grid { gap: var(--s-24); }
+  .est__aside { display: contents; }
+  .est__h1 { order: 0; }
+  .est__lead { order: 1; margin-top: 0; }
+  .formplate { order: 2; }
+  .callbox { order: 3; margin-top: 0; }
+  .next { order: 4; margin-top: 0; }
+}
+/* Legal links remain readable and independently tappable on touch screens. */
+.notice a { display: inline-flex; align-items: center; min-height: 44px; min-width: 44px; }

@@ -6,7 +6,7 @@
 <title>Estimado gratis | FPC Construction, North Augusta, SC</title>
 <meta name="description" content="Pida un estimado gratis a FPC Construction en North Augusta, SC. Filemon va a ver el trabajo y le da un estimado por escrito. En inglés o en español.">
 <meta name="robots" content="index, follow, max-image-preview:large">
-<meta name="theme-color" content="#E7E6E2">
+<meta name="theme-color" content="#18201B">
 <link rel="canonical" href="https://fpcconstructions.com/es/estimado/">
 <link rel="alternate" hreflang="en-US" href="https://fpcconstructions.com/estimate/">
 <link rel="alternate" hreflang="es-US" href="https://fpcconstructions.com/es/estimado/">
@@ -99,20 +99,20 @@
 :root {
   color-scheme: light;
 
-  /* Palette — three FPC logo colors + concrete + clay */
-  --c-concrete: #E7E6E2;
-  --c-pour: #D4D2CC;
+  /* FPC gold/orange, warm stone and graphite. The existing logo is unchanged. */
+  --c-concrete: #F4F0E8;
+  --c-pour: #E9E3D6;
   --c-ink: #262626;
   --c-ink-2: #55524D;
-  --c-red: #ED000C;
-  --c-yellow: #F4B80C;
-  --c-clay: #8E3B22;
+  --c-red: #FF6D00;
+  --c-yellow: #D4A937;
+  --c-clay: #1C221E;
   --c-field: #FBFBFA;      /* input well */
   --c-field-line: #8F8C86; /* 3.2:1 against the well (non-text UI) */
   --c-error: #A3000A;      /* 7:1 on the form plate */
   --c-ok: #1F5E3A;
   --c-hair: rgba(38, 38, 38, .14);
-  --c-plate: #F4F3F0;
+  --c-plate: #FBF9F3;
 
   /* Type scale (classic typographic scale) */
   --t-14: .875rem;
@@ -294,7 +294,7 @@ html[lang="en"].lang-going .lang__thumb { transform: translateX(100%); }
    crossfade (cross-document view transitions, opacity only) where supported. */
 @media (prefers-reduced-motion: no-preference) { @view-transition { navigation: auto; } }
 .lang a {
-  position: relative; z-index: 1; display: grid; place-items: center; min-width: 44px; min-height: 36px; padding: 0 10px;
+  position: relative; z-index: 1; display: grid; place-items: center; min-width: 44px; min-height: 44px; padding: 0 10px;
   border-radius: var(--r-pill); text-decoration: none;
   font-size: var(--t-14); font-weight: 700; font-stretch: 110%; letter-spacing: .02em; color: var(--c-ink);
 }
@@ -427,6 +427,36 @@ elevenlabs-convai {
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .001ms !important; animation-delay: 0ms !important; transition-duration: .001ms !important; }
+}
+
+/* November 2026: polished FPC controls, shared by both languages. */
+.btn { border-radius: var(--r-pill); padding: 6px 6px 6px 22px; overflow: hidden; }
+.btn__nub { border-radius: var(--r-pill); }
+.btn--red { color: #231A0E; background: linear-gradient(155deg, #FFA347 0%, #FF6D00 58%, #F8780E 100%); box-shadow: inset 0 1px 0 #FFD4A6, inset 0 -2px 0 #C94E00, 0 8px 28px -14px #FF6D0080; }
+.btn--red .btn__nub { color: #231A0E; background: #FFFFFF40; box-shadow: inset 0 1px 0 #FFFFFF65; }
+.btn--red::before { content: ""; position: absolute; inset: 0; border-radius: inherit; background: linear-gradient(115deg, transparent 20%, #FFFFFF42 45%, transparent 65%); transform: translateX(-140%); pointer-events: none; }
+.btn--red:hover::before { transform: translateX(140%); transition: transform 850ms var(--ease-out); }
+.btn:hover .btn__nub { transform: translate(2px, -1px); }
+.plate { border-radius: 18px; background: linear-gradient(145deg, #E8C55A, #D4A937 45%, #8A6C24); padding: 3px; box-shadow: inset 0 1px 0 #FFF0B8, 0 8px 28px -16px #D4A93780; }
+.plate__core { border-radius: 15px; }
+.cut-top, .cut-both { clip-path: none; }
+.site-header { padding-block: var(--s-16); }
+.site-nav a { min-height: 44px; display: inline-flex; align-items: center; }
+.site-footer { background: #151B17; border-top: 1px solid #D4A93750; }
+.footer-cta { padding-top: var(--s-64); }
+.footer-cta .h2 { color: #F4F0E8; }
+.footer-cta .lead { color: #C8C8BA; }
+.site-footer .btn--line { color: #F4F0E8; box-shadow: inset 0 0 0 1px #D4A93790; }
+.social { flex-wrap: wrap; }
+.social .social__text { width: auto; min-width: 44px; padding: 0 14px; font-weight: 700; text-decoration: none; border: 1px solid #D4A93770; background: linear-gradient(145deg, #333C2D, #1C221E); box-shadow: inset 0 1px 0 #FFFFFF12; }
+.footer-grid li a, .footer-legal a { display: inline-flex; align-items: center; min-height: 44px; min-width: 44px; }
+.footer-legal { align-items: center; }
+.island, .action-bar { background: rgba(244,240,232,.96); color: #20251F; }
+input, textarea, select { color-scheme: light; color: #20251F; background: #FBFBFA; caret-color: #20251F; font: inherit; }
+input::placeholder, textarea::placeholder { color: #68675D; opacity: 1; }
+input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill { -webkit-text-fill-color: #20251F; caret-color: #20251F; box-shadow: 0 0 0 1000px #FBFBFA inset; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
 }
 
 /* ===================== Estimate page (tools/site/build.mjs inlines after base.css) ===================== */
@@ -568,6 +598,23 @@ fieldset:disabled .chip span:active { transform: none; }
     clip-path: polygon(0 0, 100% 0, 100% 100%, calc(var(--step) * 4) 100%, calc(var(--step) * 4) calc(100% - var(--step)), calc(var(--step) * 2) calc(100% - var(--step)), calc(var(--step) * 2) calc(100% - var(--step) * 2), 0 calc(100% - var(--step) * 2)); }
   .est__photo img { width: 100%; height: 100%; object-fit: cover; }
 }
+
+/* Keep the real form near the first viewport on phones. The explanatory aside remains below it. */
+.est__h1 { font-size: var(--t-36); }
+.formplate { border-radius: 26px; background: linear-gradient(145deg, #E8C55A, #B78B2B 35%, #E9E3D6 70%); }
+.formplate__core { border-radius: 20px; }
+.est__photo .frame { clip-path: none; border-radius: 20px; }
+@media (max-width: 899px) {
+  .est__grid { gap: var(--s-24); }
+  .est__aside { display: contents; }
+  .est__h1 { order: 0; }
+  .est__lead { order: 1; margin-top: 0; }
+  .formplate { order: 2; }
+  .callbox { order: 3; margin-top: 0; }
+  .next { order: 4; margin-top: 0; }
+}
+/* Legal links remain readable and independently tappable on touch screens. */
+.notice a { display: inline-flex; align-items: center; min-height: 44px; min-width: 44px; }
 </style>
 <script type="application/ld+json">
 {
@@ -784,6 +831,8 @@ fieldset:disabled .chip span:active { transform: none; }
       <div class="social">
         <a href="https://www.facebook.com/p/FPC-Construction-LLC-100066373038903/" aria-label="FPC en Facebook" rel="noopener"><svg aria-hidden="true"><use href="#i-fb"/></svg></a>
         <a href="https://www.instagram.com/fpcconstructions" aria-label="FPC en Instagram" rel="noopener"><svg aria-hidden="true"><use href="#i-ig"/></svg></a>
+        <a class="social__text" href="https://wa.me/18036402595" rel="noopener">WhatsApp<span class="vh"> FPC Construction</span></a>
+
       </div>
     </div>
     <div>
