@@ -1,6 +1,7 @@
 // Local SEO checks for the built pages. Run from the repository root: node tools/seo-check.mjs
 import fs from 'node:fs';
 import path from 'node:path';
+import { releaseProblems } from './site/release-policy.mjs';
 
 const root = process.cwd();
 const ORIGIN = 'https://fpcconstructions.com';
@@ -17,6 +18,7 @@ const decode = (s) => s.replace(/<[^>]+>/g, '').replace(/&amp;/g, '&').replace(/
 
 for (const page of PAGES) {
   const html = fs.readFileSync(path.join(root, page.file), 'utf8');
+  for (const problem of releaseProblems(html, { allowDraft: process.argv.includes('--allow-draft') })) fail(page, problem);
   const meta = (name) => (html.match(new RegExp(`<meta name="${name}" content="([^"]*)">`)) || [])[1] || '';
 
   if (!html.startsWith(`<!DOCTYPE html>\n<html lang="${page.lang}">`)) fail(page, `html lang must be ${page.lang}`);

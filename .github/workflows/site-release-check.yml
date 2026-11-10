@@ -1,0 +1,20 @@
+name: Site release check
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  site-release-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Generated pages are fresh
+        run: node tools/site/build.mjs --check
+      - name: SEO checks
+        run: node tools/seo-check.mjs
+      - name: Prove release guard rejects planted placeholders
+        run: node --test tools/site/release-policy.test.mjs
