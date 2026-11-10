@@ -62,7 +62,7 @@ try {
         assert.equal(await page.locator('.tree-testimonial time').getAttribute('datetime'), '2026-11-10');
         assert.equal(await page.locator('.tree-testimonial__rating').innerText(), '5/5');
         assert.ok(!(await page.locator('.tree-testimonial').innerText()).includes('Google'));
-        assert.equal(await page.locator('.tree-testimonial__author span').count(), 0, 'Town remains unset');
+        assert.equal(await page.locator('.tree-testimonial__author span').innerText(), 'North Augusta, Foxchase subdivision', 'Only operator-approved town/subdivision wording');
         assert.equal(await page.locator('.tree-work video').count(), 3);
         for (const video of await page.locator('.tree-work video').all()) {
           assert.equal(await video.getAttribute('preload'), 'none');

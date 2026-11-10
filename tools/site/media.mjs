@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { escapeHtml as esc, localMedia } from './content-utils.mjs';
 
 // Public tree-work media and this exact testimonial were approved by the operator.
-// Town remains empty pending his answer. No Google attribution or private source paths.
+// The town/subdivision wording is operator-approved. No Google attribution or street address.
 export const TREE_WORK = {
   approvedForPublic: true,
   caption: { en: 'Tree work by FPC Construction', es: 'Trabajo de árboles de FPC Construction' },
@@ -19,7 +19,7 @@ export const TREE_WORK = {
   ],
   testimonial: {
     kind: 'customer-testimonial', author: 'Michael Parker', rating: 5,
-    date: '2026-11-10', town: '', language: 'en',
+    date: '2026-11-10', town: 'North Augusta, Foxchase subdivision', language: 'en',
     text: 'Amazing crew, great work so far that my HOA was impressed! Thanks to the great team Filemon has assembled. Quality workmanship and value pricing.',
   },
 };

@@ -72,14 +72,14 @@ test('approved message is an exact dated testimonial, never an unverified Google
   assert.equal(TREE_WORK.testimonial.author, 'Michael Parker');
   assert.equal(TREE_WORK.testimonial.rating, 5);
   assert.equal(TREE_WORK.testimonial.date, '2026-11-10');
-  assert.equal(TREE_WORK.testimonial.town, '');
+  assert.equal(TREE_WORK.testimonial.town, 'North Augusta, Foxchase subdivision');
   for (const lang of ['en','es']) {
     const html = renderTreeWork(lang, key => common[lang][key]);
     assert.ok(html.includes(text));
     assert.ok(html.includes('lang="en"'));
     assert.ok(!html.includes('Google'));
     assert.ok(!html.includes('yes please'));
-    assert.ok(!html.includes('North Augusta'));
+    assert.ok(html.includes('<span>North Augusta, Foxchase subdivision</span>'));
   }
   const wrongSource = structuredClone(TREE_WORK); wrongSource.testimonial.kind = 'google-review';
   assert.throws(() => renderTreeWork('en', t, wrongSource));
