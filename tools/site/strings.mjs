@@ -361,23 +361,23 @@ Object.assign(common.es, {
 
 // Operator-approved service hierarchy; headline and public-job examples remain draft.
 Object.assign(home.en, {
-  'core.h': 'Septic. Concrete. City work.',
+  'core.h': 'Septic. Concrete. Commercial & public works.',
   'core.p': 'Choose your project. Talk through the details with Filemon.',
   'core.c.h': 'Concrete', 'core.c.cap': 'Concrete slab with the excavator on site',
   'core.c.p': 'Driveways, patios, sidewalks and slabs. Start with the space and what you need it to do.',
   'core.c.cta': 'Discuss concrete work',
-  'core.city.h': 'Municipal & city work', 'core.city.pending': 'Project examples pending verification',
-  'core.city.cta': 'Discuss a city project',
+  'core.public.h': 'Commercial & public works', 'core.public.pending': 'Project examples pending verification',
+  'core.public.cta': 'Discuss a commercial or public project',
   'section.services': '01 / Main services',
 });
 Object.assign(home.es, {
-  'core.h': 'Sépticos. Concreto. Obras municipales.',
+  'core.h': 'Sépticos. Concreto. Obras comerciales y públicas.',
   'core.p': 'Elija su proyecto. Hable de los detalles con Filemon.',
   'core.c.h': 'Concreto', 'core.c.cap': 'Losa de concreto con la excavadora en la obra',
   'core.c.p': 'Entradas, patios, banquetas y losas. Cuéntenos cómo quiere usar el espacio.',
   'core.c.cta': 'Consultar un trabajo de concreto',
-  'core.city.h': 'Obras municipales', 'core.city.pending': 'Ejemplos de proyectos pendientes de verificación',
-  'core.city.cta': 'Consultar un proyecto municipal',
+  'core.public.h': 'Obras comerciales y públicas', 'core.public.pending': 'Ejemplos de proyectos pendientes de verificación',
+  'core.public.cta': 'Consultar un proyecto comercial o público',
   'section.services': '01 / Servicios principales',
 });
 Object.assign(common.en, { 'media.disclosure': "Michael is also FPC's technology partner." });

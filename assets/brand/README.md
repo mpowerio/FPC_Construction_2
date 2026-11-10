@@ -13,6 +13,6 @@ legacy-page favicon aliases use the same screen set. SVGs remain self-contained.
 
 Flat print/merch masters and existing flat lockup assets are unchanged. These
 screen assets do not amend the print brand guide. The source vectors are machine
-traces, not designer originals. Filemon will review the installed draft before
-any release; revert the screen swap if he objects. Nothing in this folder grants
+traces, not designer originals. The operator relayed Filemon’s approval of this enhancement on 2026-11-10;
+the screen swap remains reversible. Nothing in this folder grants
 merge or publication authority.
