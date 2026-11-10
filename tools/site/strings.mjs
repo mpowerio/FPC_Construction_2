@@ -350,11 +350,11 @@ Object.assign(common.en, {
   'reviews.leave': 'Leave a Google review', 'reviews.read': 'Read reviews on Google',
   'reviews.heading': 'What our customers say', 'reviews.count': 'Google reviews',
   'reviews.observed': 'Checked on', 'reviews.excerpt': 'Excerpt · Read original on Google',
-  'reviews.original': 'Read original on Google', 'media.heading': 'Tree work, by FPC', 'media.open': 'Open video',
+  'reviews.original': 'Read original on Google', 'media.heading': 'Tree work, by FPC', 'media.open': 'Open video', 'media.testimonial': 'Customer testimonial',
 });
 Object.assign(common.es, {
   'reviews.leave': 'Dejar una reseña en Google', 'reviews.read': 'Leer reseñas en Google',
   'reviews.heading': 'Lo que dicen nuestros clientes', 'reviews.count': 'reseñas de Google',
   'reviews.observed': 'Consultado el', 'reviews.excerpt': 'Extracto · Leer original en Google',
-  'reviews.original': 'Leer original en Google', 'media.heading': 'Trabajo de árboles de FPC', 'media.open': 'Abrir video',
+  'reviews.original': 'Leer original en Google', 'media.heading': 'Trabajo de árboles de FPC', 'media.open': 'Abrir video', 'media.testimonial': 'Testimonio de un cliente',
 });

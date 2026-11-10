@@ -13,7 +13,7 @@ const root = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const port = Number(process.argv[2] || process.env.PORT || 8080);
 const TYPES = { '.html': 'text/html; charset=utf-8', '.css': 'text/css', '.js': 'text/javascript', '.json': 'application/json',
   '.xml': 'application/xml', '.txt': 'text/plain', '.svg': 'image/svg+xml', '.png': 'image/png', '.jpg': 'image/jpeg',
-  '.webp': 'image/webp', '.avif': 'image/avif', '.ico': 'image/x-icon', '.woff2': 'font/woff2' };
+  '.webp': 'image/webp', '.avif': 'image/avif', '.ico': 'image/x-icon', '.woff2': 'font/woff2', '.mp4': 'video/mp4' };
 const isFile = async (p) => { try { return (await stat(p)).isFile(); } catch { return false; } };
 const isDir = async (p) => { try { return (await stat(p)).isDirectory(); } catch { return false; } };
 

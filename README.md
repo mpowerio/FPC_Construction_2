@@ -49,11 +49,11 @@ This check uses only local fixtures and blocks external requests. It checks the 
 
 Built by mpowerio.ai
 
-## Review and tree-work slots (pending content approval)
+## Google review gates and approved tree-work testimonial
 
 `tools/site/reviews.mjs` has the single `GOOGLE_REVIEW_URL` setting, empty until the operator verifies the correct listing. It supplies the same EN/ES action link everywhere. `GOOGLE_REVIEWS.verified` is false and no rating, quotes or review section render until an approved, attributed snapshot is entered. A confirmed URL alone can enable the ask without inventing a rating. Snapshot date is displayed; this is not a live feed. Do not combine listings or rewrite/translate review words. Keep original author, stars, displayed date, source URL and excerpt labeling. No API, scraping, credentials or background refresh is used. Do not store API responses in git.
 
-`tools/site/media.mjs` has a default-hidden tree-work slot. Do not commit source footage, private paths or identifying captions. Publication requires the operator's public-use and caption decision, vetted local derivatives, removed EXIF/GPS/data tracks, and visual/audio inspection. Keep clips silent, click-to-play and `preload="none"`; originals stay in the private vault. New Filemon shots arrive via the existing Drive/CRM Inbox flow, outside this site's code scope.
+`tools/site/media.mjs` now contains the operator-approved tree-work feature: responsive still, three clean silent clips and his exact English testimonial, attributed to Michael Parker with 5/5 and the message date 2026-11-10. It is labeled a customer testimonial in both interface languages, never an unconfirmed Google review. The town field stays empty until his answer; no street is included. Setting `approvedForPublic: false` omits the entire feature. Source footage stays in the private vault; committed derivatives have no audio, GPS, original filenames or identifying metadata. Clips use controls, no autoplay and `preload="none"`. New Filemon shots follow the existing Drive/CRM Inbox flow, outside this code scope.
 
 The agency-credit footer remains unchanged pending the operator's decision. Existing form runtime, relay, Fil copy and legal pages are unchanged.
 
@@ -61,4 +61,4 @@ The agency-credit footer remains unchanged pending the operator's decision. Exis
 node --test tools/site/content.test.mjs
 ```
 
-The responsive check also renders six explicitly synthetic populated layouts in intercepted local responses. These fixtures are not published Google reviews or tree-work media, and never enter the generated pages. Review-link ownership, real content authenticity and public-use consent remain human checks, not URL-validation claims.
+The responsive check also renders six explicitly synthetic populated layouts in intercepted local responses. Synthetic Google review fixtures never enter the generated pages. The approved real tree-work feature and testimonial are checked separately. Review-link ownership, real content authenticity and public-use consent remain human checks, not URL-validation claims.

@@ -8,14 +8,14 @@ import { fileURLToPath } from 'node:url';
 import { services } from './services.mjs';
 import { common } from './strings.mjs';
 import { renderReviews } from './reviews.mjs';
-import { renderTreeWork } from './media.mjs';
+import { TREE_WORK } from './media.mjs';
 import { tiktokProfile, whatsappUrl, WHATSAPP_URL } from './social.mjs';
 
 const { chromium } = createRequire(new URL('../contact-form/package.json', import.meta.url))('playwright');
 const root = fileURLToPath(new URL('../../', import.meta.url));
 const out = process.env.FPC_EVIDENCE_DIR || '/tmp/fpc-redesign-evidence';
 await mkdir(out, { recursive: true });
-const types = { html: 'text/html', js: 'text/javascript', css: 'text/css', avif: 'image/avif', webp: 'image/webp', woff2: 'font/woff2', svg: 'image/svg+xml', ico: 'image/x-icon' };
+const types = { html: 'text/html', js: 'text/javascript', css: 'text/css', avif: 'image/avif', webp: 'image/webp', woff2: 'font/woff2', svg: 'image/svg+xml', ico: 'image/x-icon', mp4: 'video/mp4' };
 const pages = ['/', '/es/', '/estimate/', '/es/estimado/', ...services.flatMap(s => Object.values(s.url))];
 const receipts = [];
 const browser = await chromium.launch({ headless: true });
@@ -53,7 +53,22 @@ try {
       await page.evaluate(() => document.fonts.ready);
       assert.deepEqual(errors, [], `${path} JavaScript errors`);
       assert.equal(await page.locator('h1').count(), 1);
-      assert.equal(await page.locator('#google-reviews, .review-summary, .review-action, .tree-work').count(), 0, 'Unverified reviews and private tree media remain absent');
+      assert.equal(await page.locator('#google-reviews, .review-summary, .review-action').count(), 0, 'Unverified Google reviews remain absent');
+      const isHome = path === '/' || path === '/es/';
+      assert.equal(await page.locator('.tree-work').count(), isHome ? 1 : 0);
+      if (isHome) {
+        assert.equal(await page.locator('.tree-testimonial blockquote').innerText(), TREE_WORK.testimonial.text);
+        assert.equal(await page.locator('.tree-testimonial strong').innerText(), 'Michael Parker');
+        assert.equal(await page.locator('.tree-testimonial time').getAttribute('datetime'), '2026-11-10');
+        assert.equal(await page.locator('.tree-testimonial__rating').innerText(), '5/5');
+        assert.ok(!(await page.locator('.tree-testimonial').innerText()).includes('Google'));
+        assert.equal(await page.locator('.tree-testimonial__author span').count(), 0, 'Town remains unset');
+        assert.equal(await page.locator('.tree-work video').count(), 3);
+        for (const video of await page.locator('.tree-work video').all()) {
+          assert.equal(await video.getAttribute('preload'), 'none');
+          assert.equal(await video.getAttribute('autoplay'), null);
+        }
+      }
       assert.equal(await page.locator('a[href="https://mpowerio.ai"]').innerText(), path.startsWith('/es/') ? 'Desarrollado por mpowerio.ai' : 'Powered by mpowerio.ai', 'Agency credit is unchanged');
       const layout = await page.evaluate(() => {
         const box = e => { const b = e.getBoundingClientRect(); return { x: b.x, y: b.y, width: b.width, height: b.height }; };
@@ -115,9 +130,8 @@ try {
       { listingId:'fixture-only', author:'Local fixture A', rating:5, dateLabel:'2026-11-10', text:'Synthetic layout fixture. This is not a real customer review.', language:'en', sourceUrl:source, excerpt:true },
       { listingId:'fixture-only', author:'Local fixture B', rating:4, dateLabel:'2026-11-10', text:'Prueba de diseño local. No es una reseña de un cliente real.', language:'es', sourceUrl:source, excerpt:true }
     ] } });
-    const tree = renderTreeWork(lang, t, { approvedForPublic:true, caption:{en:'Synthetic local media fixture',es:'Prueba local de medios'}, photo:{src:'/assets/img/project-1-800.webp',width:800,height:600,alt:{en:'Existing public photo used for local layout test',es:'Foto pública existente para prueba de diseño local'}}, clips:[] });
     const c = await browser.newContext({ viewport:{width,height:1000}, reducedMotion:'reduce' });
-    await fixture(c, reviews.section + tree, reviews.summary);
+    await fixture(c, reviews.section, reviews.summary);
     const p = await c.newPage(); await p.goto('https://fpc.test' + (lang === 'es' ? '/es/' : '/'));
     await p.locator('#google-reviews').scrollIntoViewIfNeeded();
     assert.equal(await p.locator('.review-quote').count(), 2);
@@ -129,9 +143,23 @@ try {
     await p.screenshot({path:join(out, `synthetic-reviews-${lang}-${width}.png`)});
     await p.locator('.tree-work').scrollIntoViewIfNeeded();
     assert.equal(await p.locator('.tree-work img').getAttribute('loading'), 'lazy');
-    await p.screenshot({path:join(out, `synthetic-media-${lang}-${width}.png`)});
+    await p.locator('.tree-work__story').scrollIntoViewIfNeeded();
+    await p.locator('.tree-work img').evaluate(image => image.decode());
+    await p.locator('.tree-work__story').screenshot({path:join(out, `tree-testimonial-${lang}-${width}.png`)});
     await c.close();
   }
+  // Exercise actual silent local clips; no provider or external request is involved.
+  const playback = await browser.newContext({ viewport:{width:390,height:1000}, reducedMotion:'reduce' });
+  await fixture(playback);
+  const videoPage = await playback.newPage(); await videoPage.goto('https://fpc.test/');
+  for (const video of await videoPage.locator('.tree-work video').all()) {
+    await video.scrollIntoViewIfNeeded();
+    await video.evaluate(async v => { await v.play(); });
+    await videoPage.waitForFunction(v => v.currentTime > 0.1 && !v.error, await video.elementHandle());
+    const result = await video.evaluate(v => { v.pause(); return { width:v.videoWidth,height:v.videoHeight,duration:v.duration,error:v.error?.message }; });
+    assert.ok(result.width > 0 && result.height > 0 && result.duration > 6 && !result.error);
+  }
+  await playback.close();
   // No-JS: all service copy, language paths and the GET-only starter remain usable.
   const nojs = await browser.newContext({ javaScriptEnabled:false, viewport:{width:390,height:844} });
   await fixture(nojs);
@@ -158,5 +186,5 @@ try {
   }
   assert.equal(productionPosts, 0);
   await writeFile(join(out, 'responsive-results.json'), JSON.stringify({ pages:receipts.length, syntheticLayouts:6, productionPosts, receipts }, null, 2));
-  console.log(`PASS: ${receipts.length} page/viewport combinations; starter handoff; no-JS; schema; local links; hidden TikTok/reviews/tree media; six synthetic populated layouts; motion; zero external POST attempts. Evidence: ${out}`);
+  console.log(`PASS: ${receipts.length} page/viewport combinations; starter handoff; no-JS; schema; local links; hidden TikTok/Google reviews; approved exact testimonial and three silent clips with playback; six synthetic review layouts; motion; zero external POST attempts. Evidence: ${out}`);
 } finally { await browser.close(); }

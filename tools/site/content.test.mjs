@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { renderReviews, GOOGLE_REVIEW_URL } from './reviews.mjs';
-import { renderTreeWork, treeMediaFiles } from './media.mjs';
+import { renderTreeWork, treeMediaFiles, TREE_WORK } from './media.mjs';
 import { common } from './strings.mjs';
 
 const t = key => common.en[key];
@@ -47,8 +47,8 @@ test('Spanish interface labels do not translate the source review words', () => 
   assert.ok(result.section.includes('Not a real review'));
 });
 test('unapproved media emits no markup or private names even when pending inputs exist', () => {
-  assert.equal(renderTreeWork('en', t), '');
-  assert.deepEqual(treeMediaFiles(), []);
+  assert.equal(renderTreeWork('en', t, { approvedForPublic:false }), '');
+  assert.deepEqual(treeMediaFiles({ approvedForPublic:false }), []);
   assert.equal(renderTreeWork('en', t, { approvedForPublic: false, photo: { src: '/private/pending-image.jpeg' } }), '');
 });
 test('approval alone cannot publish incomplete media', () => {
@@ -64,4 +64,23 @@ test('approved media requires generic local paths and reserved geometry; video l
   assert.throws(() => renderTreeWork('en', t, unsafe));
   const remote = structuredClone(media); remote.clips[0].src = 'https://example.com/clip.mp4';
   assert.throws(() => renderTreeWork('en', t, remote));
+});
+
+test('approved message is an exact dated testimonial, never an unverified Google review', () => {
+  const text = 'Amazing crew, great work so far that my HOA was impressed! Thanks to the great team Filemon has assembled. Quality workmanship and value pricing.';
+  assert.equal(TREE_WORK.testimonial.text, text);
+  assert.equal(TREE_WORK.testimonial.author, 'Michael Parker');
+  assert.equal(TREE_WORK.testimonial.rating, 5);
+  assert.equal(TREE_WORK.testimonial.date, '2026-11-10');
+  assert.equal(TREE_WORK.testimonial.town, '');
+  for (const lang of ['en','es']) {
+    const html = renderTreeWork(lang, key => common[lang][key]);
+    assert.ok(html.includes(text));
+    assert.ok(html.includes('lang="en"'));
+    assert.ok(!html.includes('Google'));
+    assert.ok(!html.includes('yes please'));
+    assert.ok(!html.includes('North Augusta'));
+  }
+  const wrongSource = structuredClone(TREE_WORK); wrongSource.testimonial.kind = 'google-review';
+  assert.throws(() => renderTreeWork('en', t, wrongSource));
 });
