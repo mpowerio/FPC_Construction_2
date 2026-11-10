@@ -1,6 +1,7 @@
 // Local SEO checks for the built pages. Run from the repository root: node tools/seo-check.mjs
 import fs from 'node:fs';
 import path from 'node:path';
+import { releaseProblems } from './site/release-policy.mjs';
 
 const root = process.cwd();
 const ORIGIN = 'https://fpcconstructions.com';
@@ -17,6 +18,7 @@ const decode = (s) => s.replace(/<[^>]+>/g, '').replace(/&amp;/g, '&').replace(/
 
 for (const page of PAGES) {
   const html = fs.readFileSync(path.join(root, page.file), 'utf8');
+  for (const problem of releaseProblems(html, { allowDraft: process.argv.includes('--allow-draft') })) fail(page, problem);
   const meta = (name) => (html.match(new RegExp(`<meta name="${name}" content="([^"]*)">`)) || [])[1] || '';
 
   if (!html.startsWith(`<!DOCTYPE html>\n<html lang="${page.lang}">`)) fail(page, `html lang must be ${page.lang}`);
@@ -65,8 +67,10 @@ for (const page of PAGES) {
     for (const profile of ['https://www.facebook.com/p/FPC-Construction-LLC-100066373038903/', 'https://www.instagram.com/fpcconstructions']) {
       if (!(business.sameAs || []).includes(profile)) fail(page, `sameAs missing ${profile}`);
     }
-    const h1 = decode((html.match(/<h1[^>]*lang="en"[^>]*>([\s\S]*?)<\/h1>/) || [])[1] || '');
-    if (h1 !== SLOGAN) fail(page, `H1 must be the locked slogan in English (lang="en"); found "${h1}"`);
+    const headings = [...html.matchAll(/<h1\b[^>]*>([\s\S]*?)<\/h1>/g)];
+    if (headings.length !== 1 || !decode(headings[0]?.[1] || '')) fail(page, 'one non-empty H1 is required');
+    const slogan = decode((html.match(/<p[^>]*class="hero__slogan"[^>]*lang="en"[^>]*>([\s\S]*?)<\/p>/) || [])[1] || '');
+    if (slogan !== SLOGAN) fail(page, 'locked English slogan paragraph must remain verbatim');
 
     const faq = graphs.find((n) => types(n).includes('FAQPage'));
     const visible = [...html.matchAll(/<summary>([\s\S]*?)<span class="faq__nub"/g)].map((m) => decode(m[1]));
