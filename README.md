@@ -62,3 +62,20 @@ node --test tools/site/content.test.mjs
 ```
 
 The responsive check also renders six explicitly synthetic populated layouts in intercepted local responses. Synthetic Google review fixtures never enter the generated pages. The approved real tree-work feature and testimonial are checked separately. Review-link ownership, real content authenticity and public-use consent remain human checks, not URL-validation claims.
+
+
+### Approved draft iteration (2026-11-10)
+
+The hero headline is visibly pending operator approval; the locked English slogan
+remains verbatim in its paragraph. The three equal lead paths are septic,
+concrete and municipal/city work. Public-job examples remain pending verification;
+there are no named municipal projects or award claims. Tree work and Michael's
+exact testimonial follow those paths. The approved technology-partner disclosure
+is separate from his quote in EN/ES; new Spanish interface copy awaits native review.
+
+Logo B is installed on the draft's logo plates and screen favicon set, using the
+default enhanced candidate with traced hairlines unpainted. See assets/brand/README.md.
+Flat print/merch masters are untouched. Filemon must see the draft before any merge;
+revert the swap if he objects. No release approval is implied. Rebuild screen
+favicons with python3 tools/site/brand-assets.py (also called after images.mjs).
+The SEO check validates the locked paragraph and one nonempty H1 independently.

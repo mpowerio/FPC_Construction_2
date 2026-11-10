@@ -16,7 +16,7 @@
     <div class="wrap hero__grid">
       <div class="hero__text">
         <p class="eyebrow"><span class="gold-mark" aria-hidden="true"></span>{{t.hero.eyebrow}}</p>
-        <h1 id="h1" class="display hero__h1">{{t.hero.heading}}</h1>
+        <h1 id="h1" class="display hero__h1 hero__h1--pending">{{t.hero.heading}}</h1>
         <p class="lead" id="about">{{t.hero.intro}}</p>
         <p class="hero__slogan" lang="en">No job too small, no dream too big — FPC Construction for all your needs.</p>
         {{v.reviewSummary}}
@@ -51,7 +51,6 @@
   </section>
 
   {{v.reviewSection}}
-  {{v.treeWork}}
 
   <!-- ======================= CORE TRADES (clay band) ======================= -->
   <section class="core cut-both on-dark" id="services" aria-labelledby="core-h">
@@ -73,16 +72,24 @@
         </article>
         <article class="trade trade--b" data-reveal>
           <figure>
-            <div class="frame">{{img.drainage}}</div>
-            <figcaption><span>{{t.core.d.cap}}</span></figcaption>
+            <div class="frame">{{img.concrete}}</div>
+            <figcaption><span>{{t.core.c.cap}}</span></figcaption>
           </figure>
-          <h3 class="h3">{{t.core.d.h}}</h3>
-          <p>{{t.core.d.p}}</p>
-          <a class="textlink" href="{{v.drainageUrl}}"><span class="textlink__label">{{t.core.d.cta}}</span><span class="textlink__nub" aria-hidden="true"><svg><use href="#i-chev"/></svg></span></a>
+          <h3 class="h3">{{t.core.c.h}}</h3>
+          <p>{{t.core.c.p}}</p>
+          <a class="textlink" href="{{v.concreteUrl}}"><span class="textlink__label">{{t.core.c.cta}}</span><span class="textlink__nub" aria-hidden="true"><svg><use href="#i-chev"/></svg></span></a>
+        </article>
+        <article class="trade trade--city" data-reveal>
+          <div class="frame city-scope" aria-hidden="true"><svg><use href="#i-chev"/></svg></div>
+          <p class="trade__pending">{{t.core.city.pending}}</p>
+          <h3 class="h3">{{t.core.city.h}}</h3>
+          <a class="textlink" href="{{v.estimate}}"><span class="textlink__label">{{t.core.city.cta}}</span><span class="textlink__nub" aria-hidden="true"><svg><use href="#i-chev"/></svg></span></a>
         </article>
       </div>
     </div>
   </section>
+
+  {{v.treeWork}}
 
   <!-- ======================= TRADE INDEX ======================= -->
   <section class="index" aria-labelledby="index-h">

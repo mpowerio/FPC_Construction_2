@@ -29,9 +29,9 @@
 </script>
 
 <link rel="preload" href="/assets/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="icon" href="/favicon.ico" sizes="48x48">
-<link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
-<link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+<link rel="icon" href="/assets/brand/favicon.ico" sizes="48x48">
+<link rel="icon" href="/assets/brand/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/assets/brand/apple-touch-icon.png">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="FPC Construction LLC">
 <meta property="og:title" content="Septic systems in North Augusta & the CSRA | FPC Construction">
@@ -71,8 +71,7 @@
    narrower), weight axis untouched: 62 KB instead of 90 KB. Renders pixel-identical to the
    full font at every weight/width this CSS uses (48-combination diff, 0 pixels). */
 /* Metric-matched fallback so a late font swap does not reflow (CLS guard).
-   size-adjust tuned by measurement against Archivo at wdth 100
-   (agent-out/fpc-site-redesign-20261018/SEO-AND-PERF.md section 4). */
+   size-adjust tuned by measurement against Archivo at wdth 100. */
 @font-face {
   font-family: "Archivo Fallback";
   src: local("Arial"), local("Liberation Sans");
@@ -99,7 +98,7 @@
 :root {
   color-scheme: light;
 
-  /* FPC gold/orange, warm stone and graphite. The existing logo is unchanged. */
+  /* FPC gold/orange, warm stone and graphite. Screen logo B is approved for this draft. */
   --c-concrete: #F4F0E8;
   --c-pour: #E9E3D6;
   --c-ink: #262626;
@@ -262,7 +261,7 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 }
 .ph::before { content: ""; width: 8px; height: 8px; border-radius: 2px; background: var(--c-yellow); box-shadow: 0 0 0 1px var(--c-ink); }
 
-/* ---------- Logo plate (machined double bezel; logo PNG has white bg) ---------- */
+/* ---------- Logo plate (machined double bezel; approved screen logo on a light plate) ---------- */
 .plate {
   display: inline-block; padding: 4px; border-radius: var(--r-14);
   background: rgba(38,38,38,.06); box-shadow: inset 0 0 0 1px var(--c-hair);
@@ -272,7 +271,7 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
   display: block; padding: 6px 10px; border-radius: calc(var(--r-14) - 4px);
   background: #FEFEFE; box-shadow: inset 0 1px 0 #fff, 0 1px 2px rgba(38,38,38,.08);
 }
-.plate img { width: 72px; height: auto; aspect-ratio: 264 / 164; }
+.plate img { width: 72px; height: auto; aspect-ratio: 3543 / 2239; }
 @media (min-width: 900px) { .plate img { width: 88px; } }
 
 /* ---------- Language toggle (sliding thumb = transform) ---------- */
@@ -567,8 +566,8 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill { -we
   .trade-ribbon { margin-top: var(--s-48); padding-block: var(--s-32); font-size: var(--t-16); }
   .core, .index, .work, .steps, .area, .faq, .field-notes { padding-block: var(--s-96); }
   .core__intro, .work__head { grid-template-columns: 1.15fr 1fr; column-gap: var(--s-64); align-items: end; }
-  .core__grid { grid-template-columns: 1.15fr 1fr; gap: var(--s-64); margin-top: var(--s-48); }
-  .trade--b { margin-top: var(--s-64); }
+  .core__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-32); margin-top: var(--s-48); }
+
   .index__grid { grid-template-columns: 1fr 1.8fr; gap: var(--s-64); }
   .index__aside { position: sticky; top: 110px; align-self: start; }
   .index__groups { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-48); }
@@ -623,6 +622,15 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill { -we
 .tree-work__clips video { max-height: 640px; object-fit: contain; }
 @media (min-width: 900px) { .tree-work__story { grid-template-columns: 1.2fr 1fr; gap: var(--s-48); } .tree-work__clips video:first-child { grid-column: 1 / -1; max-height: 520px; } }
 
+.hero__h1--pending { font-size: var(--t-36); color: #E8C55A; }
+.trade { display: flex; flex-direction: column; min-width: 0; }
+.trade .textlink { margin-top: auto; padding-top: var(--s-16); }
+.trade p { margin-bottom: var(--s-16); }
+.city-scope { display: grid; place-items: center; background: radial-gradient(ellipse at 30% 20%, #D4A93730, transparent 70%), linear-gradient(155deg, #354236, #1E2821) !important; }
+.city-scope svg { width: 30%; height: 30%; color: #E8C55A; }
+.trade .trade__pending { margin-bottom: 0; margin-top: var(--s-16); font-size: var(--t-14); }
+.tree-testimonial__disclosure { font-size: var(--t-14); color: #C9CFBF; margin-top: var(--s-24); }
+
 .service-hero { display: grid; gap: var(--s-32); padding-block: var(--s-24) var(--s-64); }
 .service-back { display: inline-flex; align-items: center; min-height: 44px; color: #D7D8CB; margin-bottom: var(--s-24); text-decoration: none; }
 .service-hero h1 { font-size: clamp(2.25rem, 5vw, 4.5rem); margin-block: var(--s-16) var(--s-24); letter-spacing: -.035em; }
@@ -668,7 +676,7 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill { -we
       "url": "https://fpcconstructions.com/",
       "telephone": "+1-803-884-9305",
       "email": "info@fpcconstructions.com",
-      "logo": "https://fpcconstructions.com/assets/img/logo-600.png",
+      "logo": "https://fpcconstructions.com/assets/brand/fpc-lockup-enhanced-light.svg",
       "image": [
         "https://fpcconstructions.com/assets/img/og-1200x630.jpg"
       ],
@@ -922,7 +930,7 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill { -we
 <header class="site-header">
   <div class="wrap">
     <a class="plate" href="/" aria-label="FPC Construction home">
-      <span class="plate__core"><img src="/assets/img/logo-176.webp" srcset="/assets/img/logo-176.webp 176w, /assets/img/logo-264.webp 264w" sizes="(min-width: 900px) 88px, 72px" width="264" height="164" alt="FPC Construction"></span>
+      <span class="plate__core"><img src="/assets/brand/fpc-lockup-enhanced-light.svg" width="3543" height="2239" alt="FPC Construction"></span>
     </a>
     <nav class="site-nav" aria-label="Main">
       <a href="/#services">Services</a>
@@ -976,7 +984,7 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill { -we
   </div>
   <div class="wrap footer-grid">
     <div>
-      <a class="plate" href="/" aria-label="FPC Construction home"><span class="plate__core"><img src="/assets/img/logo-176.webp" srcset="/assets/img/logo-176.webp 176w, /assets/img/logo-264.webp 264w" sizes="(min-width: 900px) 88px, 72px" width="264" height="164" alt="FPC Construction" loading="lazy" decoding="async"></span></a>
+      <a class="plate" href="/" aria-label="FPC Construction home"><span class="plate__core"><img src="/assets/brand/fpc-lockup-enhanced-light.svg" width="3543" height="2239" alt="FPC Construction" loading="lazy" decoding="async"></span></a>
       <p class="small muted" style="margin-top:var(--s-16)">The phone is answered 24/7 by Fil, our AI assistant, in English or Spanish.</p>
       <div class="social">
         <a href="https://www.facebook.com/p/FPC-Construction-LLC-100066373038903/" aria-label="FPC on Facebook" rel="noopener"><svg aria-hidden="true"><use href="#i-fb"/></svg></a>
@@ -1022,7 +1030,7 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill { -we
   </div>
 </footer>
 <div class="island" role="region" aria-label="Quick actions">
-  <a class="plate" href="/" aria-label="FPC Construction home"><span class="plate__core"><img src="/assets/img/logo-176.webp" srcset="/assets/img/logo-176.webp 176w, /assets/img/logo-264.webp 264w" sizes="56px" width="264" height="164" alt=""></span></a>
+  <a class="plate" href="/" aria-label="FPC Construction home"><span class="plate__core"><img src="/assets/brand/fpc-lockup-enhanced-light.svg" width="3543" height="2239" alt=""></span></a>
   <a class="island__phone num" href="tel:+18038849305">(803) 884-9305</a>
   <nav class="lang" aria-label="Language / Idioma">
   <span class="lang__thumb" aria-hidden="true"></span>

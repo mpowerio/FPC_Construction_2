@@ -29,9 +29,9 @@
 </script>
 <link rel="preload" as="image" type="image/avif" imagesrcset="/assets/img/gallery-19-480.avif 480w, /assets/img/gallery-19-800.avif 800w, /assets/img/gallery-19-1200.avif 1200w" imagesizes="(min-width: 1280px) 580px, (min-width: 900px) 44vw, calc(100vw - 40px)" fetchpriority="high">
 <link rel="preload" href="/assets/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="icon" href="/favicon.ico" sizes="48x48">
-<link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
-<link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+<link rel="icon" href="/assets/brand/favicon.ico" sizes="48x48">
+<link rel="icon" href="/assets/brand/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/assets/brand/apple-touch-icon.png">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="FPC Construction LLC">
 <meta property="og:title" content="FPC Construction | Septic, drainage and site work in North Augusta, SC">
@@ -71,8 +71,7 @@
    narrower), weight axis untouched: 62 KB instead of 90 KB. Renders pixel-identical to the
    full font at every weight/width this CSS uses (48-combination diff, 0 pixels). */
 /* Metric-matched fallback so a late font swap does not reflow (CLS guard).
-   size-adjust tuned by measurement against Archivo at wdth 100
-   (agent-out/fpc-site-redesign-20261018/SEO-AND-PERF.md section 4). */
+   size-adjust tuned by measurement against Archivo at wdth 100. */
 @font-face {
   font-family: "Archivo Fallback";
   src: local("Arial"), local("Liberation Sans");
@@ -99,7 +98,7 @@
 :root {
   color-scheme: light;
 
-  /* FPC gold/orange, warm stone and graphite. The existing logo is unchanged. */
+  /* FPC gold/orange, warm stone and graphite. Screen logo B is approved for this draft. */
   --c-concrete: #F4F0E8;
   --c-pour: #E9E3D6;
   --c-ink: #262626;
@@ -262,7 +261,7 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 }
 .ph::before { content: ""; width: 8px; height: 8px; border-radius: 2px; background: var(--c-yellow); box-shadow: 0 0 0 1px var(--c-ink); }
 
-/* ---------- Logo plate (machined double bezel; logo PNG has white bg) ---------- */
+/* ---------- Logo plate (machined double bezel; approved screen logo on a light plate) ---------- */
 .plate {
   display: inline-block; padding: 4px; border-radius: var(--r-14);
   background: rgba(38,38,38,.06); box-shadow: inset 0 0 0 1px var(--c-hair);
@@ -272,7 +271,7 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
   display: block; padding: 6px 10px; border-radius: calc(var(--r-14) - 4px);
   background: #FEFEFE; box-shadow: inset 0 1px 0 #fff, 0 1px 2px rgba(38,38,38,.08);
 }
-.plate img { width: 72px; height: auto; aspect-ratio: 264 / 164; }
+.plate img { width: 72px; height: auto; aspect-ratio: 3543 / 2239; }
 @media (min-width: 900px) { .plate img { width: 88px; } }
 
 /* ---------- Language toggle (sliding thumb = transform) ---------- */
@@ -567,8 +566,8 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill { -we
   .trade-ribbon { margin-top: var(--s-48); padding-block: var(--s-32); font-size: var(--t-16); }
   .core, .index, .work, .steps, .area, .faq, .field-notes { padding-block: var(--s-96); }
   .core__intro, .work__head { grid-template-columns: 1.15fr 1fr; column-gap: var(--s-64); align-items: end; }
-  .core__grid { grid-template-columns: 1.15fr 1fr; gap: var(--s-64); margin-top: var(--s-48); }
-  .trade--b { margin-top: var(--s-64); }
+  .core__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-32); margin-top: var(--s-48); }
+
   .index__grid { grid-template-columns: 1fr 1.8fr; gap: var(--s-64); }
   .index__aside { position: sticky; top: 110px; align-self: start; }
   .index__groups { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-48); }
@@ -622,6 +621,15 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill { -we
 .tree-testimonial__author time, .tree-testimonial__author span { color: #BFC5B7; font-size: var(--t-14); }
 .tree-work__clips video { max-height: 640px; object-fit: contain; }
 @media (min-width: 900px) { .tree-work__story { grid-template-columns: 1.2fr 1fr; gap: var(--s-48); } .tree-work__clips video:first-child { grid-column: 1 / -1; max-height: 520px; } }
+
+.hero__h1--pending { font-size: var(--t-36); color: #E8C55A; }
+.trade { display: flex; flex-direction: column; min-width: 0; }
+.trade .textlink { margin-top: auto; padding-top: var(--s-16); }
+.trade p { margin-bottom: var(--s-16); }
+.city-scope { display: grid; place-items: center; background: radial-gradient(ellipse at 30% 20%, #D4A93730, transparent 70%), linear-gradient(155deg, #354236, #1E2821) !important; }
+.city-scope svg { width: 30%; height: 30%; color: #E8C55A; }
+.trade .trade__pending { margin-bottom: 0; margin-top: var(--s-16); font-size: var(--t-14); }
+.tree-testimonial__disclosure { font-size: var(--t-14); color: #C9CFBF; margin-top: var(--s-24); }
 </style>
 <script type="application/ld+json">
 {
@@ -640,7 +648,7 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill { -we
       "url": "https://fpcconstructions.com/",
       "telephone": "+1-803-884-9305",
       "email": "info@fpcconstructions.com",
-      "logo": "https://fpcconstructions.com/assets/img/logo-600.png",
+      "logo": "https://fpcconstructions.com/assets/brand/fpc-lockup-enhanced-light.svg",
       "image": [
         "https://fpcconstructions.com/assets/img/og-1200x630.jpg"
       ],
@@ -910,7 +918,7 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill { -we
 <header class="site-header">
   <div class="wrap">
     <a class="plate" href="/" aria-label="FPC Construction home">
-      <span class="plate__core"><img src="/assets/img/logo-176.webp" srcset="/assets/img/logo-176.webp 176w, /assets/img/logo-264.webp 264w" sizes="(min-width: 900px) 88px, 72px" width="264" height="164" alt="FPC Construction"></span>
+      <span class="plate__core"><img src="/assets/brand/fpc-lockup-enhanced-light.svg" width="3543" height="2239" alt="FPC Construction"></span>
     </a>
     <nav class="site-nav" aria-label="Main">
       <a href="/#services">Services</a>
@@ -935,7 +943,7 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill { -we
     <div class="wrap hero__grid">
       <div class="hero__text">
         <p class="eyebrow"><span class="gold-mark" aria-hidden="true"></span>North Augusta · Augusta · Aiken</p>
-        <h1 id="h1" class="display hero__h1">Septic, drainage<br><span>& site work.</span></h1>
+        <h1 id="h1" class="display hero__h1 hero__h1--pending">[Headline pending approval]</h1>
         <p class="lead" id="about">For your home, your land and what comes next. Filemon and the FPC crew handle the ground work, the concrete and the finishing touches across the CSRA.</p>
         <p class="hero__slogan" lang="en">No job too small, no dream too big — FPC Construction for all your needs.</p>
 
@@ -970,15 +978,14 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill { -we
   </section>
 
 
-  <section class="tree-work" aria-labelledby="tree-work-h"><div class="wrap"><p class="eyebrow">FPC Construction</p><h2 class="h2" id="tree-work-h">Tree work, by FPC</h2><div class="tree-work__story"><figure><picture><source type="image/avif" srcset="/assets/img/tree-work-photo-480.avif 480w, /assets/img/tree-work-photo-800.avif 800w, /assets/img/tree-work-photo-1200.avif 1200w" sizes="(min-width: 900px) 55vw, calc(100vw - 40px)"><img src="/assets/img/tree-work-photo-800.webp" width="800" height="1067" alt="FPC crew and an excavator working between homes on a tree-work job" loading="lazy" decoding="async" srcset="/assets/img/tree-work-photo-480.webp 480w, /assets/img/tree-work-photo-800.webp 800w, /assets/img/tree-work-photo-1200.webp 1200w" sizes="(min-width: 900px) 55vw, calc(100vw - 40px)"></picture><figcaption>Tree work by FPC Construction</figcaption></figure><aside class="tree-testimonial"><p class="eyebrow">Customer testimonial</p><p class="tree-testimonial__rating">5/5</p><blockquote lang="en"><p>Amazing crew, great work so far that my HOA was impressed! Thanks to the great team Filemon has assembled. Quality workmanship and value pricing.</p></blockquote><p class="tree-testimonial__author"><strong>Michael Parker</strong><span>North Augusta, Foxchase subdivision</span><time datetime="2026-11-10">2026-11-10</time></p></aside></div><div class="tree-work__clips"><video controls playsinline preload="none" width="1280" height="720" poster="/assets/img/tree-work-01-poster.webp" aria-label="Tree work by FPC Construction"><source src="/assets/video/tree-work-01.mp4" type="video/mp4"><a href="/assets/video/tree-work-01.mp4">Open video</a></video><video controls playsinline preload="none" width="720" height="1280" poster="/assets/img/tree-work-02-poster.webp" aria-label="Tree work by FPC Construction"><source src="/assets/video/tree-work-02.mp4" type="video/mp4"><a href="/assets/video/tree-work-02.mp4">Open video</a></video><video controls playsinline preload="none" width="720" height="1280" poster="/assets/img/tree-work-03-poster.webp" aria-label="Tree work by FPC Construction"><source src="/assets/video/tree-work-03.mp4" type="video/mp4"><a href="/assets/video/tree-work-03.mp4">Open video</a></video></div></div></section>
 
   <!-- ======================= CORE TRADES (clay band) ======================= -->
   <section class="core cut-both on-dark" id="services" aria-labelledby="core-h">
     <div class="wrap">
       <div class="core__intro">
-        <p class="eyebrow">01 / Ground work</p>
-        <h2 id="core-h" class="h2">Septic and drainage come first.</h2>
-        <p class="lead muted">This is the core of what FPC does. When a tank backs up or a yard won't drain, call first and Filemon will come look.</p>
+        <p class="eyebrow">01 / Main services</p>
+        <h2 id="core-h" class="h2">Septic. Concrete. City work.</h2>
+        <p class="lead muted">Choose your project. Talk through the details with Filemon.</p>
       </div>
       <div class="core__grid">
         <article class="trade trade--a" data-reveal>
@@ -992,16 +999,24 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill { -we
         </article>
         <article class="trade trade--b" data-reveal>
           <figure>
-            <div class="frame"><picture data-defer><source type="image/avif" data-srcset="/assets/img/gallery-9-480.avif 480w, /assets/img/gallery-9-800.avif 800w, /assets/img/gallery-9-1200.avif 1200w" sizes="(min-width: 1280px) 480px, (min-width: 900px) 38vw, calc(100vw - 40px)"><img data-src="/assets/img/gallery-9-800.webp" data-srcset="/assets/img/gallery-9-480.webp 480w, /assets/img/gallery-9-800.webp 800w, /assets/img/gallery-9-1200.webp 1200w" sizes="(min-width: 1280px) 480px, (min-width: 900px) 38vw, calc(100vw - 40px)" width="1200" height="900" decoding="async" alt="Drain pipe in a red clay trench beside a metal building"></picture><noscript><picture><source type="image/avif" srcset="/assets/img/gallery-9-480.avif 480w, /assets/img/gallery-9-800.avif 800w, /assets/img/gallery-9-1200.avif 1200w" sizes="(min-width: 1280px) 480px, (min-width: 900px) 38vw, calc(100vw - 40px)"><img src="/assets/img/gallery-9-800.webp" srcset="/assets/img/gallery-9-480.webp 480w, /assets/img/gallery-9-800.webp 800w, /assets/img/gallery-9-1200.webp 1200w" sizes="(min-width: 1280px) 480px, (min-width: 900px) 38vw, calc(100vw - 40px)" width="1200" height="900" loading="lazy" decoding="async" alt="Drain pipe in a red clay trench beside a metal building"></picture></noscript></div>
-            <figcaption><span>Drain pipe in a red clay trench</span></figcaption>
+            <div class="frame"><picture data-defer><source type="image/avif" data-srcset="/assets/img/gallery-19-480.avif 480w, /assets/img/gallery-19-800.avif 800w, /assets/img/gallery-19-1200.avif 1200w" sizes="(min-width: 900px) 31vw, calc(100vw - 40px)"><img data-src="/assets/img/gallery-19-800.webp" data-srcset="/assets/img/gallery-19-480.webp 480w, /assets/img/gallery-19-800.webp 800w, /assets/img/gallery-19-1200.webp 1200w" sizes="(min-width: 900px) 31vw, calc(100vw - 40px)" width="1200" height="900" decoding="async" alt="Concrete slab with the excavator on site"></picture><noscript><picture><source type="image/avif" srcset="/assets/img/gallery-19-480.avif 480w, /assets/img/gallery-19-800.avif 800w, /assets/img/gallery-19-1200.avif 1200w" sizes="(min-width: 900px) 31vw, calc(100vw - 40px)"><img src="/assets/img/gallery-19-800.webp" srcset="/assets/img/gallery-19-480.webp 480w, /assets/img/gallery-19-800.webp 800w, /assets/img/gallery-19-1200.webp 1200w" sizes="(min-width: 900px) 31vw, calc(100vw - 40px)" width="1200" height="900" loading="lazy" decoding="async" alt="Concrete slab with the excavator on site"></picture></noscript></div>
+            <figcaption><span>Concrete slab with the excavator on site</span></figcaption>
           </figure>
-          <h3 class="h3">Drainage and water control</h3>
-          <p>Standing water, a yard that never dries out, erosion. French drains, stormwater and site drainage, dug with our own equipment.</p>
-          <a class="textlink" href="/services/drainage-site-work/"><span class="textlink__label">Get a drainage estimate</span><span class="textlink__nub" aria-hidden="true"><svg><use href="#i-chev"/></svg></span></a>
+          <h3 class="h3">Concrete</h3>
+          <p>Driveways, patios, sidewalks and slabs. Start with the space and what you need it to do.</p>
+          <a class="textlink" href="/services/concrete/"><span class="textlink__label">Discuss concrete work</span><span class="textlink__nub" aria-hidden="true"><svg><use href="#i-chev"/></svg></span></a>
+        </article>
+        <article class="trade trade--city" data-reveal>
+          <div class="frame city-scope" aria-hidden="true"><svg><use href="#i-chev"/></svg></div>
+          <p class="trade__pending">Project examples pending verification</p>
+          <h3 class="h3">Municipal & city work</h3>
+          <a class="textlink" href="/estimate/"><span class="textlink__label">Discuss a city project</span><span class="textlink__nub" aria-hidden="true"><svg><use href="#i-chev"/></svg></span></a>
         </article>
       </div>
     </div>
   </section>
+
+  <section class="tree-work" aria-labelledby="tree-work-h"><div class="wrap"><p class="eyebrow">FPC Construction</p><h2 class="h2" id="tree-work-h">Tree work, by FPC</h2><div class="tree-work__story"><figure><picture><source type="image/avif" srcset="/assets/img/tree-work-photo-480.avif 480w, /assets/img/tree-work-photo-800.avif 800w, /assets/img/tree-work-photo-1200.avif 1200w" sizes="(min-width: 900px) 55vw, calc(100vw - 40px)"><img src="/assets/img/tree-work-photo-800.webp" width="800" height="1067" alt="FPC crew and an excavator working between homes on a tree-work job" loading="lazy" decoding="async" srcset="/assets/img/tree-work-photo-480.webp 480w, /assets/img/tree-work-photo-800.webp 800w, /assets/img/tree-work-photo-1200.webp 1200w" sizes="(min-width: 900px) 55vw, calc(100vw - 40px)"></picture><figcaption>Tree work by FPC Construction</figcaption></figure><aside class="tree-testimonial"><p class="eyebrow">Customer testimonial</p><p class="tree-testimonial__rating">5/5</p><blockquote lang="en"><p>Amazing crew, great work so far that my HOA was impressed! Thanks to the great team Filemon has assembled. Quality workmanship and value pricing.</p></blockquote><p class="tree-testimonial__author"><strong>Michael Parker</strong><span lang="en">North Augusta, Foxchase subdivision</span><time datetime="2026-11-10">2026-11-10</time></p><p class="tree-testimonial__disclosure">Michael is also FPC&#39;s technology partner.</p></aside></div><div class="tree-work__clips"><video controls playsinline preload="none" width="1280" height="720" poster="/assets/img/tree-work-01-poster.webp" aria-label="Tree work by FPC Construction"><source src="/assets/video/tree-work-01.mp4" type="video/mp4"><a href="/assets/video/tree-work-01.mp4">Open video</a></video><video controls playsinline preload="none" width="720" height="1280" poster="/assets/img/tree-work-02-poster.webp" aria-label="Tree work by FPC Construction"><source src="/assets/video/tree-work-02.mp4" type="video/mp4"><a href="/assets/video/tree-work-02.mp4">Open video</a></video><video controls playsinline preload="none" width="720" height="1280" poster="/assets/img/tree-work-03-poster.webp" aria-label="Tree work by FPC Construction"><source src="/assets/video/tree-work-03.mp4" type="video/mp4"><a href="/assets/video/tree-work-03.mp4">Open video</a></video></div></div></section>
 
   <!-- ======================= TRADE INDEX ======================= -->
   <section class="index" aria-labelledby="index-h">
@@ -1143,7 +1158,7 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill { -we
   </div>
   <div class="wrap footer-grid">
     <div>
-      <a class="plate" href="/" aria-label="FPC Construction home"><span class="plate__core"><img src="/assets/img/logo-176.webp" srcset="/assets/img/logo-176.webp 176w, /assets/img/logo-264.webp 264w" sizes="(min-width: 900px) 88px, 72px" width="264" height="164" alt="FPC Construction" loading="lazy" decoding="async"></span></a>
+      <a class="plate" href="/" aria-label="FPC Construction home"><span class="plate__core"><img src="/assets/brand/fpc-lockup-enhanced-light.svg" width="3543" height="2239" alt="FPC Construction" loading="lazy" decoding="async"></span></a>
       <p class="small muted" style="margin-top:var(--s-16)">The phone is answered 24/7 by Fil, our AI assistant, in English or Spanish.</p>
       <div class="social">
         <a href="https://www.facebook.com/p/FPC-Construction-LLC-100066373038903/" aria-label="FPC on Facebook" rel="noopener"><svg aria-hidden="true"><use href="#i-fb"/></svg></a>
@@ -1189,7 +1204,7 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill { -we
   </div>
 </footer>
 <div class="island" role="region" aria-label="Quick actions">
-  <a class="plate" href="/" aria-label="FPC Construction home"><span class="plate__core"><img src="/assets/img/logo-176.webp" srcset="/assets/img/logo-176.webp 176w, /assets/img/logo-264.webp 264w" sizes="56px" width="264" height="164" alt=""></span></a>
+  <a class="plate" href="/" aria-label="FPC Construction home"><span class="plate__core"><img src="/assets/brand/fpc-lockup-enhanced-light.svg" width="3543" height="2239" alt=""></span></a>
   <a class="island__phone num" href="tel:+18038849305">(803) 884-9305</a>
   <nav class="lang" aria-label="Language / Idioma">
   <span class="lang__thumb" aria-hidden="true"></span>

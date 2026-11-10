@@ -56,6 +56,7 @@ const PIC = {
   // defer: these sit inside Chrome's native lazy-load distance on phones, so `loading=lazy`
   // still fetched ~210 KB during the hero load. core.js loads them 600px before they scroll in.
   septic: { id: 'gallery-12', alt: 'core.s.alt', sizes: '(min-width: 1280px) 672px, (min-width: 900px) 52vw, calc(100vw - 40px)', defer: true },
+  concrete: { id: 'gallery-19', alt: 'core.c.cap', sizes: '(min-width: 900px) 31vw, calc(100vw - 40px)', defer: true },
   drainage: { id: 'gallery-9', alt: 'core.d.alt', sizes: '(min-width: 1280px) 480px, (min-width: 900px) 38vw, calc(100vw - 40px)', defer: true },
   w1: { id: 'gallery-3', alt: 'w1.alt', sizes: '(min-width: 1280px) 784px, (min-width: 900px) 62vw, 82vw' },
   w2: { id: 'gallery-8', alt: 'w2.alt', sizes: '(min-width: 1280px) 384px, (min-width: 900px) 31vw, 82vw' },
@@ -84,7 +85,7 @@ function picture(p, t, deferred = p.defer) {
   return `<picture><source type="image/avif" srcset="${srcset(p.id, 'avif')}" sizes="${p.sizes}">` +
     `<img src="/assets/img/${p.id}-${fallback}.webp" srcset="${srcset(p.id, 'webp')}" sizes="${p.sizes}" width="${max}" height="${max * 3 / 4}" ${load} alt="${esc(t(p.alt))}"></picture>`;
 }
-const logo = (sizes, alt, lazy) => `<img src="/assets/img/logo-176.webp" srcset="/assets/img/logo-176.webp 176w, /assets/img/logo-264.webp 264w" sizes="${sizes}" width="264" height="164" alt="${alt}"${lazy ? ' loading="lazy" decoding="async"' : ''}>`;
+const logo = (sizes, alt, lazy) => `<img src="/assets/brand/fpc-lockup-enhanced-light.svg" width="3543" height="2239" alt="${alt}"${lazy ? ' loading="lazy" decoding="async"' : ''}>`;
 
 // ---------- Structured data ----------
 const SERVICES = {
@@ -108,7 +109,7 @@ function business(lang) {
     url: `${ORIGIN}/`,
     telephone: '+1-803-884-9305',
     email: 'info@fpcconstructions.com',
-    logo: `${ORIGIN}/assets/img/logo-600.png`,
+    logo: `${ORIGIN}/assets/brand/fpc-lockup-enhanced-light.svg`,
     image: [`${ORIGIN}/assets/img/og-1200x630.jpg`],
     knowsLanguage: ['en-US', 'es-US'],
     founder: { '@type': 'Person', name: 'Filemon Pineda', jobTitle: 'Owner' },
@@ -203,6 +204,7 @@ function render(page, lang) {
     whatsappFooter: WHATSAPP ? `<a class="social__text" href="${esc(WHATSAPP)}" rel="noopener">WhatsApp<span class="vh"> FPC Construction</span></a>` : '',
     tiktok: TIKTOK ? `<a class="social__text" href="${esc(TIKTOK)}" rel="noopener">TikTok<span class="vh"> FPC Construction</span></a>` : '',
     tiktokStory: TIKTOK && page.key !== 'estimate' ? `<a class="social-story" href="${esc(TIKTOK)}" rel="noopener"><span>TikTok</span><span>${t('field.watch')} <span aria-hidden="true">↗</span></span></a>` : '',
+    concreteUrl: services.find(s => s.id === 'concrete').url[lang],
     septicUrl: services.find(s => s.id === 'septic').url[lang],
     drainageUrl: services.find(s => s.id === 'drainage').url[lang],
     serviceType: page.service?.type || '',

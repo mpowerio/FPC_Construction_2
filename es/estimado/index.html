@@ -29,9 +29,9 @@
 </script>
 
 <link rel="preload" href="/assets/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="icon" href="/favicon.ico" sizes="48x48">
-<link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
-<link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+<link rel="icon" href="/assets/brand/favicon.ico" sizes="48x48">
+<link rel="icon" href="/assets/brand/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/assets/brand/apple-touch-icon.png">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="FPC Construction LLC">
 <meta property="og:title" content="Estimado gratis | FPC Construction, North Augusta, SC">
@@ -71,8 +71,7 @@
    narrower), weight axis untouched: 62 KB instead of 90 KB. Renders pixel-identical to the
    full font at every weight/width this CSS uses (48-combination diff, 0 pixels). */
 /* Metric-matched fallback so a late font swap does not reflow (CLS guard).
-   size-adjust tuned by measurement against Archivo at wdth 100
-   (agent-out/fpc-site-redesign-20261018/SEO-AND-PERF.md section 4). */
+   size-adjust tuned by measurement against Archivo at wdth 100. */
 @font-face {
   font-family: "Archivo Fallback";
   src: local("Arial"), local("Liberation Sans");
@@ -99,7 +98,7 @@
 :root {
   color-scheme: light;
 
-  /* FPC gold/orange, warm stone and graphite. The existing logo is unchanged. */
+  /* FPC gold/orange, warm stone and graphite. Screen logo B is approved for this draft. */
   --c-concrete: #F4F0E8;
   --c-pour: #E9E3D6;
   --c-ink: #262626;
@@ -262,7 +261,7 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 }
 .ph::before { content: ""; width: 8px; height: 8px; border-radius: 2px; background: var(--c-yellow); box-shadow: 0 0 0 1px var(--c-ink); }
 
-/* ---------- Logo plate (machined double bezel; logo PNG has white bg) ---------- */
+/* ---------- Logo plate (machined double bezel; approved screen logo on a light plate) ---------- */
 .plate {
   display: inline-block; padding: 4px; border-radius: var(--r-14);
   background: rgba(38,38,38,.06); box-shadow: inset 0 0 0 1px var(--c-hair);
@@ -272,7 +271,7 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
   display: block; padding: 6px 10px; border-radius: calc(var(--r-14) - 4px);
   background: #FEFEFE; box-shadow: inset 0 1px 0 #fff, 0 1px 2px rgba(38,38,38,.08);
 }
-.plate img { width: 72px; height: auto; aspect-ratio: 264 / 164; }
+.plate img { width: 72px; height: auto; aspect-ratio: 3543 / 2239; }
 @media (min-width: 900px) { .plate img { width: 88px; } }
 
 /* ---------- Language toggle (sliding thumb = transform) ---------- */
@@ -648,7 +647,7 @@ fieldset:disabled .chip span:active { transform: none; }
 <header class="site-header">
   <div class="wrap">
     <a class="plate" href="/es/" aria-label="Página principal de FPC Construction">
-      <span class="plate__core"><img src="/assets/img/logo-176.webp" srcset="/assets/img/logo-176.webp 176w, /assets/img/logo-264.webp 264w" sizes="(min-width: 900px) 88px, 72px" width="264" height="164" alt="FPC Construction"></span>
+      <span class="plate__core"><img src="/assets/brand/fpc-lockup-enhanced-light.svg" width="3543" height="2239" alt="FPC Construction"></span>
     </a>
     <nav class="site-nav" aria-label="Principal">
       <a href="/es/#services">Servicios</a>
@@ -827,7 +826,7 @@ fieldset:disabled .chip span:active { transform: none; }
   </div>
   <div class="wrap footer-grid">
     <div>
-      <a class="plate" href="/es/" aria-label="Página principal de FPC Construction"><span class="plate__core"><img src="/assets/img/logo-176.webp" srcset="/assets/img/logo-176.webp 176w, /assets/img/logo-264.webp 264w" sizes="(min-width: 900px) 88px, 72px" width="264" height="164" alt="FPC Construction" loading="lazy" decoding="async"></span></a>
+      <a class="plate" href="/es/" aria-label="Página principal de FPC Construction"><span class="plate__core"><img src="/assets/brand/fpc-lockup-enhanced-light.svg" width="3543" height="2239" alt="FPC Construction" loading="lazy" decoding="async"></span></a>
       <p class="small muted" style="margin-top:var(--s-16)">Fil, nuestro asistente virtual con inteligencia artificial, contesta el teléfono las 24 horas, en inglés o en español.</p>
       <div class="social">
         <a href="https://www.facebook.com/p/FPC-Construction-LLC-100066373038903/" aria-label="FPC en Facebook" rel="noopener"><svg aria-hidden="true"><use href="#i-fb"/></svg></a>

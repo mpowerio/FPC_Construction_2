@@ -54,7 +54,7 @@ for (const page of PAGES) {
       const n = (html.match(new RegExp(` id="${id}"`, 'g')) || []).length;
       if (n !== 1) fail(page, `legacy fragment #${id} must exist exactly once (found ${n})`);
     }
-    // No testimonials are shown, so #testimonials must land on real job photos, never on the reviews block.
+    // Preserve the legacy bookmark target in the work gallery.
     const work = (html.match(/<section class="work" id="work"[\s\S]*?<\/section>/) || [''])[0];
     if (!work.includes(' id="testimonials"')) fail(page, '#testimonials must point into the Recent work section');
     const business = graphs.find((n) => types(n).includes('LocalBusiness'));
@@ -65,8 +65,10 @@ for (const page of PAGES) {
     for (const profile of ['https://www.facebook.com/p/FPC-Construction-LLC-100066373038903/', 'https://www.instagram.com/fpcconstructions']) {
       if (!(business.sameAs || []).includes(profile)) fail(page, `sameAs missing ${profile}`);
     }
-    const h1 = decode((html.match(/<h1[^>]*lang="en"[^>]*>([\s\S]*?)<\/h1>/) || [])[1] || '');
-    if (h1 !== SLOGAN) fail(page, `H1 must be the locked slogan in English (lang="en"); found "${h1}"`);
+    const headings = [...html.matchAll(/<h1\b[^>]*>([\s\S]*?)<\/h1>/g)];
+    if (headings.length !== 1 || !decode(headings[0]?.[1] || '')) fail(page, 'exactly one non-empty H1 required');
+    const slogans = [...html.matchAll(/<p\b(?=[^>]*class="[^" ]*hero__slogan[^" ]*")(?=[^>]*lang="en")[^>]*>([\s\S]*?)<\/p>/g)];
+    if (slogans.length !== 1 || decode(slogans[0]?.[1] || '') !== SLOGAN) fail(page, 'locked English slogan paragraph must appear exactly once, verbatim');
 
     const faq = graphs.find((n) => types(n).includes('FAQPage'));
     const visible = [...html.matchAll(/<summary>([\s\S]*?)<span class="faq__nub"/g)].map((m) => decode(m[1]));

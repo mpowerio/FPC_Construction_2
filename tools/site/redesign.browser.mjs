@@ -63,6 +63,21 @@ try {
         assert.equal(await page.locator('.tree-testimonial__rating').innerText(), '5/5');
         assert.ok(!(await page.locator('.tree-testimonial').innerText()).includes('Google'));
         assert.equal(await page.locator('.tree-testimonial__author span').innerText(), 'North Augusta, Foxchase subdivision', 'Only operator-approved town/subdivision wording');
+        assert.equal(await page.locator('.tree-testimonial__author span').getAttribute('lang'), 'en');
+        assert.equal(await page.locator('.tree-testimonial__disclosure').innerText(), common[path === '/es/' ? 'es' : 'en']['media.disclosure']);
+        assert.equal(await page.locator('#services .trade').count(), 3);
+        const hierarchy = await page.evaluate(() => {
+          const service = document.querySelector('#services'), tree = document.querySelector('.tree-work');
+          const cards = [...service.querySelectorAll('.trade')].map(e => {const r=e.getBoundingClientRect(); return {width:r.width,top:r.top};});
+          return {treeBelow: Boolean(service.compareDocumentPosition(tree) & Node.DOCUMENT_POSITION_FOLLOWING), cards};
+        });
+        assert.ok(hierarchy.treeBelow, 'Tree work follows all three main service paths');
+        assert.ok(hierarchy.cards.every(card => Math.abs(card.width-hierarchy.cards[0].width)<1), 'Three equal service paths');
+        assert.match(await page.locator('h1').innerText(), /pending approval|pendiente de aprobación/);
+        assert.equal(await page.locator('.trade--city img').count(), 0, 'No unverified municipal project photo');
+        assert.equal(await page.locator('.site-header .plate img').getAttribute('src'), '/assets/brand/fpc-lockup-enhanced-light.svg');
+        assert.equal(await page.locator('.site-footer .plate img').getAttribute('src'), '/assets/brand/fpc-lockup-enhanced-light.svg');
+        assert.ok(!(await page.content()).includes('agent-out/'));
         assert.equal(await page.locator('.tree-work video').count(), 3);
         for (const video of await page.locator('.tree-work video').all()) {
           assert.equal(await video.getAttribute('preload'), 'none');

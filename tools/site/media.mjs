@@ -44,7 +44,7 @@ export function renderTreeWork(lang, t, media = TREE_WORK) {
     assert.ok(review.author && review.text); assert.ok(Number.isInteger(review.rating) && review.rating >= 1 && review.rating <= 5);
     assert.match(review.date, /^\d{4}-\d{2}-\d{2}$/);
     assert.match(review.language, /^[a-z]{2,3}(?:-[A-Za-z0-9]{2,8})*$/);
-    testimonial = `<aside class="tree-testimonial"><p class="eyebrow">${esc(t('media.testimonial'))}</p><p class="tree-testimonial__rating">${review.rating}/5</p><blockquote lang="${esc(review.language)}"><p>${esc(review.text)}</p></blockquote><p class="tree-testimonial__author"><strong>${esc(review.author)}</strong>${review.town ? `<span>${esc(review.town)}</span>` : ''}<time datetime="${review.date}">${review.date}</time></p></aside>`;
+    testimonial = `<aside class="tree-testimonial"><p class="eyebrow">${esc(t('media.testimonial'))}</p><p class="tree-testimonial__rating">${review.rating}/5</p><blockquote lang="${esc(review.language)}"><p>${esc(review.text)}</p></blockquote><p class="tree-testimonial__author"><strong>${esc(review.author)}</strong>${review.town ? `<span lang="en">${esc(review.town)}</span>` : ''}<time datetime="${review.date}">${review.date}</time></p><p class="tree-testimonial__disclosure">${esc(t('media.disclosure'))}</p></aside>`;
   }
   const imageTag = `<img src="${localMedia(photo.src, 'photo')}" width="${photo.width}" height="${photo.height}" alt="${esc(photo.alt[lang])}" loading="lazy" decoding="async"${photo.srcset ? ` srcset="${esc(photo.srcset)}" sizes="(min-width: 900px) 55vw, calc(100vw - 40px)"` : ''}>`;
   const image = photo.avifSrcset ? `<picture><source type="image/avif" srcset="${esc(photo.avifSrcset)}" sizes="(min-width: 900px) 55vw, calc(100vw - 40px)">${imageTag}</picture>` : imageTag;

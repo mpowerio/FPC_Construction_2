@@ -318,7 +318,7 @@ export const FORM_RUNTIME_KEYS = ['err.first', 'err.last', 'err.phone.req', 'err
 // November redesign copy. The locked slogan remains verbatim in the home template.
 Object.assign(home.en, {
   'hero.eyebrow': 'North Augusta · Augusta · Aiken',
-  'hero.heading': 'Septic, drainage<br><span>& site work.</span>',
+  'hero.heading': '[Headline pending approval]',
   'hero.intro': 'For your home, your land and what comes next. Filemon and the FPC crew handle the ground work, the concrete and the finishing touches across the CSRA.',
   'hero.seework': 'See the work', 'hero.badge': 'On the job',
   'start.h': 'What are you working on?', 'start.free': 'Free estimate',
@@ -332,7 +332,7 @@ Object.assign(home.en, {
 });
 Object.assign(home.es, {
   'hero.eyebrow': 'North Augusta · Augusta · Aiken',
-  'hero.heading': 'Sépticos, drenaje<br><span>y terreno.</span>',
+  'hero.heading': '[Titular pendiente de aprobación]',
   'hero.intro': 'Para su casa, su terreno y su próximo proyecto. Filemon y el equipo de FPC hacen el trabajo de terreno, el concreto y los acabados en toda la zona del CSRA.',
   'hero.seework': 'Ver los trabajos', 'hero.badge': 'En la obra',
   'start.h': '¿Qué proyecto tiene?', 'start.free': 'Estimado gratis',
@@ -358,3 +358,27 @@ Object.assign(common.es, {
   'reviews.observed': 'Consultado el', 'reviews.excerpt': 'Extracto · Leer original en Google',
   'reviews.original': 'Leer original en Google', 'media.heading': 'Trabajo de árboles de FPC', 'media.open': 'Abrir video', 'media.testimonial': 'Testimonio de un cliente',
 });
+
+// Operator-approved service hierarchy; headline and public-job examples remain draft.
+Object.assign(home.en, {
+  'core.h': 'Septic. Concrete. City work.',
+  'core.p': 'Choose your project. Talk through the details with Filemon.',
+  'core.c.h': 'Concrete', 'core.c.cap': 'Concrete slab with the excavator on site',
+  'core.c.p': 'Driveways, patios, sidewalks and slabs. Start with the space and what you need it to do.',
+  'core.c.cta': 'Discuss concrete work',
+  'core.city.h': 'Municipal & city work', 'core.city.pending': 'Project examples pending verification',
+  'core.city.cta': 'Discuss a city project',
+  'section.services': '01 / Main services',
+});
+Object.assign(home.es, {
+  'core.h': 'Sépticos. Concreto. Obras municipales.',
+  'core.p': 'Elija su proyecto. Hable de los detalles con Filemon.',
+  'core.c.h': 'Concreto', 'core.c.cap': 'Losa de concreto con la excavadora en la obra',
+  'core.c.p': 'Entradas, patios, banquetas y losas. Cuéntenos cómo quiere usar el espacio.',
+  'core.c.cta': 'Consultar un trabajo de concreto',
+  'core.city.h': 'Obras municipales', 'core.city.pending': 'Ejemplos de proyectos pendientes de verificación',
+  'core.city.cta': 'Consultar un proyecto municipal',
+  'section.services': '01 / Servicios principales',
+});
+Object.assign(common.en, { 'media.disclosure': "Michael is also FPC's technology partner." });
+Object.assign(common.es, { 'media.disclosure': 'Michael también es el socio tecnológico de FPC.' });
