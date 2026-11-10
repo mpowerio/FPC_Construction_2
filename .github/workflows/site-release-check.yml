@@ -1,0 +1,45 @@
+name: Site release check
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  site-release-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Generated pages are fresh
+        run: node tools/site/build.mjs --check
+      - name: SEO checks
+        run: node tools/seo-check.mjs
+      - name: Refuse unfinished public copy and prove the guard can fail
+        shell: bash
+        run: |
+          node --input-type=module <<'JS'
+          import assert from 'node:assert/strict';
+          import { readFileSync } from 'node:fs';
+          function check(html) {
+            const body = html.replace(/<!--[\s\S]*?-->/g, '').replace(/<(script|style)\b[^>]*>[\s\S]*?<\/\1>/gi, '');
+            const text = body.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
+            assert.ok(!/class=["'][^"']*\b(?:ph|reviews__ph)\b[^"']*["']/i.test(body), 'Unfinished caption or reviews box');
+            assert.ok(!/Placeholder:|Pendiente:|Headline pending approval|Titular pendiente de aprobación|Project examples pending verification|Ejemplos de proyectos pendientes de verificación/i.test(text), 'Unapproved public copy');
+          }
+          const files = ['index.html', 'es/index.html', 'estimate/index.html', 'es/estimado/index.html'];
+          for (const file of files) check(readFileSync(file, 'utf8'));
+          const clean = readFileSync('index.html', 'utf8');
+          const markers = [
+            '<span class="ph">Placeholder: town, month</span>',
+            '<span class="ph">Pendiente: ciudad, mes</span>',
+            '<div class="reviews__ph">Internal process note</div>',
+            '<h1>[Headline pending approval]</h1>',
+            '<h1>[Titular pendiente de aprobación]</h1>',
+            '<p>Project examples pending verification</p>',
+            '<p>Ejemplos de proyectos pendientes de verificación</p>'
+          ];
+          for (const marker of markers) assert.throws(() => check(clean.replace('</body>', `${marker}</body>`)), undefined, 'Guard must refuse the planted placeholder');
+          console.log('Public-copy guard passes; all seven must-fail controls were rejected.');
+          JS
