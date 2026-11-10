@@ -363,7 +363,7 @@ Object.assign(common.es, {
 Object.assign(home.en, {
   'core.h': 'Septic. Concrete. Commercial & public works.',
   'core.p': 'Choose your project. Talk through the details with Filemon.',
-  'core.c.h': 'Concrete', 'core.c.cap': 'Concrete slab with the excavator on site',
+  'core.c.h': 'Concrete', 'core.c.cap': 'Concrete work on site',
   'core.c.p': 'Driveways, patios, sidewalks and slabs. Start with the space and what you need it to do.',
   'core.c.cta': 'Discuss concrete work',
   'core.public.h': 'Commercial & public works', 'core.public.pending': 'Project examples pending verification',
@@ -373,7 +373,7 @@ Object.assign(home.en, {
 Object.assign(home.es, {
   'core.h': 'Sépticos. Concreto. Obras comerciales y públicas.',
   'core.p': 'Elija su proyecto. Hable de los detalles con Filemon.',
-  'core.c.h': 'Concreto', 'core.c.cap': 'Losa de concreto con la excavadora en la obra',
+  'core.c.h': 'Concreto', 'core.c.cap': 'Trabajo de concreto en la obra',
   'core.c.p': 'Entradas, patios, banquetas y losas. Cuéntenos cómo quiere usar el espacio.',
   'core.c.cta': 'Consultar un trabajo de concreto',
   'core.public.h': 'Obras comerciales y públicas', 'core.public.pending': 'Ejemplos de proyectos pendientes de verificación',
@@ -382,3 +382,9 @@ Object.assign(home.es, {
 });
 Object.assign(common.en, { 'media.disclosure': "Michael is also FPC's technology partner." });
 Object.assign(common.es, { 'media.disclosure': 'Michael también es el socio tecnológico de FPC.' });
+
+Object.assign(common.en, { 'svc.public': 'Commercial & public works', 'e.nojs': 'Online requests need JavaScript. Please call FPC to discuss your project. Nothing has been sent.' });
+Object.assign(common.es, { 'svc.public': 'Obras comerciales y públicas', 'e.nojs': 'Las solicitudes en línea necesitan JavaScript. Llame a FPC para hablar de su proyecto. No se ha enviado nada.' });
+
+Object.assign(estimate.en, { 't.public': 'Commercial & public works' });
+Object.assign(estimate.es, { 't.public': 'Obras comerciales y públicas' });

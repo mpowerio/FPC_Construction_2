@@ -44,8 +44,8 @@ async function resolve(pathname) {
   return null;
 }
 
-async function setup(respond, { path = '/estimate/', clock = false, mutate, mutateFiles = {}, noEndpoint = false, locale, viewport, http = false } = {}) {
-  const context = await browser.newContext({ ...(locale ? { locale } : {}), ...(viewport ? { viewport } : {}) });
+async function setup(respond, { path = '/estimate/', clock = false, mutate, mutateFiles = {}, noEndpoint = false, locale, viewport, http = false, javaScriptEnabled = true } = {}) {
+  const context = await browser.newContext({ javaScriptEnabled, ...(locale ? { locale } : {}), ...(viewport ? { viewport } : {}) });
   const page = await context.newPage();
   let requests = 0;
   const payloads = [];
@@ -734,3 +734,39 @@ test('negative control: a hint outside the guarded switch abandons a pending sen
     assert.equal(await page.locator('#first_name').inputValue(), '', 'blank Spanish form');
   } finally { gate.release(); await context.close(); }
 });
+
+for (const path of ['/estimate/', '/es/estimado/']) {
+  test(`no JavaScript gives a real call path and cannot submit private answers: ${path}`, async () => {
+    const s = await setup(() => { throw new Error('No-JS must never POST'); }, {path, javaScriptEnabled:false});
+    try {
+      assert.equal(await s.page.locator('#estimate-form').isVisible(), false);
+      assert.equal(await s.page.locator('#form-fallback').isVisible(), true);
+      assert.equal(await s.page.locator('#form-fallback a').getAttribute('href'), 'tel:+18038849305');
+      assert.equal(await s.page.locator('#first_name').isDisabled(), true);
+      assert.equal(await s.page.locator('#submit').isDisabled(), true);
+      assert.equal(await s.page.locator('#estimate-form').getAttribute('method'), 'post');
+      assert.equal(new URL(s.page.url()).search, '');
+      assert.equal(s.requests(), 0);
+    } finally { await s.context.close(); }
+  });
+  test(`failed script leaves a visible fallback and locked form: ${path}`, async () => {
+    const s = await setup(() => { throw new Error('Failed script must never POST'); }, {path, mutate:()=>''});
+    try {
+      assert.equal(await s.page.locator('#form-fallback').isVisible(), true);
+      assert.equal(await s.page.locator('#first_name').isDisabled(), true);
+      assert.equal(await s.page.locator('#submit').isDisabled(), true);
+      assert.equal(s.requests(), 0);
+    } finally { await s.context.close(); }
+  });
+  test(`commercial/public preselection survives to the saved-receipt payload: ${path}`, async () => {
+    const s = await setup(route => route.fulfill({json:accepted}), {path:path+'?type=commercial-and-public-works'});
+    try {
+      assert.equal(await s.page.locator('#form-fallback').isVisible(), false);
+      assert.equal(await s.page.locator('input[name="project_type"]:checked').inputValue(), 'commercial-and-public-works');
+      for (const [field,value] of Object.entries(inquiry)) await s.page.locator('#'+field).fill(value);
+      await submit(s.page); await settled(s.page);
+      assert.equal(s.payloads[0].body.project_type, 'commercial-and-public-works');
+      assert.equal(await s.page.locator('.success').count(), 1);
+    } finally { await s.context.close(); }
+  });
+}

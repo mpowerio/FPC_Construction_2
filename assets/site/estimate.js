@@ -364,4 +364,12 @@
   });
   window.addEventListener('pagehide', saveDraft);
   restore();
+  // Enable only once all validation, submission and saved-receipt handlers exist.
+  // With no script (or a failed script), the call fallback remains and no GET can leak answers.
+  if (!sentDone) {
+    form.querySelectorAll('fieldset[disabled]').forEach(function (f) { f.disabled = false; });
+    document.getElementById('company_website').disabled = false;
+    submit.disabled = false;
+  }
+  document.getElementById('form-fallback').hidden = true;
 })();

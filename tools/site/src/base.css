@@ -447,3 +447,8 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill { -we
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
 }
+
+/* Reserve space for keyboard focus above the fixed conversion bar. */
+html { scroll-padding-block: 96px; }
+:focus-visible { scroll-margin-block: 96px; }
+.form-fallback[hidden] { display: none; }

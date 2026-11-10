@@ -1,7 +1,7 @@
 # FPC Construction LLC website
 
 fpcconstructions.com: static HTML on GitHub Pages, deployed from `main` (no deploy-time build).
-November 2026 redesign draft: graphite, FPC gold and orange, built on the October Bench Cut generator. Every page has an English URL and a Spanish twin. Operator approval is required before release.
+November 2026 redesign draft: approved V3 Job Site concrete/asphalt textures, work-zone accents and reduced-motion-aware CSS graphics, built on the October Bench Cut generator. Every page has an English URL and a Spanish twin. Operator approval is required before release.
 
 | Page | English | Spanish | Source |
 |---|---|---|---|
@@ -43,7 +43,7 @@ node tools/site/redesign.browser.mjs
 # Optional: FPC_EVIDENCE_DIR=/absolute/output/path (default /tmp/fpc-redesign-evidence)
 ```
 
-This check uses only local fixtures and blocks external requests. It checks the ten generated pages at 1440/820/390, touch targets, no overflow, language twins, schema, local links, starter handoff, no-JS access, reduced motion and hidden TikTok. The existing 51-case estimate suite supplies receipt, failure, timeout, retry, language-draft and negative-control checks. Screenshots are local evidence; independent review and live field performance remain separate.
+This check uses only local fixtures and blocks external requests. It checks the ten generated pages at 1440/820/390, touch targets, no overflow, language twins, schema, local links, starter handoff, no-JS access, reduced motion and hidden TikTok. The 57-case estimate suite includes the existing 51 receipt/failure/language checks plus six no-JavaScript, failed-script and commercial/public handoff checks. Screenshots are local evidence; independent review and live field performance remain separate.
 
 ---
 
@@ -90,3 +90,12 @@ color-scheme and autofill overrides. Colors can be swapped without layout change
 “Commercial & public works” / “Obras comerciales y públicas” is the working third
 path label. The headline remains visibly pending approval. Real job examples
 still await the owner-thread list and operator approval. No release is authorized.
+
+
+## Release policy and no-JavaScript safety
+
+`node tools/seo-check.mjs` is the release command and intentionally fails while the headline or public-project proof slot is pending. `--allow-draft` is only for local draft verification; CI never uses it. The protected `main` branch requires `site-release-check`, including freshness, planted-defect controls and the default release command. Do not merge a pending draft. `node tools/site/release-controls.mjs` runs the real command against a release-eligible scratch fixture and proves placeholder, missing-slogan and duplicate-H1 failures.
+
+The estimate form ships locked, with POST as its native method. The script enables it only after its receipt-checked submit handler is installed. Without JavaScript, or if the script fails, the page provides a real call link to (803) 884-9305 and never promises an online request was saved. No production lead is sent during verification.
+
+`assets/site/legal.css` applies the current screen palette and approved logo B to the three legal pages without changing their wording. Screen SVGs use the safe pixel-identical optimization; flat print/merch masters remain unchanged. County/state contract wording remains inherited and unverified until Filemon approves the job list. A deep commercial/public page waits for that approved scope and examples; existing septic, concrete and drainage pages remain crawlable with EN/ES twins and sitemap entries.

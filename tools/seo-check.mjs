@@ -1,6 +1,7 @@
 // Local SEO checks for the built pages. Run from the repository root: node tools/seo-check.mjs
 import fs from 'node:fs';
 import path from 'node:path';
+import { services } from './site/services.mjs';
 import { releaseProblems } from './site/release-policy.mjs';
 
 const root = process.cwd();
@@ -82,6 +83,12 @@ for (const page of PAGES) {
       if (onlyPage.length) fail(page, `visible FAQ questions missing from JSON-LD: ${onlyPage.join(' | ')}`);
     }
   }
+}
+
+// Release policy also covers generated service pages and the three legal documents.
+for (const file of [...services.flatMap(s => Object.values(s.url).map(url => url.slice(1) + 'index.html')), 'privacy.html', 'terms.html', 'sms-opt-in.html']) {
+  const html = fs.readFileSync(path.join(root, file), 'utf8');
+  for (const problem of releaseProblems(html, { allowDraft: process.argv.includes('--allow-draft') })) fail({file}, problem);
 }
 
 const sitemap = fs.readFileSync(path.join(root, 'sitemap.xml'), 'utf8');

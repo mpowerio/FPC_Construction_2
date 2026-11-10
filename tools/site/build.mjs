@@ -56,7 +56,7 @@ const PIC = {
   // defer: these sit inside Chrome's native lazy-load distance on phones, so `loading=lazy`
   // still fetched ~210 KB during the hero load. core.js loads them 600px before they scroll in.
   septic: { id: 'gallery-12', alt: 'core.s.alt', sizes: '(min-width: 1280px) 672px, (min-width: 900px) 52vw, calc(100vw - 40px)', defer: true },
-  concrete: { id: 'gallery-19', alt: 'core.c.cap', sizes: '(min-width: 900px) 31vw, calc(100vw - 40px)', defer: true },
+  concrete: { id: 'gallery-3', alt: 'w1.alt', sizes: '(min-width: 900px) 31vw, calc(100vw - 40px)', defer: true },
   drainage: { id: 'gallery-9', alt: 'core.d.alt', sizes: '(min-width: 1280px) 480px, (min-width: 900px) 38vw, calc(100vw - 40px)', defer: true },
   w1: { id: 'gallery-3', alt: 'w1.alt', sizes: '(min-width: 1280px) 784px, (min-width: 900px) 62vw, 82vw' },
   w2: { id: 'gallery-8', alt: 'w2.alt', sizes: '(min-width: 1280px) 384px, (min-width: 900px) 31vw, 82vw' },
@@ -195,7 +195,7 @@ function render(page, lang) {
     preload: page.key === 'home'
       ? `<link rel="preload" as="image" type="image/avif" imagesrcset="${srcset(hero.id, 'avif')}" imagesizes="${hero.sizes}" fetchpriority="high">`
       : '',
-    css: (baseCss + '\n' + (page.key === 'service' ? src('home.css') + '\n' : '') + src(page.css)).trim(),
+    css: (baseCss + '\n' + (page.key === 'service' ? src('home.css') + '\n' : '') + src(page.css) + '\n' + src('material.css')).trim(),
     jsonld: jsonld(page.key, lang, t, ORIGIN + page.url[lang]),
     analytics,
     reviewSummary: reviews.summary, reviewSection: reviews.section, reviewFooter: reviews.footer,

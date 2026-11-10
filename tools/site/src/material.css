@@ -1,0 +1,293 @@
+/* ==========================================================================
+   FPC material layer: poured concrete + asphalt (PROPOSAL, not applied).
+   Inlined after the page stylesheet. Paint only: no font, transform,
+   transition or animation is declared here, and no existing box gets a new
+   size or spacing. The only sizes below belong to new out-of-flow pseudo-
+   elements (a joint line, a cone). Layout and motion were measured equal to
+   the mid-tone build's, not assumed.
+   Three small tiles (black/white + alpha, 10,600 bytes together) sit over the same
+   flat colours as before, so a tile that has not loaded yet is just mid-tone B.
+   Contrast budget: every text colour below clears AA against the DARKEST pixel
+   the tiles can produce on its ground (tiles.json has the measured alphas).
+   ========================================================================== */
+:root {
+  /* Retuned for the texture budget (flat values in brackets). Brand constants untouched. */
+  --c-ink-2: #383532;     /* [#403D39] 4.91:1 on the darkest band pixel */
+  --c-bronze: #4A3707;    /* [#553F09] 4.60:1 on the darkest band pixel */
+  --c-panel: #33312E;     /* [#353330] fresh asphalt, still soft charcoal */
+  --c-panel-hi: #3B3936;  /* [#403D3A] */
+  --c-nub-hi: #3B3936;
+
+  --m-concrete: url("/assets/img/tex-concrete.webp"); /* 192x192 sand speckle, pits, fines */
+  --m-broom: url("/assets/img/tex-broom.webp");       /* 320x233 broom strokes */
+  --m-asphalt: url("/assets/img/tex-asphalt.webp");   /* 176x176 binder + aggregate */
+  --m-cut: rgba(38, 38, 38, .62);      /* saw-cut groove */
+  --m-cut-2: rgba(38, 38, 38, .24);    /* groove shoulder */
+  --m-lip: rgba(255, 255, 255, .38);   /* light arris below the groove */
+  --m-joint: #46362F;                  /* brick mortar joint */
+}
+
+/* ---------- Ground: broom-finished concrete. Bands and footer: troweled (no broom strokes). ---------- */
+body, body.page-home { background-image: var(--m-concrete), var(--m-broom); }
+.index, .steps, .site-footer { background-image: var(--m-concrete); }
+
+/* ---------- Saw-cut control joints replace the bronze hairlines between pours ---------- */
+.index, .steps { border-block-color: var(--m-cut); box-shadow: inset 0 1px 0 var(--m-cut-2), inset 0 2px 0 var(--m-lip), inset 0 -1px 0 var(--m-cut-2), 0 1px 0 var(--m-lip); }
+.tree-work { border-bottom-color: transparent; } /* the trade index starts with its own joint */
+.reviews-feature { border-bottom-color: var(--m-cut); box-shadow: inset 0 -1px 0 var(--m-cut-2), 0 1px 0 var(--m-lip); }
+.faq, .field-notes { border-top-color: var(--m-cut); box-shadow: inset 0 1px 0 var(--m-cut-2), inset 0 2px 0 var(--m-lip); }
+.trade-ribbon { border-block-color: var(--m-cut); box-shadow: inset 0 1px 0 var(--m-lip), 0 1px 0 var(--m-lip); }
+.trade .frame, .shot .frame { box-shadow: 0 0 0 5px rgba(255, 255, 255, .26), 0 0 0 6px rgba(38, 38, 38, .42); }
+/* Three equal lead paths = three slabs. The joints run in the existing gaps. */
+.trade { position: relative; }
+.trade + .trade::before { content: ""; position: absolute; left: 0; right: 0; top: -25px; height: 3px; background: linear-gradient(var(--m-cut) 0 1px, var(--m-cut-2) 1px 2px, var(--m-lip) 2px 3px); }
+@media (min-width: 900px) {
+  .trade + .trade::before { content: none; }
+  .core__grid {
+    background:
+      linear-gradient(90deg, var(--m-cut) 0 1px, var(--m-cut-2) 1px 2px, var(--m-lip) 2px 3px) calc(33.333% - 5.83px) 0 / 3px 100% no-repeat,
+      linear-gradient(90deg, var(--m-cut) 0 1px, var(--m-cut-2) 1px 2px, var(--m-lip) 2px 3px) calc(66.667% + 5.83px) 0 / 3px 100% no-repeat;
+  }
+}
+
+/* ---------- Asphalt: every charcoal panel and round arrow button gets binder + aggregate ---------- */
+.estimate-start, .hero__photo, .tree-testimonial, .review-quote, .service-aside, .service-photo, .social-story, .social .social__text {
+  background-image: var(--m-asphalt), linear-gradient(145deg, var(--c-panel-hi), var(--c-panel));
+}
+.textlink__nub, .row__nub, .faq__nub { background-image: var(--m-asphalt), linear-gradient(145deg, var(--c-nub-hi), var(--c-nub)); }
+/* Legal strip: the same asphalt, edge to edge. The flat bedrock shadow stays underneath as the fallback. */
+.site-footer .footer-legal { border-image: var(--m-asphalt) 0 fill / 0 / 0 100vmax repeat; }
+
+/* ---------- Brick band: one soldier course where the page meets the footer (from the driveway job photo) ---------- */
+.site-footer {
+  border-top-color: var(--m-joint);
+  background-image:
+    linear-gradient(rgba(255, 255, 255, .18), rgba(255, 255, 255, 0) 45%, rgba(0, 0, 0, .16)),
+    linear-gradient(var(--m-joint), var(--m-joint)),
+    repeating-linear-gradient(90deg, var(--m-joint) 0 1.5px, #B8604A 1.5px 12px, var(--m-joint) 12px 13.5px, #C36F58 13.5px 24px, var(--m-joint) 24px 25.5px, #AC5540 25.5px 36px, var(--m-joint) 36px 37.5px, #BF6850 37.5px 48px, var(--m-joint) 48px 49.5px, #B25B46 49.5px 60px, var(--m-joint) 60px 61.5px, #C97760 61.5px 72px, var(--m-joint) 72px 73.5px, #B6624D 73.5px 84px),
+    var(--m-concrete);
+  background-size: 100% 15px, 100% 1px, 100% 15px, auto;
+  background-position: 0 0, 0 15px, 0 0, 0 0;
+  background-repeat: no-repeat, no-repeat, no-repeat, repeat;
+}
+
+/* ---------- Job-site markers: new drawings, CSS backgrounds only (no markup, no reserved-space change) ---------- */
+/* Traffic cones as the three ribbon bullets. The 5px bullet box and its 12px gap stay; the cone is painted in that space. */
+.trade-ribbon span { position: relative; }
+.trade-ribbon span::before { background: transparent; }
+.trade-ribbon span::after {
+  content: ""; position: absolute; left: -3px; top: 0; bottom: 0; width: 15px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 15 17'%3E%3Cpath d='M6.3.9h2.4l3.5 11.8H2.8z' fill='%23FF6D00' stroke='%23262626' stroke-width='.7' stroke-linejoin='round'/%3E%3Cpath d='M5.3 4.6h4.4l.9 3H4.4z' fill='%23F4F0E6'/%3E%3Crect x='.7' y='12.6' width='13.6' height='3.4' rx='.9' fill='%23262626'/%3E%3C/svg%3E") center / 15px 17px no-repeat;
+}
+/* A compact excavator parked on the joint under "Where we work" (inside the section's own bottom padding). */
+.area {
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 132 78'%3E%3Cg fill='%232E2C2A' stroke='%232E2C2A' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath fill='none' stroke-width='8' d='M79 44 49 13'/%3E%3Cpath fill='none' stroke-width='6' d='M49 13 27 45'/%3E%3Cpath fill='none' stroke-width='2.6' d='M66 43 59 25'/%3E%3Cpath stroke-width='2' d='M16 44l15 3.5-3 15.5q-12 1-15-9z'/%3E%3Cpath stroke-width='2' d='M73 60V25q0-3 3-3h17q3 0 3.6 3l2.4 14h18q5 0 5 5v16z'/%3E%3Cpath d='M82 60h30v5H82z' stroke='none'/%3E%3Crect x='64' y='64' width='64' height='13' rx='6.5' stroke-width='2'/%3E%3C/g%3E%3Cpath d='M78 27h13.5l1.9 11H78z' fill='%23C2BCB0'/%3E%3Cg fill='%23C2BCB0'%3E%3Ccircle cx='72' cy='70.5' r='2.6'/%3E%3Ccircle cx='84' cy='70.5' r='2.6'/%3E%3Ccircle cx='96' cy='70.5' r='2.6'/%3E%3Ccircle cx='108' cy='70.5' r='2.6'/%3E%3Ccircle cx='120' cy='70.5' r='2.6'/%3E%3C/g%3E%3Cpath fill='%23FF6D00' d='M101 43h17q2 0 2 2v9h-19z'/%3E%3C/svg%3E")
+    right max(var(--gutter), calc((100% - var(--wrap)) / 2 + var(--gutter) + 44px)) bottom 0 / 88px 52px no-repeat;
+}
+/* Two cones left on the slab just above the brick band, on every page. */
+main {
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 46 27'%3E%3Cg stroke-linejoin='round'%3E%3Cpath d='M11.3 1.5h3.4l5.6 19.3H5.7z' fill='%23FF6D00' stroke='%23262626'/%3E%3Cpath d='M9.6 7.6h6.8l1.5 5H8.1z' fill='%23F4F0E6'/%3E%3Crect x='1.5' y='20.8' width='23' height='5.2' rx='1.4' fill='%23262626'/%3E%3Cpath d='M34.2 8.6h2.6l4 12.2H30.2z' fill='%23FF6D00' stroke='%23262626' stroke-width='.9'/%3E%3Cpath d='M32.9 12.8h5.2l1 3.1h-7.2z' fill='%23F4F0E6'/%3E%3Crect x='27.4' y='20.8' width='16.2' height='5.2' rx='1.4' fill='%23262626'/%3E%3C/g%3E%3C/svg%3E")
+    right max(var(--gutter), calc((100% - var(--wrap)) / 2 + var(--gutter) + 23px)) bottom 0 / 46px 27px no-repeat;
+}
+/* A percentage in background-position is measured on (box - image), hence the half-image terms above and here. */
+@media (min-width: 900px) { .area { background-size: 132px 78px; background-position: right max(var(--gutter), calc((100% - var(--wrap)) / 2 + var(--gutter) + 66px)) bottom 0; } }
+
+/* High-contrast / forced-colors users get the flat page: no textures, no markers. */
+@media (forced-colors: active) {
+  body, body.page-home, .index, .steps, .site-footer, .area, main { background-image: none; }
+  .site-footer .footer-legal { border-image: none; }
+  .trade-ribbon span::after, .trade + .trade::before { content: none; }
+}
+/* ==========================================================================
+   FPC work-zone signage layer (PROPOSAL, variant 2 only; sits on top of material.css).
+   Section labels and key call-outs become small work-zone signs. Every label is still the
+   same HTML text in the same place: plates grow OUTWARD (side padding cancelled by an equal
+   negative margin, top and bottom by a spread shadow), so no glyph moves. Safety yellow and charcoal only; orange stays reserved for the
+   call-to-action button and the cones. Signs have no hover or pointer styling: they are labels.
+   ========================================================================== */
+
+/* ---------- Rectangular sign plates: section labels ---------- */
+/* On concrete: charcoal plate, yellow legend, yellow keyline (yellow on charcoal 8.44:1). */
+.eyebrow {
+  width: fit-content; padding-inline: 7px; margin-inline: -7px; border-radius: 3px;
+  color: var(--c-yellow); background: var(--c-ink);
+  box-shadow: inset 0 0 0 1.5px var(--c-yellow), 0 0 0 3px var(--c-ink);
+}
+/* On asphalt: the plate flips to yellow with a charcoal legend and keyline (8.44:1). */
+.tree-testimonial .eyebrow, .service-aside .eyebrow, .review-quote .eyebrow {
+  color: var(--c-ink); background: var(--c-yellow);
+  box-shadow: inset 0 0 0 1.5px var(--c-ink), 0 0 0 3px var(--c-yellow);
+}
+/* Diamond warning-sign mark in the hero label (was a gold dot; same 9px box). */
+.gold-mark { border-radius: 0; background: var(--c-yellow); box-shadow: none; clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%); }
+
+/* ---------- Yellow sign plates: key call-outs on asphalt and on the photo ---------- */
+.gold-label, .photo-stamp { color: var(--c-ink); background: var(--c-yellow); }
+.gold-label { border-radius: 5px; box-shadow: inset 0 0 0 2px var(--c-yellow), inset 0 0 0 3.5px var(--c-ink); }
+.photo-stamp { border-radius: 6px; box-shadow: inset 0 0 0 3px var(--c-yellow), inset 0 0 0 4.5px var(--c-ink), 0 10px 32px -16px rgba(38, 30, 24, .55); }
+.tree-testimonial__rating { color: var(--c-yellow); }
+
+/* ---------- Numbered marker plates for the four steps (the numeral keeps its position) ---------- */
+.steps li::before {
+  align-self: start; margin-left: -10px; margin-right: 5px; padding-left: 10px; border-radius: 5px;
+  color: var(--c-ink); background: var(--c-yellow);
+  box-shadow: inset 0 0 0 2px var(--c-yellow), inset 0 0 0 3.5px var(--c-ink), 0 0 0 1px rgba(38, 38, 38, .55);
+}
+
+/* ---------- Arrow boards: the round arrow buttons become lamp panels with an amber lamp chevron ---------- */
+/* The inline chevron stays in the markup (transparent); the lamps are painted behind it at the same place. */
+.textlink__nub, .row__nub, .faq__nub { border-radius: 7px; color: transparent; }
+.textlink__nub, .row__nub { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg fill='%23F4B80C'%3E%3Ccircle cx='9.5' cy='6' r='1.05'/%3E%3Ccircle cx='11.5' cy='8' r='1.05'/%3E%3Ccircle cx='13.5' cy='10' r='1.05'/%3E%3Ccircle cx='15.5' cy='12' r='1.05'/%3E%3Ccircle cx='13.5' cy='14' r='1.05'/%3E%3Ccircle cx='11.5' cy='16' r='1.05'/%3E%3Ccircle cx='9.5' cy='18' r='1.05'/%3E%3C/g%3E%3C/svg%3E"), var(--m-asphalt), linear-gradient(145deg, var(--c-nub-hi), var(--c-nub)); background-size: 26px 26px, auto, auto; background-position: center, 0 0, 0 0; background-repeat: no-repeat, repeat, no-repeat; }
+.faq__nub { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg fill='%23F4B80C' transform='rotate(90 12 12)'%3E%3Ccircle cx='9.5' cy='6' r='1.05'/%3E%3Ccircle cx='11.5' cy='8' r='1.05'/%3E%3Ccircle cx='13.5' cy='10' r='1.05'/%3E%3Ccircle cx='15.5' cy='12' r='1.05'/%3E%3Ccircle cx='13.5' cy='14' r='1.05'/%3E%3Ccircle cx='11.5' cy='16' r='1.05'/%3E%3Ccircle cx='9.5' cy='18' r='1.05'/%3E%3C/g%3E%3C/svg%3E"), var(--m-asphalt), linear-gradient(145deg, var(--c-nub-hi), var(--c-nub)); background-size: 24px 24px, auto, auto; background-position: center, 0 0, 0 0; background-repeat: no-repeat, repeat, no-repeat; }
+
+/* ---------- Commercial & public works (examples pending): a diamond sign over one barricade rail ---------- */
+.public-scope {
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cg transform='rotate(45 50 50)'%3E%3Crect x='15' y='15' width='70' height='70' rx='8' fill='%23262626'/%3E%3Crect x='17' y='17' width='66' height='66' rx='6.5' fill='%23F4B80C'/%3E%3Crect x='22.5' y='22.5' width='55' height='55' rx='3.5' fill='none' stroke='%23262626' stroke-width='2.4'/%3E%3C/g%3E%3C/svg%3E") center / auto 62% no-repeat,
+    linear-gradient(rgba(38, 38, 38, .5), rgba(38, 38, 38, .5)) left bottom 16px / 100% 1px no-repeat,
+    repeating-linear-gradient(135deg, var(--c-ink) 0 13px, var(--c-yellow) 13px 26px) left bottom / 100% 16px no-repeat,
+    var(--m-concrete),
+    linear-gradient(155deg, var(--c-plate), var(--c-stone)) !important;
+}
+.public-scope svg { color: var(--c-ink); }
+
+/* ---------- Road paint: one solid yellow edge line where the asphalt legal strip begins ---------- */
+.site-footer .footer-legal { position: relative; }
+.site-footer .footer-legal::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 4px; background: var(--c-yellow); box-shadow: 0 0 0 100vmax var(--c-yellow); clip-path: inset(0 -100vmax); }
+
+@media (forced-colors: active) {
+  .eyebrow, .gold-label, .photo-stamp, .steps li::before { box-shadow: none; }
+  .site-footer .footer-legal::before { content: none; }
+}
+/* ==========================================================================
+   FPC "Job Site" layer (PROPOSAL, not applied). Sits on top of V2 Work Zone
+   (material.css + signage.css) and changes two things only:
+     1. MATERIAL: deeper concrete and asphalt (five tiles instead of three).
+     2. MOTION: four small job-site movements, CSS only, transform and opacity only.
+   No markup, copy, font, size or spacing changes. Nothing here runs a script.
+   Every animation and transition below is declared inside
+   @media (prefers-reduced-motion: no-preference); with reduced motion the page is
+   the still page. The form plate and every field stay flat (no tile, no motion).
+   ========================================================================== */
+:root {
+  --m-concrete: url("/assets/img/tex-grain.webp");   /* 224x224 sand, pits, exposed aggregate (replaces V2's speckle) */
+  --m-broom: url("/assets/img/tex-broom.webp");      /* 640x420 drawn at 2x, shown 320x210: grooves with a lit ridge */
+  --m-cure: url("/assets/img/tex-cure.webp");        /* 200x150 shown 800x600: cure mottling and curing passes */
+  --m-trowel: url("/assets/img/tex-trowel.webp");    /* 480x360 steel-trowel arcs (bands and footer) */
+  --m-asphalt: url("/assets/img/tex-asphalt.webp");  /* 240x240 binder, voids, crushed gravel, worn patches */
+  --m-cut: rgba(38, 38, 38, .7);
+  --fpc-tape: repeating-linear-gradient(135deg, var(--c-ink) 0 13px, var(--c-yellow) 13px 26px);
+}
+
+/* ---------- 1. Material ---------- */
+/* Ground: broom-finished slab. Grain on top, cure marks, broom grooves underneath. */
+body, body.page-home { background-image: var(--m-concrete), var(--m-cure), var(--m-broom); background-size: auto, 800px 600px, 320px 210px; }
+/* Bands: steel-troweled, so no broom grooves; trowel arcs instead. */
+.index, .steps { background-image: var(--m-concrete), var(--m-trowel), var(--m-cure); background-size: auto, auto, 800px 600px; }
+.site-footer {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, .18), rgba(255, 255, 255, 0) 45%, rgba(0, 0, 0, .16)),
+    linear-gradient(var(--m-joint), var(--m-joint)),
+    repeating-linear-gradient(90deg, var(--m-joint) 0 1.5px, #B8604A 1.5px 12px, var(--m-joint) 12px 13.5px, #C36F58 13.5px 24px, var(--m-joint) 24px 25.5px, #AC5540 25.5px 36px, var(--m-joint) 36px 37.5px, #BF6850 37.5px 48px, var(--m-joint) 48px 49.5px, #B25B46 49.5px 60px, var(--m-joint) 60px 61.5px, #C97760 61.5px 72px, var(--m-joint) 72px 73.5px, #B6624D 73.5px 84px),
+    var(--m-concrete), var(--m-trowel), var(--m-cure);
+  background-size: 100% 15px, 100% 1px, 100% 15px, auto, auto, 800px 600px;
+  background-position: 0 0, 0 15px, 0 0, 0 0, 0 0, 0 0;
+  background-repeat: no-repeat, no-repeat, no-repeat, repeat, repeat, repeat;
+}
+/* Saw cuts read deeper: the groove, its shadowed shoulder, then the lit arris. */
+.index, .steps { box-shadow: inset 0 1px 0 rgba(38, 38, 38, .34), inset 0 2.5px 0 var(--m-lip), inset 0 -1px 0 rgba(38, 38, 38, .34), 0 1.5px 0 var(--m-lip); }
+.faq, .field-notes { box-shadow: inset 0 1px 0 rgba(38, 38, 38, .34), inset 0 2.5px 0 var(--m-lip); }
+/* Estimate page: the call box becomes a flat plate (was a 6% tint that let the ground show through). Forms stay calm. */
+.callbox { background: #B9B3A8; }
+
+/* ---------- 2. Stamped concrete, used once: the home-town chip is pressed into the slab like a contractor's stamp ---------- */
+/* Same box, same live text. The recess is flat concrete (no broom grooves: the stamp flattened them). */
+.bank .home {
+  color: var(--c-ink); background: #B5AFA2 var(--m-concrete); border-color: rgba(38, 38, 38, .55);
+  box-shadow: inset 2px 2px 2px rgba(38, 38, 38, .36), inset -1px -1px 0 rgba(255, 255, 255, .45), 1px 1px 0 rgba(255, 255, 255, .55);
+  outline: 1px solid rgba(38, 38, 38, .26); outline-offset: -4px;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, .4);
+}
+
+/* ---------- 3. Arrow board on the estimate button (not on the estimate form's own submit button) ---------- */
+/* The round nub becomes a lamp panel: three chevrons of amber lamps. Unlit lamps are part of the panel;
+   the lit chevrons are three layers (the icon box and two pseudo-elements) so each can switch by opacity. */
+.btn--red:not(.submit) .btn__nub {
+  position: relative; border-radius: 12px; color: transparent;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 23 15'%3E%3Cg fill='%23F4B80C' fill-opacity='.26'%3E%3Cg id='c'%3E%3Ccircle cx='1.5' cy='1.5' r='1.25'/%3E%3Ccircle cx='4.5' cy='4.5' r='1.25'/%3E%3Ccircle cx='7.5' cy='7.5' r='1.25'/%3E%3Ccircle cx='4.5' cy='10.5' r='1.25'/%3E%3Ccircle cx='1.5' cy='13.5' r='1.25'/%3E%3C/g%3E%3Cuse href='%23c' x='7'/%3E%3Cuse href='%23c' x='14'/%3E%3C/g%3E%3C/svg%3E") center / 23px 15px no-repeat,
+    var(--m-asphalt),
+    linear-gradient(145deg, #3B3936, #2C2A28);
+  box-shadow: inset 0 0 0 1.5px rgba(20, 20, 20, .55), inset 0 2.5px 0 -1px rgba(255, 255, 255, .16);
+}
+.btn--red:not(.submit) .btn__nub svg,
+.btn--red:not(.submit) .btn__nub::before,
+.btn--red:not(.submit) .btn__nub::after {
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 9 15'%3E%3Cg fill='%23F4B80C'%3E%3Ccircle cx='1.5' cy='1.5' r='1.25'/%3E%3Ccircle cx='4.5' cy='4.5' r='1.25'/%3E%3Ccircle cx='7.5' cy='7.5' r='1.25'/%3E%3Ccircle cx='4.5' cy='10.5' r='1.25'/%3E%3Ccircle cx='1.5' cy='13.5' r='1.25'/%3E%3C/g%3E%3C/svg%3E") center / 9px 15px no-repeat;
+}
+.btn--red:not(.submit) .btn__nub::before, .btn--red:not(.submit) .btn__nub::after { content: ""; position: absolute; inset: 0; }
+.btn--red:not(.submit) .btn__nub::before { background-position: calc(50% - 7px) 50%; }
+.btn--red:not(.submit) .btn__nub::after { background-position: calc(50% + 7px) 50%; }
+
+/* ---------- 4. Markers that can move: the excavator is two layers (arm, machine) instead of one background ---------- */
+.area { position: relative; background-image: none; --fpc-dig: 88px; --fpc-run: calc(min(100vw, var(--wrap)) - 2 * var(--gutter) - var(--fpc-dig)); }
+.area::before, .area::after {
+  content: ""; position: absolute; bottom: 0; right: max(var(--gutter), calc((100% - var(--wrap)) / 2 + var(--gutter)));
+  width: var(--fpc-dig); aspect-ratio: 132 / 78; pointer-events: none; background: center / 100% 100% no-repeat;
+}
+.area::before { /* boom, stick, ram, bucket: turns about the boom foot */
+  transform-origin: 59.85% 56.41%;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 132 78'%3E%3Cg fill='%232E2C2A' stroke='%232E2C2A' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath fill='none' stroke-width='8' d='M79 44 49 13'/%3E%3Cpath fill='none' stroke-width='6' d='M49 13 27 45'/%3E%3Cpath fill='none' stroke-width='2.6' d='M66 43 59 25'/%3E%3Cpath stroke-width='2' d='M16 44l15 3.5-3 15.5q-12 1-15-9z'/%3E%3C/g%3E%3C/svg%3E");
+}
+.area::after { /* cab, deck, tracks */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 132 78'%3E%3Cg fill='%232E2C2A' stroke='%232E2C2A' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath stroke-width='2' d='M73 60V25q0-3 3-3h17q3 0 3.6 3l2.4 14h18q5 0 5 5v16z'/%3E%3Cpath d='M82 60h30v5H82z' stroke='none'/%3E%3Crect x='64' y='64' width='64' height='13' rx='6.5' stroke-width='2'/%3E%3C/g%3E%3Cpath d='M78 27h13.5l1.9 11H78z' fill='%23C2BCB0'/%3E%3Cg fill='%23C2BCB0'%3E%3Ccircle cx='72' cy='70.5' r='2.6'/%3E%3Ccircle cx='84' cy='70.5' r='2.6'/%3E%3Ccircle cx='96' cy='70.5' r='2.6'/%3E%3Ccircle cx='108' cy='70.5' r='2.6'/%3E%3Ccircle cx='120' cy='70.5' r='2.6'/%3E%3C/g%3E%3Cpath fill='%23FF6D00' d='M101 43h17q2 0 2 2v9h-19z'/%3E%3C/svg%3E");
+}
+@media (min-width: 900px) { .area { --fpc-dig: 132px; } }
+/* Caution tape for the section joints. Parked off-screen and transparent unless a scroll timeline drives it. */
+.index, .steps, .field-notes { position: relative; }
+.index::before, .steps::before, .field-notes::before, .index::after, .steps::after {
+  content: ""; position: absolute; left: 0; right: 0; height: 9px; pointer-events: none; opacity: 0;
+  background: var(--fpc-tape); box-shadow: inset 0 1px 0 var(--c-ink), inset 0 -1px 0 var(--c-ink);
+}
+.index::before, .steps::before, .field-notes::before { top: -5px; }
+.index::after, .steps::after { bottom: -5px; }
+
+/* ---------- 5. Motion (only when the visitor has not asked for reduced motion) ---------- */
+@media (prefers-reduced-motion: no-preference) {
+  /* 5a. Arrow board: sequential chevron, three passes (4.2 s, so it stops by itself), then all lamps stay on. */
+  @keyframes fpc-lamp-1 { 0%, 4% { opacity: 0; } 10%, 76% { opacity: 1; } 86%, 100% { opacity: 0; } }
+  @keyframes fpc-lamp-2 { 0%, 26% { opacity: 0; } 32%, 76% { opacity: 1; } 86%, 100% { opacity: 0; } }
+  @keyframes fpc-lamp-3 { 0%, 48% { opacity: 0; } 54%, 76% { opacity: 1; } 86%, 100% { opacity: 0; } }
+  .estimate-start .btn--red .btn__nub::before, .service-actions .btn--red .btn__nub::before { animation: fpc-lamp-1 1.4s linear .9s 3; }
+  .estimate-start .btn--red .btn__nub svg, .service-actions .btn--red .btn__nub svg { animation: fpc-lamp-2 1.4s linear .9s 3; }
+  .estimate-start .btn--red .btn__nub::after, .service-actions .btn--red .btn__nub::after { animation: fpc-lamp-3 1.4s linear .9s 3; }
+  /* The same sequence answers the pointer or the keyboard on any estimate button, for as long as it is held there. */
+  .btn--red:not(.submit):is(:hover, :focus-visible) .btn__nub::before { animation: fpc-lamp-1 1.4s linear infinite; }
+  .btn--red:not(.submit):is(:hover, :focus-visible) .btn__nub svg { animation: fpc-lamp-2 1.4s linear infinite; }
+  .btn--red:not(.submit):is(:hover, :focus-visible) .btn__nub::after { animation: fpc-lamp-3 1.4s linear infinite; }
+
+  /* 5b. A cone tips when its line is pointed at, and stands back up. Pointer devices only. */
+  @media (hover: hover) {
+    .trade-ribbon span::after { transform-origin: 2px calc(50% + 8px); transition: transform 460ms cubic-bezier(.34, 1.45, .64, 1); }
+    .trade-ribbon span:hover::after { transform: rotate(-62deg); }
+  }
+
+  /* 5c and 5d are tied to the scroll position itself (no script): nothing moves unless the page is being scrolled. */
+  @supports (animation-timeline: view()) {
+    /* 5c. Caution tape runs out along a joint as its section comes up the screen, then lifts off. */
+    @keyframes fpc-tape { 0% { transform: translateX(-101%); opacity: 1; } 62%, 80% { transform: none; opacity: 1; } 100% { transform: none; opacity: 0; } }
+    .index::before, .steps::before, .field-notes::before, .index::after, .steps::after {
+      animation: fpc-tape linear both; animation-timeline: view(); animation-range: entry 0% cover 52%;
+    }
+    /* 5d. The excavator tracks along the saw cut under "Where we work", arm up, and sets the bucket down where V2 parked it. */
+    @keyframes fpc-track { 0% { transform: translateX(calc(-1 * var(--fpc-run))); } 86%, 100% { transform: none; } }
+    @keyframes fpc-boom { 0% { transform: translateX(calc(-1 * var(--fpc-run))) rotate(11deg); } 86% { transform: rotate(11deg); } 100% { transform: none; } }
+    .area::after { animation: fpc-track linear both; animation-timeline: view(); animation-range: entry 0% cover 58%; }
+    .area::before { animation: fpc-boom linear both; animation-timeline: view(); animation-range: entry 0% cover 58%; }
+  }
+}
+
+@media (forced-colors: active) {
+  .area::before, .area::after, .index::before, .steps::before, .field-notes::before, .index::after, .steps::after { content: none; }
+  .bank .home { box-shadow: none; outline: 0; text-shadow: none; }
+}

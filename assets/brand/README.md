@@ -16,3 +16,5 @@ screen assets do not amend the print brand guide. The source vectors are machine
 traces, not designer originals. The operator relayed Filemon’s approval of this enhancement on 2026-11-10;
 the screen swap remains reversible. Nothing in this folder grants
 merge or publication authority.
+
+Safe SVG optimization applied from the approved concrete/asphalt design artifacts: paint and geometry preserved; unpainted hairline paths retained. The raster favicon outputs remain byte-identical. Print and merch flat masters are unchanged.
