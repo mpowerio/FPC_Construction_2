@@ -11,6 +11,8 @@ import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import * as S from './strings.mjs';
+import { renderReviews } from './reviews.mjs';
+import { renderTreeWork, treeMediaFiles } from './media.mjs';
 import { services, serviceLabels } from './services.mjs';
 import { whatsappUrl, tiktokProfile } from './social.mjs';
 const TIKTOK = tiktokProfile();
@@ -24,10 +26,11 @@ const LEAD_ENDPOINT = 'https://crm.fpcconstructions.com/api/public/webhook/lead-
 // is emitted commented out. Paste the site token from the Cloudflare dashboard and rebuild.
 const CF_WEB_ANALYTICS_TOKEN = '';
 // Sitemap lastmod for the pages built here (kept fixed so --check is deterministic).
-const LASTMOD = '2026-11-07';
+const LASTMOD = '2026-11-10';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const root = join(here, '..', '..');
+for (const asset of treeMediaFiles()) assert.ok(typeof asset === 'string' && existsSync(join(root, asset)), `Missing approved tree-work asset: ${asset}`);
 const src = (f) => readFileSync(join(here, 'src', f), 'utf8');
 const CHECK = process.argv.includes('--check');
 
@@ -174,6 +177,7 @@ const baseCss = src('base.css');
 function render(page, lang) {
   const dict = { ...S.common[lang], ...(page.key === 'service' ? { ...S.home[lang], ...serviceLabels[lang], ...page.service[lang] } : S[page.key][lang]) };
   const t = (k) => { if (!(k in dict)) throw new Error(`missing string ${k} (${page.key}/${lang})`); return dict[k]; };
+  const reviews = renderReviews(t);
   const other = lang === 'en' ? 'es' : 'en';
   const cur = ' aria-current="true"';
   const hero = PIC.hero;
@@ -193,6 +197,8 @@ function render(page, lang) {
     css: (baseCss + '\n' + (page.key === 'service' ? src('home.css') + '\n' : '') + src(page.css)).trim(),
     jsonld: jsonld(page.key, lang, t, ORIGIN + page.url[lang]),
     analytics,
+    reviewSummary: reviews.summary, reviewSection: reviews.section, reviewFooter: reviews.footer,
+    treeWork: page.key === 'home' ? renderTreeWork(lang, t) : '',
     whatsappHero: WHATSAPP ? `<a class="hero__wa" href="${esc(WHATSAPP)}" rel="noopener">WhatsApp <span aria-hidden="true">↗</span></a>` : '',
     whatsappFooter: WHATSAPP ? `<a class="social__text" href="${esc(WHATSAPP)}" rel="noopener">WhatsApp<span class="vh"> FPC Construction</span></a>` : '',
     tiktok: TIKTOK ? `<a class="social__text" href="${esc(TIKTOK)}" rel="noopener">TikTok<span class="vh"> FPC Construction</span></a>` : '',

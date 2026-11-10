@@ -586,6 +586,32 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill { -we
 @keyframes enter { from { opacity: .3; transform: translateY(12px); } to { opacity: 1; transform: none; } }
 @media (prefers-reduced-motion: no-preference) { html.motion-ok .hero__text { animation: enter 700ms var(--ease-out) both; } html.motion-ok .hero__photo { animation: enter 950ms var(--ease-out) both; } }
 @media (max-width: 599px) { .hero__photo .frame { aspect-ratio: 4/3; } .hero__h1 { font-size: var(--t-48); } .cap { grid-template-columns: 1fr; gap: 0; } .social-story { padding-inline: var(--s-16); } }
+
+/* Approved static Google snapshots only. Empty config emits no public placeholder. */
+.review-summary { margin-top: var(--s-16); display: grid; gap: var(--s-4); font-size: var(--t-14); }
+.review-summary a { min-height: 44px; display: inline-flex; align-items: center; color: #E8C55A; font-weight: 700; }
+.review-summary span { color: #BFC5B7; }
+.reviews-feature, .tree-work { padding-block: var(--s-64); border-bottom: 1px solid #D4A93735; }
+.reviews-feature__head { display: grid; gap: var(--s-24); }
+.reviews-feature h2 { margin-top: var(--s-16); }
+.reviews-feature__rating { margin-top: var(--s-16); font-size: var(--t-24); font-weight: 700; color: #E8C55A; }
+.reviews-feature__actions { display: grid; gap: var(--s-12); align-content: start; justify-items: start; }
+.reviews-feature__quotes { display: grid; gap: var(--s-24); margin-top: var(--s-32); }
+.review-quote { margin: 0; padding: var(--s-24); border-radius: 24px; background: linear-gradient(145deg, #293528, #1C221E); border: 1px solid #D4A93750; box-shadow: inset 0 1px 0 #FFFFFF0C; overflow-wrap: anywhere; }
+.review-quote figcaption { display: grid; gap: var(--s-8); }
+.review-quote figcaption span { font-size: var(--t-14); color: #BFC5B7; }
+.review-quote blockquote { margin: var(--s-24) 0 var(--s-16); }
+.review-quote a { display: inline-flex; align-items: center; min-height: 44px; color: #E8C55A; font-size: var(--t-14); }
+.tree-work h2 { margin-block: var(--s-16) var(--s-32); }
+.tree-work figure { margin: 0; }
+.tree-work img, .tree-work video { display: block; width: 100%; height: auto; border-radius: 20px; background: #303B30; }
+.tree-work figcaption { margin-top: var(--s-16); color: #BFC5B7; }
+.tree-work__clips { display: grid; gap: var(--s-24); margin-top: var(--s-32); }
+@media (min-width: 900px) {
+  .reviews-feature, .tree-work { padding-block: var(--s-96); }
+  .reviews-feature__head { grid-template-columns: 1.5fr 1fr; gap: var(--s-48); }
+  .reviews-feature__quotes, .tree-work__clips { grid-template-columns: 1fr 1fr; }
+}
 </style>
 <script type="application/ld+json">
 {
@@ -902,6 +928,7 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill { -we
         <h1 id="h1" class="display hero__h1">Sépticos, drenaje<br><span>y terreno.</span></h1>
         <p class="lead" id="about">Para su casa, su terreno y su próximo proyecto. Filemon y el equipo de FPC hacen el trabajo de terreno, el concreto y los acabados en toda la zona del CSRA.</p>
         <p class="hero__slogan" lang="en">No job too small, no dream too big — FPC Construction for all your needs.</p>
+
         <form class="estimate-start" action="/es/estimado/" method="get" aria-labelledby="start-h" data-bar-sentinel>
           <div class="estimate-start__heading"><h2 id="start-h">¿Qué proyecto tiene?</h2><span class="gold-label">Estimado gratis</span></div>
           <label for="start-type">Elija su proyecto</label>
@@ -931,6 +958,9 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill { -we
     </div>
     <div class="wrap"><div class="trade-ribbon" aria-label="Servicios de FPC"><span>Residencial y comercial</span><span>Contratos del condado y del estado</span><span>English y español</span></div></div>
   </section>
+
+
+
 
   <!-- ======================= CORE TRADES (clay band) ======================= -->
   <section class="core cut-both on-dark" id="services" aria-labelledby="core-h">
@@ -1096,6 +1126,7 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill { -we
       <p class="lead muted" style="margin-top:var(--s-16)">Llame o mande el formulario. Filemon va a verlo, sin costo.</p>
     </div>
     <div class="footer-cta__actions">
+
       <a class="btn btn--red btn--block" href="/es/estimado/"><span>Pida un estimado gratis</span><span class="btn__nub" aria-hidden="true"><svg><use href="#i-chev"/></svg></span></a>
       <a class="btn btn--light btn--block" href="tel:+18038849305"><span>Llame al <span class="num">(803) 884-9305</span></span><span class="btn__nub" aria-hidden="true"><svg><use href="#i-phone"/></svg></span></a>
     </div>

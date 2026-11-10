@@ -6,6 +6,9 @@ import { createRequire } from 'node:module';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { services } from './services.mjs';
+import { common } from './strings.mjs';
+import { renderReviews } from './reviews.mjs';
+import { renderTreeWork } from './media.mjs';
 import { tiktokProfile, whatsappUrl, WHATSAPP_URL } from './social.mjs';
 
 const { chromium } = createRequire(new URL('../contact-form/package.json', import.meta.url))('playwright');
@@ -17,7 +20,7 @@ const pages = ['/', '/es/', '/estimate/', '/es/estimado/', ...services.flatMap(s
 const receipts = [];
 const browser = await chromium.launch({ headless: true });
 let productionPosts = 0;
-async function fixture(context) {
+async function fixture(context, insert = '', summary = '') {
   await context.route('**/*', async route => {
     const u = new URL(route.request().url());
     if (u.hostname !== 'fpc.test') {
@@ -26,7 +29,7 @@ async function fixture(context) {
     }
     if (route.request().method() !== 'GET') throw new Error('Unexpected fixture mutation');
     const path = join(root, u.pathname, u.pathname.endsWith('/') ? 'index.html' : '');
-    try { const body = await readFile(path); return route.fulfill({ contentType: types[path.split('.').pop()] || 'application/octet-stream', body }); }
+    try { let body = await readFile(path); if (insert && (u.pathname === '/' || u.pathname === '/es/')) body = Buffer.from(body.toString().replace('<footer class="site-footer', insert + '<footer class="site-footer').replace('<form class="estimate-start"', summary + '<form class="estimate-start"')); return route.fulfill({ contentType: types[path.split('.').pop()] || 'application/octet-stream', body }); }
     catch { return route.fulfill({ status: 404, body: 'missing local fixture' }); }
   });
 }
@@ -50,6 +53,8 @@ try {
       await page.evaluate(() => document.fonts.ready);
       assert.deepEqual(errors, [], `${path} JavaScript errors`);
       assert.equal(await page.locator('h1').count(), 1);
+      assert.equal(await page.locator('#google-reviews, .review-summary, .review-action, .tree-work').count(), 0, 'Unverified reviews and private tree media remain absent');
+      assert.equal(await page.locator('a[href="https://mpowerio.ai"]').innerText(), path.startsWith('/es/') ? 'Desarrollado por mpowerio.ai' : 'Powered by mpowerio.ai', 'Agency credit is unchanged');
       const layout = await page.evaluate(() => {
         const box = e => { const b = e.getBoundingClientRect(); return { x: b.x, y: b.y, width: b.width, height: b.height }; };
         return { scroll: document.documentElement.scrollWidth, viewport: innerWidth,
@@ -102,6 +107,31 @@ try {
     }
     await context.close();
   }
+  // Synthetic populated layouts live only in fixture responses, never in generated files.
+  for (const width of [1440, 820, 390]) for (const lang of ['en', 'es']) {
+    const t = key => common[lang][key];
+    const source = 'https://www.google.com/maps?cid=synthetic-fixture';
+    const reviews = renderReviews(t, { reviewUrl: source, snapshot: { verified: true, listingId:'fixture-only', listingUrl:source, observedOn:'2026-11-10', rating:4.7, count:7, items:[
+      { listingId:'fixture-only', author:'Local fixture A', rating:5, dateLabel:'2026-11-10', text:'Synthetic layout fixture. This is not a real customer review.', language:'en', sourceUrl:source, excerpt:true },
+      { listingId:'fixture-only', author:'Local fixture B', rating:4, dateLabel:'2026-11-10', text:'Prueba de diseño local. No es una reseña de un cliente real.', language:'es', sourceUrl:source, excerpt:true }
+    ] } });
+    const tree = renderTreeWork(lang, t, { approvedForPublic:true, caption:{en:'Synthetic local media fixture',es:'Prueba local de medios'}, photo:{src:'/assets/img/project-1-800.webp',width:800,height:600,alt:{en:'Existing public photo used for local layout test',es:'Foto pública existente para prueba de diseño local'}}, clips:[] });
+    const c = await browser.newContext({ viewport:{width,height:1000}, reducedMotion:'reduce' });
+    await fixture(c, reviews.section + tree, reviews.summary);
+    const p = await c.newPage(); await p.goto('https://fpc.test' + (lang === 'es' ? '/es/' : '/'));
+    await p.locator('#google-reviews').scrollIntoViewIfNeeded();
+    assert.equal(await p.locator('.review-quote').count(), 2);
+    assert.equal(await p.locator('.review-action').innerText(), t('reviews.leave'));
+    assert.equal(await p.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
+    for (const link of await p.locator('#google-reviews a').all()) {
+      const box = await link.boundingBox(); assert.ok(box.height >= 44 && box.width >= 44);
+    }
+    await p.screenshot({path:join(out, `synthetic-reviews-${lang}-${width}.png`)});
+    await p.locator('.tree-work').scrollIntoViewIfNeeded();
+    assert.equal(await p.locator('.tree-work img').getAttribute('loading'), 'lazy');
+    await p.screenshot({path:join(out, `synthetic-media-${lang}-${width}.png`)});
+    await c.close();
+  }
   // No-JS: all service copy, language paths and the GET-only starter remain usable.
   const nojs = await browser.newContext({ javaScriptEnabled:false, viewport:{width:390,height:844} });
   await fixture(nojs);
@@ -127,6 +157,6 @@ try {
     await c.close();
   }
   assert.equal(productionPosts, 0);
-  await writeFile(join(out, 'responsive-results.json'), JSON.stringify({ pages:receipts.length, productionPosts, receipts }, null, 2));
-  console.log(`PASS: ${receipts.length} page/viewport combinations; starter handoff; no-JS; schema; local links; hidden TikTok; motion; zero external POST attempts. Evidence: ${out}`);
+  await writeFile(join(out, 'responsive-results.json'), JSON.stringify({ pages:receipts.length, syntheticLayouts:6, productionPosts, receipts }, null, 2));
+  console.log(`PASS: ${receipts.length} page/viewport combinations; starter handoff; no-JS; schema; local links; hidden TikTok/reviews/tree media; six synthetic populated layouts; motion; zero external POST attempts. Evidence: ${out}`);
 } finally { await browser.close(); }

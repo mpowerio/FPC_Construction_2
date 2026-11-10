@@ -19,6 +19,7 @@
         <h1 id="h1" class="display hero__h1">{{t.hero.heading}}</h1>
         <p class="lead" id="about">{{t.hero.intro}}</p>
         <p class="hero__slogan" lang="en">No job too small, no dream too big — FPC Construction for all your needs.</p>
+        {{v.reviewSummary}}
         <form class="estimate-start" action="{{v.estimate}}" method="get" aria-labelledby="start-h" data-bar-sentinel>
           <div class="estimate-start__heading"><h2 id="start-h">{{t.start.h}}</h2><span class="gold-label">{{t.start.free}}</span></div>
           <label for="start-type">{{t.start.label}}</label>
@@ -48,6 +49,9 @@
     </div>
     <div class="wrap"><div class="trade-ribbon" aria-label="{{t.ribbon.label}}"><span>{{t.ribbon.1}}</span><span>{{t.ribbon.2}}</span><span>{{t.ribbon.3}}</span></div></div>
   </section>
+
+  {{v.reviewSection}}
+  {{v.treeWork}}
 
   <!-- ======================= CORE TRADES (clay band) ======================= -->
   <section class="core cut-both on-dark" id="services" aria-labelledby="core-h">
