@@ -319,7 +319,7 @@ Before uploading:
 ## 9. Contact Information
 
 ### FPC Construction (Client)
-- **Phone:** (803) 640-2595
+- **Phone (public):** (803) 884-9305, the JJ line. Filemon's cell is private and never goes on the site or a listing.
 - **Email:** info@fpcconstructions.com
 - **Location:** North Augusta, SC 29860
 
