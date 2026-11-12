@@ -14,6 +14,8 @@ jobs:
       - uses: actions/checkout@v4
       - name: Generated pages are fresh
         run: node tools/site/build.mjs --check
+      - name: Bilingual SMS policy and no-consent-control checks
+        run: node --test tools/site/policies.test.mjs
       - name: SEO checks
         run: node tools/seo-check.mjs
       - name: Prove release guard rejects planted placeholders
