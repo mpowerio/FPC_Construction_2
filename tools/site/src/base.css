@@ -345,10 +345,10 @@ html.js.motion-ok [data-reveal] { opacity: 0; transform: translateY(16px); trans
 html.js.motion-ok [data-reveal].is-in { opacity: 1; transform: none; }
 
 /* ---------- JJ voice widget (ElevenLabs, injected after first interaction) ----------
-   Its shadow :host is position:fixed at right/bottom 32px; outer styles win over :host.
-   On phones it sits above the call bar so the two never overlap. */
+   Desktop keeps the floating launcher. On small screens the widget is a normal-flow
+   row after the footer, so neither the launcher nor its expanded panel covers forms. */
 elevenlabs-convai {
-  right: 12px; bottom: calc(80px + env(safe-area-inset-bottom));
+  right: 32px; bottom: 32px;
   /* The widget themes itself with --el-* custom properties declared on its :host; these outer
      declarations win. Vendor default was white on #3B82F6 (3.68:1). Bench Cut: white on ink
      (15.1:1) for primary buttons, ink on the plate (13.9:1) for the panel and secondary
@@ -357,7 +357,13 @@ elevenlabs-convai {
   --el-bg-color: #F4F3F0; --el-text-color: #262626; --el-border-color: #D4D2CC;
   --el-focus-color: #ED000C;
 }
-@media (min-width: 900px) { elevenlabs-convai { right: 32px; bottom: 32px; } }
+@media (max-width: 899px) {
+  elevenlabs-convai {
+    position: relative; right: auto; bottom: auto; display: block;
+    width: calc(100% - 40px); max-width: 320px; margin: 0 auto;
+    padding: 16px 0 calc(96px + env(safe-area-inset-bottom));
+  }
+}
 
 /* ---------- Language suggestion (only when the browser prefers Spanish and no choice is stored) ---------- */
 .lang-hint {
