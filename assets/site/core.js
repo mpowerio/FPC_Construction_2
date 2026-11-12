@@ -97,6 +97,8 @@
     new IntersectionObserver(function (entries) {
       var past = !entries[0].isIntersecting && entries[0].boundingClientRect.top < 0;
       bars.forEach(function (b) { b.classList.toggle('is-shown', past); b.toggleAttribute('inert', !past); });
+      document.documentElement.classList.toggle('jj-bar-shown', past);
+      refreshJJ();
     }).observe(sentinel);
   }
 
@@ -122,6 +124,93 @@
   }
 
   // ---------- JJ voice agent (ElevenLabs, ~600 KB): injected after the first interaction ----------
+  var mobileJJ = window.matchMedia('(max-width: 899px)');
+  var refreshJJ = function () {};
+
+  // Adapt only the known, accessible launcher in the CDN's open shadow root.
+  // A selector miss restores the vendor default, never an invisible front door.
+  function adaptJJ(el, label) {
+    var root = el.shadowRoot;
+    if (!root) return;
+    var launcher = null, queued = false, submitVisible = false;
+    var style = document.createElement('style');
+    style.textContent = '@media(max-width:899px){.fpc-jj-launcher{width:48px!important;height:48px!important;min-height:48px!important;max-width:48px!important;border-radius:50%!important;padding:0!important;position:relative}.fpc-jj-launcher>slot{margin:0!important;font-size:20px}.fpc-jj-launcher>div{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;overflow:hidden!important;clip-path:inset(50%);white-space:nowrap}}@media(prefers-reduced-motion:reduce){.fpc-jj-launcher{transition:none!important}}';
+    root.appendChild(style);
+    function clearSuppression() {
+      el.classList.remove('jj-suppressed');
+      el.removeAttribute('inert');
+      el.removeAttribute('aria-hidden');
+    }
+    function intersects(a, b) {
+      return a.left < b.right && a.right > b.left && a.top < b.bottom && a.bottom > b.top;
+    }
+    function protectedIntersection(box) {
+      var forms = document.querySelectorAll('main form');
+      for (var f = 0; f < forms.length; f++) {
+        if (!intersects(box, forms[f].getBoundingClientRect())) continue;
+        var controls = forms[f].querySelectorAll('input:not([type="hidden"]), select, textarea, button');
+        for (var i = 0; i < controls.length; i++) {
+          if (controls[i].getClientRects().length && intersects(box, controls[i].getBoundingClientRect())) return true;
+        }
+        // Text ranges exclude the empty right-hand lane reserved in the starter.
+        var walker = document.createTreeWalker(forms[f], NodeFilter.SHOW_TEXT);
+        while (walker.nextNode()) {
+          var text = walker.currentNode;
+          if (!text.textContent.trim() || text.parentElement.closest('script, style, [hidden], [aria-hidden="true"]')) continue;
+          var range = document.createRange(); range.selectNodeContents(text);
+          var rects = range.getClientRects();
+          for (var r = 0; r < rects.length; r++) if (intersects(box, rects[r])) return true;
+        }
+      }
+      return false;
+    }
+    function sync() {
+      queued = false;
+      if (!launcher || !root.contains(launcher)) { clearSuppression(); return; }
+      var mobile = mobileJJ.matches;
+      var title = mobile ? 'Chat with JJ' : label;
+      if (launcher.getAttribute('title') !== title) launcher.setAttribute('title', title);
+      if (mobile) { launcher.setAttribute('aria-label', 'Chat with JJ'); launcher.setAttribute('lang', 'en'); }
+      else { launcher.removeAttribute('aria-label'); launcher.removeAttribute('lang'); }
+      // Leave an intentionally opened panel and its call controls available.
+      var panel = launcher.nextElementSibling;
+      var expanded = panel && parseFloat(getComputedStyle(panel).opacity) > 0;
+      var focused = document.activeElement && document.activeElement.matches('input, select, textarea');
+      var box = launcher.getBoundingClientRect();
+      // Predict the resting position while the host is fading, avoiding edge oscillation.
+      var transform = getComputedStyle(el).transform;
+      var dy = transform === 'none' ? 0 : new DOMMatrix(transform).m42;
+      var resting = {left:box.left, right:box.right, top:box.top - dy, bottom:box.bottom - dy};
+      var hide = mobile && !expanded && (focused || submitVisible || protectedIntersection(resting));
+      el.classList.toggle('jj-suppressed', !!hide);
+      el.toggleAttribute('inert', !!hide);
+      if (hide) el.setAttribute('aria-hidden', 'true'); else el.removeAttribute('aria-hidden');
+    }
+    function queue() { if (!queued) { queued = true; requestAnimationFrame(sync); } }
+    function bind() {
+      var buttons = root.querySelectorAll('button'); launcher = null;
+      for (var i = 0; i < buttons.length; i++) {
+        if (buttons[i].getAttribute('title') === label || buttons[i].classList.contains('fpc-jj-launcher')) { launcher = buttons[i]; break; }
+      }
+      el.classList.toggle('jj-adapted', !!launcher);
+      if (!launcher) { clearSuppression(); return; }
+      if (!launcher.classList.contains('fpc-jj-launcher')) launcher.classList.add('fpc-jj-launcher');
+      queue();
+    }
+    new MutationObserver(bind).observe(root, {childList:true, subtree:true, attributes:true, attributeFilter:['title', 'class']});
+    var submit = document.querySelector('#estimate-form #submit');
+    if (submit && 'IntersectionObserver' in window) new IntersectionObserver(function (entries) {
+      submitVisible = entries[0].isIntersecting; queue();
+    }).observe(submit);
+    document.addEventListener('focusin', queue, true);
+    document.addEventListener('focusout', queue, true);
+    window.addEventListener('scroll', queue, {passive:true});
+    window.addEventListener('resize', queue, {passive:true});
+    if (window.visualViewport) window.visualViewport.addEventListener('resize', queue, {passive:true});
+    if ('ResizeObserver' in window) new ResizeObserver(queue).observe(document.querySelector('main') || document.body);
+    if (document.fonts) document.fonts.ready.then(queue);
+    refreshJJ = queue; bind();
+  }
   var filLoaded = false;
   function loadFil() {
     if (filLoaded) return;
@@ -149,9 +238,14 @@
     var s = document.createElement('script');
     s.src = 'https://elevenlabs.io/convai-widget/index.js';
     s.async = true;
+    s.addEventListener('load', function () {
+      if (window.customElements) customElements.whenDefined('elevenlabs-convai').then(function () { adaptJJ(el, FIL_TEXT['expand-text']); });
+    });
     document.body.appendChild(s);
   }
   ['pointerdown', 'keydown', 'touchstart', 'scroll'].forEach(function (ev) { window.addEventListener(ev, loadFil, { capture: true, passive: true }); });
+  // Phone visitors see JJ without needing a scroll or tap. Desktop keeps lazy loading.
+  if (mobileJJ.matches) loadFil();
 
   var y = document.querySelector('[data-year]');
   if (y) y.textContent = String(new Date().getFullYear());

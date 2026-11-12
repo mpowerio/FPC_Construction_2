@@ -125,3 +125,9 @@
 @keyframes enter { from { opacity: .3; transform: translateY(12px); } to { opacity: 1; transform: none; } }
 @media (prefers-reduced-motion: no-preference) { html.motion-ok .hero__text { animation: enter 700ms var(--ease-out) both; } html.motion-ok .hero__photo { animation: enter 950ms var(--ease-out) both; } }
 @media (max-width: 599px) { .hero__photo .frame { aspect-ratio: 4/3; } .hero__h1 { font-size: var(--t-48); } .cap { grid-template-columns: 1fr; gap: 0; } .social-story { padding-inline: var(--s-16); } }
+
+/* Keep the starter's controls and live helper text outside the compact JJ lane. */
+@media (max-width: 899px) {
+  .estimate-start__heading, .estimate-start__row, .estimate-start__note { padding-right: 60px; }
+  .estimate-start__heading { flex-wrap: wrap; }
+}
