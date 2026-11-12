@@ -58,3 +58,27 @@ test('policy-first copy never presents planned signup or consent evidence as liv
   }
   for(const file of ['sms-opt-in.html','privacy.html']) assert.ok(visible(read(file)).includes('we plan to add a consent ledger'), `${file}: future ledger`);
 });
+
+test('opt-out copy honors reasonable requests and contains no contradictory enrollment promise', () => {
+  for (const file of files) {
+    const text = visible(read(file));
+    if (file !== 'es/sms-opt-in/index.html') assert.ok(text.includes('We honor any reasonable request to stop'), `${file}: plain-language revocation`);
+    if (file !== 'sms-opt-in.html') assert.ok(text.includes('Respetamos cualquier solicitud razonable para dejar de recibir mensajes'), `${file}: Spanish plain-language revocation`);
+    assert.doesNotMatch(text, /rather than relying on other keywords|en lugar de depender de otras palabras clave/i);
+    assert.doesNotMatch(text, /\b(?:CANCEL|QUIT|STOPALL|UNSUBSCRIBE|END|STOP)\b[^.!?]{0,100}\b(?:will not|won't|do not|does not|cannot|can't)\s+(?:stop|cancel|unsubscribe|opt.out)/i, `${file}: opt-out keyword denial`);
+    assert.doesNotMatch(text, /\b(?:CANCEL|QUIT|STOPALL|UNSUBSCRIBE|END|STOP)\b[^.!?]{0,100}\bno\s+(?:cancelan|cancelará|detienen|detendrá|sirven para cancelar)/i, `${file}: Spanish keyword denial`);
+    assert.doesNotMatch(text, /(?:re[- ]?enroll|resubscribe|sign (?:back )?up)[^.!?]{0,80}\bSTART\b/i, `${file}: START enrollment promise`);
+    assert.doesNotMatch(text, /(?:responda|responder|envíe|enviar)\s+START[^.!?]{0,60}(?:para (?:volver a )?(?:suscrib|inscrib)|y (?:se )?(?:suscrib|inscrib))/i, `${file}: Spanish START enrollment promise`);
+    assert.doesNotMatch(text, /(?:puede|puedes)\s+(?:volver a )?(?:suscribirse|inscribirse)[^.!?]{0,60}\bSTART\b/i, `${file}: Spanish START enrollment promise`);
+  }
+});
+
+test('SMS program headings and current/planned bullet labels form a clear hierarchy', () => {
+  for (const [file,current,planned] of [['sms-opt-in.html','Current:','Planned:'],['es/sms-opt-in/index.html','Actual:','Previsto:']]) {
+    const html = read(file);
+    assert.equal((html.match(/<h3>/g)||[]).length, 2);
+    assert.equal(html.split(`<strong>${current}</strong>`).length-1, 2);
+    assert.equal(html.split(`<strong>${planned}</strong>`).length-1, 3);
+    assert.doesNotMatch(html, /<\/h2>\s*<h[23]>/);
+  }
+});
