@@ -226,9 +226,12 @@ function sitemap() {
     <priority>${p.key === 'home' ? '1.0' : '0.8'}</priority>
   </url>`);
   }
-  for (const legal of ['privacy', 'terms', 'sms-opt-in']) rows.push(`  <url>
+  for (const legal of ['privacy', 'terms', 'sms-opt-in', 'es/sms-opt-in/']) rows.push(`  <url>
     <loc>${ORIGIN}/${legal}</loc>
-    <lastmod>2026-10-19</lastmod>
+    <lastmod>2026-11-12</lastmod>${legal.includes('sms-opt-in') ? `
+    <xhtml:link rel="alternate" hreflang="en-US" href="${ORIGIN}/sms-opt-in"/>
+    <xhtml:link rel="alternate" hreflang="es-US" href="${ORIGIN}/es/sms-opt-in/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="${ORIGIN}/sms-opt-in"/>` : ''}
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>`);
