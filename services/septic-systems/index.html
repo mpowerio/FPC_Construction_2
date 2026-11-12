@@ -411,6 +411,15 @@ elevenlabs-convai {
   --el-focus-color: #ED000C;
 }
 @media (min-width: 900px) { elevenlabs-convai { right: 32px; bottom: 32px; } }
+/* Compact JJ keeps its front-door position. Reserve the bottom edge and move above
+   the mobile action bar; suppression only applies after the CDN adapter matches. */
+@media (max-width: 899px) {
+  body { padding-bottom: calc(72px + env(safe-area-inset-bottom)); }
+  elevenlabs-convai.jj-adapted { bottom: calc(12px + env(safe-area-inset-bottom)); transition: opacity 160ms var(--ease-out), transform 160ms var(--ease-out); }
+  html.jj-bar-shown elevenlabs-convai.jj-adapted { bottom: calc(80px + env(safe-area-inset-bottom)); }
+  elevenlabs-convai.jj-adapted.jj-suppressed { opacity: 0; transform: translateY(8px); pointer-events: none; }
+}
+
 
 /* ---------- Language suggestion (only when the browser prefers Spanish and no choice is stored) ---------- */
 .lang-hint {
@@ -586,6 +595,11 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill { -we
 @keyframes enter { from { opacity: .3; transform: translateY(12px); } to { opacity: 1; transform: none; } }
 @media (prefers-reduced-motion: no-preference) { html.motion-ok .hero__text { animation: enter 700ms var(--ease-out) both; } html.motion-ok .hero__photo { animation: enter 950ms var(--ease-out) both; } }
 @media (max-width: 599px) { .hero__photo .frame { aspect-ratio: 4/3; } .hero__h1 { font-size: var(--t-48); } .cap { grid-template-columns: 1fr; gap: 0; } .social-story { padding-inline: var(--s-16); } }
+
+/* Keep the starter's controls and live helper text outside the compact JJ lane. */
+@media (max-width: 899px) {
+  .estimate-start__row, .estimate-start__note { padding-right: 60px; }
+}
 
 .service-hero { display: grid; gap: var(--s-32); padding-block: var(--s-24) var(--s-64); }
 .service-back { display: inline-flex; align-items: center; min-height: 44px; color: #D7D8CB; margin-bottom: var(--s-24); text-decoration: none; }
