@@ -108,7 +108,7 @@ function business(lang) {
     // 50 mi x 1,609.34 m/mi = 80,467 m
     areaServed: [{ '@type': 'GeoCircle', geoMidpoint: geo, geoRadius: '80467' },
       ...['North Augusta, SC', 'Aiken, SC', 'Edgefield, SC', 'Augusta, GA', 'Martinez, GA', 'Evans, GA', 'Grovetown, GA', 'Thomson, GA', 'Waynesboro, GA'].map((name) => ({ '@type': 'City', name }))],
-    // Hours per operator 2026-10-18 (matches the Fil voice agent). Pending Filemon's confirmation.
+    // Hours per operator 2026-10-18 (matches the JJ voice agent). Pending Filemon's confirmation.
     openingHoursSpecification: [{ '@type': 'OpeningHoursSpecification', dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'], opens: '07:00', closes: '19:00' }],
     hasOfferCatalog: { '@type': 'OfferCatalog', name: lang === 'es' ? 'Servicios' : 'Services', itemListElement: SERVICES[lang].map((name) => ({ '@type': 'Offer', itemOffered: { '@type': 'Service', name } })) },
     sameAs: ['https://www.facebook.com/p/FPC-Construction-LLC-100066373038903/', 'https://www.instagram.com/fpcconstructions'],
