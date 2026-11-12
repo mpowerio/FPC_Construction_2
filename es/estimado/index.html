@@ -652,11 +652,12 @@ fieldset:disabled .chip span:active { transform: none; }
         <!-- Lead form. POSTs JSON to the CRM lead-intake route (data-endpoint). Only a 2xx with
              success === true AND a non-empty booking_id string counts as captured.
              No SMS opt-in here: the form never signs anyone up for texts. -->
-        <form id="estimate-form" novalidate aria-describedby="form-note" data-endpoint="https://crm.fpcconstructions.com/api/public/webhook/lead-intake" data-home="/es/">
+        <noscript><style>#estimate-form { display:none }</style></noscript>
+        <form id="estimate-form" method="post" novalidate aria-describedby="form-note" data-endpoint="https://crm.fpcconstructions.com/api/public/webhook/lead-intake" data-home="/es/">
           <div id="summary" tabindex="-1" hidden></div>
           <div id="failure" tabindex="-1" hidden></div>
 
-          <fieldset>
+          <fieldset disabled>
             <legend>Sus datos</legend>
             <div class="fields fields--2">
               <div class="field">
@@ -672,7 +673,7 @@ fieldset:disabled .chip span:active { transform: none; }
             </div>
           </fieldset>
 
-          <fieldset>
+          <fieldset disabled>
             <legend>Cómo comunicarnos con usted</legend>
             <div class="fields fields--2">
               <div class="field">
@@ -709,7 +710,7 @@ fieldset:disabled .chip span:active { transform: none; }
             </div>
           </fieldset>
 
-          <fieldset>
+          <fieldset disabled>
             <legend>El trabajo</legend>
             <div class="fields">
               <div class="field">
@@ -750,10 +751,10 @@ fieldset:disabled .chip span:active { transform: none; }
           <!-- Honeypot: hidden from people, filled by bots. The CRM never writes a lead with a value here. -->
           <div aria-hidden="true" style="position:absolute;left:-5000px;width:1px;height:1px;overflow:hidden">
             <label for="company_website">Company website</label>
-            <input type="text" id="company_website" name="company_website" tabindex="-1" autocomplete="off">
+            <input type="text" id="company_website" disabled name="company_website" tabindex="-1" autocomplete="off">
           </div>
 
-          <button class="btn btn--red btn--block submit" type="submit" id="submit">
+          <button class="btn btn--red btn--block submit" type="submit" id="submit" disabled>
             <span id="submit-label">Enviar mi solicitud de estimado</span>
             <span class="btn__nub" aria-hidden="true"><svg><use href="#i-chev"/></svg></span>
             <span class="submit__bar" aria-hidden="true"></span>
@@ -761,6 +762,7 @@ fieldset:disabled .chip span:active { transform: none; }
 
           <p class="notice" id="form-note">Usamos su número de teléfono y su correo electrónico para responder a su solicitud y atenderle como cliente. Solo le mandamos mensajes de texto si usted lo pide o acepta recibirlos. Vea nuestra <a href="/privacy">Política de privacidad</a>, los <a href="/terms">Términos</a> y los <a href="/sms-opt-in">Términos de SMS</a>.</p>
         </form>
+        <div class="callbox form-fallback" id="form-fallback"><p>Las solicitudes en línea necesitan JavaScript. Llame a FPC para hablar de su proyecto. No se ha enviado nada.</p><a href="tel:+18038849305">Llame al (803) 884-9305</a></div>
       </div>
     </div>
   </div>

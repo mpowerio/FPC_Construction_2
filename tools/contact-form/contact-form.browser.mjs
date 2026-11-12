@@ -44,8 +44,8 @@ async function resolve(pathname) {
   return null;
 }
 
-async function setup(respond, { path = '/estimate/', clock = false, mutate, mutateFiles = {}, noEndpoint = false, locale, viewport, http = false } = {}) {
-  const context = await browser.newContext({ ...(locale ? { locale } : {}), ...(viewport ? { viewport } : {}) });
+async function setup(respond, { path = '/estimate/', clock = false, mutate, mutateFiles = {}, noEndpoint = false, locale, viewport, http = false, javaScriptEnabled = true } = {}) {
+  const context = await browser.newContext({ javaScriptEnabled, ...(locale ? { locale } : {}), ...(viewport ? { viewport } : {}) });
   const page = await context.newPage();
   let requests = 0;
   const payloads = [];
@@ -734,3 +734,47 @@ test('negative control: a hint outside the guarded switch abandons a pending sen
     assert.equal(await page.locator('#first_name').inputValue(), '', 'blank Spanish form');
   } finally { gate.release(); await context.close(); }
 });
+
+for (const path of ['/estimate/', '/es/estimado/']) {
+  test(`no JavaScript offers a call path and blocks private-field submission: ${path}`, async () => {
+    const s = await setup(() => { throw new Error('No-JS must never POST'); }, {path, javaScriptEnabled:false});
+    try {
+      assert.equal(await s.page.locator('#estimate-form').isVisible(), false);
+      assert.equal(await s.page.locator('#form-fallback').isVisible(), true);
+      assert.equal(await s.page.locator('#form-fallback a').getAttribute('href'), 'tel:+18038849305');
+      assert.equal(await s.page.locator('#first_name').isDisabled(), true);
+      assert.equal(await s.page.locator('#submit').isDisabled(), true);
+      assert.equal(await s.page.locator('#estimate-form').getAttribute('method'), 'post');
+      assert.equal(new URL(s.page.url()).search, '');
+      assert.equal(s.requests(), 0);
+    } finally { await s.context.close(); }
+  });
+  test(`failed estimate script retains the call fallback and locked form: ${path}`, async () => {
+    const s = await setup(() => { throw new Error('Failed script must never POST'); }, {path, mutate:()=>''});
+    try {
+      assert.equal(await s.page.locator('#form-fallback').isVisible(), true);
+      assert.equal(await s.page.locator('#first_name').isDisabled(), true);
+      assert.equal(await s.page.locator('#submit').isDisabled(), true);
+      assert.equal(new URL(s.page.url()).search, '');
+      assert.equal(s.requests(), 0);
+    } finally { await s.context.close(); }
+  });
+  test(`form contrast fence survives dark browser preference; autofill rules exist: ${path}`, async () => {
+    const s = await setup(() => { throw new Error('Contrast check must not POST'); }, {path});
+    try {
+      await s.page.emulateMedia({colorScheme:'dark'});
+      const fence = await s.page.evaluate(() => {
+        const rules = [...document.styleSheets].flatMap(sheet => { try { return [...sheet.cssRules]; } catch { return []; } });
+        const explicit = rules.some(r => r.selectorText?.includes('input[type="text"]') && r.style?.color && r.style?.backgroundColor);
+        const autofill = rules.some(r => r.selectorText?.includes('input:-webkit-autofill') && r.style?.getPropertyValue('-webkit-text-fill-color') && r.style?.getPropertyValue('-webkit-box-shadow').includes('1000px'));
+        return {scheme:getComputedStyle(document.documentElement).colorScheme, explicit, autofill, fields:['first_name','phone','email','details'].map(id => {const s=getComputedStyle(document.getElementById(id));return {color:s.color,background:s.backgroundColor};})};
+      });
+      assert.ok(fence.scheme.includes('light'));
+      assert.ok(fence.explicit, 'Explicit field text/background colors must remain');
+      assert.ok(fence.autofill, 'Autofill override must remain; this is not real autofill paint proof');
+      assert.ok(fence.fields.every(f => f.color !== f.background && !f.background.endsWith(', 0)')));
+      assert.equal(await s.page.locator('#form-fallback').isVisible(), false);
+      assert.equal(s.requests(), 0);
+    } finally { await s.context.close(); }
+  });
+}
