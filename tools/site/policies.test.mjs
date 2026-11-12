@@ -1,10 +1,38 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
+import { services } from './services.mjs';
 const read = file => readFileSync(new URL('../../'+file, import.meta.url),'utf8');
 const files = ['sms-opt-in.html','es/sms-opt-in/index.html','privacy.html','terms.html'];
 const visible = html => html.replace(/<!--[\s\S]*?-->/g,'').replace(/<(style|script)\b[^>]*>[\s\S]*?<\/\1>/gi,'').replace(/<[^>]+>/g,' ').replace(/&(?:amp|nbsp);/g,' ').replace(/\s+/g,' ');
 const carrier = 'Text messaging originator opt-in data and consent will not be shared with any third parties.';
+test('Spanish SMS terms links use the Spanish policy on every generated page', () => {
+  for (const file of ['es/index.html', 'es/estimado/index.html', ...services.map(s => s.url.es.slice(1)+'index.html')]) {
+    const links = [...read(file).matchAll(/<a\b[^>]*href="([^"]+)"[^>]*>([\s\S]*?)<\/a>/g)]
+      .filter(([, , label]) => /SMS/.test(visible(label)));
+    assert.ok(links.length > 0, `${file}: SMS terms link exists`);
+    for (const [, href] of links) assert.equal(href, '/es/sms-opt-in/', `${file}: Spanish SMS destination`);
+  }
+});
+test('Spanish carrier quotations have an explicit Spanish introduction', () => {
+  for (const file of ['es/sms-opt-in/index.html', 'privacy.html']) {
+    assert.match(read(file), /<p>El texto oficial en inglés dice:<\/p>\s*<p lang="en">We do not share, sell, rent or provide/,
+      `${file}: English carrier original is labelled`);
+  }
+});
+test('phone prompts and runtime validation use localized instructions without a sample number', () => {
+  for (const [file, placeholder, error] of [
+    ['estimate/index.html', 'Your 10-digit phone number', 'Enter your 10-digit phone number.'],
+    ['es/estimado/index.html', 'Su teléfono de 10 dígitos', 'Escriba su teléfono de 10 dígitos.']
+  ]) {
+    const html = read(file);
+    assert.match(html, new RegExp(`id="phone"[^>]*placeholder="${placeholder}"`));
+    const messages = JSON.parse(html.match(/<script[^>]*id="form-msgs"[^>]*>([\s\S]*?)<\/script>/)?.[1] || '{}');
+    assert.equal(messages['err.phone.bad'], error, `${file}: runtime help`);
+    assert.ok(html.includes(error), `${file}: reserved validation help`);
+    assert.doesNotMatch(html, /555-0123/);
+  }
+});
 for (const file of files) test(`${file}: disclosure is separate from signup and has no draft/placeholder copy`, () => {
   const html = read(file), text = visible(html);
   assert.ok(!/<(?:form|input|textarea|select)\b/i.test(html),'Policy-only release must not collect consent');
