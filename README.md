@@ -26,7 +26,7 @@ node tools/site/serve.mjs 8080     # preview with GitHub Pages-style routing + g
 - `tools/site/social.mjs`: one `TIKTOK_PROFILE_URL` setting, empty until verified. Empty hides every TikTok link and schema entry. The WhatsApp URL setting also stays empty until the operator confirms the number; unconfirmed links are omitted. No social embeds load.
 - `tools/site/strings.mjs`: every visible string, English and Spanish (build fails if a key is missing in either).
 - `tools/site/src/`: `base.css` (tokens, one type scale, one spacing rhythm), page CSS, page templates, shared partials.
-- `assets/site/core.js`: language toggle (remembers the choice), call bar, reveal, lazy Fil widget, PayPal message loader.
+- `assets/site/core.js`: language toggle (remembers the choice), call bar, reveal, lazy JJ widget, PayPal message loader.
 - `assets/site/estimate.js`: the estimate form. Posts to the CRM lead route; only `success: true` plus a `booking_id` counts as received.
 - `tools/site/images.mjs`: regenerates `assets/img/` (graded AVIF + WebP photos, logo, favicons, OG image) with ImageMagick.
 - Cloudflare Web Analytics: set `CF_WEB_ANALYTICS_TOKEN` in `tools/site/build.mjs` and rebuild (off until a token exists).

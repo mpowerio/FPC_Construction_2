@@ -262,8 +262,8 @@ test('negative control: removing the reserved error sizers makes the 390px phone
 
 // ----- Third-party controls start in the page language, whatever the browser prefers -----
 const FIL_TEXT = {
-  en: { 'expand-text': 'Chat with Fil', 'action-text': 'Questions? Ask Fil', 'start-call-text': 'Start a call', 'end-call-text': 'End call', 'listening-text': 'Listening', 'speaking-text': 'Talk to interrupt' },
-  es: { 'expand-text': 'Hablar con Fil', 'action-text': '¿Preguntas? Pregúntele a Fil', 'start-call-text': 'Iniciar llamada', 'end-call-text': 'Colgar', 'listening-text': 'Escuchando', 'speaking-text': 'Hable para interrumpir' }
+  en: { 'expand-text': 'Chat with JJ', 'action-text': 'Questions? Ask JJ', 'start-call-text': 'Start a call', 'end-call-text': 'End call', 'listening-text': 'Listening', 'speaking-text': 'Talk to interrupt' },
+  es: { 'expand-text': 'Hablar con JJ', 'action-text': '¿Preguntas? Pregúntele a JJ', 'start-call-text': 'Iniciar llamada', 'end-call-text': 'Colgar', 'listening-text': 'Escuchando', 'speaking-text': 'Hable para interrumpir' }
 };
 const lum = (hex) => {
   const [r, g, b] = hex.trim().replace('#', '').match(/../g).map((h) => parseInt(h, 16) / 255).map((v) => v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4);
@@ -271,15 +271,15 @@ const lum = (hex) => {
 };
 const contrast = (a, b) => { const [x, y] = [lum(a), lum(b)].sort((m, n) => n - m); return (x + 0.05) / (y + 0.05); };
 for (const [path, locale, want] of [['/es/', 'en-US', 'es'], ['/es/estimado/', 'en-US', 'es'], ['/', 'es-MX', 'en'], ['/estimate/', 'es-MX', 'en']]) {
-  test(`${path} with a ${locale} browser initializes Fil${path === '/' ? ' and PayPal' : path === '/es/' ? ' (and no English PayPal message)' : ''} in ${want === 'es' ? 'Spanish' : 'English'}`, async () => {
+  test(`${path} with a ${locale} browser initializes JJ${path === '/' ? ' and PayPal' : path === '/es/' ? ' (and no English PayPal message)' : ''} in ${want === 'es' ? 'Spanish' : 'English'}`, async () => {
     const { page, context, externals } = await setup(json(201, accepted), { path, locale });
     try {
-      assert.equal(await page.locator('elevenlabs-convai').count(), 0, 'Fil waits for the first interaction');
+      assert.equal(await page.locator('elevenlabs-convai').count(), 0, 'JJ waits for the first interaction');
       await page.keyboard.press('Shift');
       await page.locator('elevenlabs-convai').waitFor({ state: 'attached' });
       const fil = page.locator('elevenlabs-convai');
       const attrs = await fil.evaluate((el) => Object.fromEntries([...el.attributes].map((a) => [a.name, a.value])));
-      assert.equal(attrs['override-language'], want, 'Fil language comes from <html lang>');
+      assert.equal(attrs['override-language'], want, 'JJ language comes from <html lang>');
       for (const [k, v] of Object.entries(FIL_TEXT[want])) assert.equal(attrs[k], v, `${k} in the page language`);
       assert.ok(externals.some((u) => u === 'https://elevenlabs.io/convai-widget/index.js'), 'widget script requested (and blocked here)');
       // Widget buttons are background var(--el-btn-color) with text var(--el-btn-text-color);
