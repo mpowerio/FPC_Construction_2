@@ -228,7 +228,7 @@ function sitemap() {
   }
   for (const legal of ['privacy', 'terms', 'sms-opt-in', 'es/sms-opt-in/']) rows.push(`  <url>
     <loc>${ORIGIN}/${legal}</loc>
-    <lastmod>2026-11-10</lastmod>${legal.includes('sms-opt-in') ? `
+    <lastmod>2026-11-12</lastmod>${legal.includes('sms-opt-in') ? `
     <xhtml:link rel="alternate" hreflang="en-US" href="${ORIGIN}/sms-opt-in"/>
     <xhtml:link rel="alternate" hreflang="es-US" href="${ORIGIN}/es/sms-opt-in/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="${ORIGIN}/sms-opt-in"/>` : ''}
