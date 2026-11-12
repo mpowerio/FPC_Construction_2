@@ -9,15 +9,16 @@ await mkdir(out,{recursive:true});
 const control=process.env.FPC_WIDGET_CONTROL||'';
 const fixture=`customElements.define('elevenlabs-convai',class extends HTMLElement{connectedCallback(){const s=this.attachShadow({mode:'open'});s.innerHTML='<style>:host{position:fixed;right:32px;bottom:32px;z-index:1000;pointer-events:none}.wrapper{display:flex;flex-direction:column-reverse;align-items:flex-end;gap:16px}.panel{height:151px;width:308px;max-width:calc(100vw - 64px);opacity:0;pointer-events:none}.panel.open{opacity:1;pointer-events:auto}button{font:14px Arial;min-height:36px;padding:0 16px;background:#262626;color:white;border:0;border-radius:32px;pointer-events:auto}button slot{margin-right:4px}</style><div class="wrapper"><button type="button" title="'+this.getAttribute('expand-text')+'"><slot>☎</slot><div>'+this.getAttribute('expand-text')+'</div></button><div class="panel"></div></div>';s.querySelector('button').onclick=()=>s.querySelector('.panel').classList.toggle('open')}});`;
 const browser=await chromium.launch();const rows=[];let posts=0;
-async function setup(width,path,motion='reduce'){
- const c=await browser.newContext({viewport:{width,height:844},reducedMotion:motion});
+async function setup(width,path,motion='reduce',height=844){
+ const c=await browser.newContext({viewport:{width,height},reducedMotion:motion});
  await c.route('**/*',async route=>{
   const u=new URL(route.request().url());if(route.request().method()!=='GET'){posts++;return route.abort();}
   if(u.href==='https://elevenlabs.io/convai-widget/index.js')return route.fulfill({contentType:'text/javascript',body:fixture});
   if(u.hostname!=='fpc.test')return route.abort();
   let name=u.pathname.replace(/^\//,'');if(!name||name.endsWith('/'))name+='index.html';
   try {let body=await readFile(new URL(name,root));
-   if(control==='reserve'&&name.endsWith('.html'))body=Buffer.from(body.toString().replace(/\.estimate-start__row, \.estimate-start__note \{ padding-right: 60px; \}/,''));
+   if(control==='heading'&&name.endsWith('.html'))body=Buffer.from(body.toString().replace('.estimate-start__heading, .estimate-start__row, .estimate-start__note { padding-right: 60px; }','.estimate-start__row, .estimate-start__note { padding-right: 60px; }').replace('.estimate-start__heading { flex-wrap: wrap; }',''));
+   if(control==='reserve'&&name.endsWith('.html'))body=Buffer.from(body.toString().replace(/\.estimate-start__heading, \.estimate-start__row, \.estimate-start__note \{ padding-right: 60px; \}/,''));
    if(control==='focus'&&name==='assets/site/core.js')body=Buffer.from(body.toString().replace('focused || submitVisible','false || submitVisible'));
    if(control==='fallback'&&name==='assets/site/core.js')body=Buffer.from(body.toString().replace("if (!launcher) { clearSuppression(); return; }","if (!launcher) { el.style.opacity = '0'; return; }"));
    return route.fulfill({body,contentType:{html:'text/html',js:'text/javascript',svg:'image/svg+xml',woff2:'font/woff2'}[name.split('.').pop()]||'application/octet-stream'});
@@ -61,6 +62,13 @@ try{
   }
   rows.push({width,path,initial});await c.close();
  }
+ const shortHomes=[];
+ for(const width of [320,360,375,390])for(const height of [620,640,664,690,740,844])for(const path of ['/','/es/']){
+  const {p,c}=await setup(width,path,'reduce',height);const initial=await state(p);
+  assert.equal(initial.opacity,1,`home JJ visible on load ${width}x${height} ${path}`);
+  assert.equal(initial.inert,false);assert.equal(initial.overflow,false);assert.ok(initial.width>=44&&initial.height>=44);
+  shortHomes.push({width,height,path,initial});await c.close();
+ }
  const {p,c}=await setup(390,'/','no-preference');await p.locator('.estimate-start select').focus();await p.waitForTimeout(240);assert.equal((await state(p)).opacity,0);await blur(p);await p.evaluate(()=>scrollTo({top:document.documentElement.scrollHeight,behavior:'instant'}));await p.waitForTimeout(240);assert.equal((await state(p)).opacity,1,'motion-enabled restore');await c.close();
- assert.equal(posts,0);await writeFile(out+'/clearance.json',JSON.stringify({fixture:'inert CDN geometry, not real call proof',posts,rows},null,2));console.log('PASS:16 layouts; mobile on-load visibility,48px accessible icon,focus/blur,scroll clearance,submit observer,selector fallback/recovery,reduced-motion and desktop preservation. Zero POSTs.');
+ assert.equal(posts,0);await writeFile(out+'/clearance.json',JSON.stringify({fixture:'inert CDN geometry, not real call proof',posts,rows,shortHomes},null,2));console.log('PASS:16 interaction layouts plus48 home width/height/language layouts; mobile on-load visibility,48px accessible icon,focus/blur,scroll clearance,submit observer,selector fallback/recovery,reduced-motion and desktop preservation. Zero POSTs.');
 }finally{await browser.close();}
