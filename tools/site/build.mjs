@@ -181,6 +181,7 @@ function render(page, lang) {
     lang,
     home: urlOf('home', lang),
     estimate: urlOf('estimate', lang),
+    smsUrl: lang === 'es' ? '/es/sms-opt-in/' : '/sms-opt-in',
     enUrl: page.url.en, esUrl: page.url.es,
     enAbs: ORIGIN + page.url.en, esAbs: ORIGIN + page.url.es,
     canonical: ORIGIN + page.url[lang],

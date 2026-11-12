@@ -474,7 +474,7 @@ test('switching EN -> ES -> EN after validation keeps answers, shows errors in e
     assert.equal(await page.locator('#phone').inputValue(), '(555');
     assert.equal(await page.locator('#details').inputValue(), 'Línea uno\nLínea dos');
     assert.match(await page.locator('#last_name-err').innerText(), /Escriba su apellido/);
-    assert.match(await page.locator('#phone-err').innerText(), /número de 10 dígitos/);
+    assert.match(await page.locator('#phone-err').innerText(), /Escriba su teléfono de 10 dígitos\./);
     assert.match(await page.locator('#summary').innerText(), /Revise esto antes de enviar/);
     assert.equal(await page.locator('#failure[role="alert"]').count(), 0, 'no failure banner: nothing was sent');
     await switchTo(page, 'en'); await landed(page, '/estimate/');
@@ -701,7 +701,7 @@ test('an inline error from blur (before any submit) survives the language switch
     assert.match(await page.locator('#phone-err').innerText(), /10-digit phone number/);
     await switchTo(page, 'es'); await landed(page, '/es/estimado/');
     assert.equal(await page.locator('#phone').inputValue(), '(555');
-    assert.match(await page.locator('#phone-err').innerText(), /número de 10 dígitos/);
+    assert.match(await page.locator('#phone-err').innerText(), /Escriba su teléfono de 10 dígitos\./);
     assert.equal(await page.locator('#phone').getAttribute('aria-invalid'), 'true');
     assert.equal(await page.locator('#summary').isHidden(), true, 'no summary: nothing was submitted');
     for (const id of ['first_name', 'last_name', 'email']) assert.equal(await page.locator(`#${id}-err`).innerText(), '', `untouched #${id} stays quiet`);
