@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Concrete driveways, patios & slabs in the CSRA | FPC Construction</title>
+<meta name="description" content="Concrete driveways, patios, sidewalks and slabs around North Augusta, Augusta and Aiken. Request a free site visit and written estimate from FPC.">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="theme-color" content="#18201B">
+<link rel="canonical" href="https://fpcconstructions.com/services/concrete/">
+<link rel="alternate" hreflang="en-US" href="https://fpcconstructions.com/services/concrete/">
+<link rel="alternate" hreflang="es-US" href="https://fpcconstructions.com/es/servicios/concreto/">
+<link rel="alternate" hreflang="x-default" href="https://fpcconstructions.com/services/concrete/">
+<script>
+/* Runs before first paint: JS + motion flags, and the remembered language choice.
+   A stored choice (set only by the EN/ES toggle) sends the visitor to the twin page.
+   There is no redirect by browser language. */
+(function (d) {
+  var r = d.documentElement; r.classList.add('js');
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches) r.classList.add('motion-ok');
+  try {
+    var s = localStorage.getItem('fpc-lang');
+    if ((s === 'en' || s === 'es') && s !== r.lang) {
+      var t = d.querySelector('link[hreflang="' + s + '-US"]');
+      if (t) location.replace(new URL(t.href).pathname + location.search + location.hash);
+    }
+  } catch (e) {}
+})(document);
+</script>
+
+<link rel="preload" href="/assets/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="FPC Construction LLC">
+<meta property="og:title" content="Concrete driveways, patios & slabs in the CSRA | FPC Construction">
+<meta property="og:description" content="Concrete driveways, patios, sidewalks and slabs around North Augusta, Augusta and Aiken. Request a free site visit and written estimate from FPC.">
+<meta property="og:url" content="https://fpcconstructions.com/services/concrete/">
+<meta property="og:image" content="https://fpcconstructions.com/assets/img/og-1200x630.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="es_US">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Concrete driveways, patios & slabs in the CSRA | FPC Construction">
+<meta name="twitter:description" content="Concrete driveways, patios, sidewalks and slabs around North Augusta, Augusta and Aiken. Request a free site visit and written estimate from FPC.">
+<meta name="twitter:image" content="https://fpcconstructions.com/assets/img/og-1200x630.jpg">
+<meta name="geo.region" content="US-SC">
+<meta name="geo.placename" content="North Augusta">
+<meta name="geo.position" content="33.5018;-81.9651">
+<meta name="ICBM" content="33.5018, -81.9651">
+<style>
+/* ==========================================================================
+   FPC Construction, Direction A "Bench Cut": shared tokens + components.
+   Source of truth for every built page (tools/site/build.mjs inlines it).
+   One type scale (--t-*), one spacing rhythm (--s-*), one easing family.
+   Animated properties: transform + opacity only.
+   ========================================================================== */
+
+@font-face {
+  font-family: "Archivo";
+  src: url("/assets/fonts/archivo-var-latin.woff2") format("woff2");
+  font-weight: 100 900;
+  font-stretch: 100% 125%;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* The woff2 is Archivo (OFL) with the width axis limited to 100-125% (nothing here is
+   narrower), weight axis untouched: 62 KB instead of 90 KB. Renders pixel-identical to the
+   full font at every weight/width this CSS uses (48-combination diff, 0 pixels). */
+/* Metric-matched fallback so a late font swap does not reflow (CLS guard).
+   size-adjust tuned by measurement against Archivo at wdth 100
+   (agent-out/fpc-site-redesign-20261018/SEO-AND-PERF.md section 4). */
+@font-face {
+  font-family: "Archivo Fallback";
+  src: local("Arial"), local("Liberation Sans");
+  size-adjust: 98%;
+  ascent-override: 89%;
+  descent-override: 22%;
+  line-gap-override: 0%;
+}
+
+/* Display fallback for wide/heavy headings. Measured on a 100px test string:
+   Archivo 800 @ wdth 112% = 1.150x Arial Bold, (1.15-1.20 across test strings), so size-adjust 118% keeps the
+   112%-stretch headlines (hero H1 desktop, estimate H1) on the same line breaks
+   when Archivo swaps in. Line boxes use unitless line-height, so heights hold. */
+@font-face {
+  font-family: "Archivo Display Fallback";
+  src: local("Arial Bold"), local("Arial-BoldMT"), local("Liberation Sans Bold"), local("LiberationSans-Bold");
+  font-weight: 600 900;
+  size-adjust: 118%;
+  ascent-override: 82%;
+  descent-override: 20%;
+  line-gap-override: 0%;
+}
+
+:root {
+  color-scheme: light;
+
+  /* FPC gold/orange, warm stone and graphite. The existing logo is unchanged. */
+  --c-concrete: #F4F0E8;
+  --c-pour: #E9E3D6;
+  --c-ink: #262626;
+  --c-ink-2: #55524D;
+  --c-red: #FF6D00;
+  --c-yellow: #D4A937;
+  --c-clay: #1C221E;
+  --c-field: #FBFBFA;      /* input well */
+  --c-field-line: #8F8C86; /* 3.2:1 against the well (non-text UI) */
+  --c-error: #A3000A;      /* 7:1 on the form plate */
+  --c-ok: #1F5E3A;
+  --c-hair: rgba(38, 38, 38, .14);
+  --c-plate: #FBF9F3;
+
+  /* Type scale (classic typographic scale) */
+  --t-14: .875rem;
+  --t-16: 1rem;
+  --t-18: 1.125rem;
+  --t-21: 1.3125rem;
+  --t-24: 1.5rem;
+  --t-36: 2.25rem;
+  --t-48: 3rem;
+  --t-72: 4.5rem;
+
+  /* Spacing rhythm (8px base) */
+  --s-4: 4px;  --s-8: 8px;  --s-12: 12px; --s-16: 16px; --s-24: 24px;
+  --s-32: 32px; --s-48: 48px; --s-64: 64px; --s-96: 96px;
+
+  /* Radii — tiered, not uniform */
+  --r-4: 4px; --r-8: 8px; --r-14: 14px; --r-pill: 999px;
+
+  /* Motion — one easing family */
+  --ease-out: cubic-bezier(.22, 1, .36, 1);
+  --ease-io: cubic-bezier(.65, 0, .35, 1);
+  --d-fast: 160ms;
+  --d-med: 240ms;
+  --d-slow: 800ms;
+
+  /* The bench cut */
+  --step: 24px;
+
+  /* Layers */
+  --z-bar: 30;
+  --z-skip: 40;
+
+  --wrap: 1280px;
+  --gutter: 20px;
+}
+@media (min-width: 900px) { :root { --gutter: 40px; --step: 32px; } }
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body {
+  margin: 0;
+  font-family: "Archivo", "Archivo Fallback", system-ui, sans-serif;
+  font-size: var(--t-16);
+  font-stretch: 100%;
+  line-height: 1.55;
+  color: var(--c-ink);
+  background: var(--c-concrete);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+img { display: block; max-width: 100%; height: auto; }
+picture { display: contents; }
+img[data-src] { visibility: hidden; } /* deferred image not loaded yet: show the frame fill, not alt text */
+a { color: inherit; }
+p { margin: 0; max-width: 62ch; text-wrap: pretty; }
+h1, h2, h3 { margin: 0; text-wrap: balance; }
+ul, ol { margin: 0; padding: 0; list-style: none; }
+.num { font-variant-numeric: tabular-nums; }
+.wrap { width: 100%; max-width: var(--wrap); margin-inline: auto; padding-inline: var(--gutter); }
+[hidden] { display: none !important; }
+.vh { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+/* ---------- One focus style, everywhere ---------- */
+:focus-visible {
+  outline: 2px solid var(--c-ink);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 6px var(--c-yellow);
+  border-radius: var(--r-4);
+}
+.on-dark :focus-visible { outline-color: var(--c-yellow); box-shadow: 0 0 0 5px rgba(244,184,12,.35); }
+
+.skip {
+  position: fixed; left: var(--s-16); top: var(--s-16); z-index: var(--z-skip);
+  background: var(--c-ink); color: #fff; padding: var(--s-12) var(--s-16);
+  border-radius: var(--r-8); text-decoration: none; font-weight: 700;
+  transform: translateY(-200%);
+  transition: transform var(--d-med) var(--ease-out);
+}
+.skip:focus-visible { transform: none; }
+
+/* ---------- Type roles ---------- */
+.display, .h2, .h3, legend {
+  font-family: "Archivo", "Archivo Display Fallback", system-ui, sans-serif;
+}
+.display {
+  font-weight: 800;
+  font-stretch: 112%;
+  letter-spacing: -.015em;
+  line-height: 1.02;
+}
+.h2 { font-size: var(--t-36); font-weight: 800; font-stretch: 108%; letter-spacing: -.012em; line-height: 1.05; }
+.h3 { font-size: var(--t-21); font-weight: 700; font-stretch: 110%; letter-spacing: -.005em; line-height: 1.2; }
+.lead { font-size: var(--t-18); line-height: 1.55; color: var(--c-ink); }
+.muted { color: var(--c-ink-2); }
+.small { font-size: var(--t-14); line-height: 1.5; }
+@media (min-width: 900px) {
+  .h2 { font-size: var(--t-48); font-stretch: 116%; }
+  .h3 { font-size: var(--t-24); }
+  .lead { font-size: var(--t-21); }
+}
+
+/* ---------- Buttons: stamped tag with an icon nub ---------- */
+.btn {
+  position: relative; isolation: isolate;
+  display: inline-flex; align-items: center; justify-content: space-between; gap: var(--s-16);
+  min-height: 52px; padding: 6px 6px 6px 20px;
+  border: 0; border-radius: var(--r-8);
+  font: inherit; font-weight: 700; font-stretch: 106%; font-size: var(--t-16); line-height: 1.2;
+  text-decoration: none; cursor: pointer;
+  transform: translateZ(0);
+  transition: transform var(--d-fast) var(--ease-out);
+  -webkit-tap-highlight-color: transparent;
+}
+.btn::after { /* hover wash: opacity only */
+  content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit;
+  background: rgba(0,0,0,.14); opacity: 0;
+  transition: opacity var(--d-fast) var(--ease-out);
+}
+.btn:hover::after { opacity: 1; }
+.btn:active { transform: scale(.98); }
+.btn__nub {
+  display: grid; place-items: center; flex: none;
+  width: 40px; height: 40px; border-radius: var(--r-4);
+  background: rgba(0,0,0,.2);
+  transition: transform var(--d-med) var(--ease-out);
+}
+.btn:hover .btn__nub { transform: translateX(2px); }
+.btn__nub svg { width: 18px; height: 18px; }
+.btn--red { background: var(--c-red); color: #fff; }
+.btn--line { background: transparent; color: var(--c-ink); box-shadow: inset 0 0 0 1.5px var(--c-ink); }
+.btn--line .btn__nub { background: var(--c-ink); color: #fff; }
+.btn--line::after { background: rgba(38,38,38,.07); }
+.btn--light { background: var(--c-concrete); color: var(--c-ink); }
+.btn--light .btn__nub { background: var(--c-ink); color: #fff; }
+.btn--block { width: 100%; }
+
+.icon { width: 18px; height: 18px; flex: none; }
+
+/* ---------- Optional caption tag ---------- */
+.ph {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 2px 8px; border-radius: var(--r-4);
+  font-size: var(--t-14); font-weight: 600; line-height: 1.5;
+  color: var(--c-ink); background: #FFF3C9;
+  border: 1.5px dashed var(--c-ink);
+}
+.ph::before { content: ""; width: 8px; height: 8px; border-radius: 2px; background: var(--c-yellow); box-shadow: 0 0 0 1px var(--c-ink); }
+
+/* ---------- Logo plate (machined double bezel; logo PNG has white bg) ---------- */
+.plate {
+  display: inline-block; padding: 4px; border-radius: var(--r-14);
+  background: rgba(38,38,38,.06); box-shadow: inset 0 0 0 1px var(--c-hair);
+  text-decoration: none;
+}
+.plate__core {
+  display: block; padding: 6px 10px; border-radius: calc(var(--r-14) - 4px);
+  background: #FEFEFE; box-shadow: inset 0 1px 0 #fff, 0 1px 2px rgba(38,38,38,.08);
+}
+.plate img { width: 72px; height: auto; aspect-ratio: 264 / 164; }
+@media (min-width: 900px) { .plate img { width: 88px; } }
+
+/* ---------- Language toggle (sliding thumb = transform) ---------- */
+.lang {
+  position: relative; display: inline-grid; grid-template-columns: 1fr 1fr;
+  padding: 3px; border-radius: var(--r-pill);
+  background: var(--c-pour); box-shadow: inset 0 0 0 1px var(--c-hair);
+}
+.lang__thumb {
+  position: absolute; top: 3px; bottom: 3px; left: 3px; width: calc(50% - 3px);
+  border-radius: var(--r-pill); background: var(--c-ink);
+  transition: transform var(--d-med) var(--ease-out);
+}
+html[lang="es"] .lang__thumb { transform: translateX(100%); }
+html[lang="es"].lang-going .lang__thumb { transform: translateX(0); }
+html[lang="en"].lang-going .lang__thumb { transform: translateX(100%); }
+
+/* Each language is its own URL; the toggle is a link. Same-origin page changes
+   crossfade (cross-document view transitions, opacity only) where supported. */
+@media (prefers-reduced-motion: no-preference) { @view-transition { navigation: auto; } }
+.lang a {
+  position: relative; z-index: 1; display: grid; place-items: center; min-width: 44px; min-height: 44px; padding: 0 10px;
+  border-radius: var(--r-pill); text-decoration: none;
+  font-size: var(--t-14); font-weight: 700; font-stretch: 110%; letter-spacing: .02em; color: var(--c-ink);
+}
+.lang a[aria-current="true"] { color: #fff; }
+html.lang-going .lang a { color: var(--c-ink); }
+html.lang-going .lang a.is-target { color: #fff; }
+
+/* ---------- Site header ---------- */
+.site-header { padding-block: var(--s-16); }
+.site-header .wrap { display: flex; align-items: center; justify-content: space-between; gap: var(--s-16); }
+.site-nav { display: none; }
+.site-header__right { display: flex; align-items: center; gap: var(--s-12); }
+.call-icon {
+  display: grid; place-items: center; width: 44px; height: 44px; border-radius: var(--r-8);
+  background: var(--c-ink); color: #fff; text-decoration: none;
+  transition: transform var(--d-fast) var(--ease-out);
+}
+.call-icon:active { transform: scale(.96); }
+.header-phone { display: none; }
+@media (min-width: 900px) {
+  .site-nav { display: flex; gap: var(--s-32); }
+  .site-nav a { position: relative; text-decoration: none; font-weight: 600; font-stretch: 104%; padding-block: var(--s-8); }
+  .site-nav a::after {
+    content: ""; position: absolute; left: 0; right: 0; bottom: 2px; height: 2px; background: var(--c-ink);
+    transform: scaleX(0); transform-origin: left; transition: transform var(--d-med) var(--ease-out);
+  }
+  .site-nav a:hover::after, .site-nav a[aria-current="page"]::after { transform: scaleX(1); }
+  .call-icon { display: none; }
+  .header-phone { display: inline-flex; }
+}
+
+/* ---------- Bench-cut edges (the one bold motif) ---------- */
+.cut-top {
+  clip-path: polygon(0 calc(var(--step) * 2), 26% calc(var(--step) * 2), 26% var(--step), 52% var(--step), 52% 0, 100% 0, 100% 100%, 0 100%);
+}
+.cut-both {
+  clip-path: polygon(
+    0 calc(var(--step) * 2), 26% calc(var(--step) * 2), 26% var(--step), 52% var(--step), 52% 0, 100% 0,
+    100% calc(100% - var(--step) * 2), 74% calc(100% - var(--step) * 2), 74% calc(100% - var(--step)), 48% calc(100% - var(--step)), 48% 100%, 0 100%);
+}
+
+/* ---------- Mobile action bar / desktop island (fixed => blur allowed) ---------- */
+.action-bar {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: var(--z-bar);
+  display: grid; grid-template-columns: 1fr 1.25fr; gap: var(--s-8);
+  padding: var(--s-8) var(--s-12) calc(var(--s-8) + env(safe-area-inset-bottom));
+  background: rgba(231, 230, 226, .86);
+  -webkit-backdrop-filter: blur(14px) saturate(1.2); backdrop-filter: blur(14px) saturate(1.2);
+  box-shadow: 0 -1px 0 var(--c-hair);
+  transform: translateY(110%);
+  transition: transform 420ms var(--ease-out);
+}
+.action-bar.is-shown { transform: none; }
+.action-bar .btn { min-height: 48px; padding-left: 14px; font-size: var(--t-16); }
+.action-bar .btn__nub { width: 36px; height: 36px; }
+@media (min-width: 900px) { .action-bar { display: none; } }
+
+.island { display: none; }
+@media (min-width: 900px) {
+  .island {
+    position: fixed; top: var(--s-16); left: 50%; z-index: var(--z-bar);
+    display: flex; align-items: center; gap: var(--s-12);
+    padding: 6px 6px 6px 8px; border-radius: var(--r-14);
+    background: rgba(231, 230, 226, .82);
+    -webkit-backdrop-filter: blur(16px) saturate(1.2); backdrop-filter: blur(16px) saturate(1.2);
+    box-shadow: 0 0 0 1px var(--c-hair), 0 18px 40px -18px rgba(38, 30, 24, .35);
+    transform: translate(-50%, calc(-100% - 24px)); opacity: 0;
+    transition: transform 520ms var(--ease-out), opacity 300ms var(--ease-out);
+  }
+  .island.is-shown { transform: translate(-50%, 0); opacity: 1; }
+  .island .plate img { width: 56px; }
+  .island .plate__core { padding: 3px 6px; }
+  .island .btn { min-height: 44px; }
+  .island .btn__nub { width: 32px; height: 32px; }
+  .island__phone { font-weight: 700; font-stretch: 104%; text-decoration: none; padding-inline: var(--s-8); }
+}
+
+/* ---------- Footer (bottom of the dig) ---------- */
+.site-footer { color-scheme: dark; background: var(--c-ink); color: #EDECE8; }
+.site-footer a:not(.btn) { color: #fff; }
+.site-footer .muted { color: #B9B6AF; }
+.footer-cta { padding-top: calc(var(--step) * 2 + var(--s-64)); padding-bottom: var(--s-64); }
+.footer-cta__actions { display: grid; gap: var(--s-12); margin-top: var(--s-32); }
+.footer-grid { display: grid; gap: var(--s-32); padding-block: var(--s-48); border-top: 1px solid rgba(255,255,255,.14); }
+.footer-grid h3 { font-size: var(--t-16); font-weight: 700; font-stretch: 108%; margin-bottom: var(--s-8); color: #fff; }
+.footer-grid li + li { margin-top: var(--s-4); }
+.footer-legal { display: flex; flex-wrap: wrap; gap: var(--s-8) var(--s-24); padding-block: var(--s-24) calc(var(--s-96) + env(safe-area-inset-bottom)); border-top: 1px solid rgba(255,255,255,.14); font-size: var(--t-14); }
+.footer-legal nav { display: flex; flex-wrap: wrap; gap: var(--s-8) var(--s-24); }
+.social { display: flex; gap: var(--s-8); margin-top: var(--s-16); }
+.social a { display: grid; place-items: center; width: 44px; height: 44px; border-radius: var(--r-8); background: rgba(255,255,255,.08); color: #fff; }
+.social svg { width: 20px; height: 20px; }
+@media (min-width: 900px) {
+  .footer-cta { display: grid; grid-template-columns: 7fr 5fr; align-items: end; gap: var(--s-48); }
+  .footer-cta__actions { margin-top: 0; }
+  .footer-grid { grid-template-columns: 1.2fr 1fr 1fr 1fr; }
+  .footer-legal { padding-bottom: var(--s-32); justify-content: space-between; }
+}
+
+/* ---------- Quiet reveal (photo groups only) ---------- */
+html.js.motion-ok [data-reveal] { opacity: 0; transform: translateY(16px); transition: opacity 700ms var(--ease-out), transform 700ms var(--ease-out); }
+html.js.motion-ok [data-reveal].is-in { opacity: 1; transform: none; }
+
+/* ---------- JJ voice widget (ElevenLabs, injected after first interaction) ----------
+   Its shadow :host is position:fixed at right/bottom 32px; outer styles win over :host.
+   On phones it sits above the call bar so the two never overlap. */
+elevenlabs-convai {
+  right: 12px; bottom: calc(80px + env(safe-area-inset-bottom));
+  /* The widget themes itself with --el-* custom properties declared on its :host; these outer
+     declarations win. Vendor default was white on #3B82F6 (3.68:1). Bench Cut: white on ink
+     (15.1:1) for primary buttons, ink on the plate (13.9:1) for the panel and secondary
+     buttons, red focus ring (4.2:1 against the plate, above the 3:1 non-text minimum). */
+  --el-btn-color: #262626; --el-btn-text-color: #FFFFFF;
+  --el-bg-color: #F4F3F0; --el-text-color: #262626; --el-border-color: #D4D2CC;
+  --el-focus-color: #ED000C;
+}
+@media (min-width: 900px) { elevenlabs-convai { right: 32px; bottom: 32px; } }
+
+/* ---------- Language suggestion (only when the browser prefers Spanish and no choice is stored) ---------- */
+.lang-hint {
+  position: fixed; left: var(--s-12); right: var(--s-12); top: var(--s-12); z-index: var(--z-bar);
+  display: flex; align-items: center; justify-content: space-between; gap: var(--s-12);
+  max-width: 440px; margin-inline: auto; padding: 8px 8px 8px 16px; border-radius: var(--r-14);
+  background: var(--c-ink); color: #fff; box-shadow: 0 18px 40px -18px rgba(38, 30, 24, .5);
+  transform: translateY(calc(-100% - 24px)); transition: transform 420ms var(--ease-out);
+}
+.lang-hint.is-shown { transform: none; }
+.lang-hint a { color: #fff; font-weight: 700; }
+.lang-hint button { display: grid; place-items: center; width: 40px; height: 40px; border: 0; border-radius: var(--r-8); background: rgba(255,255,255,.12); color: #fff; cursor: pointer; }
+.lang-hint button svg { width: 18px; height: 18px; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .001ms !important; animation-delay: 0ms !important; transition-duration: .001ms !important; }
+}
+
+/* November 2026: polished FPC controls, shared by both languages. */
+.btn { border-radius: var(--r-pill); padding: 6px 6px 6px 22px; overflow: hidden; }
+.btn__nub { border-radius: var(--r-pill); }
+.btn--red { color: #231A0E; background: linear-gradient(155deg, #FFA347 0%, #FF6D00 58%, #F8780E 100%); box-shadow: inset 0 1px 0 #FFD4A6, inset 0 -2px 0 #C94E00, 0 8px 28px -14px #FF6D0080; }
+.btn--red .btn__nub { color: #231A0E; background: #FFFFFF40; box-shadow: inset 0 1px 0 #FFFFFF65; }
+.btn--red::before { content: ""; position: absolute; inset: 0; border-radius: inherit; background: linear-gradient(115deg, transparent 20%, #FFFFFF42 45%, transparent 65%); transform: translateX(-140%); pointer-events: none; }
+.btn--red:hover::before { transform: translateX(140%); transition: transform 850ms var(--ease-out); }
+.btn:hover .btn__nub { transform: translate(2px, -1px); }
+.plate { border-radius: 18px; background: linear-gradient(145deg, #E8C55A, #D4A937 45%, #8A6C24); padding: 3px; box-shadow: inset 0 1px 0 #FFF0B8, 0 8px 28px -16px #D4A93780; }
+.plate__core { border-radius: 15px; }
+.cut-top, .cut-both { clip-path: none; }
+.site-header { padding-block: var(--s-16); }
+.site-nav a { min-height: 44px; display: inline-flex; align-items: center; }
+.site-footer { background: #151B17; border-top: 1px solid #D4A93750; }
+.footer-cta { padding-top: var(--s-64); }
+.footer-cta .h2 { color: #F4F0E8; }
+.footer-cta .lead { color: #C8C8BA; }
+.site-footer .btn--line { color: #F4F0E8; box-shadow: inset 0 0 0 1px #D4A93790; }
+.social { flex-wrap: wrap; }
+.social .social__text { width: auto; min-width: 44px; padding: 0 14px; font-weight: 700; text-decoration: none; border: 1px solid #D4A93770; background: linear-gradient(145deg, #333C2D, #1C221E); box-shadow: inset 0 1px 0 #FFFFFF12; }
+.footer-grid li a, .footer-legal a { display: inline-flex; align-items: center; min-height: 44px; min-width: 44px; }
+.footer-legal { align-items: center; }
+.island, .action-bar { background: rgba(244,240,232,.96); color: #20251F; }
+input, textarea, select { color-scheme: light; color: #20251F; background: #FBFBFA; caret-color: #20251F; font: inherit; }
+input::placeholder, textarea::placeholder { color: #68675D; opacity: 1; }
+input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill { -webkit-text-fill-color: #20251F; caret-color: #20251F; box-shadow: 0 0 0 1000px #FBFBFA inset; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}
+
+/* FPC: warm metal, graphite, real ground work. No dependency or stock imagery. */
+.page-home { color-scheme: dark; color: #F4F0E8; background: #18201B; }
+.page-home .lead { color: #D7D8CB; }
+.page-home .muted { color: #BFC5B7; }
+.page-home .site-nav a::after { background: #E8C55A; }
+.page-home .header-phone { color: #F4F0E8; box-shadow: inset 0 0 0 1px #D4A93780; }
+.page-home .header-phone .btn__nub { background: #D4A937; color: #20251F; }
+.page-home .call-icon { background: linear-gradient(145deg, #E8C55A, #D4A937); color: #20251F; }
+.page-home :focus-visible { outline-color: #F4F0E8; box-shadow: 0 0 0 6px #D4A93770; }
+.page-home .lang { background: #D7D8CB; }
+.page-home .island :focus-visible, .page-home .action-bar :focus-visible { outline-color: #20251F; }
+.eyebrow { font-size: var(--t-14); font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #E8C55A; display: flex; align-items: center; gap: var(--s-12); }
+.gold-mark { width: 9px; height: 9px; border-radius: 50%; background: linear-gradient(145deg, #FFF1B8, #D4A937); box-shadow: 0 0 16px #D4A93760; flex: none; }
+.hero { padding-block: var(--s-24) 0; }
+.hero__grid { display: grid; gap: var(--s-32); align-items: center; }
+.hero__h1 { font-size: clamp(2.25rem, 6.3vw, 4.5rem); font-weight: 750; font-stretch: 100%; line-height: 1.04; letter-spacing: -.045em; margin-top: var(--s-24); }
+.hero__h1 span { color: #E8C55A; }
+.hero__text > .lead { margin-top: var(--s-24); font-size: var(--t-18); max-width: 40ch; }
+.hero__slogan { margin-top: var(--s-16); color: #BFC5B7; font-size: var(--t-14); max-width: 47ch; }
+.hero__actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-8) var(--s-24); margin-top: var(--s-16); }
+.hero__call, .hero__wa { min-height: 44px; display: inline-flex; align-items: center; gap: var(--s-12); text-decoration: none; font-weight: 700; }
+.hero__call { font-size: var(--t-18); }
+.hero__wa { color: #E8C55A; }
+.hero__call:hover, .hero__wa:hover { text-decoration: underline; text-underline-offset: 5px; }
+.hero__fil { font-size: var(--t-14); color: #BFC5B7; margin-top: var(--s-8); max-width: 49ch; }
+.hero__fil b { font-weight: 600; color: #F4F0E8; }
+.estimate-start { color-scheme: light; color: #20251F; padding: var(--s-16); margin-top: var(--s-24); border-radius: 24px; background: linear-gradient(145deg, #FBF9F3, #E9E3D6); border: 1px solid #E8C55A80; box-shadow: inset 0 2px 0 #FFFFFF, 0 16px 44px -28px #D4A93760; }
+.estimate-start__heading { display: flex; align-items: center; justify-content: space-between; gap: var(--s-12); margin-bottom: var(--s-12); }
+.estimate-start h2 { font-size: var(--t-18); letter-spacing: -.025em; }
+.gold-label { white-space: nowrap; flex-shrink: 0; display: inline-flex; align-items: center; min-height: 28px; padding: 2px 12px; border-radius: var(--r-pill); color: #35290E; background: linear-gradient(145deg, #F8DF8B, #D4A937); box-shadow: inset 0 1px 0 #FFF1B8; font-size: var(--t-14); font-weight: 700; }
+.estimate-start label { display: block; font-size: var(--t-14); font-weight: 600; margin-bottom: var(--s-8); }
+.estimate-start__row { display: grid; gap: var(--s-8); }
+.estimate-start select { min-height: 52px; width: 100%; min-width: 0; padding: 12px; border-radius: 12px; border: 1px solid #898A7E; background: #FBFBFA; color: #20251F; }
+.estimate-start__note { margin-top: var(--s-8); font-size: var(--t-14); color: #55584C; }
+.hero__photo { position: relative; margin: 0; padding: 6px; background: linear-gradient(145deg, #D4A93790, #BFC5B720 50%, #E8C55A60); border-radius: 32px; }
+.hero__photo .frame { border-radius: 26px; overflow: hidden; aspect-ratio: 4/5; background: #394033; }
+.hero__photo img { width: 100%; height: 100%; object-fit: cover; object-position: 59% 50%; }
+.photo-stamp { position: absolute; left: 24px; top: 24px; padding: 12px 16px; border-radius: 14px; color: #262A1E; background: linear-gradient(145deg, #FFF1B8, #E8C55A 45%, #D4A937); box-shadow: inset 0 1px 0 #FFF8D8, 0 10px 32px -16px #D4A93790; font-size: var(--t-14); letter-spacing: .03em; font-weight: 700; line-height: 1.4; }
+.photo-stamp span { display: block; font-size: .55rem; letter-spacing: .1em; font-weight: 700; margin-top: 4px; }
+.cap { display: grid; grid-template-columns: 1fr auto; gap: var(--s-16); align-items: center; padding: var(--s-16) var(--s-12); font-size: var(--t-14); color: #D7D8CB; }
+.cap a { display: inline-flex; align-items: center; min-height: 44px; font-weight: 700; color: #E8C55A; text-decoration: none; }
+.trade-ribbon { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--s-16); padding-block: var(--s-24); margin-top: var(--s-32); border-block: 1px solid #D4A93745; color: #E8C55A; font-size: var(--t-14); font-weight: 600; }
+.trade-ribbon span { display: flex; align-items: center; gap: var(--s-12); }
+.trade-ribbon span::before { content: ''; width: 5px; height: 5px; background: #D4A937; transform: rotate(45deg); }
+.core, .index, .work, .steps, .area, .faq, .field-notes { padding-block: var(--s-64); }
+.core__intro, .work__head { display: grid; gap: var(--s-16); }
+.core__intro > .eyebrow, .work__head > .eyebrow { grid-column: 1/-1; }
+.core__grid { display: grid; gap: var(--s-48); margin-top: var(--s-32); }
+.trade figure, .shot { margin: 0; }
+.trade .frame, .shot .frame { overflow: hidden; aspect-ratio: 4/3; border-radius: 20px; background: #303B30; box-shadow: 0 0 0 5px #D4A93715, 0 0 0 6px #D4A93735; }
+.trade img, .shot img { width: 100%; height: 100%; object-fit: cover; transition: transform 900ms var(--ease-out); }
+.trade:hover img, .shot:hover img { transform: scale(1.025); }
+.trade figcaption { margin-top: var(--s-16); font-size: var(--t-14); color: #BFC5B7; }
+.trade h3 { margin-top: var(--s-16); font-size: var(--t-24); }
+.trade p { margin-top: var(--s-12); color: #C9CFBF; }
+.textlink { display: inline-flex; align-items: center; gap: var(--s-16); min-height: 48px; margin-top: var(--s-16); color: #E8C55A; font-weight: 700; text-decoration: none; }
+.textlink__nub, .row__nub { display: grid; place-items: center; width: 40px; height: 40px; border-radius: var(--r-pill); background: linear-gradient(145deg, #E8C55A, #D4A937); color: #20251F; box-shadow: inset 0 1px 0 #FFF1B8; transition: transform var(--d-med) var(--ease-out); }
+.textlink__nub svg, .row__nub svg { width: 18px; height: 18px; }
+.textlink:hover .textlink__nub, .row:hover .row__nub { transform: translateX(3px); }
+.index { background: #1E2821; border-block: 1px solid #D4A93725; }
+.index__grid { display: grid; gap: var(--s-32); }
+.index__aside p { margin-top: var(--s-16); }
+.index__group + .index__group { margin-top: var(--s-32); }
+.index__group h3 { padding-bottom: var(--s-12); color: #E8C55A; }
+.row { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 4px 16px; align-items: center; padding: var(--s-16) 0; border-top: 1px solid #BFC5B730; text-decoration: none; }
+.row__name { font-size: var(--t-18); font-weight: 600; }
+.row__desc { grid-column: 1; color: #BFC5B7; font-size: var(--t-14); }
+.row__nub { grid-column: 2; grid-row: 1/span 2; }
+.work__strip { margin-top: var(--s-32); display: grid; gap: var(--s-32); }
+.shot figcaption { margin-top: var(--s-16); font-weight: 600; color: #D7D8CB; }
+.steps { background: #1E2821; border-block: 1px solid #D4A93725; }
+.steps ol { counter-reset: step; display: grid; gap: var(--s-32); margin-top: var(--s-32); }
+.steps li { display: grid; grid-template-columns: 44px 1fr; gap: var(--s-8) var(--s-16); }
+.steps li::before { counter-increment: step; content: '0' counter(step); grid-row: 1/span 2; color: #E8C55A; font-size: var(--t-24); font-weight: 400; font-variant-numeric: tabular-nums; }
+.steps h3 { font-size: var(--t-18); font-weight: 600; }
+.steps p { color: #BFC5B7; }
+.area__banks { display: grid; gap: var(--s-32); margin-top: var(--s-32); }
+.bank h3 { color: #E8C55A; margin-bottom: var(--s-16); }
+.bank ul { display: flex; flex-wrap: wrap; gap: var(--s-8); }
+.bank li { padding: 6px 14px; border-radius: var(--r-pill); color: #D7D8CB; border: 1px solid #BFC5B730; }
+.bank .home { background: linear-gradient(145deg, #E8C55A, #D4A937); color: #20251F; border-color: #E8C55A; font-weight: 700; box-shadow: inset 0 1px 0 #FFF1B8; }
+.river { display: none; }
+.area__note { margin-top: var(--s-24); }
+.faq { border-top: 1px solid #BFC5B730; }
+.faq__grid { display: grid; gap: var(--s-32); }
+.faq details { border-bottom: 1px solid #BFC5B730; }
+.faq summary { list-style: none; display: flex; justify-content: space-between; align-items: center; gap: var(--s-16); min-height: 64px; padding-block: var(--s-16); font-weight: 600; cursor: pointer; }
+.faq summary::-webkit-details-marker { display: none; }
+.faq__nub { display: grid; place-items: center; width: 32px; height: 32px; flex: none; border-radius: 50%; background: #D4A937; color: #20251F; transition: transform var(--d-med) var(--ease-out); }
+.faq__nub svg { width: 16px; height: 16px; transform: rotate(90deg); }
+.faq details[open] .faq__nub { transform: rotate(180deg); }
+.faq__a { padding-bottom: var(--s-24); color: #BFC5B7; }
+.faq__a .pp-slot { background: #F4F0E8; color-scheme: light; padding: var(--s-16); border-radius: 12px; margin-top: var(--s-16); min-height: 54px; }
+.field-notes { background: #1E2821; border-top: 1px solid #D4A93735; }
+.field-notes__grid { display: grid; gap: var(--s-32); }
+.field-notes h2 { margin-block: var(--s-16); }
+.field-notes__links { display: grid; gap: var(--s-12); }
+.social-story { display: flex; justify-content: space-between; align-items: center; gap: var(--s-16); min-height: 80px; padding: var(--s-16) var(--s-24); border-radius: 18px; border: 1px solid #D4A93750; box-shadow: inset 0 1px 0 #FFFFFF0C; background: linear-gradient(135deg, #303B2A, #1C221E); text-decoration: none; }
+.social-story > span:first-child { font-size: var(--t-24); font-weight: 600; }
+.social-story > span:last-child { font-size: var(--t-14); color: #E8C55A; }
+@media (min-width: 600px) { .estimate-start__row { grid-template-columns: minmax(0,1fr) auto; } .work__strip { grid-template-columns: 1fr 1fr; } }
+@media (min-width: 900px) {
+  .hero { padding-top: var(--s-32); }
+  .hero__grid { grid-template-columns: 1.05fr 1fr; gap: var(--s-48); }
+  .hero__photo .frame { aspect-ratio: 4/5; min-height: 570px; }
+  .trade-ribbon { margin-top: var(--s-48); padding-block: var(--s-32); font-size: var(--t-16); }
+  .core, .index, .work, .steps, .area, .faq, .field-notes { padding-block: var(--s-96); }
+  .core__intro, .work__head { grid-template-columns: 1.15fr 1fr; column-gap: var(--s-64); align-items: end; }
+  .core__grid { grid-template-columns: 1.15fr 1fr; gap: var(--s-64); margin-top: var(--s-48); }
+  .trade--b { margin-top: var(--s-64); }
+  .index__grid { grid-template-columns: 1fr 1.8fr; gap: var(--s-64); }
+  .index__aside { position: sticky; top: 110px; align-self: start; }
+  .index__groups { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-48); }
+  .index__group + .index__group { margin-top: 0; }
+  .index__group--wide { grid-column: 1/-1; }
+  .index__group--wide ul { display: grid; grid-template-columns: 1fr 1fr; column-gap: var(--s-48); }
+  .work__strip { grid-template-columns: 1.4fr 1fr; align-items: start; gap: var(--s-48) var(--s-32); }
+  .shot:nth-child(even) { margin-top: var(--s-64); }
+  .shot:first-child .frame { aspect-ratio: 5/4; }
+  .steps ol { grid-template-columns: 1fr 1fr; gap: var(--s-48) var(--s-64); }
+  .area__banks { grid-template-columns: 1fr 1fr; gap: var(--s-64); }
+  .faq__grid { grid-template-columns: 1fr 1.8fr; gap: var(--s-64); }
+  .field-notes__grid { grid-template-columns: 1.15fr 1fr; gap: var(--s-64); }
+}
+@keyframes enter { from { opacity: .3; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: no-preference) { html.motion-ok .hero__text { animation: enter 700ms var(--ease-out) both; } html.motion-ok .hero__photo { animation: enter 950ms var(--ease-out) both; } }
+@media (max-width: 599px) { .hero__photo .frame { aspect-ratio: 4/3; } .hero__h1 { font-size: var(--t-48); } .cap { grid-template-columns: 1fr; gap: 0; } .social-story { padding-inline: var(--s-16); } }
+
+.service-hero { display: grid; gap: var(--s-32); padding-block: var(--s-24) var(--s-64); }
+.service-back { display: inline-flex; align-items: center; min-height: 44px; color: #D7D8CB; margin-bottom: var(--s-24); text-decoration: none; }
+.service-hero h1 { font-size: clamp(2.25rem, 5vw, 4.5rem); margin-block: var(--s-16) var(--s-24); letter-spacing: -.035em; }
+.service-actions { display: flex; align-items: center; flex-wrap: wrap; gap: var(--s-16) var(--s-24); margin-top: var(--s-32); }
+.service-photo { margin: 0; align-self: center; padding: 6px; border-radius: 26px; background: linear-gradient(145deg, #D4A93790, #BFC5B720 50%, #E8C55A60); }
+.service-photo .frame { aspect-ratio: 4/3; border-radius: 20px; overflow: hidden; background: #303B30; }
+.service-photo img { width: 100%; height: 100%; object-fit: cover; }
+.service-detail { display: grid; gap: var(--s-48); padding-bottom: var(--s-96); }
+.service-detail__body { display: grid; gap: var(--s-48); }
+.service-detail__body .h2 { font-size: var(--t-36); }
+.service-detail__body .lead { margin-top: var(--s-16); }
+.service-detail__body .eyebrow { margin-bottom: var(--s-16); }
+.service-aside { align-self: start; border: 1px solid #D4A93750; background: linear-gradient(145deg, #293528, #1C221E); padding: var(--s-24); border-radius: 24px; box-shadow: inset 0 1px 0 #FFFFFF0C; }
+.service-aside .h3 { margin-block: var(--s-16); }
+.service-aside p:not(.eyebrow) { color: #BFC5B7; }
+.service-aside > a { display: flex; align-items: center; min-height: 44px; color: #E8C55A; }
+@media (min-width: 900px) { .service-hero { grid-template-columns: 1.1fr 1fr; gap: var(--s-64); padding-bottom: var(--s-96); } .service-detail { grid-template-columns: 1.8fr 1fr; gap: var(--s-96); } .service-aside { position: sticky; top: 110px; } }
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "@id": "https://fpcconstructions.com/services/concrete/#webpage",
+      "url": "https://fpcconstructions.com/services/concrete/",
+      "name": "Concrete driveways, patios & slabs in the CSRA | FPC Construction",
+      "inLanguage": "en-US",
+      "about": {
+        "@id": "https://fpcconstructions.com/#business"
+      }
+    },
+    {
+      "@type": [
+        "LocalBusiness",
+        "HomeAndConstructionBusiness"
+      ],
+      "@id": "https://fpcconstructions.com/#business",
+      "name": "FPC Construction LLC",
+      "alternateName": "FPC Construction",
+      "slogan": "No job too small, no dream too big — FPC Construction for all your needs.",
+      "description": "Septic systems, drainage and site work for homes and land across the CSRA, from North Augusta, SC. Concrete, asphalt, roofing, decks, carpentry, outdoor living, fencing, flooring, demolition and electrical work too.",
+      "url": "https://fpcconstructions.com/",
+      "telephone": "+1-803-884-9305",
+      "email": "info@fpcconstructions.com",
+      "logo": "https://fpcconstructions.com/assets/img/logo-600.png",
+      "image": [
+        "https://fpcconstructions.com/assets/img/og-1200x630.jpg"
+      ],
+      "knowsLanguage": [
+        "en-US",
+        "es-US"
+      ],
+      "founder": {
+        "@type": "Person",
+        "name": "Filemon Pineda",
+        "jobTitle": "Owner"
+      },
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "North Augusta",
+        "addressRegion": "SC",
+        "postalCode": "29860",
+        "addressCountry": "US"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 33.5018,
+        "longitude": -81.9651
+      },
+      "areaServed": [
+        {
+          "@type": "GeoCircle",
+          "geoMidpoint": {
+            "@type": "GeoCoordinates",
+            "latitude": 33.5018,
+            "longitude": -81.9651
+          },
+          "geoRadius": "80467"
+        },
+        {
+          "@type": "City",
+          "name": "North Augusta, SC"
+        },
+        {
+          "@type": "City",
+          "name": "Aiken, SC"
+        },
+        {
+          "@type": "City",
+          "name": "Edgefield, SC"
+        },
+        {
+          "@type": "City",
+          "name": "Augusta, GA"
+        },
+        {
+          "@type": "City",
+          "name": "Martinez, GA"
+        },
+        {
+          "@type": "City",
+          "name": "Evans, GA"
+        },
+        {
+          "@type": "City",
+          "name": "Grovetown, GA"
+        },
+        {
+          "@type": "City",
+          "name": "Thomson, GA"
+        },
+        {
+          "@type": "City",
+          "name": "Waynesboro, GA"
+        }
+      ],
+      "openingHoursSpecification": [
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": [
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday",
+            "Saturday"
+          ],
+          "opens": "07:00",
+          "closes": "19:00"
+        }
+      ],
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Services",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Septic system installation and repair"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Drainage and water control"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Excavation"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Land grading"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Land clearing"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Demolition"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Concrete"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Asphalt paving"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Roofing"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Decks"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Carpentry"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Outdoor living"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Fencing"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Brick and tile flooring"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Electrical"
+            }
+          }
+        ]
+      },
+      "sameAs": [
+        "https://www.facebook.com/p/FPC-Construction-LLC-100066373038903/",
+        "https://www.instagram.com/fpcconstructions"
+      ]
+    },
+    {
+      "@type": "Service",
+      "@id": "https://fpcconstructions.com/services/concrete/#service",
+      "name": "Concrete",
+      "serviceType": "Concrete",
+      "description": "A driveway you use every day. A patio with room to gather. A slab for what you are building next. FPC handles concrete work for residential and commercial projects across the CSRA.",
+      "url": "https://fpcconstructions.com/services/concrete/",
+      "provider": {
+        "@id": "https://fpcconstructions.com/#business"
+      },
+      "areaServed": [
+        {
+          "@type": "City",
+          "name": "North Augusta, SC"
+        },
+        {
+          "@type": "City",
+          "name": "Augusta, GA"
+        },
+        {
+          "@type": "City",
+          "name": "Evans, GA"
+        },
+        {
+          "@type": "City",
+          "name": "Martinez, GA"
+        },
+        {
+          "@type": "City",
+          "name": "Aiken, SC"
+        }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body class="page-home page-service">
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="i-phone" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" d="M5 4h3.2l1.9 4.6-2.4 1.6a11.5 11.5 0 0 0 6.1 6.1l1.6-2.4 4.6 1.9V19a2 2 0 0 1-2.1 2A16 16 0 0 1 3 6.1 2 2 0 0 1 5 4z"/></symbol>
+  <symbol id="i-chev" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" d="M9.5 6l6 6-6 6"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" d="M7 7l10 10M17 7L7 17"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" d="M5 12.5l4.2 4.2L19 7"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><path d="M12 4l9 16H3z" stroke-linejoin="round"/><path d="M12 10v4.5M12 17.4v.1"/></g></symbol>
+  <symbol id="i-fb" viewBox="0 0 24 24"><path fill="currentColor" d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.99 3.66 9.13 8.44 9.88v-6.99H7.9V12h2.54V9.8c0-2.51 1.49-3.89 3.78-3.89 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56V12h2.77l-.44 2.89h-2.33v6.99C18.34 21.13 22 16.99 22 12z"/></symbol>
+  <symbol id="i-ig" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r=".6" fill="currentColor"/></g></symbol>
+</svg>
+<a class="skip" href="#main">Skip to main content</a>
+<header class="site-header">
+  <div class="wrap">
+    <a class="plate" href="/" aria-label="FPC Construction home">
+      <span class="plate__core"><img src="/assets/img/logo-176.webp" srcset="/assets/img/logo-176.webp 176w, /assets/img/logo-264.webp 264w" sizes="(min-width: 900px) 88px, 72px" width="264" height="164" alt="FPC Construction"></span>
+    </a>
+    <nav class="site-nav" aria-label="Main">
+      <a href="/#services">Services</a>
+      <a href="/#work">Our work</a>
+      <a href="/#area">Service area</a>
+      <a href="/estimate/">Free estimate</a>
+    </nav>
+    <div class="site-header__right">
+      <nav class="lang" aria-label="Language / Idioma">
+  <span class="lang__thumb" aria-hidden="true"></span>
+  <a href="/services/concrete/" hreflang="en" lang="en" data-lang="en" aria-current="true">EN<span class="vh"> English</span></a>
+  <a href="/es/servicios/concreto/" hreflang="es" lang="es" data-lang="es">ES<span class="vh"> Español</span></a>
+</nav>
+      <a class="call-icon" href="tel:+18038849305" aria-label="Call (803) 884-9305"><svg class="icon" aria-hidden="true"><use href="#i-phone"/></svg></a>
+      <a class="btn btn--line header-phone" href="tel:+18038849305"><span class="num">(803) 884-9305</span><span class="btn__nub" aria-hidden="true"><svg><use href="#i-phone"/></svg></span></a>
+    </div>
+  </div>
+</header>
+<main id="main">
+  <section class="service-hero wrap" aria-labelledby="h1">
+    <div>
+      <a class="service-back" href="/#services">← All services</a>
+      <p class="eyebrow">Concrete</p>
+      <h1 id="h1" class="display">A solid place to start.</h1>
+      <p class="lead">A driveway you use every day. A patio with room to gather. A slab for what you are building next. FPC handles concrete work for residential and commercial projects across the CSRA.</p>
+      <div class="service-actions" data-bar-sentinel><a class="btn btn--red" href="/estimate/?type=concrete"><span>Get a free estimate</span><span class="btn__nub" aria-hidden="true"><svg><use href="#i-chev"/></svg></span></a><a class="hero__call" href="tel:+18038849305"><span class="num">(803) 884-9305</span></a></div>
+    </div>
+    <figure class="service-photo"><div class="frame"><picture><source type="image/avif" srcset="/assets/img/project-1-480.avif 480w, /assets/img/project-1-800.avif 800w" sizes="(min-width: 900px) 44vw, calc(100vw - 40px)"><img src="/assets/img/project-1-800.webp" srcset="/assets/img/project-1-480.webp 480w, /assets/img/project-1-800.webp 800w" sizes="(min-width: 900px) 44vw, calc(100vw - 40px)" width="800" height="600" fetchpriority="high" decoding="async" alt="Long concrete driveway with red brick bands"></picture></div></figure>
+  </section>
+  <div class="service-detail wrap">
+    <div class="service-detail__body">
+      <section><h2 class="h2">The finish starts with the ground.</h2><p class="lead">The visible surface is only part of the job. Site access, removal of existing material, base preparation, drainage and the planned use all shape the scope. Filemon visits the property so those details are discussed before a written estimate.</p></section>
+      <section><h2 class="h2">Concrete work for your property</h2><p class="lead">Driveways, patios, sidewalks and slabs, along with excavation and preparation connected to the project. Tell us whether this is a replacement, an extension or new work. Special finishes, structural requirements and any approvals need to be agreed in the written scope; a photo is inspiration, not a specification.</p></section>
+      <section><p class="eyebrow">Before we visit</p><h2 class="h2">Tell us what the space needs to do</h2><p class="lead">Share the town, approximate size, how the space will be used and whether old concrete needs removing. You do not need a finished design to make the first call. FPC can start with a free site visit and put the proposed work and price in writing.</p></section>
+      <section><p class="eyebrow">A good question</p><h2 class="h3">Can I request concrete and grading together?</h2><p class="lead">Yes. Describe both parts of the job in the estimate request so Filemon can look at the ground preparation, water flow and concrete work together at the site visit.</p></section>
+    </div>
+    <aside class="service-aside"><p class="eyebrow">CSRA / GA + SC</p><h2 class="h3">Local crew. Both sides of the river.</h2><p>Based in North Augusta, SC. Serving Augusta, Evans, Martinez, Aiken and the wider CSRA. Call to confirm your property is within reach.</p><a class="textlink" href="/#area">Service area <span aria-hidden="true">↗</span></a><h2 class="h3">More from FPC</h2><a href="/services/septic-systems/">Septic systems</a><a href="/services/drainage-site-work/">Drainage & site work</a></aside>
+  </div>
+</main>
+<footer class="site-footer on-dark cut-top" id="contact">
+  <div class="wrap footer-cta">
+    <div>
+      <h2 class="h2">Tell us about the job.</h2>
+      <p class="lead muted" style="margin-top:var(--s-16)">Call, or send the estimate form. Filemon comes out and looks at it, free.</p>
+    </div>
+    <div class="footer-cta__actions">
+      <a class="btn btn--red btn--block" href="/estimate/"><span>Get a free estimate</span><span class="btn__nub" aria-hidden="true"><svg><use href="#i-chev"/></svg></span></a>
+      <a class="btn btn--light btn--block" href="tel:+18038849305"><span>Call <span class="num">(803) 884-9305</span></span><span class="btn__nub" aria-hidden="true"><svg><use href="#i-phone"/></svg></span></a>
+    </div>
+  </div>
+  <div class="wrap footer-grid">
+    <div>
+      <a class="plate" href="/" aria-label="FPC Construction home"><span class="plate__core"><img src="/assets/img/logo-176.webp" srcset="/assets/img/logo-176.webp 176w, /assets/img/logo-264.webp 264w" sizes="(min-width: 900px) 88px, 72px" width="264" height="164" alt="FPC Construction" loading="lazy" decoding="async"></span></a>
+      <p class="small muted" style="margin-top:var(--s-16)">The phone is answered 24/7 by JJ, our AI assistant, in English or Spanish.</p>
+      <div class="social">
+        <a href="https://www.facebook.com/p/FPC-Construction-LLC-100066373038903/" aria-label="FPC on Facebook" rel="noopener"><svg aria-hidden="true"><use href="#i-fb"/></svg></a>
+        <a href="https://www.instagram.com/fpcconstructions" aria-label="FPC on Instagram" rel="noopener"><svg aria-hidden="true"><use href="#i-ig"/></svg></a>
+
+
+      </div>
+    </div>
+    <div>
+      <h3>Contact</h3>
+      <ul class="small">
+        <li><a class="num" href="tel:+18038849305">(803) 884-9305</a></li>
+        <li><a href="mailto:info@fpcconstructions.com">info@fpcconstructions.com</a></li>
+        <li class="muted">North Augusta, SC 29860</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Hours</h3>
+      <ul class="small">
+        <li>Monday to Saturday, 7 AM to 7 PM</li>
+        <li>Sunday closed</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Pages</h3>
+      <ul class="small">
+        <li><a href="/#services">Services</a></li>
+        <li><a href="/#work">Our work</a></li>
+        <li><a href="/#area">Service area</a></li>
+        <li><a href="/estimate/">Free estimate</a></li>
+        <li><a class="muted" href="https://fpc-construction-crm.vercel.app/login" rel="nofollow">Team sign-in</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="wrap footer-legal">
+    <p class="muted">&copy; <span data-year>2026</span> FPC Construction LLC</p>
+    <nav aria-label="Legal">
+      <a href="/privacy">Privacy</a>
+      <a href="/terms">Terms</a>
+      <a href="/sms-opt-in">SMS terms</a>
+    </nav>
+    <a class="muted" href="https://mpowerio.ai" rel="noopener">Powered by mpowerio.ai</a>
+  </div>
+</footer>
+<div class="island" role="region" aria-label="Quick actions">
+  <a class="plate" href="/" aria-label="FPC Construction home"><span class="plate__core"><img src="/assets/img/logo-176.webp" srcset="/assets/img/logo-176.webp 176w, /assets/img/logo-264.webp 264w" sizes="56px" width="264" height="164" alt=""></span></a>
+  <a class="island__phone num" href="tel:+18038849305">(803) 884-9305</a>
+  <nav class="lang" aria-label="Language / Idioma">
+  <span class="lang__thumb" aria-hidden="true"></span>
+  <a href="/services/concrete/" hreflang="en" lang="en" data-lang="en" aria-current="true">EN<span class="vh"> English</span></a>
+  <a href="/es/servicios/concreto/" hreflang="es" lang="es" data-lang="es">ES<span class="vh"> Español</span></a>
+</nav>
+  <a class="btn btn--red" href="/estimate/"><span>Get a free estimate</span><span class="btn__nub" aria-hidden="true"><svg><use href="#i-chev"/></svg></span></a>
+</div>
+<div class="action-bar" role="region" aria-label="Quick actions">
+  <a class="btn btn--line" href="tel:+18038849305"><span>Call</span><span class="btn__nub" aria-hidden="true"><svg><use href="#i-phone"/></svg></span></a>
+  <a class="btn btn--red" href="/estimate/"><span>Free estimate</span><span class="btn__nub" aria-hidden="true"><svg><use href="#i-chev"/></svg></span></a>
+</div>
+<script src="/assets/site/core.js" defer></script>
+<!-- Web analytics: OFF (no token; see tools/site/build.mjs). -->
+</body>
+</html>

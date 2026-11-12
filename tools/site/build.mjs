@@ -11,6 +11,10 @@ import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import * as S from './strings.mjs';
+import { services, serviceLabels } from './services.mjs';
+import { whatsappUrl, tiktokProfile } from './social.mjs';
+const TIKTOK = tiktokProfile();
+const WHATSAPP = whatsappUrl();
 
 // ---------- Configuration ----------
 const ORIGIN = 'https://fpcconstructions.com';
@@ -20,7 +24,7 @@ const LEAD_ENDPOINT = 'https://crm.fpcconstructions.com/api/public/webhook/lead-
 // is emitted commented out. Paste the site token from the Cloudflare dashboard and rebuild.
 const CF_WEB_ANALYTICS_TOKEN = '';
 // Sitemap lastmod for the pages built here (kept fixed so --check is deterministic).
-const LASTMOD = '2026-10-18';
+const LASTMOD = '2026-11-07';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const root = join(here, '..', '..');
@@ -33,6 +37,8 @@ for (const [name, dict] of Object.entries({ common: S.common, home: S.home, esti
   assert.deepEqual(es, en, `strings.${name}: EN and ES keys differ`);
 }
 
+for (const service of services) assert.deepEqual(Object.keys(service.en).sort(), Object.keys(service.es).sort(), `service ${service.id}: EN and ES keys differ`);
+
 // ---------- Partials ----------
 const partialsSrc = src('partials.html');
 const partial = (name) => {
@@ -43,7 +49,7 @@ const partial = (name) => {
 
 // ---------- Images ----------
 const PIC = {
-  hero: { id: 'gallery-19', alt: 'hero.alt', sizes: '(min-width: 1280px) 480px, (min-width: 900px) 38vw, 100vw', eager: true },
+  hero: { id: 'gallery-19', alt: 'hero.alt', sizes: '(min-width: 1280px) 580px, (min-width: 900px) 44vw, calc(100vw - 40px)', eager: true },
   // defer: these sit inside Chrome's native lazy-load distance on phones, so `loading=lazy`
   // still fetched ~210 KB during the hero load. core.js loads them 600px before they scroll in.
   septic: { id: 'gallery-12', alt: 'core.s.alt', sizes: '(min-width: 1280px) 672px, (min-width: 900px) 52vw, calc(100vw - 40px)', defer: true },
@@ -111,7 +117,7 @@ function business(lang) {
     // Hours per operator 2026-10-18 (matches the JJ voice agent). Pending Filemon's confirmation.
     openingHoursSpecification: [{ '@type': 'OpeningHoursSpecification', dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'], opens: '07:00', closes: '19:00' }],
     hasOfferCatalog: { '@type': 'OfferCatalog', name: lang === 'es' ? 'Servicios' : 'Services', itemListElement: SERVICES[lang].map((name) => ({ '@type': 'Offer', itemOffered: { '@type': 'Service', name } })) },
-    sameAs: ['https://www.facebook.com/p/FPC-Construction-LLC-100066373038903/', 'https://www.instagram.com/fpcconstructions'],
+    sameAs: ['https://www.facebook.com/p/FPC-Construction-LLC-100066373038903/', 'https://www.instagram.com/fpcconstructions', ...(TIKTOK ? [TIKTOK] : [])],
   };
 }
 const ldScript = (obj) => `<script type="application/ld+json">\n${JSON.stringify(obj, null, 2).replace(/</g, '\\u003c')}\n</script>`;
@@ -125,6 +131,7 @@ function jsonld(page, lang, t, url) {
       mainEntity: [1, 2, 3, 4].map((n) => ({ '@type': 'Question', name: t(`faq.${n}q`), acceptedAnswer: { '@type': 'Answer', text: strip(t(`faq.${n}a`)) } })) });
   } else {
     graph.push(webpage);
+    if (page === 'service') graph.push(business(lang), { '@type': 'Service', '@id': `${url}#service`, name: t('service.label'), serviceType: t('service.label'), description: t('service.intro'), url, provider: { '@id': `${ORIGIN}/#business` }, areaServed: ['North Augusta, SC', 'Augusta, GA', 'Evans, GA', 'Martinez, GA', 'Aiken, SC'].map(name => ({ '@type': 'City', name })) });
   }
   return ldScript({ '@context': 'https://schema.org', '@graph': graph });
 }
@@ -158,13 +165,14 @@ const ppSlot = (lang) => PAYPAL_MESSAGE_LANGS.includes(lang)
 const PAGES = [
   { key: 'home', tpl: 'home.html', css: 'home.css', url: { en: '/', es: '/es/' } },
   { key: 'estimate', tpl: 'estimate.html', css: 'estimate.css', url: { en: '/estimate/', es: '/es/estimado/' } },
+  ...services.map(service => ({ key: 'service', tpl: 'service.html', css: 'service.css', url: service.url, service })),
 ];
 const urlOf = (key, lang) => PAGES.find((p) => p.key === key).url[lang];
 const fileFor = (url) => join(root, url.replace(/^\//, ''), 'index.html');
 const baseCss = src('base.css');
 
 function render(page, lang) {
-  const dict = { ...S.common[lang], ...S[page.key][lang] };
+  const dict = { ...S.common[lang], ...(page.key === 'service' ? { ...S.home[lang], ...serviceLabels[lang], ...page.service[lang] } : S[page.key][lang]) };
   const t = (k) => { if (!(k in dict)) throw new Error(`missing string ${k} (${page.key}/${lang})`); return dict[k]; };
   const other = lang === 'en' ? 'es' : 'en';
   const cur = ' aria-current="true"';
@@ -182,9 +190,18 @@ function render(page, lang) {
     preload: page.key === 'home'
       ? `<link rel="preload" as="image" type="image/avif" imagesrcset="${srcset(hero.id, 'avif')}" imagesizes="${hero.sizes}" fetchpriority="high">`
       : '',
-    css: (baseCss + '\n' + src(page.css)).trim(),
+    css: (baseCss + '\n' + (page.key === 'service' ? src('home.css') + '\n' : '') + src(page.css)).trim(),
     jsonld: jsonld(page.key, lang, t, ORIGIN + page.url[lang]),
     analytics,
+    whatsappHero: WHATSAPP ? `<a class="hero__wa" href="${esc(WHATSAPP)}" rel="noopener">WhatsApp <span aria-hidden="true">↗</span></a>` : '',
+    whatsappFooter: WHATSAPP ? `<a class="social__text" href="${esc(WHATSAPP)}" rel="noopener">WhatsApp<span class="vh"> FPC Construction</span></a>` : '',
+    tiktok: TIKTOK ? `<a class="social__text" href="${esc(TIKTOK)}" rel="noopener">TikTok<span class="vh"> FPC Construction</span></a>` : '',
+    tiktokStory: TIKTOK && page.key !== 'estimate' ? `<a class="social-story" href="${esc(TIKTOK)}" rel="noopener"><span>TikTok</span><span>${t('field.watch')} <span aria-hidden="true">↗</span></span></a>` : '',
+    septicUrl: services.find(s => s.id === 'septic').url[lang],
+    drainageUrl: services.find(s => s.id === 'drainage').url[lang],
+    serviceType: page.service?.type || '',
+    servicePhoto: page.service ? picture({ ...PIC[page.service.photo], eager: true, defer: false, sizes: '(min-width: 900px) 44vw, calc(100vw - 40px)' }, t, false) : '',
+    relatedServices: services.filter(s => s.id !== page.service?.id).map(s => `<a href="${s.url[lang]}">${s[lang]['service.label']}</a>`).join(''),
     ppSlot: ppSlot(lang),
     endpoint: LEAD_ENDPOINT,
     langEnChecked: lang === 'en' ? ' checked' : '', langEsChecked: lang === 'es' ? ' checked' : '',
@@ -198,7 +215,7 @@ function render(page, lang) {
     return html
       .replace(/\{\{> ([a-z]+)\}\}/g, (_, n) => expand(partial(n), depth + 1))
       .replace(/\{\{row ([a-z-]+) ([a-z]+)\}\}/g, (_, slug, k) =>
-        `<li><a class="row" href="${v.estimate}?type=${slug}"><span class="row__name">${t(`svc.${k}`)}</span><span class="row__desc">${t(`svc.${k}.d`)}</span><span class="row__nub" aria-hidden="true"><svg><use href="#i-chev"/></svg></span></a></li>`)
+        `<li><a class="row" href="${slug === 'concrete' ? services.find(s => s.id === 'concrete').url[lang] : `${v.estimate}?type=${slug}`}"><span class="row__name">${t(`svc.${k}`)}</span><span class="row__desc">${t(`svc.${k}.d`)}</span><span class="row__nub" aria-hidden="true"><svg><use href="#i-chev"/></svg></span></a></li>`)
       .replace(/\{\{chip ([a-z-]+) ([a-z]+)\}\}/g, (_, slug, k) =>
         `<label class="chip"><input type="radio" name="project_type" value="${slug}"><span>${t(`t.${k}`)}</span></label>`)
       .replace(/\{\{img\.([a-z0-9]+)\}\}/g, (_, n) => { if (!PIC[n]) throw new Error(`unknown image ${n}`); return picture(PIC[n], t); })
@@ -209,7 +226,7 @@ function render(page, lang) {
   const raw = src(page.tpl).replace('{{v.css}}', '\u0000CSS\u0000').replace('{{v.jsonld}}', '\u0000LD\u0000');
   let html = expand(raw);
   if (/\{\{[^}]*\}\}/.test(html)) throw new Error(`unresolved token in ${page.key}/${lang}: ${html.match(/\{\{[^}]*\}\}/)[0]}`);
-  html = html.replace('\u0000CSS\u0000', v.css).replace('\u0000LD\u0000', v.jsonld);
+  html = html.replace('\u0000CSS\u0000', v.css).replace('\u0000LD\u0000', v.jsonld).replace(/[ \t]+$/gm, '');
   return html;
 }
 

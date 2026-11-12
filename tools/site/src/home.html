@@ -7,44 +7,53 @@
 </style>
 {{v.jsonld}}
 </head>
-<body>
+<body class="page-home">
 {{> icons}}
 {{> header}}
 
 <main id="main">
-  <!-- ======================= HERO ======================= -->
-  <!-- Old-site fragment aliases are kept so published links still land somewhere honest:
-       #home = hero, #about = the "who FPC is" lead, #projects/#testimonials/#featured = Recent work
-       (no testimonials are shown, so #testimonials lands on real job photos, never on reviews). -->
   <section class="hero" id="home" aria-labelledby="h1">
     <div class="wrap hero__grid">
       <div class="hero__text">
-        <!-- Locked slogan: English, verbatim, on every language (operator decision 2026-10-18). -->
-        <h1 id="h1" class="display hero__h1" lang="en">
-          <span class="clause clause--1"><span>No job too small, no dream too big</span></span>
-          <span class="clause clause--2"><span>— FPC Construction for all your needs.</span></span>
-        </h1>
-        <div class="grade" aria-hidden="true"></div>
-        <div class="hero__after">
-          <p class="lead" id="about">{{t.hero.lead}}</p>
-          <div class="hero__actions" data-bar-sentinel>
-            <a class="btn btn--red" href="{{v.estimate}}"><span>{{t.cta.estimate}}</span><span class="btn__nub" aria-hidden="true"><svg><use href="#i-chev"/></svg></span></a>
-            <a class="btn btn--line" href="tel:+18038849305"><span>{{t.cta.callpre}} <span class="num">(803) 884-9305</span></span><span class="btn__nub" aria-hidden="true"><svg><use href="#i-phone"/></svg></span></a>
+        <p class="eyebrow"><span class="gold-mark" aria-hidden="true"></span>{{t.hero.eyebrow}}</p>
+        <h1 id="h1" class="display hero__h1">{{t.hero.heading}}</h1>
+        <p class="lead" id="about">{{t.hero.intro}}</p>
+        <p class="hero__slogan" lang="en">No job too small, no dream too big — FPC Construction for all your needs.</p>
+        <form class="estimate-start" action="{{v.estimate}}" method="get" aria-labelledby="start-h" data-bar-sentinel>
+          <div class="estimate-start__heading"><h2 id="start-h">{{t.start.h}}</h2><span class="gold-label">{{t.start.free}}</span></div>
+          <label for="start-type">{{t.start.label}}</label>
+          <div class="estimate-start__row">
+            <select id="start-type" name="type" required>
+              <option value="" disabled selected>{{t.start.label}}</option>
+              <option value="septic-systems">{{t.start.septic}}</option>
+              <option value="drainage-and-site-work">{{t.start.drainage}}</option>
+              <option value="concrete">{{t.svc.concrete}}</option>
+              <option value="other">{{t.start.other}}</option>
+            </select>
+            <button class="btn btn--red" type="submit"><span>{{t.start.cta}}</span><span class="btn__nub" aria-hidden="true"><svg><use href="#i-chev"/></svg></span></button>
           </div>
-          <p class="hero__fil"><span class="fil-dot" aria-hidden="true"></span><span>{{t.hero.fil}}</span></p>
+          <p class="estimate-start__note">{{t.start.note}}</p>
+        </form>
+        <div class="hero__actions">
+          <a class="hero__call" href="tel:+18038849305"><svg class="icon" aria-hidden="true"><use href="#i-phone"/></svg><span class="num">(803) 884-9305</span></a>
+          {{v.whatsappHero}}
         </div>
+        <p class="hero__fil">{{t.hero.fil}}</p>
       </div>
-      <figure class="hero__photo" style="margin-block:0">
+      <figure class="hero__photo">
         <div class="frame">{{img.hero}}</div>
-        <figcaption class="cap"><span>{{t.hero.cap}}</span></figcaption>
+        <div class="photo-stamp">{{t.hero.badge}}</div>
+        <figcaption class="cap"><span>{{t.hero.cap}}</span><a href="#work">{{t.hero.seework}} <span aria-hidden="true">↘</span></a></figcaption>
       </figure>
     </div>
+    <div class="wrap"><div class="trade-ribbon" aria-label="{{t.ribbon.label}}"><span>{{t.ribbon.1}}</span><span>{{t.ribbon.2}}</span><span>{{t.ribbon.3}}</span></div></div>
   </section>
 
   <!-- ======================= CORE TRADES (clay band) ======================= -->
   <section class="core cut-both on-dark" id="services" aria-labelledby="core-h">
     <div class="wrap">
       <div class="core__intro">
+        <p class="eyebrow">{{t.section.services}}</p>
         <h2 id="core-h" class="h2">{{t.core.h}}</h2>
         <p class="lead muted">{{t.core.p}}</p>
       </div>
@@ -56,7 +65,7 @@
           </figure>
           <h3 class="h3">{{t.core.s.h}}</h3>
           <p>{{t.core.s.p}}</p>
-          <a class="textlink" href="{{v.estimate}}?type=septic-systems"><span class="textlink__label">{{t.core.s.cta}}</span><span class="textlink__nub" aria-hidden="true"><svg><use href="#i-chev"/></svg></span></a>
+          <a class="textlink" href="{{v.septicUrl}}"><span class="textlink__label">{{t.core.s.cta}}</span><span class="textlink__nub" aria-hidden="true"><svg><use href="#i-chev"/></svg></span></a>
         </article>
         <article class="trade trade--b" data-reveal>
           <figure>
@@ -65,7 +74,7 @@
           </figure>
           <h3 class="h3">{{t.core.d.h}}</h3>
           <p>{{t.core.d.p}}</p>
-          <a class="textlink" href="{{v.estimate}}?type=drainage-and-site-work"><span class="textlink__label">{{t.core.d.cta}}</span><span class="textlink__nub" aria-hidden="true"><svg><use href="#i-chev"/></svg></span></a>
+          <a class="textlink" href="{{v.drainageUrl}}"><span class="textlink__label">{{t.core.d.cta}}</span><span class="textlink__nub" aria-hidden="true"><svg><use href="#i-chev"/></svg></span></a>
         </article>
       </div>
     </div>
@@ -117,10 +126,11 @@
     <span id="projects" class="vh"></span><span id="testimonials" class="vh"></span><span id="featured" class="vh"></span>
     <div class="wrap">
       <div class="work__head">
+        <p class="eyebrow">{{t.section.work}}</p>
         <h2 id="work-h" class="h2">{{t.work.h}}</h2>
         <p class="muted">{{t.work.p}}</p>
       </div>
-      <div class="work__strip" data-reveal>
+      <div class="work__strip">
         <figure class="shot"><div class="frame">{{img.w1}}</div><figcaption><span class="what">{{t.w1}}</span></figcaption></figure>
         <figure class="shot"><div class="frame">{{img.w2}}</div><figcaption><span class="what">{{t.w2}}</span></figcaption></figure>
         <figure class="shot"><div class="frame">{{img.w3}}</div><figcaption><span class="what">{{t.w3}}</span></figcaption></figure>
@@ -188,7 +198,12 @@
     </div>
   </section>
 
-
+  <section class="field-notes" aria-labelledby="field-h">
+    <div class="wrap field-notes__grid">
+      <div><p class="eyebrow">{{t.field.eyebrow}}</p><h2 id="field-h" class="h2">{{t.field.h}}</h2><p class="lead muted">{{t.field.p}}</p></div>
+      <div class="field-notes__links"><a class="social-story" href="https://www.instagram.com/fpcconstructions" rel="noopener"><span>Instagram</span><span>{{t.field.watch}} <span aria-hidden="true">↗</span></span></a><a class="social-story" href="https://www.facebook.com/p/FPC-Construction-LLC-100066373038903/" rel="noopener"><span>Facebook</span><span>{{t.field.watch}} <span aria-hidden="true">↗</span></span></a>{{v.tiktokStory}}</div>
+    </div>
+  </section>
 </main>
 
 {{> footer}}

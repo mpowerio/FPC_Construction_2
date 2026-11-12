@@ -311,6 +311,38 @@ export const estimate = {
 };
 
 // Keys the estimate script needs at runtime (emitted as a JSON block on the page).
+
+
+// November redesign copy. The locked slogan remains verbatim in the home template.
+Object.assign(home.en, {
+  'hero.eyebrow': 'North Augusta · Augusta · Aiken',
+  'hero.heading': 'Septic, drainage<br><span>& site work.</span>',
+  'hero.intro': 'For your home, your land and what comes next. Filemon and the FPC crew handle the ground work, the concrete and the finishing touches across the CSRA.',
+  'hero.seework': 'See the work', 'hero.badge': 'On the job',
+  'start.h': 'What are you working on?', 'start.free': 'Free estimate',
+  'start.label': 'Choose your project', 'start.septic': 'Septic systems', 'start.drainage': 'Drainage & site work', 'start.other': 'Something else',
+  'start.cta': 'Start here', 'start.note': 'Next: tell us the details. Nothing is submitted at this step.',
+  'ribbon.label': 'FPC services', 'ribbon.1': 'Residential & commercial', 'ribbon.2': 'County & state contract work', 'ribbon.3': 'English & Español',
+  'section.services': '01 / Ground work', 'section.work': '02 / From the job site',
+  'field.eyebrow': 'More from FPC', 'field.h': 'See the work take shape.',
+  'field.p': 'Follow FPC for job-site photos and updates. Have a project like one you see? Tell us what you have in mind.', 'field.watch': 'Visit FPC',
+  'work.h': 'The work speaks.', 'work.p': 'Septic lines, drainage, concrete and site preparation. A closer look at FPC projects, from the first cut to the finish.',
+});
+Object.assign(home.es, {
+  'hero.eyebrow': 'North Augusta · Augusta · Aiken',
+  'hero.heading': 'Sépticos, drenaje<br><span>y terreno.</span>',
+  'hero.intro': 'Para su casa, su terreno y su próximo proyecto. Filemon y el equipo de FPC hacen el trabajo de terreno, el concreto y los acabados en toda la zona del CSRA.',
+  'hero.seework': 'Ver los trabajos', 'hero.badge': 'En la obra',
+  'start.h': '¿Qué proyecto tiene?', 'start.free': 'Estimado gratis',
+  'start.label': 'Elija su proyecto', 'start.septic': 'Sistemas sépticos', 'start.drainage': 'Drenaje y terreno', 'start.other': 'Otro trabajo',
+  'start.cta': 'Empezar', 'start.note': 'Siguiente: cuéntenos los detalles. Este paso no envía una solicitud.',
+  'ribbon.label': 'Servicios de FPC', 'ribbon.1': 'Residencial y comercial', 'ribbon.2': 'Contratos del condado y del estado', 'ribbon.3': 'English y español',
+  'section.services': '01 / Trabajo de terreno', 'section.work': '02 / Desde la obra',
+  'field.eyebrow': 'Más de FPC', 'field.h': 'Vea cómo avanza el trabajo.',
+  'field.p': 'Siga a FPC para ver fotos y novedades de las obras. ¿Tiene un proyecto parecido? Cuéntenos lo que quiere hacer.', 'field.watch': 'Visitar FPC',
+  'work.h': 'El trabajo habla.', 'work.p': 'Líneas sépticas, drenaje, concreto y preparación de terreno. Vea los proyectos de FPC, desde la primera excavación hasta el acabado.',
+});
+
 export const FORM_RUNTIME_KEYS = ['err.first', 'err.last', 'err.phone.req', 'err.phone.bad', 'err.email', 'sum.h', 'fail.h', 'fail.p', 'fail.retry',
   'ok.h', 'ok.p', 'ok.ref', 'ok.sooner', 'ok.home', 'e.submit', 'e.sending',
   'ok.sent', 'ok.s.name', 'ok.s.phone', 'ok.s.email', 'ok.s.addr', 'ok.s.type', 'ok.s.best', 'ok.s.lang', 'ok.s.details'];

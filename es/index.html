@@ -6,7 +6,7 @@
 <title>FPC Construction | Sistemas sépticos, drenaje y trabajos de terreno en North Augusta, SC</title>
 <meta name="description" content="Sistemas sépticos, drenaje y trabajos de terreno en toda la zona del CSRA, desde North Augusta, SC. Estimados gratis. Llame al (803) 884-9305, contestamos las 24 horas en inglés o en español.">
 <meta name="robots" content="index, follow, max-image-preview:large">
-<meta name="theme-color" content="#E7E6E2">
+<meta name="theme-color" content="#18201B">
 <link rel="canonical" href="https://fpcconstructions.com/es/">
 <link rel="alternate" hreflang="en-US" href="https://fpcconstructions.com/">
 <link rel="alternate" hreflang="es-US" href="https://fpcconstructions.com/es/">
@@ -27,7 +27,7 @@
   } catch (e) {}
 })(document);
 </script>
-<link rel="preload" as="image" type="image/avif" imagesrcset="/assets/img/gallery-19-480.avif 480w, /assets/img/gallery-19-800.avif 800w, /assets/img/gallery-19-1200.avif 1200w" imagesizes="(min-width: 1280px) 480px, (min-width: 900px) 38vw, 100vw" fetchpriority="high">
+<link rel="preload" as="image" type="image/avif" imagesrcset="/assets/img/gallery-19-480.avif 480w, /assets/img/gallery-19-800.avif 800w, /assets/img/gallery-19-1200.avif 1200w" imagesizes="(min-width: 1280px) 580px, (min-width: 900px) 44vw, calc(100vw - 40px)" fetchpriority="high">
 <link rel="preload" href="/assets/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="icon" href="/favicon.ico" sizes="48x48">
 <link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
@@ -99,20 +99,20 @@
 :root {
   color-scheme: light;
 
-  /* Palette — three FPC logo colors + concrete + clay */
-  --c-concrete: #E7E6E2;
-  --c-pour: #D4D2CC;
+  /* FPC gold/orange, warm stone and graphite. The existing logo is unchanged. */
+  --c-concrete: #F4F0E8;
+  --c-pour: #E9E3D6;
   --c-ink: #262626;
   --c-ink-2: #55524D;
-  --c-red: #ED000C;
-  --c-yellow: #F4B80C;
-  --c-clay: #8E3B22;
+  --c-red: #FF6D00;
+  --c-yellow: #D4A937;
+  --c-clay: #1C221E;
   --c-field: #FBFBFA;      /* input well */
   --c-field-line: #8F8C86; /* 3.2:1 against the well (non-text UI) */
   --c-error: #A3000A;      /* 7:1 on the form plate */
   --c-ok: #1F5E3A;
   --c-hair: rgba(38, 38, 38, .14);
-  --c-plate: #F4F3F0;
+  --c-plate: #FBF9F3;
 
   /* Type scale (classic typographic scale) */
   --t-14: .875rem;
@@ -294,7 +294,7 @@ html[lang="en"].lang-going .lang__thumb { transform: translateX(100%); }
    crossfade (cross-document view transitions, opacity only) where supported. */
 @media (prefers-reduced-motion: no-preference) { @view-transition { navigation: auto; } }
 .lang a {
-  position: relative; z-index: 1; display: grid; place-items: center; min-width: 44px; min-height: 36px; padding: 0 10px;
+  position: relative; z-index: 1; display: grid; place-items: center; min-width: 44px; min-height: 44px; padding: 0 10px;
   border-radius: var(--r-pill); text-decoration: none;
   font-size: var(--t-14); font-weight: 700; font-stretch: 110%; letter-spacing: .02em; color: var(--c-ink);
 }
@@ -429,210 +429,163 @@ elevenlabs-convai {
   *, *::before, *::after { animation-duration: .001ms !important; animation-delay: 0ms !important; transition-duration: .001ms !important; }
 }
 
-/* ===================== Home page (tools/site/build.mjs inlines after base.css) ===================== */
-
-/* ---- Hero ---- */
-.hero { padding-top: var(--s-24); }
-.hero__grid { display: grid; gap: var(--s-32); }
-.hero__h1 { font-size: var(--t-36); font-stretch: 104%; }
-.hero__h1 .clause { display: block; overflow: hidden; padding-bottom: .06em; }
-.hero__h1 .clause > span { display: block; }
-.hero__h1 .clause--2 { margin-top: var(--s-12); font-size: var(--t-24); font-weight: 700; font-stretch: 108%; line-height: 1.15; }
-.grade { height: 2px; margin-block: var(--s-24); background: var(--c-ink); transform-origin: left center; }
-.hero__actions { display: grid; gap: var(--s-12); margin-top: var(--s-32); }
-.hero__fil { display: flex; gap: var(--s-12); align-items: flex-start; margin-top: var(--s-24); font-size: var(--t-14); color: var(--c-ink-2); }
-.hero__fil b { color: var(--c-ink); font-weight: 700; }
-.fil-dot { flex: none; width: 10px; height: 10px; margin-top: 6px; border-radius: 3px; background: var(--c-yellow); box-shadow: 0 0 0 1.5px var(--c-ink); }
-
-.hero__photo { position: relative; margin-inline: calc(var(--gutter) * -1); }
-.hero__photo .frame {
-  aspect-ratio: 4 / 3; overflow: hidden; background: #B9A99A;
-  clip-path: polygon(0 0, 100% 0, 100% 100%, calc(var(--step) * 6) 100%, calc(var(--step) * 6) calc(100% - var(--step)), calc(var(--step) * 3) calc(100% - var(--step)), calc(var(--step) * 3) calc(100% - var(--step) * 2), 0 calc(100% - var(--step) * 2));
-}
-.hero__photo img { width: 100%; height: 100%; object-fit: cover; object-position: 62% 55%; }
-.cap { display: flex; flex-wrap: wrap; gap: var(--s-8); align-items: center; margin-top: var(--s-12); font-size: var(--t-14); color: var(--c-ink-2); }
-.hero__photo .cap { padding-inline: var(--gutter); justify-content: flex-end; }
-
-@media (min-width: 900px) {
-  .hero { padding-top: var(--s-48); }
-  .hero__grid { grid-template-columns: 7fr 5fr; gap: var(--s-48); align-items: start; }
-  .hero__h1 { font-size: var(--t-72); font-stretch: 112%; }
-  .hero__h1 .clause--2 { font-size: var(--t-36); margin-top: var(--s-16); }
-  .grade { margin-block: var(--s-32); }
-  .hero__actions { grid-auto-flow: column; justify-content: start; }
-  .hero__photo { margin-inline: 0; margin-top: var(--s-8); }
-  .hero__photo .frame { aspect-ratio: 4 / 5; border-radius: var(--r-8) var(--r-8) var(--r-8) 0; }
-  .hero__photo .cap { padding-inline: 0; }
+/* November 2026: polished FPC controls, shared by both languages. */
+.btn { border-radius: var(--r-pill); padding: 6px 6px 6px 22px; overflow: hidden; }
+.btn__nub { border-radius: var(--r-pill); }
+.btn--red { color: #231A0E; background: linear-gradient(155deg, #FFA347 0%, #FF6D00 58%, #F8780E 100%); box-shadow: inset 0 1px 0 #FFD4A6, inset 0 -2px 0 #C94E00, 0 8px 28px -14px #FF6D0080; }
+.btn--red .btn__nub { color: #231A0E; background: #FFFFFF40; box-shadow: inset 0 1px 0 #FFFFFF65; }
+.btn--red::before { content: ""; position: absolute; inset: 0; border-radius: inherit; background: linear-gradient(115deg, transparent 20%, #FFFFFF42 45%, transparent 65%); transform: translateX(-140%); pointer-events: none; }
+.btn--red:hover::before { transform: translateX(140%); transition: transform 850ms var(--ease-out); }
+.btn:hover .btn__nub { transform: translate(2px, -1px); }
+.plate { border-radius: 18px; background: linear-gradient(145deg, #E8C55A, #D4A937 45%, #8A6C24); padding: 3px; box-shadow: inset 0 1px 0 #FFF0B8, 0 8px 28px -16px #D4A93780; }
+.plate__core { border-radius: 15px; }
+.cut-top, .cut-both { clip-path: none; }
+.site-header { padding-block: var(--s-16); }
+.site-nav a { min-height: 44px; display: inline-flex; align-items: center; }
+.site-footer { background: #151B17; border-top: 1px solid #D4A93750; }
+.footer-cta { padding-top: var(--s-64); }
+.footer-cta .h2 { color: #F4F0E8; }
+.footer-cta .lead { color: #C8C8BA; }
+.site-footer .btn--line { color: #F4F0E8; box-shadow: inset 0 0 0 1px #D4A93790; }
+.social { flex-wrap: wrap; }
+.social .social__text { width: auto; min-width: 44px; padding: 0 14px; font-weight: 700; text-decoration: none; border: 1px solid #D4A93770; background: linear-gradient(145deg, #333C2D, #1C221E); box-shadow: inset 0 1px 0 #FFFFFF12; }
+.footer-grid li a, .footer-legal a { display: inline-flex; align-items: center; min-height: 44px; min-width: 44px; }
+.footer-legal { align-items: center; }
+.island, .action-bar { background: rgba(244,240,232,.96); color: #20251F; }
+input, textarea, select { color-scheme: light; color: #20251F; background: #FBFBFA; caret-color: #20251F; font: inherit; }
+input::placeholder, textarea::placeholder { color: #68675D; opacity: 1; }
+input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill { -webkit-text-fill-color: #20251F; caret-color: #20251F; box-shadow: 0 0 0 1000px #FBFBFA inset; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
 }
 
-/* Hero load: string line, then lift (transform/opacity only, once) */
-@keyframes draw { from { transform: scaleX(0); } to { transform: scaleX(1); } }
-@keyframes lift { from { transform: translateY(105%); } to { transform: translateY(0); } }
-@keyframes settle { from { transform: scale(1.045); } to { transform: scale(1); } }
-@keyframes fade { from { opacity: 0; } to { opacity: 1; } }
-html.motion-ok .grade { animation: draw 620ms var(--ease-out) 60ms both; }
-html.motion-ok .hero__h1 .clause > span { animation: lift 760ms var(--ease-out) both; }
-html.motion-ok .hero__h1 .clause--1 > span { animation-delay: 120ms; }
-html.motion-ok .hero__h1 .clause--2 > span { animation-delay: 260ms; }
-html.motion-ok .hero__photo img { animation: settle 1100ms var(--ease-out) both; }
-html.motion-ok .hero__after { animation: fade 600ms var(--ease-out) 420ms both; }
-
-/* ---- Core trades band (clay, bench cut both edges) ---- */
-.core { margin-top: var(--s-64); background: var(--c-clay); color: #fff; padding-block: calc(var(--step) * 2 + var(--s-64)); }
-.core .muted { color: #F1DED6; }
-.core__intro { display: grid; gap: var(--s-16); }
-.core__grid { display: grid; gap: var(--s-48); margin-top: var(--s-48); }
-.trade figure { margin: 0; }
-.trade .frame { aspect-ratio: 4 / 3; overflow: hidden; border-radius: var(--r-8); background: #6F2E1B; }
-.trade img { width: 100%; height: 100%; object-fit: cover; }
-.trade figcaption { margin-top: var(--s-8); font-size: var(--t-14); color: #F1DED6; }
-.trade h3 { margin-top: var(--s-24); }
-.trade p { margin-top: var(--s-8); }
-.textlink {
-  display: inline-flex; align-items: center; gap: var(--s-12); margin-top: var(--s-16);
-  min-height: 44px; font-weight: 700; font-stretch: 106%; text-decoration: none;
-}
-.textlink__nub { display: grid; place-items: center; width: 32px; height: 32px; border-radius: var(--r-4); background: rgba(255,255,255,.16); transition: transform var(--d-med) var(--ease-out); }
-.textlink__nub svg { width: 16px; height: 16px; }
-.textlink:hover .textlink__nub { transform: translateX(3px); }
-.textlink__label { background-image: linear-gradient(currentColor, currentColor); background-size: 100% 1.5px; background-repeat: no-repeat; background-position: 0 100%; padding-bottom: 2px; }
-@media (min-width: 900px) {
-  .core { margin-top: var(--s-96); padding-block: calc(var(--step) * 2 + var(--s-96)); }
-  .core__intro { grid-template-columns: 7fr 5fr; align-items: end; gap: var(--s-48); }
-  .core__grid { grid-template-columns: 7fr 5fr; gap: var(--s-48); align-items: start; }
-  .trade--b { margin-top: var(--s-96); }
-}
-
-/* ---- Trade index ---- */
-.index { padding-block: var(--s-64); }
+/* FPC: warm metal, graphite, real ground work. No dependency or stock imagery. */
+.page-home { color-scheme: dark; color: #F4F0E8; background: #18201B; }
+.page-home .lead { color: #D7D8CB; }
+.page-home .muted { color: #BFC5B7; }
+.page-home .site-nav a::after { background: #E8C55A; }
+.page-home .header-phone { color: #F4F0E8; box-shadow: inset 0 0 0 1px #D4A93780; }
+.page-home .header-phone .btn__nub { background: #D4A937; color: #20251F; }
+.page-home .call-icon { background: linear-gradient(145deg, #E8C55A, #D4A937); color: #20251F; }
+.page-home :focus-visible { outline-color: #F4F0E8; box-shadow: 0 0 0 6px #D4A93770; }
+.page-home .lang { background: #D7D8CB; }
+.page-home .island :focus-visible, .page-home .action-bar :focus-visible { outline-color: #20251F; }
+.eyebrow { font-size: var(--t-14); font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #E8C55A; display: flex; align-items: center; gap: var(--s-12); }
+.gold-mark { width: 9px; height: 9px; border-radius: 50%; background: linear-gradient(145deg, #FFF1B8, #D4A937); box-shadow: 0 0 16px #D4A93760; flex: none; }
+.hero { padding-block: var(--s-24) 0; }
+.hero__grid { display: grid; gap: var(--s-32); align-items: center; }
+.hero__h1 { font-size: clamp(2.25rem, 6.3vw, 4.5rem); font-weight: 750; font-stretch: 100%; line-height: 1.04; letter-spacing: -.045em; margin-top: var(--s-24); }
+.hero__h1 span { color: #E8C55A; }
+.hero__text > .lead { margin-top: var(--s-24); font-size: var(--t-18); max-width: 40ch; }
+.hero__slogan { margin-top: var(--s-16); color: #BFC5B7; font-size: var(--t-14); max-width: 47ch; }
+.hero__actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-8) var(--s-24); margin-top: var(--s-16); }
+.hero__call, .hero__wa { min-height: 44px; display: inline-flex; align-items: center; gap: var(--s-12); text-decoration: none; font-weight: 700; }
+.hero__call { font-size: var(--t-18); }
+.hero__wa { color: #E8C55A; }
+.hero__call:hover, .hero__wa:hover { text-decoration: underline; text-underline-offset: 5px; }
+.hero__fil { font-size: var(--t-14); color: #BFC5B7; margin-top: var(--s-8); max-width: 49ch; }
+.hero__fil b { font-weight: 600; color: #F4F0E8; }
+.estimate-start { color-scheme: light; color: #20251F; padding: var(--s-16); margin-top: var(--s-24); border-radius: 24px; background: linear-gradient(145deg, #FBF9F3, #E9E3D6); border: 1px solid #E8C55A80; box-shadow: inset 0 2px 0 #FFFFFF, 0 16px 44px -28px #D4A93760; }
+.estimate-start__heading { display: flex; align-items: center; justify-content: space-between; gap: var(--s-12); margin-bottom: var(--s-12); }
+.estimate-start h2 { font-size: var(--t-18); letter-spacing: -.025em; }
+.gold-label { white-space: nowrap; flex-shrink: 0; display: inline-flex; align-items: center; min-height: 28px; padding: 2px 12px; border-radius: var(--r-pill); color: #35290E; background: linear-gradient(145deg, #F8DF8B, #D4A937); box-shadow: inset 0 1px 0 #FFF1B8; font-size: var(--t-14); font-weight: 700; }
+.estimate-start label { display: block; font-size: var(--t-14); font-weight: 600; margin-bottom: var(--s-8); }
+.estimate-start__row { display: grid; gap: var(--s-8); }
+.estimate-start select { min-height: 52px; width: 100%; min-width: 0; padding: 12px; border-radius: 12px; border: 1px solid #898A7E; background: #FBFBFA; color: #20251F; }
+.estimate-start__note { margin-top: var(--s-8); font-size: var(--t-14); color: #55584C; }
+.hero__photo { position: relative; margin: 0; padding: 6px; background: linear-gradient(145deg, #D4A93790, #BFC5B720 50%, #E8C55A60); border-radius: 32px; }
+.hero__photo .frame { border-radius: 26px; overflow: hidden; aspect-ratio: 4/5; background: #394033; }
+.hero__photo img { width: 100%; height: 100%; object-fit: cover; object-position: 59% 50%; }
+.photo-stamp { position: absolute; left: 24px; top: 24px; padding: 12px 16px; border-radius: 14px; color: #262A1E; background: linear-gradient(145deg, #FFF1B8, #E8C55A 45%, #D4A937); box-shadow: inset 0 1px 0 #FFF8D8, 0 10px 32px -16px #D4A93790; font-size: var(--t-14); letter-spacing: .03em; font-weight: 700; line-height: 1.4; }
+.photo-stamp span { display: block; font-size: .55rem; letter-spacing: .1em; font-weight: 700; margin-top: 4px; }
+.cap { display: grid; grid-template-columns: 1fr auto; gap: var(--s-16); align-items: center; padding: var(--s-16) var(--s-12); font-size: var(--t-14); color: #D7D8CB; }
+.cap a { display: inline-flex; align-items: center; min-height: 44px; font-weight: 700; color: #E8C55A; text-decoration: none; }
+.trade-ribbon { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--s-16); padding-block: var(--s-24); margin-top: var(--s-32); border-block: 1px solid #D4A93745; color: #E8C55A; font-size: var(--t-14); font-weight: 600; }
+.trade-ribbon span { display: flex; align-items: center; gap: var(--s-12); }
+.trade-ribbon span::before { content: ''; width: 5px; height: 5px; background: #D4A937; transform: rotate(45deg); }
+.core, .index, .work, .steps, .area, .faq, .field-notes { padding-block: var(--s-64); }
+.core__intro, .work__head { display: grid; gap: var(--s-16); }
+.core__intro > .eyebrow, .work__head > .eyebrow { grid-column: 1/-1; }
+.core__grid { display: grid; gap: var(--s-48); margin-top: var(--s-32); }
+.trade figure, .shot { margin: 0; }
+.trade .frame, .shot .frame { overflow: hidden; aspect-ratio: 4/3; border-radius: 20px; background: #303B30; box-shadow: 0 0 0 5px #D4A93715, 0 0 0 6px #D4A93735; }
+.trade img, .shot img { width: 100%; height: 100%; object-fit: cover; transition: transform 900ms var(--ease-out); }
+.trade:hover img, .shot:hover img { transform: scale(1.025); }
+.trade figcaption { margin-top: var(--s-16); font-size: var(--t-14); color: #BFC5B7; }
+.trade h3 { margin-top: var(--s-16); font-size: var(--t-24); }
+.trade p { margin-top: var(--s-12); color: #C9CFBF; }
+.textlink { display: inline-flex; align-items: center; gap: var(--s-16); min-height: 48px; margin-top: var(--s-16); color: #E8C55A; font-weight: 700; text-decoration: none; }
+.textlink__nub, .row__nub { display: grid; place-items: center; width: 40px; height: 40px; border-radius: var(--r-pill); background: linear-gradient(145deg, #E8C55A, #D4A937); color: #20251F; box-shadow: inset 0 1px 0 #FFF1B8; transition: transform var(--d-med) var(--ease-out); }
+.textlink__nub svg, .row__nub svg { width: 18px; height: 18px; }
+.textlink:hover .textlink__nub, .row:hover .row__nub { transform: translateX(3px); }
+.index { background: #1E2821; border-block: 1px solid #D4A93725; }
 .index__grid { display: grid; gap: var(--s-32); }
 .index__aside p { margin-top: var(--s-16); }
-.index__group + .index__group { margin-top: var(--s-48); }
-.index__group h3 { padding-bottom: var(--s-12); }
-.row {
-  position: relative; isolation: isolate;
-  display: grid; grid-template-columns: 1fr auto; align-items: center; gap: var(--s-4) var(--s-16);
-  padding: var(--s-16) 0; border-top: 1px solid var(--c-hair);
-  text-decoration: none;
-}
-.row:last-child { border-bottom: 1px solid var(--c-hair); }
-.row::before { content: ""; position: absolute; inset: 0 calc(var(--s-12) * -1); z-index: -1; border-radius: var(--r-8); background: rgba(38,38,38,.05); opacity: 0; transition: opacity var(--d-fast) var(--ease-out); }
-.row:hover::before { opacity: 1; }
-.row__name { font-weight: 700; font-stretch: 106%; font-size: var(--t-18); }
-.row__desc { grid-column: 1; font-size: var(--t-14); color: var(--c-ink-2); }
-.row__nub { grid-column: 2; grid-row: 1 / span 2; display: grid; place-items: center; width: 36px; height: 36px; border-radius: var(--r-4); box-shadow: inset 0 0 0 1.5px var(--c-ink); transition: transform var(--d-med) var(--ease-out); }
-.row__nub svg { width: 16px; height: 16px; }
-.row:hover .row__nub { transform: translateX(3px); }
-@media (min-width: 900px) {
-  .index { padding-block: var(--s-96); }
-  .index__grid { grid-template-columns: 4fr 8fr; gap: var(--s-64); }
-  .index__aside { position: sticky; top: 104px; align-self: start; }
-  .index__groups { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-48) var(--s-48); }
-  .index__group + .index__group { margin-top: 0; }
-  .index__group--wide { grid-column: 1 / -1; }
-  .index__group--wide ul { display: grid; grid-template-columns: 1fr 1fr; column-gap: var(--s-48); }
-  .index__group--wide .row:nth-last-child(2) { border-bottom: 1px solid var(--c-hair); }
-}
-
-/* ---- Work ---- */
-.work { padding-block: var(--s-64); border-top: 1px solid var(--c-hair); }
-.work__head { display: grid; gap: var(--s-12); }
-.work__strip {
-  display: grid; grid-auto-flow: column; grid-auto-columns: 82%; gap: var(--s-16);
-  margin-top: var(--s-32); padding-inline: var(--gutter); margin-inline: calc(var(--gutter) * -1);
-  overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: var(--gutter);
-  scrollbar-width: none; overscroll-behavior-x: contain;
-}
-.work__strip::-webkit-scrollbar { display: none; }
-.shot { margin: 0; scroll-snap-align: start; }
-.shot .frame { aspect-ratio: 4 / 3; overflow: hidden; border-radius: var(--r-8); background: #B9A99A; }
-.shot img { width: 100%; height: 100%; object-fit: cover; transition: transform 900ms var(--ease-out); }
-.shot:hover img { transform: scale(1.03); }
-.shot figcaption { margin-top: var(--s-8); display: grid; gap: var(--s-4); justify-items: start; }
-.shot .what { font-weight: 600; font-size: var(--t-16); }
-@media (min-width: 900px) {
-  .work { padding-block: var(--s-96); }
-  .work__head { grid-template-columns: 7fr 5fr; align-items: end; gap: var(--s-48); }
-  .work__strip {
-    grid-auto-flow: row; grid-auto-columns: auto; overflow: visible; margin-inline: 0; padding-inline: 0;
-    grid-template-columns: repeat(6, 1fr);
-    grid-template-areas: "a a a a b b" "a a a a c c" "d d e e f f";
-    gap: var(--s-24);
-  }
-  .shot:nth-child(1) { grid-area: a; } .shot:nth-child(2) { grid-area: b; } .shot:nth-child(3) { grid-area: c; }
-  .shot:nth-child(4) { grid-area: d; } .shot:nth-child(5) { grid-area: e; } .shot:nth-child(6) { grid-area: f; }
-  .shot:nth-child(1) { display: flex; flex-direction: column; }
-  .shot:nth-child(1) .frame { aspect-ratio: auto; flex: 1; min-height: 0; }
-}
-
-/* ---- Steps (a real sequence, so numbers are earned) ---- */
-.steps { padding-block: var(--s-64); background: var(--c-pour); }
-.steps ol { display: grid; gap: var(--s-32); margin-top: var(--s-32); counter-reset: step; }
-.steps li { position: relative; padding-left: 64px; }
-.steps li::before {
-  counter-increment: step; content: counter(step);
-  position: absolute; left: 0; top: -6px;
-  font-size: var(--t-48); font-weight: 300; font-stretch: 125%; line-height: 1; color: var(--c-ink);
-  font-variant-numeric: tabular-nums;
-}
-.steps h3 { font-size: var(--t-18); font-weight: 700; font-stretch: 108%; }
-.steps p { margin-top: var(--s-4); color: var(--c-ink-2); }
-@media (min-width: 900px) {
-  .steps { padding-block: var(--s-96); }
-  .steps ol { grid-template-columns: repeat(4, 1fr); gap: var(--s-32); margin-top: var(--s-48); }
-  .steps li { padding-left: 0; padding-top: 72px; border-top: 2px solid var(--c-ink); }
-  .steps li::before { top: var(--s-16); }
-}
-
-/* ---- Service area: two banks of the river ---- */
-.area { padding-block: var(--s-64); }
-.area__banks { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-24); margin-top: var(--s-32); }
-.bank h3 { font-size: var(--t-16); font-weight: 700; font-stretch: 112%; letter-spacing: .01em; color: var(--c-ink-2); margin-bottom: var(--s-12); }
+.index__group + .index__group { margin-top: var(--s-32); }
+.index__group h3 { padding-bottom: var(--s-12); color: #E8C55A; }
+.row { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 4px 16px; align-items: center; padding: var(--s-16) 0; border-top: 1px solid #BFC5B730; text-decoration: none; }
+.row__name { font-size: var(--t-18); font-weight: 600; }
+.row__desc { grid-column: 1; color: #BFC5B7; font-size: var(--t-14); }
+.row__nub { grid-column: 2; grid-row: 1/span 2; }
+.work__strip { margin-top: var(--s-32); display: grid; gap: var(--s-32); }
+.shot figcaption { margin-top: var(--s-16); font-weight: 600; color: #D7D8CB; }
+.steps { background: #1E2821; border-block: 1px solid #D4A93725; }
+.steps ol { counter-reset: step; display: grid; gap: var(--s-32); margin-top: var(--s-32); }
+.steps li { display: grid; grid-template-columns: 44px 1fr; gap: var(--s-8) var(--s-16); }
+.steps li::before { counter-increment: step; content: '0' counter(step); grid-row: 1/span 2; color: #E8C55A; font-size: var(--t-24); font-weight: 400; font-variant-numeric: tabular-nums; }
+.steps h3 { font-size: var(--t-18); font-weight: 600; }
+.steps p { color: #BFC5B7; }
+.area__banks { display: grid; gap: var(--s-32); margin-top: var(--s-32); }
+.bank h3 { color: #E8C55A; margin-bottom: var(--s-16); }
 .bank ul { display: flex; flex-wrap: wrap; gap: var(--s-8); }
-.bank li { padding: 6px 12px; border-radius: var(--r-4); background: rgba(38,38,38,.06); font-weight: 500; }
-.bank li.home { background: var(--c-ink); color: #fff; font-weight: 700; }
-.river { display: flex; align-items: center; gap: var(--s-12); color: var(--c-ink-2); font-size: var(--t-14); }
-.river svg { flex: 1 1 0; width: 0; height: 16px; min-width: 0; }
-.river span { flex: none; }
-.river__v { display: none; }
+.bank li { padding: 6px 14px; border-radius: var(--r-pill); color: #D7D8CB; border: 1px solid #BFC5B730; }
+.bank .home { background: linear-gradient(145deg, #E8C55A, #D4A937); color: #20251F; border-color: #E8C55A; font-weight: 700; box-shadow: inset 0 1px 0 #FFF1B8; }
+.river { display: none; }
 .area__note { margin-top: var(--s-24); }
-@media (min-width: 900px) {
-  .area { padding-block: var(--s-96); }
-  .area__banks { grid-template-columns: minmax(0, 1fr) 96px minmax(0, 1fr); gap: var(--s-32); align-items: stretch; }
-  .river { position: relative; display: block; min-height: 240px; }
-  .river .river__h { display: none; }
-  .river .river__v { display: block; position: absolute; top: 0; bottom: 0; left: calc(50% - 8px); width: 16px; height: 100%; }
-  .river span { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(180deg); writing-mode: vertical-rl; padding: var(--s-12) 0; background: var(--c-concrete); white-space: nowrap; }
-}
-
-/* ---- Reviews placeholder ---- */
-.reviews { padding-block: 0 var(--s-64); }
-.reviews__ph { margin-top: var(--s-24); padding: var(--s-24); border-radius: var(--r-14); border: 2px dashed var(--c-ink-2); background: rgba(255,243,201,.45); }
-.reviews__ph p + p { margin-top: var(--s-8); }
-@media (min-width: 900px) { .reviews { padding-block: 0 var(--s-96); } }
-
-/* ---- Common questions (native <details>: no JS needed to open) ---- */
-.faq { padding-block: 0 var(--s-64); }
-.faq__list { margin-top: var(--s-32); border-top: 1px solid var(--c-hair); }
-.faq details { border-bottom: 1px solid var(--c-hair); }
-.faq summary {
-  display: grid; grid-template-columns: 1fr auto; align-items: center; gap: var(--s-16);
-  min-height: 56px; padding-block: var(--s-16); cursor: pointer; list-style: none;
-  font-weight: 700; font-stretch: 106%; font-size: var(--t-18); line-height: 1.3;
-}
+.faq { border-top: 1px solid #BFC5B730; }
+.faq__grid { display: grid; gap: var(--s-32); }
+.faq details { border-bottom: 1px solid #BFC5B730; }
+.faq summary { list-style: none; display: flex; justify-content: space-between; align-items: center; gap: var(--s-16); min-height: 64px; padding-block: var(--s-16); font-weight: 600; cursor: pointer; }
 .faq summary::-webkit-details-marker { display: none; }
-.faq__nub { display: grid; place-items: center; width: 32px; height: 32px; border-radius: var(--r-4); box-shadow: inset 0 0 0 1.5px var(--c-ink); transition: transform var(--d-med) var(--ease-out); }
+.faq__nub { display: grid; place-items: center; width: 32px; height: 32px; flex: none; border-radius: 50%; background: #D4A937; color: #20251F; transition: transform var(--d-med) var(--ease-out); }
 .faq__nub svg { width: 16px; height: 16px; transform: rotate(90deg); }
 .faq details[open] .faq__nub { transform: rotate(180deg); }
-.faq__a { padding-bottom: var(--s-24); color: var(--c-ink-2); }
-.faq details[open] .faq__a { animation: fade 260ms var(--ease-out) both; }
-.faq__a p + p, .faq__a p + div { margin-top: var(--s-12); }
-.pp-slot { min-height: 22px; }
+.faq__a { padding-bottom: var(--s-24); color: #BFC5B7; }
+.faq__a .pp-slot { background: #F4F0E8; color-scheme: light; padding: var(--s-16); border-radius: 12px; margin-top: var(--s-16); min-height: 54px; }
+.field-notes { background: #1E2821; border-top: 1px solid #D4A93735; }
+.field-notes__grid { display: grid; gap: var(--s-32); }
+.field-notes h2 { margin-block: var(--s-16); }
+.field-notes__links { display: grid; gap: var(--s-12); }
+.social-story { display: flex; justify-content: space-between; align-items: center; gap: var(--s-16); min-height: 80px; padding: var(--s-16) var(--s-24); border-radius: 18px; border: 1px solid #D4A93750; box-shadow: inset 0 1px 0 #FFFFFF0C; background: linear-gradient(135deg, #303B2A, #1C221E); text-decoration: none; }
+.social-story > span:first-child { font-size: var(--t-24); font-weight: 600; }
+.social-story > span:last-child { font-size: var(--t-14); color: #E8C55A; }
+@media (min-width: 600px) { .estimate-start__row { grid-template-columns: minmax(0,1fr) auto; } .work__strip { grid-template-columns: 1fr 1fr; } }
 @media (min-width: 900px) {
-  .faq { padding-block: 0 var(--s-96); }
-  .faq__grid { display: grid; grid-template-columns: 4fr 8fr; gap: var(--s-64); }
-  .faq__list { margin-top: 0; }
+  .hero { padding-top: var(--s-32); }
+  .hero__grid { grid-template-columns: 1.05fr 1fr; gap: var(--s-48); }
+  .hero__photo .frame { aspect-ratio: 4/5; min-height: 570px; }
+  .trade-ribbon { margin-top: var(--s-48); padding-block: var(--s-32); font-size: var(--t-16); }
+  .core, .index, .work, .steps, .area, .faq, .field-notes { padding-block: var(--s-96); }
+  .core__intro, .work__head { grid-template-columns: 1.15fr 1fr; column-gap: var(--s-64); align-items: end; }
+  .core__grid { grid-template-columns: 1.15fr 1fr; gap: var(--s-64); margin-top: var(--s-48); }
+  .trade--b { margin-top: var(--s-64); }
+  .index__grid { grid-template-columns: 1fr 1.8fr; gap: var(--s-64); }
+  .index__aside { position: sticky; top: 110px; align-self: start; }
+  .index__groups { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-48); }
+  .index__group + .index__group { margin-top: 0; }
+  .index__group--wide { grid-column: 1/-1; }
+  .index__group--wide ul { display: grid; grid-template-columns: 1fr 1fr; column-gap: var(--s-48); }
+  .work__strip { grid-template-columns: 1.4fr 1fr; align-items: start; gap: var(--s-48) var(--s-32); }
+  .shot:nth-child(even) { margin-top: var(--s-64); }
+  .shot:first-child .frame { aspect-ratio: 5/4; }
+  .steps ol { grid-template-columns: 1fr 1fr; gap: var(--s-48) var(--s-64); }
+  .area__banks { grid-template-columns: 1fr 1fr; gap: var(--s-64); }
+  .faq__grid { grid-template-columns: 1fr 1.8fr; gap: var(--s-64); }
+  .field-notes__grid { grid-template-columns: 1.15fr 1fr; gap: var(--s-64); }
 }
+@keyframes enter { from { opacity: .3; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: no-preference) { html.motion-ok .hero__text { animation: enter 700ms var(--ease-out) both; } html.motion-ok .hero__photo { animation: enter 950ms var(--ease-out) both; } }
+@media (max-width: 599px) { .hero__photo .frame { aspect-ratio: 4/3; } .hero__h1 { font-size: var(--t-48); } .cap { grid-template-columns: 1fr; gap: 0; } .social-story { padding-inline: var(--s-16); } }
 </style>
 <script type="application/ld+json">
 {
@@ -907,7 +860,7 @@ html.motion-ok .hero__after { animation: fade 600ms var(--ease-out) 420ms both; 
 }
 </script>
 </head>
-<body>
+<body class="page-home">
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
   <symbol id="i-phone" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" d="M5 4h3.2l1.9 4.6-2.4 1.6a11.5 11.5 0 0 0 6.1 6.1l1.6-2.4 4.6 1.9V19a2 2 0 0 1-2.1 2A16 16 0 0 1 3 6.1 2 2 0 0 1 5 4z"/></symbol>
   <symbol id="i-chev" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" d="M9.5 6l6 6-6 6"/></symbol>
@@ -942,39 +895,48 @@ html.motion-ok .hero__after { animation: fade 600ms var(--ease-out) 420ms both; 
 </header>
 
 <main id="main">
-  <!-- ======================= HERO ======================= -->
-  <!-- Old-site fragment aliases are kept so published links still land somewhere honest:
-       #home = hero, #about = the "who FPC is" lead, #projects/#testimonials/#featured = Recent work
-       (no testimonials are shown, so #testimonials lands on real job photos, never on reviews). -->
   <section class="hero" id="home" aria-labelledby="h1">
     <div class="wrap hero__grid">
       <div class="hero__text">
-        <!-- Locked slogan: English, verbatim, on every language (operator decision 2026-10-18). -->
-        <h1 id="h1" class="display hero__h1" lang="en">
-          <span class="clause clause--1"><span>No job too small, no dream too big</span></span>
-          <span class="clause clause--2"><span>— FPC Construction for all your needs.</span></span>
-        </h1>
-        <div class="grade" aria-hidden="true"></div>
-        <div class="hero__after">
-          <p class="lead" id="about">Sistemas sépticos, drenaje y trabajos de terreno para casas y terrenos en toda la zona del CSRA. FPC empezó con maquinaria pesada, y los sistemas sépticos y el drenaje siguen siendo el corazón del negocio.</p>
-          <div class="hero__actions" data-bar-sentinel>
-            <a class="btn btn--red" href="/es/estimado/"><span>Pida un estimado gratis</span><span class="btn__nub" aria-hidden="true"><svg><use href="#i-chev"/></svg></span></a>
-            <a class="btn btn--line" href="tel:+18038849305"><span>Llame al <span class="num">(803) 884-9305</span></span><span class="btn__nub" aria-hidden="true"><svg><use href="#i-phone"/></svg></span></a>
+        <p class="eyebrow"><span class="gold-mark" aria-hidden="true"></span>North Augusta · Augusta · Aiken</p>
+        <h1 id="h1" class="display hero__h1">Sépticos, drenaje<br><span>y terreno.</span></h1>
+        <p class="lead" id="about">Para su casa, su terreno y su próximo proyecto. Filemon y el equipo de FPC hacen el trabajo de terreno, el concreto y los acabados en toda la zona del CSRA.</p>
+        <p class="hero__slogan" lang="en">No job too small, no dream too big — FPC Construction for all your needs.</p>
+        <form class="estimate-start" action="/es/estimado/" method="get" aria-labelledby="start-h" data-bar-sentinel>
+          <div class="estimate-start__heading"><h2 id="start-h">¿Qué proyecto tiene?</h2><span class="gold-label">Estimado gratis</span></div>
+          <label for="start-type">Elija su proyecto</label>
+          <div class="estimate-start__row">
+            <select id="start-type" name="type" required>
+              <option value="" disabled selected>Elija su proyecto</option>
+              <option value="septic-systems">Sistemas sépticos</option>
+              <option value="drainage-and-site-work">Drenaje y terreno</option>
+              <option value="concrete">Concreto</option>
+              <option value="other">Otro trabajo</option>
+            </select>
+            <button class="btn btn--red" type="submit"><span>Empezar</span><span class="btn__nub" aria-hidden="true"><svg><use href="#i-chev"/></svg></span></button>
           </div>
-          <p class="hero__fil"><span class="fil-dot" aria-hidden="true"></span><span><b>JJ, nuestro asistente virtual con inteligencia artificial,</b> contesta el teléfono las 24 horas, en inglés o en español. Después Filemon le da seguimiento.</span></p>
+          <p class="estimate-start__note">Siguiente: cuéntenos los detalles. Este paso no envía una solicitud.</p>
+        </form>
+        <div class="hero__actions">
+          <a class="hero__call" href="tel:+18038849305"><svg class="icon" aria-hidden="true"><use href="#i-phone"/></svg><span class="num">(803) 884-9305</span></a>
+
         </div>
+        <p class="hero__fil"><b>JJ, nuestro asistente virtual con inteligencia artificial,</b> contesta el teléfono las 24 horas, en inglés o en español. Después Filemon le da seguimiento.</p>
       </div>
-      <figure class="hero__photo" style="margin-block:0">
-        <div class="frame"><picture><source type="image/avif" srcset="/assets/img/gallery-19-480.avif 480w, /assets/img/gallery-19-800.avif 800w, /assets/img/gallery-19-1200.avif 1200w" sizes="(min-width: 1280px) 480px, (min-width: 900px) 38vw, 100vw"><img src="/assets/img/gallery-19-800.webp" srcset="/assets/img/gallery-19-480.webp 480w, /assets/img/gallery-19-800.webp 800w, /assets/img/gallery-19-1200.webp 1200w" sizes="(min-width: 1280px) 480px, (min-width: 900px) 38vw, 100vw" width="1200" height="900" fetchpriority="high" decoding="async" alt="Una excavadora anaranjada estacionada sobre una losa de concreto recién colada, con un trabajador al lado"></picture></div>
-        <figcaption class="cap"><span>Colado de losa con la excavadora en la obra</span></figcaption>
+      <figure class="hero__photo">
+        <div class="frame"><picture><source type="image/avif" srcset="/assets/img/gallery-19-480.avif 480w, /assets/img/gallery-19-800.avif 800w, /assets/img/gallery-19-1200.avif 1200w" sizes="(min-width: 1280px) 580px, (min-width: 900px) 44vw, calc(100vw - 40px)"><img src="/assets/img/gallery-19-800.webp" srcset="/assets/img/gallery-19-480.webp 480w, /assets/img/gallery-19-800.webp 800w, /assets/img/gallery-19-1200.webp 1200w" sizes="(min-width: 1280px) 580px, (min-width: 900px) 44vw, calc(100vw - 40px)" width="1200" height="900" fetchpriority="high" decoding="async" alt="Una excavadora anaranjada estacionada sobre una losa de concreto recién colada, con un trabajador al lado"></picture></div>
+        <div class="photo-stamp">En la obra</div>
+        <figcaption class="cap"><span>Colado de losa con la excavadora en la obra</span><a href="#work">Ver los trabajos <span aria-hidden="true">↘</span></a></figcaption>
       </figure>
     </div>
+    <div class="wrap"><div class="trade-ribbon" aria-label="Servicios de FPC"><span>Residencial y comercial</span><span>Contratos del condado y del estado</span><span>English y español</span></div></div>
   </section>
 
   <!-- ======================= CORE TRADES (clay band) ======================= -->
   <section class="core cut-both on-dark" id="services" aria-labelledby="core-h">
     <div class="wrap">
       <div class="core__intro">
+        <p class="eyebrow">01 / Trabajo de terreno</p>
         <h2 id="core-h" class="h2">Lo primero: sistemas sépticos y drenaje.</h2>
         <p class="lead muted">Es el corazón de lo que hace FPC. Si el tanque se regresa o el patio no drena, llame primero y Filemon va a revisarlo.</p>
       </div>
@@ -986,7 +948,7 @@ html.motion-ok .hero__after { animation: fade 600ms var(--ease-out) 420ms both; 
           </figure>
           <h3 class="h3">Sistemas sépticos</h3>
           <p>Tanques nuevos, reparaciones, bombeo y reemplazo del campo de drenaje, para casas y negocios.</p>
-          <a class="textlink" href="/es/estimado/?type=septic-systems"><span class="textlink__label">Estimado para sistema séptico</span><span class="textlink__nub" aria-hidden="true"><svg><use href="#i-chev"/></svg></span></a>
+          <a class="textlink" href="/es/servicios/sistemas-septicos/"><span class="textlink__label">Estimado para sistema séptico</span><span class="textlink__nub" aria-hidden="true"><svg><use href="#i-chev"/></svg></span></a>
         </article>
         <article class="trade trade--b" data-reveal>
           <figure>
@@ -995,7 +957,7 @@ html.motion-ok .hero__after { animation: fade 600ms var(--ease-out) 420ms both; 
           </figure>
           <h3 class="h3">Drenaje y control de agua</h3>
           <p>Agua estancada, un patio que nunca se seca, erosión. Drenes franceses, agua de lluvia y drenaje del terreno, con nuestro propio equipo.</p>
-          <a class="textlink" href="/es/estimado/?type=drainage-and-site-work"><span class="textlink__label">Estimado para drenaje</span><span class="textlink__nub" aria-hidden="true"><svg><use href="#i-chev"/></svg></span></a>
+          <a class="textlink" href="/es/servicios/drenaje-terreno/"><span class="textlink__label">Estimado para drenaje</span><span class="textlink__nub" aria-hidden="true"><svg><use href="#i-chev"/></svg></span></a>
         </article>
       </div>
     </div>
@@ -1022,7 +984,7 @@ html.motion-ok .hero__after { animation: fade 600ms var(--ease-out) 420ms both; 
         <div class="index__group">
           <h3 class="h3">Concreto y pavimento</h3>
           <ul>
-            <li><a class="row" href="/es/estimado/?type=concrete"><span class="row__name">Concreto</span><span class="row__desc">Entradas para carro, patios, banquetas, losas</span><span class="row__nub" aria-hidden="true"><svg><use href="#i-chev"/></svg></span></a></li>
+            <li><a class="row" href="/es/servicios/concreto/"><span class="row__name">Concreto</span><span class="row__desc">Entradas para carro, patios, banquetas, losas</span><span class="row__nub" aria-hidden="true"><svg><use href="#i-chev"/></svg></span></a></li>
             <li><a class="row" href="/es/estimado/?type=asphalt-and-road-work"><span class="row__name">Pavimento de asfalto</span><span class="row__desc">Filemon dirige el trabajo y trae al equipo de pavimentación</span><span class="row__nub" aria-hidden="true"><svg><use href="#i-chev"/></svg></span></a></li>
           </ul>
         </div>
@@ -1047,10 +1009,11 @@ html.motion-ok .hero__after { animation: fade 600ms var(--ease-out) 420ms both; 
     <span id="projects" class="vh"></span><span id="testimonials" class="vh"></span><span id="featured" class="vh"></span>
     <div class="wrap">
       <div class="work__head">
-        <h2 id="work-h" class="h2">Trabajos recientes</h2>
-        <p class="muted">Cada foto de esta página es un trabajo de FPC.</p>
+        <p class="eyebrow">02 / Desde la obra</p>
+        <h2 id="work-h" class="h2">El trabajo habla.</h2>
+        <p class="muted">Líneas sépticas, drenaje, concreto y preparación de terreno. Vea los proyectos de FPC, desde la primera excavación hasta el acabado.</p>
       </div>
-      <div class="work__strip" data-reveal>
+      <div class="work__strip">
         <figure class="shot"><div class="frame"><picture><source type="image/avif" srcset="/assets/img/gallery-3-480.avif 480w, /assets/img/gallery-3-800.avif 800w, /assets/img/gallery-3-1200.avif 1200w" sizes="(min-width: 1280px) 784px, (min-width: 900px) 62vw, 82vw"><img src="/assets/img/gallery-3-800.webp" srcset="/assets/img/gallery-3-480.webp 480w, /assets/img/gallery-3-800.webp 800w, /assets/img/gallery-3-1200.webp 1200w" sizes="(min-width: 1280px) 784px, (min-width: 900px) 62vw, 82vw" width="1200" height="900" loading="lazy" decoding="async" alt="Camión de concreto colando una losa grande en un terreno limpio"></picture></div><figcaption><span class="what">Camión de concreto colando una losa</span></figcaption></figure>
         <figure class="shot"><div class="frame"><picture><source type="image/avif" srcset="/assets/img/gallery-8-480.avif 480w, /assets/img/gallery-8-800.avif 800w, /assets/img/gallery-8-1200.avif 1200w" sizes="(min-width: 1280px) 384px, (min-width: 900px) 31vw, 82vw"><img src="/assets/img/gallery-8-800.webp" srcset="/assets/img/gallery-8-480.webp 480w, /assets/img/gallery-8-800.webp 800w, /assets/img/gallery-8-1200.webp 1200w" sizes="(min-width: 1280px) 384px, (min-width: 900px) 31vw, 82vw" width="1200" height="900" loading="lazy" decoding="async" alt="Tanque séptico nuevo de concreto colocado en el suelo junto a una casa"></picture></div><figcaption><span class="what">Tanque séptico nuevo junto a la casa</span></figcaption></figure>
         <figure class="shot"><div class="frame"><picture><source type="image/avif" srcset="/assets/img/project-1-480.avif 480w, /assets/img/project-1-800.avif 800w" sizes="(min-width: 1280px) 384px, (min-width: 900px) 31vw, 82vw"><img src="/assets/img/project-1-800.webp" srcset="/assets/img/project-1-480.webp 480w, /assets/img/project-1-800.webp 800w" sizes="(min-width: 1280px) 384px, (min-width: 900px) 31vw, 82vw" width="800" height="600" loading="lazy" decoding="async" alt="Entrada larga de concreto con franjas de ladrillo rojo"></picture></div><figcaption><span class="what">Entrada de concreto con franjas de ladrillo</span></figcaption></figure>
@@ -1118,7 +1081,12 @@ html.motion-ok .hero__after { animation: fade 600ms var(--ease-out) 420ms both; 
     </div>
   </section>
 
-
+  <section class="field-notes" aria-labelledby="field-h">
+    <div class="wrap field-notes__grid">
+      <div><p class="eyebrow">Más de FPC</p><h2 id="field-h" class="h2">Vea cómo avanza el trabajo.</h2><p class="lead muted">Siga a FPC para ver fotos y novedades de las obras. ¿Tiene un proyecto parecido? Cuéntenos lo que quiere hacer.</p></div>
+      <div class="field-notes__links"><a class="social-story" href="https://www.instagram.com/fpcconstructions" rel="noopener"><span>Instagram</span><span>Visitar FPC <span aria-hidden="true">↗</span></span></a><a class="social-story" href="https://www.facebook.com/p/FPC-Construction-LLC-100066373038903/" rel="noopener"><span>Facebook</span><span>Visitar FPC <span aria-hidden="true">↗</span></span></a></div>
+    </div>
+  </section>
 </main>
 
 <footer class="site-footer on-dark cut-top" id="contact">
@@ -1139,6 +1107,8 @@ html.motion-ok .hero__after { animation: fade 600ms var(--ease-out) 420ms both; 
       <div class="social">
         <a href="https://www.facebook.com/p/FPC-Construction-LLC-100066373038903/" aria-label="FPC en Facebook" rel="noopener"><svg aria-hidden="true"><use href="#i-fb"/></svg></a>
         <a href="https://www.instagram.com/fpcconstructions" aria-label="FPC en Instagram" rel="noopener"><svg aria-hidden="true"><use href="#i-ig"/></svg></a>
+
+
       </div>
     </div>
     <div>
