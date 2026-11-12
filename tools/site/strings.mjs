@@ -314,3 +314,7 @@ export const estimate = {
 export const FORM_RUNTIME_KEYS = ['err.first', 'err.last', 'err.phone.req', 'err.phone.bad', 'err.email', 'sum.h', 'fail.h', 'fail.p', 'fail.retry',
   'ok.h', 'ok.p', 'ok.ref', 'ok.sooner', 'ok.home', 'e.submit', 'e.sending',
   'ok.sent', 'ok.s.name', 'ok.s.phone', 'ok.s.email', 'ok.s.addr', 'ok.s.type', 'ok.s.best', 'ok.s.lang', 'ok.s.details'];
+
+// Fail-closed estimate fallback; no online receipt is implied.
+Object.assign(common.en, { 'e.nojs': 'Online requests need JavaScript. Please call FPC to discuss your project. Nothing has been sent.' });
+Object.assign(common.es, { 'e.nojs': 'Las solicitudes en línea necesitan JavaScript. Llame a FPC para hablar de su proyecto. No se ha enviado nada.' });
