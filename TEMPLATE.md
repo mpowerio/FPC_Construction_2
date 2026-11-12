@@ -62,7 +62,7 @@ File: `assets/css/styles.css` (lines 10-25)
 |---------------|----------|-------------|
 | `FPC Construction LLC` | Title, header, footer | Company name |
 | `North Augusta, SC 29860` | Contact section, footer | Address |
-| `(803) 640-2595` | Nav CTA, contact, footer | Phone number |
+| `(803) 884-9305` | Nav CTA, contact, footer | Public phone (JJ line) |
 | `info@fpcconstructions.com` | Contact section, footer | Email |
 | `Mon-Fri: 7AM - 6PM` | Contact section, footer | Business hours |
 | `fpcconstructions.com` | Meta tags | Domain |
@@ -72,7 +72,7 @@ File: `assets/css/styles.css` (lines 10-25)
 Find: FPC Construction
 Replace: [Client Name]
 
-Find: (803) 640-2595
+Find: (803) 884-9305
 Replace: [Client Phone]
 
 Find: info@fpcconstructions.com
