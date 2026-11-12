@@ -121,14 +121,14 @@
     });
   }
 
-  // ---------- Fil voice agent (ElevenLabs, ~600 KB): injected after the first interaction ----------
+  // ---------- JJ voice agent (ElevenLabs, ~600 KB): injected after the first interaction ----------
   var filLoaded = false;
   function loadFil() {
     if (filLoaded) return;
     filLoaded = true;
     ['pointerdown', 'keydown', 'touchstart', 'scroll'].forEach(function (ev) { window.removeEventListener(ev, loadFil, true); });
     var el = document.createElement('elevenlabs-convai');
-    el.setAttribute('agent-id', 'agent_5801kehtxvkzenwvpc48t3sr5n56');
+    el.setAttribute('agent-id', 'agent_5901m5pm1yqefbmafzk9qhw20hrc');
     // Language follows the page. The widget always sends agent.language at call start
     // (default "en"); the agent's published config lists "en" and "es" as supported language
     // overrides with an "es" preset, so "es" is an allowed value. override-language (rather
@@ -137,8 +137,8 @@
     el.setAttribute('override-language', lang);
     // Every visible control string, in the page language (the widget's documented *-text attributes).
     var FIL_TEXT = {
-      en: { 'expand-text': 'Chat with Fil', 'action-text': 'Questions? Ask Fil', 'start-call-text': 'Start a call', 'end-call-text': 'End call', 'listening-text': 'Listening', 'speaking-text': 'Talk to interrupt' },
-      es: { 'expand-text': 'Hablar con Fil', 'action-text': '¿Preguntas? Pregúntele a Fil', 'start-call-text': 'Iniciar llamada', 'end-call-text': 'Colgar', 'listening-text': 'Escuchando', 'speaking-text': 'Hable para interrumpir' }
+      en: { 'expand-text': 'Chat with JJ', 'action-text': 'Questions? Ask JJ', 'start-call-text': 'Start a call', 'end-call-text': 'End call', 'listening-text': 'Listening', 'speaking-text': 'Talk to interrupt' },
+      es: { 'expand-text': 'Hablar con JJ', 'action-text': '¿Preguntas? Pregúntele a JJ', 'start-call-text': 'Iniciar llamada', 'end-call-text': 'Colgar', 'listening-text': 'Escuchando', 'speaking-text': 'Hable para interrumpir' }
     }[lang];
     Object.keys(FIL_TEXT).forEach(function (k) { el.setAttribute(k, FIL_TEXT[k]); });
     // Orb in FPC red and yellow instead of the vendor blue/green. Button and panel colors are
