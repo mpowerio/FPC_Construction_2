@@ -2,9 +2,7 @@
 <html lang="{{v.lang}}">
 <head>
 {{> head}}
-<style>
-{{v.css}}
-</style>
+{{v.inlineCss}}
 {{v.jsonld}}
 </head>
 <body class="page-home">
@@ -13,190 +11,158 @@
 
 <main id="main">
   <section class="hero" id="home" aria-labelledby="h1">
-    <div class="wrap hero__grid">
-      <div class="hero__text">
-        <p class="eyebrow"><span class="gold-mark" aria-hidden="true"></span>{{t.hero.eyebrow}}</p>
-        <h1 id="h1" class="display hero__h1">{{t.hero.heading}}</h1>
-        <p class="lead" id="about">{{t.hero.intro}}</p>
-        <p class="hero__slogan" lang="en">No job too small, no dream too big — FPC Construction for all your needs.</p>
-        {{v.reviewSummary}}
-        <form class="estimate-start" action="{{v.estimate}}" method="get" aria-labelledby="start-h" data-bar-sentinel>
-          <div class="estimate-start__heading"><h2 id="start-h">{{t.start.h}}</h2><span class="gold-label">{{t.start.free}}</span></div>
-          <label for="start-type">{{t.start.label}}</label>
-          <div class="estimate-start__row">
-            <select id="start-type" name="type" required>
-              <option value="" disabled selected>{{t.start.label}}</option>
-              <option value="septic-systems">{{t.start.septic}}</option>
-              <option value="drainage-and-site-work">{{t.start.drainage}}</option>
-              <option value="concrete">{{t.svc.concrete}}</option>
-              <option value="commercial-and-public-works">{{t.core.public.h}}</option>
-              <option value="other">{{t.start.other}}</option>
-            </select>
-            <button class="btn btn--red" type="submit"><span>{{t.start.cta}}</span><span class="btn__nub" aria-hidden="true"><svg><use href="#i-chev"/></svg></span></button>
+    <div class="wrap">
+      <div class="hero__grid">
+        <div class="hero__text" data-bar-sentinel>
+          <p class="label"><span class="label__mark" aria-hidden="true"></span>{{t.hero.eyebrow}}</p>
+          <h1 id="h1" class="display">{{v.heading}}</h1>
+          <p class="lead" id="about">{{t.hero.intro}}</p>
+          {{v.reviewSummary}}
+          <form class="starter panel" action="{{v.estimate}}" method="get" aria-labelledby="start-h">
+            <div class="starter__head"><span class="sign sign--gold">{{t.start.free}}</span><h2 id="start-h">{{t.start.h}}</h2></div>
+            <div class="field">
+              <label for="start-type">{{t.start.label}}</label>
+              <div class="starter__row">
+                <select class="control" id="start-type" name="type" required>
+                  <option value="" disabled selected>{{t.start.label}}</option>
+                  <option value="septic-systems">{{t.start.septic}}</option>
+                  <option value="concrete">{{t.svc.concrete}}</option>
+                  <option value="commercial-and-public-works">{{t.core.public.h}}</option>
+                  <option value="drainage-and-site-work">{{t.start.drainage}}</option>
+                  <option value="other">{{t.start.other}}</option>
+                </select>
+                <button class="btn btn--cta" type="submit"><span>{{t.start.cta}}</span>{{nub}}</button>
+              </div>
+              <p class="starter__note">{{t.start.note}}</p>
+            </div>
+          </form>
+          <div class="hero__actions">
+            <a class="hero__call num" href="tel:+18038849305"><svg class="icon" aria-hidden="true"><use href="#i-phone"/></svg>(803) 884-9305</a>
+            {{v.whatsappHero}}
           </div>
-          <p class="estimate-start__note">{{t.start.note}}</p>
-        </form>
-        <div class="hero__actions">
-          <a class="hero__call" href="tel:+18038849305"><svg class="icon" aria-hidden="true"><use href="#i-phone"/></svg><span class="num">(803) 884-9305</span></a>
-          {{v.whatsappHero}}
+          <p class="hero__fil">{{t.hero.fil}}</p>
+          <p class="hero__slogan" lang="en">No job too small, no dream too big — FPC Construction for all your needs.</p>
         </div>
-        <p class="hero__fil">{{t.hero.fil}}</p>
+        <figure class="hero__photo bezel">
+          <div class="frame">{{img.hero}}</div>
+          <span class="sign sign--gold hero__stamp">{{t.hero.badge}}</span>
+          <div class="hero__inset bezel"><div class="frame">{{img.inset}}</div></div>
+          <figcaption class="caption-bar"><span>{{t.hero.cap}}</span><a href="#work">{{t.hero.seework}} <span aria-hidden="true">↘</span></a></figcaption>
+        </figure>
       </div>
-      <figure class="hero__photo">
-        <div class="frame">{{img.hero}}</div>
-        <div class="photo-stamp">{{t.hero.badge}}</div>
-        <figcaption class="cap"><span>{{t.hero.cap}}</span><a href="#work">{{t.hero.seework}} <span aria-hidden="true">↘</span></a></figcaption>
-      </figure>
+      <dl class="facts">
+        <div><dt>{{t.facts.1}}</dt><dd>{{t.facts.1v}}</dd></div>
+        <div><dt>{{t.facts.2}}</dt><dd>{{t.facts.2v}}</dd></div>
+        <div><dt>{{t.facts.3}}</dt><dd>{{t.facts.3v}}</dd></div>
+        <div><dt>{{t.facts.4}}</dt><dd>{{v.phoneFact}}</dd></div>
+      </dl>
     </div>
-    <div class="wrap"><div class="trade-ribbon" aria-label="{{t.ribbon.label}}"><span>{{t.ribbon.1}}</span><span>{{t.ribbon.2}}</span><span>{{t.ribbon.3}}</span></div></div>
   </section>
 
   {{v.reviewSection}}
 
-  <!-- ======================= CORE TRADES (clay band) ======================= -->
-  <section class="core cut-both on-dark" id="services" aria-labelledby="core-h">
+  <section class="section" id="services" aria-labelledby="lanes-h">
     <div class="wrap">
-      <div class="core__intro">
-        <p class="eyebrow">{{t.section.services}}</p>
-        <h2 id="core-h" class="h2">{{t.core.h}}</h2>
-        <p class="lead muted">{{t.core.p}}</p>
-        <a class="textlink" href="{{v.drainageUrl}}">{{t.start.drainage}}</a>
+      <div class="section-head section-head--split">
+        <p class="label">01 / {{t.section.services3}}</p>
+        <h2 id="lanes-h" class="h2">{{t.lanes.h}}</h2>
+        <p class="lead muted">{{t.lanes.p}}</p>
       </div>
-      <div class="core__grid">
-        <article class="trade trade--a" data-reveal>
-          <figure>
-            <div class="frame">{{img.septic}}</div>
-            <figcaption><span>{{t.core.s.cap}}</span></figcaption>
-          </figure>
-          <h3 class="h3">{{t.core.s.h}}</h3>
-          <p>{{t.core.s.p}}</p>
-          <a class="textlink" href="{{v.septicUrl}}"><span class="textlink__label">{{t.core.s.cta}}</span><span class="textlink__nub" aria-hidden="true"><svg><use href="#i-chev"/></svg></span></a>
+      <div class="lanes">
+        <article class="lane" data-reveal>
+          <span class="lane__no" aria-hidden="true">01</span>
+          <div class="lane__body"><h3 class="lane__name"><a href="{{v.septicUrl}}">{{t.core.s.h}}</a></h3><p class="lane__desc">{{t.core.s.p}}</p><span class="textlink lane__cta"><span class="textlink__label">{{t.core.s.cta}}</span>{{tnub}}</span></div>
+          <div class="frame">{{img.septic}}</div>
         </article>
-        <article class="trade trade--b" data-reveal>
-          <figure>
-            <div class="frame">{{img.concrete}}</div>
-            <figcaption><span>{{t.core.c.cap}}</span></figcaption>
-          </figure>
-          <h3 class="h3">{{t.core.c.h}}</h3>
-          <p>{{t.core.c.p}}</p>
-          <a class="textlink" href="{{v.concreteUrl}}"><span class="textlink__label">{{t.core.c.cta}}</span><span class="textlink__nub" aria-hidden="true"><svg><use href="#i-chev"/></svg></span></a>
+        <article class="lane" data-reveal>
+          <span class="lane__no" aria-hidden="true">02</span>
+          <div class="lane__body"><h3 class="lane__name"><a href="{{v.concreteUrl}}">{{t.core.c.h}}</a></h3><p class="lane__desc">{{t.core.c.p}}</p><span class="textlink lane__cta"><span class="textlink__label">{{t.core.c.cta}}</span>{{tnub}}</span></div>
+          <div class="frame">{{img.concrete}}</div>
         </article>
-        <article class="trade trade--public" data-reveal>
-          <div class="frame public-scope" aria-hidden="true"><svg><use href="#i-chev"/></svg></div>
-          <h3 class="h3">{{t.core.public.h}}</h3>
-          <a class="textlink" href="{{v.estimate}}"><span class="textlink__label">{{t.core.public.cta}}</span><span class="textlink__nub" aria-hidden="true"><svg><use href="#i-chev"/></svg></span></a>
+        <article class="lane" id="commercial" data-reveal>
+          <span class="lane__no" aria-hidden="true">03</span>
+          <div class="lane__body"><h3 class="lane__name"><a href="{{v.commercialLane}}">{{t.core.public.h}}</a></h3><p class="lane__desc">{{t.lane.public.p}}</p><span class="textlink lane__cta"><span class="textlink__label">{{t.core.public.cta}}</span>{{tnub}}</span></div>
+          <figure class="lane__figure"><div class="frame">{{img.public}}</div><figcaption class="lane__cap">{{t.core.d.cap}}</figcaption></figure>
         </article>
+        <p class="lanes__more"><a class="textlink" href="{{v.drainageUrl}}"><span class="textlink__label">{{t.start.drainage}}</span>{{tnub}}</a><a class="textlink" href="#index"><span class="textlink__label">{{t.lanes.all}}</span>{{tnub}}</a></p>
       </div>
     </div>
+  </section>
+
+  <section class="section section--flush" aria-labelledby="quals-h">
+    <div class="wrap">
+      <div class="quals panel" data-reveal>
+        <div class="quals__text">
+          <p class="label">02 / {{t.section.quals}}</p>
+          <h2 id="quals-h" class="h2">{{t.quals.h}}</h2>
+          <p class="lead">{{t.quals.p}}</p>
+          <a class="btn btn--gold" href="{{v.estimate}}?type=commercial-and-public-works"><span>{{t.core.public.cta}}</span>{{nub}}</a>
+        </div>
+        <div class="quals__slots">
+          <div class="slot slot--pending slot--wide"><span class="slot__label">{{t.quals.records}}</span><span class="sign"><svg aria-hidden="true"><use href="#i-alert"/></svg>{{t.pending}}</span></div>
+          <p class="quals__note">{{t.quals.note}}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="work" id="work" aria-labelledby="work-h">
+    <span id="projects" class="vh"></span><span id="testimonials" class="vh"></span><span id="featured" class="vh"></span>
+    <div class="section section--asphalt joint"><div class="wrap">
+      <div class="section-head section-head--split">
+        <p class="label">03 / {{t.section.work3}}</p>
+        <h2 id="work-h" class="h2">{{t.work.h}}</h2>
+        <p class="lead muted">{{t.work.p}}</p>
+      </div>
+      <div class="work__grid">
+        <figure class="shot shot--lead" data-reveal><div class="frame">{{img.w1}}</div><figcaption><span class="tag">{{t.tag.concrete}}</span><span>{{t.w1}}</span></figcaption></figure>
+        <figure class="shot" data-reveal><div class="frame">{{img.w2}}</div><figcaption><span class="tag">{{t.tag.septic}}</span><span>{{t.w2}}</span></figcaption></figure>
+        <figure class="shot" data-reveal><div class="frame">{{img.w4}}</div><figcaption><span class="tag">{{t.tag.septic}}</span><span>{{t.w4}}</span></figcaption></figure>
+        <figure class="shot" data-reveal><div class="frame">{{img.w3}}</div><figcaption><span class="tag">{{t.tag.concrete}}</span><span>{{t.w3}}</span></figcaption></figure>
+        <figure class="shot" data-reveal><div class="frame">{{img.w5}}</div><figcaption><span class="tag">{{t.tag.site}}</span><span>{{t.w5}}</span></figcaption></figure>
+        <figure class="shot" data-reveal><div class="frame">{{img.w6}}</div><figcaption><span class="tag">{{t.tag.concrete}}</span><span>{{t.w6}}</span></figcaption></figure>
+      </div>
+    </div></div>
   </section>
 
   {{v.treeWork}}
 
-  <!-- ======================= TRADE INDEX ======================= -->
-  <section class="index" aria-labelledby="index-h">
+  <section class="section section--asphalt joint" id="index" aria-labelledby="index-h">
     <div class="wrap index__grid">
-      <div class="index__aside">
-        <h2 id="index-h" class="h2">{{t.idx.h}}</h2>
-        <p class="muted">{{t.idx.p1}}</p>
-        <p class="muted">{{t.idx.p2}}</p>
-      </div>
+      <div class="index__aside"><p class="label">05 / {{t.nav.services}}</p><h2 id="index-h" class="h2">{{t.idx.h}}</h2><p class="muted">{{t.idx.p1}}</p></div>
       <div class="index__groups">
-        <div class="index__group">
-          <h3 class="h3">{{t.idx.g1}}</h3>
-          <ul>
-            {{row excavation excavation}}
-            {{row land-grading grading}}
-            {{row land-clearing clearing}}
-            {{row demolition demo}}
-          </ul>
-        </div>
-        <div class="index__group">
-          <h3 class="h3">{{t.idx.g2}}</h3>
-          <ul>
-            {{row concrete concrete}}
-            {{row asphalt-and-road-work asphalt}}
-          </ul>
-        </div>
-        <div class="index__group index__group--wide">
-          <h3 class="h3">{{t.idx.g3}}</h3>
-          <ul>
-            {{row roofing roofing}}
-            {{row decks decks}}
-            {{row carpentry carpentry}}
-            {{row outdoor-living outdoor}}
-            {{row fencing fencing}}
-            {{row brick-and-tile-flooring flooring}}
-            {{row electrical electrical}}
-          </ul>
-        </div>
+        <div class="index__group"><h3>{{t.idx.g1}}</h3><ul>
+          <li><a class="row" href="{{v.drainageUrl}}"><span class="row__name">{{t.core.d.h}}</span><span class="row__desc">{{t.start.drainage}}</span>{{tnub}}</a></li>
+          {{row excavation excavation}}{{row land-grading grading}}{{row land-clearing clearing}}{{row demolition demo}}</ul></div>
+        <div class="index__group"><h3>{{t.idx.g2}}</h3><ul>{{row concrete concrete}}{{row asphalt-and-road-work asphalt}}</ul></div>
+        <div class="index__group index__group--wide"><h3>{{t.idx.g3}}</h3><ul>{{row roofing roofing}}{{row decks decks}}{{row carpentry carpentry}}{{row outdoor-living outdoor}}{{row fencing fencing}}{{row brick-and-tile-flooring flooring}}{{row electrical electrical}}</ul></div>
       </div>
     </div>
   </section>
 
-  <!-- ======================= WORK ======================= -->
-  <section class="work" id="work" aria-labelledby="work-h">
-    <span id="projects" class="vh"></span><span id="testimonials" class="vh"></span><span id="featured" class="vh"></span>
-    <div class="wrap">
-      <div class="work__head">
-        <p class="eyebrow">{{t.section.work}}</p>
-        <h2 id="work-h" class="h2">{{t.work.h}}</h2>
-        <p class="muted">{{t.work.p}}</p>
-      </div>
-      <div class="work__strip">
-        <figure class="shot"><div class="frame">{{img.w1}}</div><figcaption><span class="what">{{t.w1}}</span></figcaption></figure>
-        <figure class="shot"><div class="frame">{{img.w2}}</div><figcaption><span class="what">{{t.w2}}</span></figcaption></figure>
-        <figure class="shot"><div class="frame">{{img.w3}}</div><figcaption><span class="what">{{t.w3}}</span></figcaption></figure>
-        <figure class="shot"><div class="frame">{{img.w4}}</div><figcaption><span class="what">{{t.w4}}</span></figcaption></figure>
-        <figure class="shot"><div class="frame">{{img.w5}}</div><figcaption><span class="what">{{t.w5}}</span></figcaption></figure>
-        <figure class="shot"><div class="frame">{{img.w6}}</div><figcaption><span class="what">{{t.w6}}</span></figcaption></figure>
-      </div>
-    </div>
-  </section>
+  <section class="section joint steps" aria-labelledby="steps-h"><div class="wrap">
+    <h2 id="steps-h" class="h2">{{t.steps.h}}</h2>
+    <ol class="steps__list">
+      <li data-reveal><h3>{{t.steps.1h}}</h3><p>{{t.steps.1p}}</p></li>
+      <li data-reveal><h3>{{t.steps.2h}}</h3><p>{{t.steps.2p}}</p></li>
+      <li data-reveal><h3>{{t.steps.3h}}</h3><p>{{t.steps.3p}}</p></li>
+      <li data-reveal><h3>{{t.steps.4h}}</h3><p>{{t.steps.4p}}</p></li>
+    </ol>
+  </div></section>
 
-  <!-- ======================= STEPS (a real sequence, so numbers are earned) ======================= -->
-  <section class="steps" aria-labelledby="steps-h">
+  <section class="section section--band joint area" id="area" aria-labelledby="area-h">
     <div class="wrap">
-      <h2 id="steps-h" class="h2">{{t.steps.h}}</h2>
-      <ol>
-        <li><h3>{{t.steps.1h}}</h3><p>{{t.steps.1p}}</p></li>
-        <li><h3>{{t.steps.2h}}</h3><p>{{t.steps.2p}}</p></li>
-        <li><h3>{{t.steps.3h}}</h3><p>{{t.steps.3p}}</p></li>
-        <li><h3>{{t.steps.4h}}</h3><p>{{t.steps.4p}}</p></li>
-      </ol>
-    </div>
-  </section>
-
-  <!-- ======================= AREA ======================= -->
-  <section class="area" id="area" aria-labelledby="area-h">
-    <div class="wrap">
-      <h2 id="area-h" class="h2">{{t.area.h}}</h2>
-      <p class="lead muted" style="margin-top:var(--s-16)">{{t.area.p}}</p>
+      <div class="section-head"><h2 id="area-h" class="h2">{{t.area.h}}</h2><p class="lead muted">{{t.area.p}}</p></div>
       <div class="area__banks">
-        <div class="bank">
-          <h3>{{t.area.sc}}</h3>
-          <ul>
-            <li class="home"><span>North Augusta</span> <span class="vh">{{t.area.home}}</span></li>
-            <li>Aiken</li><li>Beech Island</li><li>Graniteville</li><li>Edgefield</li><li>Modoc</li><li>McCormick</li><li>Greenwood</li><li>Trenton</li><li>Johnston</li><li>Saluda</li><li>Ridge Spring</li><li>Ward</li><li>Batesburg-Leesville</li>
-          </ul>
-        </div>
-        <div class="river" aria-hidden="true">
-          <svg viewBox="0 0 400 16" preserveAspectRatio="none" class="river__h"><path d="M0 8 C 40 14, 80 2, 120 8 S 200 14, 240 8 S 320 2, 400 8" fill="none" stroke="currentColor" stroke-width="2" vector-effect="non-scaling-stroke"/></svg>
-          <svg viewBox="0 0 16 400" preserveAspectRatio="none" class="river__v"><path d="M8 0 C 14 40, 2 80, 8 120 S 14 200, 8 240 S 2 320, 8 400" fill="none" stroke="currentColor" stroke-width="2" vector-effect="non-scaling-stroke"/></svg>
-          <span>{{t.area.river}}</span>
-        </div>
-        <div class="bank">
-          <h3>{{t.area.ga}}</h3>
-          <ul>
-            <li>Augusta</li><li>Martinez</li><li>Evans</li><li>Grovetown</li><li>Hephzibah</li><li>Wrens</li><li>Thomson</li><li>Waynesboro</li><li>Washington</li>
-          </ul>
-        </div>
+        <div class="bank"><h3>{{t.area.sc}}</h3><ul><li class="home"><span>North Augusta</span> <span class="vh">{{t.area.home}}</span></li><li>Aiken</li><li>Beech Island</li><li>Graniteville</li><li>Edgefield</li><li>Modoc</li><li>McCormick</li><li>Greenwood</li><li>Trenton</li><li>Johnston</li><li>Saluda</li><li>Ridge Spring</li><li>Ward</li><li>Batesburg-Leesville</li></ul></div>
+        <div class="river" aria-hidden="true"><svg viewBox="0 0 400 14" preserveAspectRatio="none" class="river__h"><path d="M0 7 C 40 13, 80 1, 120 7 S 200 13, 240 7 S 320 1, 400 7" fill="none" stroke="currentColor" stroke-width="2" vector-effect="non-scaling-stroke"/></svg><svg viewBox="0 0 14 400" preserveAspectRatio="none" class="river__v"><path d="M7 0 C 13 40, 1 80, 7 120 S 13 200, 7 240 S 1 320, 7 400" fill="none" stroke="currentColor" stroke-width="2" vector-effect="non-scaling-stroke"/></svg><span>{{t.area.river}}</span></div>
+        <div class="bank"><h3>{{t.area.ga}}</h3><ul><li>Augusta</li><li>Martinez</li><li>Evans</li><li>Grovetown</li><li>Hephzibah</li><li>Wrens</li><li>Thomson</li><li>Waynesboro</li><li>Washington</li></ul></div>
       </div>
       <p class="area__note muted">{{t.area.note}}</p>
     </div>
   </section>
 
-  <!-- ======================= COMMON QUESTIONS ======================= -->
-  <section class="faq" id="faq" aria-labelledby="faq-h">
+  <section class="section joint faq" id="faq" aria-labelledby="faq-h">
     <div class="wrap faq__grid">
       <h2 id="faq-h" class="h2">{{t.faq.h}}</h2>
       <div class="faq__list">
@@ -210,10 +176,10 @@
     </div>
   </section>
 
-  <section class="field-notes" aria-labelledby="field-h">
+  <section class="section section--band joint" aria-labelledby="field-h">
     <div class="wrap field-notes__grid">
-      <div><p class="eyebrow">{{t.field.eyebrow}}</p><h2 id="field-h" class="h2">{{t.field.h}}</h2><p class="lead muted">{{t.field.p}}</p></div>
-      <div class="field-notes__links"><a class="social-story" href="https://www.instagram.com/fpcconstructions" rel="noopener"><span>Instagram</span><span>{{t.field.watch}} <span aria-hidden="true">↗</span></span></a><a class="social-story" href="https://www.facebook.com/p/FPC-Construction-LLC-100066373038903/" rel="noopener"><span>Facebook</span><span>{{t.field.watch}} <span aria-hidden="true">↗</span></span></a>{{v.tiktokStory}}</div>
+      <div class="field-notes__text"><p class="label">06 / {{t.field.eyebrow}}</p><h2 id="field-h" class="h2">{{t.field.h}}</h2><p class="lead muted">{{t.field.p}}</p></div>
+      <div class="field-notes__links"><a class="social-story panel" href="https://www.instagram.com/fpcconstructions" rel="noopener"><span>Instagram</span><span>{{t.field.watch}} <span aria-hidden="true">↗</span></span></a><a class="social-story panel" href="https://www.facebook.com/p/FPC-Construction-LLC-100066373038903/" rel="noopener"><span>Facebook</span><span>{{t.field.watch}} <span aria-hidden="true">↗</span></span></a>{{v.tiktokStory}}{{v.youtubeStory}}</div>
     </div>
   </section>
 </main>

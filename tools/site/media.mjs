@@ -44,7 +44,7 @@ export function renderTreeWork(lang, t, media = TREE_WORK) {
     assert.ok(review.author && review.text); assert.ok(Number.isInteger(review.rating) && review.rating >= 1 && review.rating <= 5);
     assert.match(review.date, /^\d{4}-\d{2}-\d{2}$/);
     assert.match(review.language, /^[a-z]{2,3}(?:-[A-Za-z0-9]{2,8})*$/);
-    testimonial = `<aside class="tree-testimonial"><p class="eyebrow">${esc(t('media.testimonial'))}</p><p class="tree-testimonial__rating">${review.rating}/5</p><blockquote lang="${esc(review.language)}"><p>${esc(review.text)}</p></blockquote><p class="tree-testimonial__author"><strong>${esc(review.author)}</strong>${review.town ? `<span lang="en">${esc(review.town)}</span>` : ''}<time datetime="${review.date}">${review.date}</time></p><p class="tree-testimonial__disclosure">${esc(t('media.disclosure'))}</p></aside>`;
+    testimonial = `<aside class="tree-testimonial quote panel" data-reveal><p><span class="sign">${esc(t('media.testimonial'))}</span></p><p class="tree-testimonial__rating">${review.rating}/5</p><blockquote lang="${esc(review.language)}"><p>${esc(review.text)}</p></blockquote><p class="tree-testimonial__author"><strong>${esc(review.author)}</strong>${review.town ? `<span lang="en">${esc(review.town)}</span>` : ''}<time datetime="${review.date}">${review.date}</time></p><p class="tree-testimonial__disclosure">${esc(t('media.disclosure'))}</p></aside>`;
   }
   const imageTag = `<img src="${localMedia(photo.src, 'photo')}" width="${photo.width}" height="${photo.height}" alt="${esc(photo.alt[lang])}" loading="lazy" decoding="async"${photo.srcset ? ` srcset="${esc(photo.srcset)}" sizes="(min-width: 900px) 55vw, calc(100vw - 40px)"` : ''}>`;
   const image = photo.avifSrcset ? `<picture><source type="image/avif" srcset="${esc(photo.avifSrcset)}" sizes="(min-width: 900px) 55vw, calc(100vw - 40px)">${imageTag}</picture>` : imageTag;
@@ -52,7 +52,7 @@ export function renderTreeWork(lang, t, media = TREE_WORK) {
     dimensions(clip);
     return `<video controls playsinline preload="none" width="${clip.width}" height="${clip.height}" poster="${localMedia(clip.poster, 'photo')}" aria-label="${esc(media.caption[lang])}"><source src="${localMedia(clip.src, 'video')}" type="video/mp4"><a href="${localMedia(clip.src, 'video')}">${esc(t('media.open'))}</a></video>`;
   }).join('');
-  return `<section class="tree-work" aria-labelledby="tree-work-h"><div class="wrap"><p class="eyebrow">FPC Construction</p><h2 class="h2" id="tree-work-h">${esc(t('media.heading'))}</h2><div class="tree-work__story"><figure>${image}<figcaption>${esc(media.caption[lang])}</figcaption></figure>${testimonial}</div><div class="tree-work__clips">${clips}</div></div></section>`;
+  return `<section class="section joint tree-work" aria-labelledby="tree-work-h"><div class="wrap"><div class="section-head"><p class="label">04 / ${esc(t('section.story'))}</p><h2 class="h2" id="tree-work-h">${esc(t('media.heading'))}</h2></div><div class="story"><figure class="story__photo bezel" data-reveal><div class="frame">${image}</div><figcaption>${esc(media.caption[lang])}</figcaption></figure><div class="story__side">${testimonial}<div class="clips" data-reveal>${clips}</div></div></div></div></section>`;
 }
 
 // The real build checks these files exist; held media must not trigger any reads.

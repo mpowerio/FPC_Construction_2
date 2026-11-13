@@ -388,3 +388,66 @@ Object.assign(common.es, { 'svc.public': 'Obras comerciales y públicas', 'e.noj
 
 Object.assign(estimate.en, { 't.public': 'Commercial & public works' });
 Object.assign(estimate.es, { 't.public': 'Obras comerciales y públicas' });
+
+// ---------------------------------------------------------------------------
+// v3 "Concrete" build (2026-11-13). New keys only; existing approved copy is reused.
+// PENDING-ES: every Spanish value in this block is a draft that needs a native-speaker read
+// before release (listed in PENDING_ES_KEYS so the PR and the review can point at them).
+// Home's qualifications line names records neutrally (Chair ruling A, 2026-11-13): no
+// contractor-class wording, no "licensed" or "insured", until the licence is issued
+// (see docs/GC-FLIP.md).
+const V3_COMMON = {
+  en: {
+    'util.area': 'North Augusta, SC · Serving the CSRA on both sides of the Savannah River',
+    'nav.menu': 'Menu',
+  },
+  es: {
+    'util.area': 'North Augusta, SC · Servimos el CSRA en los dos lados del río Savannah',
+    'nav.menu': 'Menú',
+  },
+};
+const V3_HOME = {
+  en: {
+    'meta.title': 'FPC Construction | Septic, concrete, commercial & public works in North Augusta, SC',
+    'meta.desc': 'Septic systems, concrete, drainage and site work, plus commercial and public projects across the CSRA, from North Augusta, SC. Free estimates. Call (803) 884-9305.',
+    'facts.1': 'Based in', 'facts.1v': 'North Augusta, SC',
+    'facts.2': 'Service area', 'facts.2v': 'About 50 miles, both sides of the Savannah River',
+    'facts.3': 'Work', 'facts.3v': 'Residential &amp; commercial',
+    'facts.4': 'Phone',
+    'lanes.h': 'Choose your project.', 'lanes.p': 'Talk through the details with Filemon.',
+    'lane.public.p': 'Talk through a commercial or public project with Filemon.',
+    'lanes.all': 'Everything else we do',
+    'section.quals': 'Qualifications', 'quals.h': 'For commercial and public buyers.',
+    'quals.p': 'Ask Filemon about scope, schedule and the paperwork your process needs.',
+    'quals.records': 'License, bond and insurance records', 'pending': 'Pending verification',
+    'quals.note': 'These records are shown here once each one is verified.',
+    'section.work3': 'From the job site', 'section.story': 'From a customer', 'section.services3': 'Main services',
+    'tag.concrete': 'Concrete', 'tag.septic': 'Septic', 'tag.site': 'Site work',
+    'crumb.services': 'Services',
+    'svc.aside.p': 'Filemon looks at the site in person. The estimate is free, and you see the price before any work starts.',
+  },
+  es: {
+    'meta.title': 'FPC Construction | Sépticos, concreto, obras comerciales y públicas en North Augusta, SC',
+    'meta.desc': 'Sistemas sépticos, concreto, drenaje y trabajos de terreno, y proyectos comerciales y públicos en toda la zona del CSRA, desde North Augusta, SC. Estimados gratis.',
+    'facts.1': 'Base', 'facts.1v': 'North Augusta, SC',
+    'facts.2': 'Área de servicio', 'facts.2v': 'Unas 50 millas, de los dos lados del río Savannah',
+    'facts.3': 'Trabajos', 'facts.3v': 'Residencial y comercial',
+    'facts.4': 'Teléfono',
+    'lanes.h': 'Elija su proyecto.', 'lanes.p': 'Hable de los detalles con Filemon.',
+    'lane.public.p': 'Hable con Filemon de un proyecto comercial o público.',
+    'lanes.all': 'Todo lo demás que hacemos',
+    'section.quals': 'Calificaciones', 'quals.h': 'Para clientes comerciales y públicos.',
+    'quals.p': 'Pregúntele a Filemon por el alcance, el calendario y los documentos que su proceso necesita.',
+    'quals.records': 'Registros de licencia, fianza y seguro', 'pending': 'Pendiente de verificación',
+    'quals.note': 'Estos registros se muestran aquí cuando cada uno esté verificado.',
+    'section.work3': 'Desde la obra', 'section.story': 'De un cliente', 'section.services3': 'Servicios principales',
+    'tag.concrete': 'Concreto', 'tag.septic': 'Séptico', 'tag.site': 'Terreno',
+    'crumb.services': 'Servicios',
+    'svc.aside.p': 'Filemon revisa el lugar en persona. El estimado es gratis y usted ve el precio antes de empezar cualquier trabajo.',
+  },
+};
+Object.assign(common.en, V3_COMMON.en); Object.assign(common.es, V3_COMMON.es);
+Object.assign(home.en, V3_HOME.en); Object.assign(home.es, V3_HOME.es);
+// The estimate page also renders the shared header and footer.
+for (const k of ['core.s.h', 'core.c.h', 'core.public.h', 'start.drainage']) { estimate.en[k] ??= home.en[k]; estimate.es[k] ??= home.es[k]; }
+export const PENDING_ES_KEYS = [...Object.keys(V3_COMMON.es), ...Object.keys(V3_HOME.es).filter(k => !['facts.1v'].includes(k))];

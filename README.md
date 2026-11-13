@@ -1,7 +1,7 @@
 # FPC Construction LLC website
 
 fpcconstructions.com: static HTML on GitHub Pages, deployed from `main` (no deploy-time build).
-November 2026 redesign draft: graphite, FPC gold and orange, built on the October Bench Cut generator. Every page has an English URL and a Spanish twin. Operator approval is required before release.
+v3 "Concrete" design (November 2026): mid-tone concrete, textured asphalt, FPC gold, orange and red, built on the October Bench Cut generator. Every page has an English URL and a Spanish twin. Operator approval is required before release.
 
 | Page | English | Spanish | Source |
 |---|---|---|---|
@@ -25,7 +25,8 @@ node tools/site/serve.mjs 8080     # preview with GitHub Pages-style routing + g
 - `tools/site/services.mjs`: original EN/ES service-page copy and routes; Fil reviews scope before release.
 - `tools/site/social.mjs`: one `TIKTOK_PROFILE_URL` setting, empty until verified. Empty hides every TikTok link and schema entry. The WhatsApp URL setting also stays empty until the operator confirms the number; unconfirmed links are omitted. No social embeds load.
 - `tools/site/strings.mjs`: every visible string, English and Spanish (build fails if a key is missing in either).
-- `tools/site/src/`: `base.css` (tokens, one type scale, one spacing rhythm), page CSS, page templates, shared partials.
+- `tools/site/src/`: `site.css` (the Concrete design system: tokens, one type scale, components; built to `assets/site/site.css`), `estimate.css` (estimate form, inlined), page templates, shared partials.
+- `tools/site/gc.mjs`: the general-contractor pages, built but off until license day. See `docs/GC-FLIP.md`.
 - `assets/site/core.js`: language toggle (remembers the choice), call bar, reveal, lazy JJ widget, PayPal message loader.
 - `assets/site/estimate.js`: the estimate form. Posts to the CRM lead route; only `success: true` plus a `booking_id` counts as received.
 - `tools/site/images.mjs`: regenerates `assets/img/` (graded AVIF + WebP photos, logo, favicons, OG image) with ImageMagick.
