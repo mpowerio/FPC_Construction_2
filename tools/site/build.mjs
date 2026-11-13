@@ -230,7 +230,7 @@ function render(page, lang) {
     inlineCss: page.key === 'estimate' ? `<style>\n${estimateCss.trim()}\n</style>` : '',
     cssHash,
     heading: page.key === 'home' ? headingHtml(t('hero.heading')) : '',
-    phoneFact: page.key === 'home' ? S.estimate[lang]['e.call.p'].replace(/\.$/, '') : '',
+    footFil: page.key === 'home' ? '' : `<p class="small muted">${t('foot.fil')}</p>`,
     septicCurrent: page.service?.id === 'septic' ? ' aria-current="page"' : '',
     concreteCurrent: page.service?.id === 'concrete' ? ' aria-current="page"' : '',
     relatedRows: page.key !== 'service' ? '' : services.filter(s => s.id !== page.service?.id).map(s => `<a class="row" href="${s.url[lang]}"><span class="row__name">${s[lang]['service.label']}</span><span class="row__desc">${s[lang]['service.h']}</span>${tnub}</a>`).join('') + `<a class="row" href="${urlOf('home', lang)}#commercial"><span class="row__name">${t('core.public.h')}</span><span class="row__desc">${t('core.public.cta')}</span>${tnub}</a>`,

@@ -42,3 +42,25 @@ test('no projects are invented: past performance is omitted while the list is em
   assert.equal(GC.projects.length, 0);
   assert.doesNotMatch(renderGcPage('commercial', 'en', h, { preview: true }), /Recent projects/);
 });
+
+// Operator, 2026-11-13: "no pending". Public pages carry no pending-credential wording or slots.
+import { services } from './services.mjs';
+const publicPages = ['index.html', 'es/index.html', 'estimate/index.html', 'es/estimado/index.html',
+  ...services.flatMap((s) => Object.values(s.url).map((u) => u.slice(1) + 'index.html'))];
+export function pendingProblems(html) {
+  const text = html.replace(/<(script|style)\b[^>]*>[\s\S]*?<\/\1>/gi, '').replace(/<!--[\s\S]*?-->/g, '');
+  const found = [];
+  if (/Pending verification|Pendiente de verificaci[oó]n/i.test(text.replace(/<[^>]+>/g, ' '))) found.push('pending wording');
+  if (/class="[^"]*\b(slot--pending|medal--pending|lane__pending)\b/.test(text)) found.push('pending credential slot');
+  if (/data-release-pending\b/.test(text)) found.push('release-pending marker');
+  return found;
+}
+for (const file of publicPages) test(`${file}: no pending wording or credential-pending slot`, () => {
+  assert.deepEqual(pendingProblems(readFileSync(join(root, file), 'utf8')), []);
+});
+test('the pending guard catches each planted form', () => {
+  for (const planted of ['<p>License records: Pending verification</p>', '<p>Pendiente de verificación</p>', '<div class="slot slot--pending">x</div>', '<h1 data-release-pending>x</h1>']) {
+    assert.ok(pendingProblems(`<main>${planted}</main>`).length, planted);
+  }
+  assert.deepEqual(pendingProblems('<style>.slot--pending{}</style><main>Ready</main>'), []);
+});

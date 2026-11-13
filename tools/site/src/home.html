@@ -18,7 +18,7 @@
           <h1 id="h1" class="display">{{v.heading}}</h1>
           <p class="lead" id="about">{{t.hero.intro}}</p>
           {{v.reviewSummary}}
-          <form class="starter panel" action="{{v.estimate}}" method="get" aria-labelledby="start-h">
+          <form class="starter panel estimate-start" action="{{v.estimate}}" method="get" aria-labelledby="start-h">
             <div class="starter__head"><span class="sign sign--gold">{{t.start.free}}</span><h2 id="start-h">{{t.start.h}}</h2></div>
             <div class="field">
               <label for="start-type">{{t.start.label}}</label>
@@ -54,7 +54,7 @@
         <div><dt>{{t.facts.1}}</dt><dd>{{t.facts.1v}}</dd></div>
         <div><dt>{{t.facts.2}}</dt><dd>{{t.facts.2v}}</dd></div>
         <div><dt>{{t.facts.3}}</dt><dd>{{t.facts.3v}}</dd></div>
-        <div><dt>{{t.facts.4}}</dt><dd>{{v.phoneFact}}</dd></div>
+        <div><dt>{{t.facts.4}}</dt><dd><a class="num" href="tel:+18038849305">(803) 884-9305</a></dd></div>
       </dl>
     </div>
   </section>
@@ -69,17 +69,17 @@
         <p class="lead muted">{{t.lanes.p}}</p>
       </div>
       <div class="lanes">
-        <article class="lane" data-reveal>
+        <article class="lane trade" data-reveal>
           <span class="lane__no" aria-hidden="true">01</span>
           <div class="lane__body"><h3 class="lane__name"><a href="{{v.septicUrl}}">{{t.core.s.h}}</a></h3><p class="lane__desc">{{t.core.s.p}}</p><span class="textlink lane__cta"><span class="textlink__label">{{t.core.s.cta}}</span>{{tnub}}</span></div>
           <div class="frame">{{img.septic}}</div>
         </article>
-        <article class="lane" data-reveal>
+        <article class="lane trade" data-reveal>
           <span class="lane__no" aria-hidden="true">02</span>
           <div class="lane__body"><h3 class="lane__name"><a href="{{v.concreteUrl}}">{{t.core.c.h}}</a></h3><p class="lane__desc">{{t.core.c.p}}</p><span class="textlink lane__cta"><span class="textlink__label">{{t.core.c.cta}}</span>{{tnub}}</span></div>
           <div class="frame">{{img.concrete}}</div>
         </article>
-        <article class="lane" id="commercial" data-reveal>
+        <article class="lane trade trade--public" id="commercial" data-reveal>
           <span class="lane__no" aria-hidden="true">03</span>
           <div class="lane__body"><h3 class="lane__name"><a href="{{v.commercialLane}}">{{t.core.public.h}}</a></h3><p class="lane__desc">{{t.lane.public.p}}</p><span class="textlink lane__cta"><span class="textlink__label">{{t.core.public.cta}}</span>{{tnub}}</span></div>
           <figure class="lane__figure"><div class="frame">{{img.public}}</div><figcaption class="lane__cap">{{t.core.d.cap}}</figcaption></figure>
@@ -98,10 +98,12 @@
           <p class="lead">{{t.quals.p}}</p>
           <a class="btn btn--gold" href="{{v.estimate}}?type=commercial-and-public-works"><span>{{t.core.public.cta}}</span>{{nub}}</a>
         </div>
-        <div class="quals__slots">
-          <div class="slot slot--pending slot--wide"><span class="slot__label">{{t.quals.records}}</span><span class="sign"><svg aria-hidden="true"><use href="#i-alert"/></svg>{{t.pending}}</span></div>
-          <p class="quals__note">{{t.quals.note}}</p>
-        </div>
+        <dl class="quals__facts">
+          <div><dt>{{t.quals.f1}}</dt><dd>{{t.quals.f1v}}</dd></div>
+          <div><dt>{{t.facts.2}}</dt><dd>{{t.facts.2v}}</dd></div>
+          <div><dt>{{t.quals.f3}}</dt><dd>{{t.quals.f3v}}</dd></div>
+          <div><dt>{{t.quals.f4}}</dt><dd>{{t.quals.f4v}}</dd></div>
+        </dl>
       </div>
     </div>
   </section>
