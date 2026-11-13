@@ -171,3 +171,9 @@
 .public-scope svg { width: 30%; height: 30%; color: var(--c-ink-2); }
 .trade .trade__pending { margin-bottom: 0; margin-top: var(--s-16); font-size: var(--t-14); }
 .tree-testimonial__disclosure { font-size: var(--t-14); color: var(--c-on-panel-2); margin-top: var(--s-24); }
+
+/* Keep the starter's controls and live helper text outside the compact JJ lane. */
+@media (max-width: 899px) {
+  .estimate-start__heading, .estimate-start__row, .estimate-start__note { padding-right: 60px; }
+  .estimate-start__heading { flex-wrap: wrap; }
+}

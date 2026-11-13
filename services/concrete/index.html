@@ -451,6 +451,15 @@ elevenlabs-convai {
   --el-focus-color: #ED000C;
 }
 @media (min-width: 900px) { elevenlabs-convai { right: 32px; bottom: 32px; } }
+/* Compact JJ keeps its front-door position. Reserve the bottom edge and move above
+   the mobile action bar; suppression only applies after the CDN adapter matches. */
+@media (max-width: 899px) {
+  body { padding-bottom: calc(72px + env(safe-area-inset-bottom)); }
+  elevenlabs-convai.jj-adapted { bottom: calc(12px + env(safe-area-inset-bottom)); transition: opacity 160ms var(--ease-out), transform 160ms var(--ease-out); }
+  html.jj-bar-shown elevenlabs-convai.jj-adapted { bottom: calc(80px + env(safe-area-inset-bottom)); }
+  elevenlabs-convai.jj-adapted.jj-suppressed { opacity: 0; transform: translateY(8px); pointer-events: none; }
+}
+
 
 /* ---------- Language suggestion (only when the browser prefers Spanish and no choice is stored) ---------- */
 .lang-hint {
@@ -679,6 +688,12 @@ html { scroll-padding-block: 96px; }
 .public-scope svg { width: 30%; height: 30%; color: var(--c-ink-2); }
 .trade .trade__pending { margin-bottom: 0; margin-top: var(--s-16); font-size: var(--t-14); }
 .tree-testimonial__disclosure { font-size: var(--t-14); color: var(--c-on-panel-2); margin-top: var(--s-24); }
+
+/* Keep the starter's controls and live helper text outside the compact JJ lane. */
+@media (max-width: 899px) {
+  .estimate-start__heading, .estimate-start__row, .estimate-start__note { padding-right: 60px; }
+  .estimate-start__heading { flex-wrap: wrap; }
+}
 
 .service-hero { display: grid; gap: var(--s-32); padding-block: var(--s-24) var(--s-64); }
 .service-back { display: inline-flex; align-items: center; min-height: 44px; color: var(--c-ink-2); margin-bottom: var(--s-24); text-decoration: none; }
@@ -1328,7 +1343,7 @@ body, body.page-home { background-image: var(--m-concrete), var(--m-cure), var(-
   <div class="wrap footer-grid">
     <div>
       <a class="plate" href="/" aria-label="FPC Construction home"><span class="plate__core"><img src="/assets/brand/fpc-lockup-enhanced-light.svg" width="3543" height="2239" alt="FPC Construction" loading="lazy" decoding="async"></span></a>
-      <p class="small muted" style="margin-top:var(--s-16)">The phone is answered 24/7 by Fil, our AI assistant, in English or Spanish.</p>
+      <p class="small muted" style="margin-top:var(--s-16)">The phone is answered 24/7 by JJ, our AI assistant, in English or Spanish.</p>
       <div class="social">
         <a href="https://www.facebook.com/p/FPC-Construction-LLC-100066373038903/" aria-label="FPC on Facebook" rel="noopener"><svg aria-hidden="true"><use href="#i-fb"/></svg></a>
         <a href="https://www.instagram.com/fpcconstructions" aria-label="FPC on Instagram" rel="noopener"><svg aria-hidden="true"><use href="#i-ig"/></svg></a>

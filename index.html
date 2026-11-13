@@ -451,6 +451,15 @@ elevenlabs-convai {
   --el-focus-color: #ED000C;
 }
 @media (min-width: 900px) { elevenlabs-convai { right: 32px; bottom: 32px; } }
+/* Compact JJ keeps its front-door position. Reserve the bottom edge and move above
+   the mobile action bar; suppression only applies after the CDN adapter matches. */
+@media (max-width: 899px) {
+  body { padding-bottom: calc(72px + env(safe-area-inset-bottom)); }
+  elevenlabs-convai.jj-adapted { bottom: calc(12px + env(safe-area-inset-bottom)); transition: opacity 160ms var(--ease-out), transform 160ms var(--ease-out); }
+  html.jj-bar-shown elevenlabs-convai.jj-adapted { bottom: calc(80px + env(safe-area-inset-bottom)); }
+  elevenlabs-convai.jj-adapted.jj-suppressed { opacity: 0; transform: translateY(8px); pointer-events: none; }
+}
+
 
 /* ---------- Language suggestion (only when the browser prefers Spanish and no choice is stored) ---------- */
 .lang-hint {
@@ -679,6 +688,12 @@ html { scroll-padding-block: 96px; }
 .public-scope svg { width: 30%; height: 30%; color: var(--c-ink-2); }
 .trade .trade__pending { margin-bottom: 0; margin-top: var(--s-16); font-size: var(--t-14); }
 .tree-testimonial__disclosure { font-size: var(--t-14); color: var(--c-on-panel-2); margin-top: var(--s-24); }
+
+/* Keep the starter's controls and live helper text outside the compact JJ lane. */
+@media (max-width: 899px) {
+  .estimate-start__heading, .estimate-start__row, .estimate-start__note { padding-right: 60px; }
+  .estimate-start__heading { flex-wrap: wrap; }
+}
 
 /* ==========================================================================
    FPC material layer: poured concrete + asphalt (PROPOSAL, not applied).
@@ -1286,7 +1301,7 @@ body, body.page-home { background-image: var(--m-concrete), var(--m-cure), var(-
     <div class="wrap hero__grid">
       <div class="hero__text">
         <p class="eyebrow"><span class="gold-mark" aria-hidden="true"></span>North Augusta · Augusta · Aiken</p>
-        <h1 data-release-pending id="h1" class="display hero__h1 hero__h1--pending">[Headline pending approval]</h1>
+        <h1 id="h1" class="display hero__h1">Septic. Concrete. Commercial &amp; public works.</h1>
         <p class="lead" id="about">For your home, your land and what comes next. Filemon and the FPC crew handle the ground work, the concrete and the finishing touches across the CSRA.</p>
         <p class="hero__slogan" lang="en">No job too small, no dream too big — FPC Construction for all your needs.</p>
 
@@ -1310,7 +1325,7 @@ body, body.page-home { background-image: var(--m-concrete), var(--m-cure), var(-
           <a class="hero__call" href="tel:+18038849305"><svg class="icon" aria-hidden="true"><use href="#i-phone"/></svg><span class="num">(803) 884-9305</span></a>
 
         </div>
-        <p class="hero__fil"><b>Fil, our AI assistant,</b> answers the phone 24/7 in English or Spanish. Filemon follows up.</p>
+        <p class="hero__fil"><b>JJ, our AI assistant,</b> answers the phone 24/7 in English or Spanish. Filemon follows up.</p>
       </div>
       <figure class="hero__photo">
         <div class="frame"><picture><source type="image/avif" srcset="/assets/img/gallery-19-480.avif 480w, /assets/img/gallery-19-800.avif 800w, /assets/img/gallery-19-1200.avif 1200w" sizes="(min-width: 1280px) 580px, (min-width: 900px) 44vw, calc(100vw - 40px)"><img src="/assets/img/gallery-19-800.webp" srcset="/assets/img/gallery-19-480.webp 480w, /assets/img/gallery-19-800.webp 800w, /assets/img/gallery-19-1200.webp 1200w" sizes="(min-width: 1280px) 580px, (min-width: 900px) 44vw, calc(100vw - 40px)" width="1200" height="900" fetchpriority="high" decoding="async" alt="An orange excavator parked on a freshly poured concrete slab while a crew member works beside it"></picture></div>
@@ -1318,7 +1333,7 @@ body, body.page-home { background-image: var(--m-concrete), var(--m-cure), var(-
         <figcaption class="cap"><span>Slab pour with the excavator on site</span><a href="#work">See the work <span aria-hidden="true">↘</span></a></figcaption>
       </figure>
     </div>
-    <div class="wrap"><div class="trade-ribbon" aria-label="FPC services"><span>Residential & commercial</span><span>County & state contract work</span><span>English & Español</span></div></div>
+    <div class="wrap"><div class="trade-ribbon" aria-label="FPC services"><span>Residential & commercial</span><span>Commercial & public works</span><span>English & Español</span></div></div>
   </section>
 
 
@@ -1353,7 +1368,6 @@ body, body.page-home { background-image: var(--m-concrete), var(--m-cure), var(-
         </article>
         <article class="trade trade--public" data-reveal>
           <div class="frame public-scope" aria-hidden="true"><svg><use href="#i-chev"/></svg></div>
-          <p data-release-pending class="trade__pending">Project examples pending verification</p>
           <h3 class="h3">Commercial & public works</h3>
           <a class="textlink" href="/estimate/"><span class="textlink__label">Discuss a commercial or public project</span><span class="textlink__nub" aria-hidden="true"><svg><use href="#i-chev"/></svg></span></a>
         </article>
@@ -1369,7 +1383,7 @@ body, body.page-home { background-image: var(--m-concrete), var(--m-cure), var(-
       <div class="index__aside">
         <h2 id="index-h" class="h2">Everything else we do</h2>
         <p class="muted">If your job isn't on the list, ask anyway. Filemon comes out and looks at it.</p>
-        <p class="muted">FPC also takes county and state contract work.</p>
+        <p class="muted">Tell us about your commercial or public-works project.</p>
       </div>
       <div class="index__groups">
         <div class="index__group">
@@ -1504,7 +1518,7 @@ body, body.page-home { background-image: var(--m-concrete), var(--m-cure), var(-
   <div class="wrap footer-grid">
     <div>
       <a class="plate" href="/" aria-label="FPC Construction home"><span class="plate__core"><img src="/assets/brand/fpc-lockup-enhanced-light.svg" width="3543" height="2239" alt="FPC Construction" loading="lazy" decoding="async"></span></a>
-      <p class="small muted" style="margin-top:var(--s-16)">The phone is answered 24/7 by Fil, our AI assistant, in English or Spanish.</p>
+      <p class="small muted" style="margin-top:var(--s-16)">The phone is answered 24/7 by JJ, our AI assistant, in English or Spanish.</p>
       <div class="social">
         <a href="https://www.facebook.com/p/FPC-Construction-LLC-100066373038903/" aria-label="FPC on Facebook" rel="noopener"><svg aria-hidden="true"><use href="#i-fb"/></svg></a>
         <a href="https://www.instagram.com/fpcconstructions" aria-label="FPC on Instagram" rel="noopener"><svg aria-hidden="true"><use href="#i-ig"/></svg></a>

@@ -1,7 +1,7 @@
 # FPC Construction LLC website
 
 fpcconstructions.com: static HTML on GitHub Pages, deployed from `main` (no deploy-time build).
-November 2026 redesign draft: approved V3 Job Site concrete/asphalt textures, work-zone accents and reduced-motion-aware CSS graphics, built on the October Bench Cut generator. Every page has an English URL and a Spanish twin. Operator approval is required before release.
+November 2026 redesign draft: graphite, FPC gold and orange, built on the October Bench Cut generator. Every page has an English URL and a Spanish twin. Operator approval is required before release.
 
 | Page | English | Spanish | Source |
 |---|---|---|---|
@@ -26,7 +26,7 @@ node tools/site/serve.mjs 8080     # preview with GitHub Pages-style routing + g
 - `tools/site/social.mjs`: one `TIKTOK_PROFILE_URL` setting, empty until verified. Empty hides every TikTok link and schema entry. The WhatsApp URL setting also stays empty until the operator confirms the number; unconfirmed links are omitted. No social embeds load.
 - `tools/site/strings.mjs`: every visible string, English and Spanish (build fails if a key is missing in either).
 - `tools/site/src/`: `base.css` (tokens, one type scale, one spacing rhythm), page CSS, page templates, shared partials.
-- `assets/site/core.js`: language toggle (remembers the choice), call bar, reveal, lazy Fil widget, PayPal message loader.
+- `assets/site/core.js`: language toggle (remembers the choice), call bar, reveal, lazy JJ widget, PayPal message loader.
 - `assets/site/estimate.js`: the estimate form. Posts to the CRM lead route; only `success: true` plus a `booking_id` counts as received.
 - `tools/site/images.mjs`: regenerates `assets/img/` (graded AVIF + WebP photos, logo, favicons, OG image) with ImageMagick.
 - Cloudflare Web Analytics: set `CF_WEB_ANALYTICS_TOKEN` in `tools/site/build.mjs` and rebuild (off until a token exists).
@@ -43,59 +43,8 @@ node tools/site/redesign.browser.mjs
 # Optional: FPC_EVIDENCE_DIR=/absolute/output/path (default /tmp/fpc-redesign-evidence)
 ```
 
-This check uses only local fixtures and blocks external requests. It checks the ten generated pages at 1440/820/390, touch targets, no overflow, language twins, schema, local links, starter handoff, no-JS access, reduced motion and hidden TikTok. The 57-case estimate suite includes the existing 51 receipt/failure/language checks plus six no-JavaScript, failed-script and commercial/public handoff checks. Screenshots are local evidence; independent review and live field performance remain separate.
+This check uses only local fixtures and blocks external requests. It checks the ten generated pages at 1440/820/390, touch targets, no overflow, language twins, schema, local links, starter handoff, no-JS access, reduced motion and hidden TikTok. The existing 51-case estimate suite supplies receipt, failure, timeout, retry, language-draft and negative-control checks. Screenshots are local evidence; independent review and live field performance remain separate.
 
 ---
 
 Built by mpowerio.ai
-
-## Google review gates and approved tree-work testimonial
-
-`tools/site/reviews.mjs` has the single `GOOGLE_REVIEW_URL` setting, empty until the operator verifies the correct listing. It supplies the same EN/ES action link everywhere. `GOOGLE_REVIEWS.verified` is false and no rating, quotes or review section render until an approved, attributed snapshot is entered. A confirmed URL alone can enable the ask without inventing a rating. Snapshot date is displayed; this is not a live feed. Do not combine listings or rewrite/translate review words. Keep original author, stars, displayed date, source URL and excerpt labeling. No API, scraping, credentials or background refresh is used. Do not store API responses in git.
-
-`tools/site/media.mjs` now contains the operator-approved tree-work feature: responsive still, three clean silent clips and his exact English testimonial, attributed to Michael Parker with 5/5 and the message date 2026-11-10. It is labeled a customer testimonial in both interface languages, never an unconfirmed Google review. The operator-approved location reads exactly “North Augusta, Foxchase subdivision”; no street or house number is included. Setting `approvedForPublic: false` omits the entire feature. Source footage stays in the private vault; committed derivatives have no audio, GPS, original filenames or identifying metadata. Clips use controls, no autoplay and `preload="none"`. New Filemon shots follow the existing Drive/CRM Inbox flow, outside this code scope.
-
-The agency-credit footer remains unchanged pending the operator's decision. Existing form runtime, relay, Fil copy and legal pages are unchanged.
-
-```sh
-node --test tools/site/content.test.mjs
-```
-
-The responsive check also renders six explicitly synthetic populated layouts in intercepted local responses. Synthetic Google review fixtures never enter the generated pages. The approved real tree-work feature and testimonial are checked separately. Review-link ownership, real content authenticity and public-use consent remain human checks, not URL-validation claims.
-
-
-### Approved draft iteration (2026-11-10)
-
-The hero headline is visibly pending operator approval; the locked English slogan
-remains verbatim in its paragraph. The three equal lead paths are septic,
-concrete and commercial/public work. Public-job examples remain pending verification;
-there are no named public projects or award claims. Tree work and Michael's
-exact testimonial follow those paths. The approved technology-partner disclosure
-is separate from his quote in EN/ES; new Spanish interface copy awaits native review.
-
-Logo B is installed on the draft's logo plates and screen favicon set, using the
-default enhanced candidate with traced hairlines unpainted. See assets/brand/README.md.
-Flat print/merch masters are untouched. The operator relayed Filemon’s approval of logo B; it remains reversible. No release approval is implied. Rebuild screen
-favicons with python3 tools/site/brand-assets.py (also called after images.mjs).
-The SEO check validates the locked paragraph and one nonempty H1 independently.
-
-
-### Palette B selected (2026-11-10)
-
-The operator approved the mid-tone Fable proposal: warm stone #C2BCB0 across
-home, estimate and service pages, soft charcoal cards and a small charcoal legal
-strip. Body text is charcoal; orange CTAs use charcoal labels. The color layer is
-centralized in the base.css tokens, including explicit form-control colors,
-color-scheme and autofill overrides. Colors can be swapped without layout changes.
-“Commercial & public works” / “Obras comerciales y públicas” is the working third
-path label. The headline remains visibly pending approval. Real job examples
-still await the owner-thread list and operator approval. No release is authorized.
-
-
-## Release policy and no-JavaScript safety
-
-`node tools/seo-check.mjs` is the release command and intentionally fails while the headline or public-project proof slot is pending. `--allow-draft` is only for local draft verification; CI never uses it. The protected `main` branch requires `site-release-check`, including freshness, planted-defect controls and the default release command. Do not merge a pending draft. `node tools/site/release-controls.mjs` runs the real command against a release-eligible scratch fixture and proves placeholder, missing-slogan and duplicate-H1 failures.
-
-The estimate form ships locked, with POST as its native method. The script enables it only after its receipt-checked submit handler is installed. Without JavaScript, or if the script fails, the page provides a real call link to (803) 884-9305 and never promises an online request was saved. No production lead is sent during verification.
-
-`assets/site/legal.css` applies the current screen palette and approved logo B to the three legal pages without changing their wording. Screen SVGs use the safe pixel-identical optimization; flat print/merch masters remain unchanged. County/state contract wording remains inherited and unverified until Filemon approves the job list. A deep commercial/public page waits for that approved scope and examples; existing septic, concrete and drainage pages remain crawlable with EN/ES twins and sitemap entries.

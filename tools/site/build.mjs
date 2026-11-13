@@ -118,7 +118,7 @@ function business(lang) {
     // 50 mi x 1,609.34 m/mi = 80,467 m
     areaServed: [{ '@type': 'GeoCircle', geoMidpoint: geo, geoRadius: '80467' },
       ...['North Augusta, SC', 'Aiken, SC', 'Edgefield, SC', 'Augusta, GA', 'Martinez, GA', 'Evans, GA', 'Grovetown, GA', 'Thomson, GA', 'Waynesboro, GA'].map((name) => ({ '@type': 'City', name }))],
-    // Hours per operator 2026-10-18 (matches the Fil voice agent). Pending Filemon's confirmation.
+    // Mon–Sat 7–7 confirmed by operator after Filemon phone check, 2026-11-13.
     openingHoursSpecification: [{ '@type': 'OpeningHoursSpecification', dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'], opens: '07:00', closes: '19:00' }],
     hasOfferCatalog: { '@type': 'OfferCatalog', name: lang === 'es' ? 'Servicios' : 'Services', itemListElement: SERVICES[lang].map((name) => ({ '@type': 'Offer', itemOffered: { '@type': 'Service', name } })) },
     sameAs: ['https://www.facebook.com/p/FPC-Construction-LLC-100066373038903/', 'https://www.instagram.com/fpcconstructions', ...(TIKTOK ? [TIKTOK] : [])],
@@ -186,6 +186,7 @@ function render(page, lang) {
     lang,
     home: urlOf('home', lang),
     estimate: urlOf('estimate', lang),
+    smsUrl: lang === 'es' ? '/es/sms-opt-in/' : '/sms-opt-in',
     enUrl: page.url.en, esUrl: page.url.es,
     enAbs: ORIGIN + page.url.en, esAbs: ORIGIN + page.url.es,
     canonical: ORIGIN + page.url[lang],
@@ -251,9 +252,12 @@ function sitemap() {
     <priority>${p.key === 'home' ? '1.0' : '0.8'}</priority>
   </url>`);
   }
-  for (const legal of ['privacy', 'terms', 'sms-opt-in']) rows.push(`  <url>
+  for (const legal of ['privacy', 'terms', 'sms-opt-in', 'es/sms-opt-in/']) rows.push(`  <url>
     <loc>${ORIGIN}/${legal}</loc>
-    <lastmod>2026-10-19</lastmod>
+    <lastmod>2026-11-12</lastmod>${legal.includes('sms-opt-in') ? `
+    <xhtml:link rel="alternate" hreflang="en-US" href="${ORIGIN}/sms-opt-in"/>
+    <xhtml:link rel="alternate" hreflang="es-US" href="${ORIGIN}/es/sms-opt-in/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="${ORIGIN}/sms-opt-in"/>` : ''}
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>`);

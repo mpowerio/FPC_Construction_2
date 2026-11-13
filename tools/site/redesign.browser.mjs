@@ -73,7 +73,8 @@ try {
         });
         assert.ok(hierarchy.treeBelow, 'Tree work follows all three main service paths');
         assert.ok(hierarchy.cards.every(card => Math.abs(card.width-hierarchy.cards[0].width)<1), 'Three equal service paths');
-        assert.match(await page.locator('h1').innerText(), /pending approval|pendiente de aprobación/);
+        assert.equal(await page.locator('h1').innerText(), path === '/es/' ? 'Sépticos. Concreto. Obras comerciales y públicas.' : 'Septic. Concrete. Commercial & public works.');
+        assert.equal(await page.locator('[data-release-pending]').count(), 0, 'No held public copy remains');
         assert.equal(await page.locator('.trade--public img').count(), 0, 'No unverified public-project photo');
         assert.equal(await page.locator('.site-header .plate img').getAttribute('src'), '/assets/brand/fpc-lockup-enhanced-light.svg');
         assert.equal(await page.locator('.site-footer .plate img').getAttribute('src'), '/assets/brand/fpc-lockup-enhanced-light.svg');

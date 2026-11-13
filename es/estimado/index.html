@@ -451,6 +451,15 @@ elevenlabs-convai {
   --el-focus-color: #ED000C;
 }
 @media (min-width: 900px) { elevenlabs-convai { right: 32px; bottom: 32px; } }
+/* Compact JJ keeps its front-door position. Reserve the bottom edge and move above
+   the mobile action bar; suppression only applies after the CDN adapter matches. */
+@media (max-width: 899px) {
+  body { padding-bottom: calc(72px + env(safe-area-inset-bottom)); }
+  elevenlabs-convai.jj-adapted { bottom: calc(12px + env(safe-area-inset-bottom)); transition: opacity 160ms var(--ease-out), transform 160ms var(--ease-out); }
+  html.jj-bar-shown elevenlabs-convai.jj-adapted { bottom: calc(80px + env(safe-area-inset-bottom)); }
+  elevenlabs-convai.jj-adapted.jj-suppressed { opacity: 0; transform: translateY(8px); pointer-events: none; }
+}
+
 
 /* ---------- Language suggestion (only when the browser prefers Spanish and no choice is stored) ---------- */
 .lang-hint {
@@ -1017,7 +1026,7 @@ body, body.page-home { background-image: var(--m-concrete), var(--m-cure), var(-
 
       <div class="callbox">
         <h2 class="h3">¿Prefiere hablar?</h2>
-        <p>Fil, nuestro asistente virtual con inteligencia artificial, contesta las 24 horas, en inglés o en español.</p>
+        <p>JJ, nuestro asistente virtual con inteligencia artificial, contesta las 24 horas, en inglés o en español.</p>
         <a class="btn btn--line btn--block" href="tel:+18038849305"><span>Llame al <span class="num">(803) 884-9305</span></span><span class="btn__nub" aria-hidden="true"><svg><use href="#i-phone"/></svg></span></a>
       </div>
 
@@ -1067,8 +1076,8 @@ body, body.page-home { background-image: var(--m-concrete), var(--m-cure), var(-
               <div class="field">
                 <label for="phone">Teléfono <span class="req">(obligatorio)</span></label>
                 <p class="hint" id="phone-hint">Le llamamos a este número.</p>
-                <div class="control"><input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel-national" required aria-describedby="phone-hint phone-err" placeholder="(803) 555-0123"></div>
-                <p class="err" id="phone-err" aria-live="polite"><svg aria-hidden="true"><use href="#i-alert"/></svg><span class="err__msg"></span><span class="err__size" aria-hidden="true"><span>Escriba un número de teléfono para poder llamarle.</span><span>Escriba un número de 10 dígitos, por ejemplo (803) 555-0123.</span></span></p>
+                <div class="control"><input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel-national" required aria-describedby="phone-hint phone-err" placeholder="Su teléfono de 10 dígitos"></div>
+                <p class="err" id="phone-err" aria-live="polite"><svg aria-hidden="true"><use href="#i-alert"/></svg><span class="err__msg"></span><span class="err__size" aria-hidden="true"><span>Escriba un número de teléfono para poder llamarle.</span><span>Escriba su teléfono de 10 dígitos.</span></span></p>
               </div>
               <div class="field">
                 <label for="email">Correo electrónico <span class="req">(opcional)</span></label>
@@ -1149,7 +1158,7 @@ body, body.page-home { background-image: var(--m-concrete), var(--m-cure), var(-
             <span class="submit__bar" aria-hidden="true"></span>
           </button>
 
-          <p class="notice" id="form-note">Usamos su número de teléfono y su correo electrónico para responder a su solicitud y atenderle como cliente. Solo le mandamos mensajes de texto si usted lo pide o acepta recibirlos. Vea nuestra <a href="/privacy">Política de privacidad</a>, los <a href="/terms">Términos</a> y los <a href="/sms-opt-in">Términos de SMS</a>.</p>
+          <p class="notice" id="form-note">Usamos su número de teléfono y su correo electrónico para responder a su solicitud y atenderle como cliente. Solo le mandamos mensajes de texto si usted lo pide o acepta recibirlos. Vea nuestra <a href="/privacy">Política de privacidad</a>, los <a href="/terms">Términos</a> y los <a href="/es/sms-opt-in/">Términos de SMS</a>.</p>
         </form>
         <div class="callbox form-fallback" id="form-fallback"><p>Las solicitudes en línea necesitan JavaScript. Llame a FPC para hablar de su proyecto. No se ha enviado nada.</p><a href="tel:+18038849305">Llame al (803) 884-9305</a></div>
       </div>
@@ -1172,7 +1181,7 @@ body, body.page-home { background-image: var(--m-concrete), var(--m-cure), var(-
   <div class="wrap footer-grid">
     <div>
       <a class="plate" href="/es/" aria-label="Página principal de FPC Construction"><span class="plate__core"><img src="/assets/brand/fpc-lockup-enhanced-light.svg" width="3543" height="2239" alt="FPC Construction" loading="lazy" decoding="async"></span></a>
-      <p class="small muted" style="margin-top:var(--s-16)">Fil, nuestro asistente virtual con inteligencia artificial, contesta el teléfono las 24 horas, en inglés o en español.</p>
+      <p class="small muted" style="margin-top:var(--s-16)">JJ, nuestro asistente virtual con inteligencia artificial, contesta el teléfono las 24 horas, en inglés o en español.</p>
       <div class="social">
         <a href="https://www.facebook.com/p/FPC-Construction-LLC-100066373038903/" aria-label="FPC en Facebook" rel="noopener"><svg aria-hidden="true"><use href="#i-fb"/></svg></a>
         <a href="https://www.instagram.com/fpcconstructions" aria-label="FPC en Instagram" rel="noopener"><svg aria-hidden="true"><use href="#i-ig"/></svg></a>
@@ -1211,12 +1220,12 @@ body, body.page-home { background-image: var(--m-concrete), var(--m-cure), var(-
     <nav aria-label="Legal">
       <a href="/privacy">Privacidad</a>
       <a href="/terms">Términos</a>
-      <a href="/sms-opt-in">Términos de SMS</a>
+      <a href="/es/sms-opt-in/">Términos de SMS</a>
     </nav>
     <a class="muted" href="https://mpowerio.ai" rel="noopener">Desarrollado por mpowerio.ai</a>
   </div>
 </footer>
-<script type="application/json" id="form-msgs">{"err.first":"Escriba su nombre.","err.last":"Escriba su apellido.","err.phone.req":"Escriba un número de teléfono para poder llamarle.","err.phone.bad":"Escriba un número de 10 dígitos, por ejemplo (803) 555-0123.","err.email":"Este correo parece incompleto. Revise la @ y lo que va después.","sum.h":"Revise esto antes de enviar:","fail.h":"No pudimos confirmar que recibimos su solicitud.","fail.p":"Sus datos siguen aquí. Intente de nuevo o llame al \u003ca class=\"num\" href=\"tel:+18038849305\">(803) 884-9305\u003c/a>.","fail.retry":"Intentar de nuevo","ok.h":"Listo. Recibimos su solicitud.","ok.p":"Filemon le va a llamar para quedar en una hora para la visita.","ok.ref":"Número de referencia","ok.sooner":"¿Lo necesita antes? Llame al \u003ca class=\"num\" href=\"tel:+18038849305\">(803) 884-9305\u003c/a>.","ok.home":"Volver a la página principal","e.submit":"Enviar mi solicitud de estimado","e.sending":"Enviando su solicitud…","ok.sent":"Lo que nos mandó","ok.s.name":"Nombre","ok.s.phone":"Teléfono","ok.s.email":"Correo electrónico","ok.s.addr":"Dirección de la propiedad","ok.s.type":"Trabajo","ok.s.best":"Hora para llamarle","ok.s.lang":"Idioma preferido","ok.s.details":"Sobre el trabajo"}</script>
+<script type="application/json" id="form-msgs">{"err.first":"Escriba su nombre.","err.last":"Escriba su apellido.","err.phone.req":"Escriba un número de teléfono para poder llamarle.","err.phone.bad":"Escriba su teléfono de 10 dígitos.","err.email":"Este correo parece incompleto. Revise la @ y lo que va después.","sum.h":"Revise esto antes de enviar:","fail.h":"No pudimos confirmar que recibimos su solicitud.","fail.p":"Sus datos siguen aquí. Intente de nuevo o llame al \u003ca class=\"num\" href=\"tel:+18038849305\">(803) 884-9305\u003c/a>.","fail.retry":"Intentar de nuevo","ok.h":"Listo. Recibimos su solicitud.","ok.p":"Filemon le va a llamar para quedar en una hora para la visita.","ok.ref":"Número de referencia","ok.sooner":"¿Lo necesita antes? Llame al \u003ca class=\"num\" href=\"tel:+18038849305\">(803) 884-9305\u003c/a>.","ok.home":"Volver a la página principal","e.submit":"Enviar mi solicitud de estimado","e.sending":"Enviando su solicitud…","ok.sent":"Lo que nos mandó","ok.s.name":"Nombre","ok.s.phone":"Teléfono","ok.s.email":"Correo electrónico","ok.s.addr":"Dirección de la propiedad","ok.s.type":"Trabajo","ok.s.best":"Hora para llamarle","ok.s.lang":"Idioma preferido","ok.s.details":"Sobre el trabajo"}</script>
 <script src="/assets/site/estimate.js" defer></script>
 <script src="/assets/site/core.js" defer></script>
 <!-- Web analytics: OFF (no token; see tools/site/build.mjs). -->

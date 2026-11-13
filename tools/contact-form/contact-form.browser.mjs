@@ -262,8 +262,8 @@ test('negative control: removing the reserved error sizers makes the 390px phone
 
 // ----- Third-party controls start in the page language, whatever the browser prefers -----
 const FIL_TEXT = {
-  en: { 'expand-text': 'Chat with Fil', 'action-text': 'Questions? Ask Fil', 'start-call-text': 'Start a call', 'end-call-text': 'End call', 'listening-text': 'Listening', 'speaking-text': 'Talk to interrupt' },
-  es: { 'expand-text': 'Hablar con Fil', 'action-text': '¿Preguntas? Pregúntele a Fil', 'start-call-text': 'Iniciar llamada', 'end-call-text': 'Colgar', 'listening-text': 'Escuchando', 'speaking-text': 'Hable para interrumpir' }
+  en: { 'expand-text': 'Chat with JJ', 'action-text': 'Questions? Ask JJ', 'start-call-text': 'Start a call', 'end-call-text': 'End call', 'listening-text': 'Listening', 'speaking-text': 'Talk to interrupt' },
+  es: { 'expand-text': 'Hablar con JJ', 'action-text': '¿Preguntas? Pregúntele a JJ', 'start-call-text': 'Iniciar llamada', 'end-call-text': 'Colgar', 'listening-text': 'Escuchando', 'speaking-text': 'Hable para interrumpir' }
 };
 const lum = (hex) => {
   const [r, g, b] = hex.trim().replace('#', '').match(/../g).map((h) => parseInt(h, 16) / 255).map((v) => v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4);
@@ -271,15 +271,15 @@ const lum = (hex) => {
 };
 const contrast = (a, b) => { const [x, y] = [lum(a), lum(b)].sort((m, n) => n - m); return (x + 0.05) / (y + 0.05); };
 for (const [path, locale, want] of [['/es/', 'en-US', 'es'], ['/es/estimado/', 'en-US', 'es'], ['/', 'es-MX', 'en'], ['/estimate/', 'es-MX', 'en']]) {
-  test(`${path} with a ${locale} browser initializes Fil${path === '/' ? ' and PayPal' : path === '/es/' ? ' (and no English PayPal message)' : ''} in ${want === 'es' ? 'Spanish' : 'English'}`, async () => {
+  test(`${path} with a ${locale} browser initializes JJ${path === '/' ? ' and PayPal' : path === '/es/' ? ' (and no English PayPal message)' : ''} in ${want === 'es' ? 'Spanish' : 'English'}`, async () => {
     const { page, context, externals } = await setup(json(201, accepted), { path, locale });
     try {
-      assert.equal(await page.locator('elevenlabs-convai').count(), 0, 'Fil waits for the first interaction');
+      assert.equal(await page.locator('elevenlabs-convai').count(), 0, 'JJ waits for the first interaction');
       await page.keyboard.press('Shift');
       await page.locator('elevenlabs-convai').waitFor({ state: 'attached' });
       const fil = page.locator('elevenlabs-convai');
       const attrs = await fil.evaluate((el) => Object.fromEntries([...el.attributes].map((a) => [a.name, a.value])));
-      assert.equal(attrs['override-language'], want, 'Fil language comes from <html lang>');
+      assert.equal(attrs['override-language'], want, 'JJ language comes from <html lang>');
       for (const [k, v] of Object.entries(FIL_TEXT[want])) assert.equal(attrs[k], v, `${k} in the page language`);
       assert.ok(externals.some((u) => u === 'https://elevenlabs.io/convai-widget/index.js'), 'widget script requested (and blocked here)');
       // Widget buttons are background var(--el-btn-color) with text var(--el-btn-text-color);
@@ -474,7 +474,7 @@ test('switching EN -> ES -> EN after validation keeps answers, shows errors in e
     assert.equal(await page.locator('#phone').inputValue(), '(555');
     assert.equal(await page.locator('#details').inputValue(), 'Línea uno\nLínea dos');
     assert.match(await page.locator('#last_name-err').innerText(), /Escriba su apellido/);
-    assert.match(await page.locator('#phone-err').innerText(), /número de 10 dígitos/);
+    assert.match(await page.locator('#phone-err').innerText(), /Escriba su teléfono de 10 dígitos\./);
     assert.match(await page.locator('#summary').innerText(), /Revise esto antes de enviar/);
     assert.equal(await page.locator('#failure[role="alert"]').count(), 0, 'no failure banner: nothing was sent');
     await switchTo(page, 'en'); await landed(page, '/estimate/');
@@ -701,7 +701,7 @@ test('an inline error from blur (before any submit) survives the language switch
     assert.match(await page.locator('#phone-err').innerText(), /10-digit phone number/);
     await switchTo(page, 'es'); await landed(page, '/es/estimado/');
     assert.equal(await page.locator('#phone').inputValue(), '(555');
-    assert.match(await page.locator('#phone-err').innerText(), /número de 10 dígitos/);
+    assert.match(await page.locator('#phone-err').innerText(), /Escriba su teléfono de 10 dígitos\./);
     assert.equal(await page.locator('#phone').getAttribute('aria-invalid'), 'true');
     assert.equal(await page.locator('#summary').isHidden(), true, 'no summary: nothing was submitted');
     for (const id of ['first_name', 'last_name', 'email']) assert.equal(await page.locator(`#${id}-err`).innerText(), '', `untouched #${id} stays quiet`);
@@ -736,7 +736,7 @@ test('negative control: a hint outside the guarded switch abandons a pending sen
 });
 
 for (const path of ['/estimate/', '/es/estimado/']) {
-  test(`no JavaScript gives a real call path and cannot submit private answers: ${path}`, async () => {
+  test(`no JavaScript offers a call path and blocks private-field submission: ${path}`, async () => {
     const s = await setup(() => { throw new Error('No-JS must never POST'); }, {path, javaScriptEnabled:false});
     try {
       assert.equal(await s.page.locator('#estimate-form').isVisible(), false);
@@ -749,24 +749,32 @@ for (const path of ['/estimate/', '/es/estimado/']) {
       assert.equal(s.requests(), 0);
     } finally { await s.context.close(); }
   });
-  test(`failed script leaves a visible fallback and locked form: ${path}`, async () => {
+  test(`failed estimate script retains the call fallback and locked form: ${path}`, async () => {
     const s = await setup(() => { throw new Error('Failed script must never POST'); }, {path, mutate:()=>''});
     try {
       assert.equal(await s.page.locator('#form-fallback').isVisible(), true);
       assert.equal(await s.page.locator('#first_name').isDisabled(), true);
       assert.equal(await s.page.locator('#submit').isDisabled(), true);
+      assert.equal(new URL(s.page.url()).search, '');
       assert.equal(s.requests(), 0);
     } finally { await s.context.close(); }
   });
-  test(`commercial/public preselection survives to the saved-receipt payload: ${path}`, async () => {
-    const s = await setup(route => route.fulfill({json:accepted}), {path:path+'?type=commercial-and-public-works'});
+  test(`form contrast fence survives dark browser preference; autofill rules exist: ${path}`, async () => {
+    const s = await setup(() => { throw new Error('Contrast check must not POST'); }, {path});
     try {
+      await s.page.emulateMedia({colorScheme:'dark'});
+      const fence = await s.page.evaluate(() => {
+        const rules = [...document.styleSheets].flatMap(sheet => { try { return [...sheet.cssRules]; } catch { return []; } });
+        const explicit = rules.some(r => r.selectorText?.includes('input[type="text"]') && r.style?.color && r.style?.backgroundColor);
+        const autofill = rules.some(r => r.selectorText?.includes('input:-webkit-autofill') && r.style?.getPropertyValue('-webkit-text-fill-color') && r.style?.getPropertyValue('-webkit-box-shadow').includes('1000px'));
+        return {scheme:getComputedStyle(document.documentElement).colorScheme, explicit, autofill, fields:['first_name','phone','email','details'].map(id => {const s=getComputedStyle(document.getElementById(id));return {color:s.color,background:s.backgroundColor};})};
+      });
+      assert.ok(fence.scheme.includes('light'));
+      assert.ok(fence.explicit, 'Explicit field text/background colors must remain');
+      assert.ok(fence.autofill, 'Autofill override must remain; this is not real autofill paint proof');
+      assert.ok(fence.fields.every(f => f.color !== f.background && !f.background.endsWith(', 0)')));
       assert.equal(await s.page.locator('#form-fallback').isVisible(), false);
-      assert.equal(await s.page.locator('input[name="project_type"]:checked').inputValue(), 'commercial-and-public-works');
-      for (const [field,value] of Object.entries(inquiry)) await s.page.locator('#'+field).fill(value);
-      await submit(s.page); await settled(s.page);
-      assert.equal(s.payloads[0].body.project_type, 'commercial-and-public-works');
-      assert.equal(await s.page.locator('.success').count(), 1);
+      assert.equal(s.requests(), 0);
     } finally { await s.context.close(); }
   });
 }
