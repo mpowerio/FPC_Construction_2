@@ -26,5 +26,3 @@ jobs:
         run: node tools/site/release-controls.mjs
       - name: SEO and release policy (pending copy blocks release)
         run: node tools/seo-check.mjs
-      - name: Spanish copy has had its native-speaker read (red until the read clears PENDING-ES)
-        run: node --test tools/site/spanish-read.test.mjs

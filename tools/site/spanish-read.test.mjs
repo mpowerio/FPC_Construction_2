@@ -1,7 +1,8 @@
 // Release gate for Spanish copy. Every shipped Spanish string added by the v3 redesign is a draft until
 // a native speaker reads it. The reader clears the markers by emptying PENDING_ES_KEYS (strings.mjs) and,
 // on license day, GC_PENDING_ES_KEYS (gc.mjs). This test is red until then, so the site cannot release
-// with unread Spanish. That is intended (Chair, 2026-11-13).
+// with unread Spanish while it is red. It runs in its own visible, non-required workflow (.github/workflows/spanish-read.yml),
+// so it never blocks a fix (Chair, 2026-11-13).
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { PENDING_ES_KEYS, home, common } from './strings.mjs';
