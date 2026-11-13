@@ -3,6 +3,8 @@ import assert from 'node:assert/strict';
 import { renderReviews, GOOGLE_REVIEW_URL } from './reviews.mjs';
 import { renderTreeWork, treeMediaFiles, TREE_WORK } from './media.mjs';
 import { common } from './strings.mjs';
+import { readFileSync } from 'node:fs';
+import { services } from './services.mjs';
 
 const t = key => common.en[key];
 const url = 'https://www.google.com/maps?cid=synthetic-fixture';
@@ -84,4 +86,12 @@ test('approved message is an exact dated testimonial, never an unverified Google
   }
   const wrongSource = structuredClone(TREE_WORK); wrongSource.testimonial.kind = 'google-review';
   assert.throws(() => renderTreeWork('en', t, wrongSource));
+});
+
+test('published home and service copy omits unverified county/state contract claims', () => {
+  const pages = ['index.html', 'es/index.html', ...services.flatMap(s => Object.values(s.url).map(url => url.slice(1)+'index.html'))];
+  for (const file of pages) {
+    const html = readFileSync(new URL('../../'+file, import.meta.url), 'utf8');
+    assert.doesNotMatch(html, /county (?:or|and|&(?:amp;)?) state contract work|contratos? (?:del|para el) condado/i, file);
+  }
 });

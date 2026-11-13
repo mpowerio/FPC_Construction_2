@@ -18,7 +18,7 @@ a:focus-visible { outline:3px solid #553F09; outline-offset:4px; }
 .site-footer a:focus-visible, .band a:focus-visible { outline-color:#F4B80C; }
 /* The SMS document uses its own minimal class names. */
 body.sms-legal h1 { color:#262626; }
-body.sms-legal h2, body.sms-legal .keyword, body.sms-legal a { color:#553F09; }
+body.sms-legal h2, body.sms-legal h3, body.sms-legal .keyword, body.sms-legal a { color:#553F09; }
 body.sms-legal .biz, body.sms-legal footer { color:#35332F; }
 body.sms-legal header { border-color:#553F09; }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior:auto; } }
