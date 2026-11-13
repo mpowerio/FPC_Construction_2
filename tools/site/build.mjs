@@ -8,14 +8,17 @@
 // language but not the other, a missing image file, or a leftover {{...}} in the output.
 import assert from 'node:assert/strict';
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
+import { createHash } from 'node:crypto';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import * as S from './strings.mjs';
 import { renderReviews } from './reviews.mjs';
 import { renderTreeWork, treeMediaFiles } from './media.mjs';
 import { services, serviceLabels } from './services.mjs';
-import { whatsappUrl, tiktokProfile } from './social.mjs';
+import { whatsappUrl, tiktokProfile, youtubeChannel } from './social.mjs';
+import { GC, GC_PAGES, GC_STRINGS, renderGcPage, assertReadyToPublish } from './gc.mjs';
 const TIKTOK = tiktokProfile();
+const YOUTUBE = youtubeChannel();
 const WHATSAPP = whatsappUrl();
 
 // ---------- Configuration ----------
@@ -33,6 +36,13 @@ const root = join(here, '..', '..');
 for (const asset of treeMediaFiles()) assert.ok(typeof asset === 'string' && existsSync(join(root, asset)), `Missing approved tree-work asset: ${asset}`);
 const src = (f) => readFileSync(join(here, 'src', f), 'utf8');
 const CHECK = process.argv.includes('--check');
+// --gc-preview <dir>: build every page, GC pages included, into <dir> for review renders.
+// Never writes into the repo; the public build is unchanged while GC.enabled is false.
+const previewAt = process.argv.indexOf('--gc-preview');
+const GC_PREVIEW = previewAt > -1 ? process.argv[previewAt + 1] : '';
+if (previewAt > -1 && !GC_PREVIEW) throw new Error('--gc-preview needs an output directory');
+assertReadyToPublish(GC);
+const GC_ON = GC.enabled || !!GC_PREVIEW;
 
 // ---------- Strings: both languages must carry the same keys ----------
 for (const [name, dict] of Object.entries({ common: S.common, home: S.home, estimate: S.estimate })) {
@@ -64,6 +74,8 @@ const PIC = {
   w4: { id: 'gallery-7', alt: 'w4.alt', sizes: '(min-width: 1280px) 384px, (min-width: 900px) 31vw, 82vw' },
   w5: { id: 'project-5', alt: 'w5.alt', sizes: '(min-width: 1280px) 384px, (min-width: 900px) 31vw, 82vw' },
   w6: { id: 'gallery-15', alt: 'w6.alt', sizes: '(min-width: 1280px) 384px, (min-width: 900px) 31vw, 82vw' },
+  inset: { id: 'project-1', alt: 'w3.alt', sizes: '(min-width: 900px) 300px, 1px' },
+  public: { id: 'gallery-9', alt: 'core.d.alt', sizes: '(min-width: 1280px) 520px, (min-width: 900px) 40vw, calc(100vw - 40px)', defer: true },
   estimate: { id: 'gallery-14', alt: 'e.photo.alt', sizes: '(min-width: 1280px) 440px, 34vw' },
 };
 const widthsFor = (id) => {
@@ -85,6 +97,8 @@ function picture(p, t, deferred = p.defer) {
   return `<picture><source type="image/avif" srcset="${srcset(p.id, 'avif')}" sizes="${p.sizes}">` +
     `<img src="/assets/img/${p.id}-${fallback}.webp" srcset="${srcset(p.id, 'webp')}" sizes="${p.sizes}" width="${max}" height="${max * 3 / 4}" ${load} alt="${esc(t(p.alt))}"></picture>`;
 }
+const nub = (id) => `<span class="btn__nub" aria-hidden="true"><svg><use href="#i-${id}"/></svg></span>`;
+const tnub = '<span class="textlink__nub" aria-hidden="true"><svg><use href="#i-chev"/></svg></span>';
 const logo = (sizes, alt, lazy) => `<img src="/assets/brand/fpc-lockup-enhanced-light.svg" width="3543" height="2239" alt="${alt}"${lazy ? ' loading="lazy" decoding="async"' : ''}>`;
 
 // ---------- Structured data ----------
@@ -121,7 +135,7 @@ function business(lang) {
     // Mon–Sat 7–7 confirmed by operator after Filemon phone check, 2026-11-13.
     openingHoursSpecification: [{ '@type': 'OpeningHoursSpecification', dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'], opens: '07:00', closes: '19:00' }],
     hasOfferCatalog: { '@type': 'OfferCatalog', name: lang === 'es' ? 'Servicios' : 'Services', itemListElement: SERVICES[lang].map((name) => ({ '@type': 'Offer', itemOffered: { '@type': 'Service', name } })) },
-    sameAs: ['https://www.facebook.com/p/FPC-Construction-LLC-100066373038903/', 'https://www.instagram.com/fpcconstructions', ...(TIKTOK ? [TIKTOK] : [])],
+    sameAs: ['https://www.facebook.com/p/FPC-Construction-LLC-100066373038903/', 'https://www.instagram.com/fpcconstructions', ...(TIKTOK ? [TIKTOK] : []), ...(YOUTUBE ? [YOUTUBE] : [])],
   };
 }
 const ldScript = (obj) => `<script type="application/ld+json">\n${JSON.stringify(obj, null, 2).replace(/</g, '\\u003c')}\n</script>`;
@@ -167,16 +181,23 @@ const ppSlot = (lang) => PAYPAL_MESSAGE_LANGS.includes(lang)
 
 // ---------- Pages ----------
 const PAGES = [
-  { key: 'home', tpl: 'home.html', css: 'home.css', url: { en: '/', es: '/es/' } },
-  { key: 'estimate', tpl: 'estimate.html', css: 'estimate.css', url: { en: '/estimate/', es: '/es/estimado/' } },
-  ...services.map(service => ({ key: 'service', tpl: 'service.html', css: 'service.css', url: service.url, service })),
+  { key: 'home', tpl: 'home.html', url: { en: '/', es: '/es/' } },
+  { key: 'estimate', tpl: 'estimate.html', url: { en: '/estimate/', es: '/es/estimado/' } },
+  ...services.map(service => ({ key: 'service', tpl: 'service.html', url: service.url, service })),
+  // General-contractor pages: emitted only on license day (GC.enabled) or into a --gc-preview folder.
+  ...(GC_ON ? Object.entries(GC_PAGES).map(([gc, url]) => ({ key: 'gc', gc, tpl: 'gc.html', url })) : []),
 ];
 const urlOf = (key, lang) => PAGES.find((p) => p.key === key).url[lang];
 const fileFor = (url) => join(root, url.replace(/^\//, ''), 'index.html');
-const baseCss = src('base.css');
+// One cached stylesheet for every built page (tools/site/src/site.css -> assets/site/site.css).
+const siteCss = src('site.css');
+const cssHash = createHash('sha256').update(siteCss).digest('hex').slice(0, 10);
+const estimateCss = src('estimate.css');
+// The headline's last phrase carries the gold accent line.
+const headingHtml = (h) => { const parts = h.split(/(?<=\.)\s+/); return parts.slice(0, -1).join('<br>') + '<br><span class="display__accent">' + parts[parts.length - 1] + '</span>'; };
 
 function render(page, lang) {
-  const dict = { ...S.common[lang], ...(page.key === 'service' ? { ...S.home[lang], ...serviceLabels[lang], ...page.service[lang] } : S[page.key][lang]) };
+  const dict = { ...S.common[lang], ...(page.key === 'service' || page.key === 'gc' ? { ...S.home[lang], ...serviceLabels[lang], ...(page.service ? page.service[lang] : {}), ...(page.key === 'gc' ? { 'meta.title': GC_STRINGS[lang][`gc.${page.gc === 'commercial' ? 'c' : page.gc === 'capabilities' ? 'cap' : 'sub'}.meta.title`], 'meta.desc': GC_STRINGS[lang][`gc.${page.gc === 'commercial' ? 'c' : page.gc === 'capabilities' ? 'cap' : 'sub'}.meta.desc`] } : {}) } : S[page.key][lang]) };
   const t = (k) => { if (!(k in dict)) throw new Error(`missing string ${k} (${page.key}/${lang})`); return dict[k]; };
   const reviews = renderReviews(t);
   const other = lang === 'en' ? 'es' : 'en';
@@ -196,7 +217,23 @@ function render(page, lang) {
     preload: page.key === 'home'
       ? `<link rel="preload" as="image" type="image/avif" imagesrcset="${srcset(hero.id, 'avif')}" imagesizes="${hero.sizes}" fetchpriority="high">`
       : '',
-    css: (baseCss + '\n' + (page.key === 'service' ? src('home.css') + '\n' : '') + src(page.css) + '\n' + src('material.css')).trim(),
+    commercialUrl: GC_ON ? GC_PAGES.commercial[lang] : `${urlOf('home', lang)}#commercial`,
+    commercialLane: GC_ON ? GC_PAGES.commercial[lang] : `${urlOf('estimate', lang)}?type=commercial-and-public-works`,
+    commercialCurrent: page.gc === 'commercial' ? ' aria-current="page"' : '',
+    gcFooter: GC_ON ? `<li><a href="${GC_PAGES.capabilities[lang]}">${GC_STRINGS[lang]['gc.nav.cap']}</a></li><li><a href="${GC_PAGES.subcontractors[lang]}">${GC_STRINGS[lang]['gc.nav.subs']}</a></li>` : '',
+    gcBody: page.key === 'gc' ? renderGcPage(page.gc, lang, {
+      t, nub: (id = 'chev') => nub(id), tnub: () => tnub,
+      label: (no, text) => `<p class="label">${no === 'mark' ? '<span class="label__mark" aria-hidden="true"></span>' : no + ' / '}${text}</p>`,
+      pic: (id, alt) => picture({ id, alt: '__raw', sizes: '(min-width: 900px) 52vw, calc(100vw - 52px)', eager: true }, (k) => (k === '__raw' ? alt : t(k)), false),
+      estimateUrl: urlOf('estimate', lang), url: (k) => GC_PAGES[k][lang],
+    }, { preview: !GC.enabled }) : '',
+    inlineCss: page.key === 'estimate' ? `<style>\n${estimateCss.trim()}\n</style>` : '',
+    cssHash,
+    heading: page.key === 'home' ? headingHtml(t('hero.heading')) : '',
+    phoneFact: page.key === 'home' ? S.estimate[lang]['e.call.p'].replace(/\.$/, '') : '',
+    septicCurrent: page.service?.id === 'septic' ? ' aria-current="page"' : '',
+    concreteCurrent: page.service?.id === 'concrete' ? ' aria-current="page"' : '',
+    relatedRows: page.key !== 'service' ? '' : services.filter(s => s.id !== page.service?.id).map(s => `<a class="row" href="${s.url[lang]}"><span class="row__name">${s[lang]['service.label']}</span><span class="row__desc">${s[lang]['service.h']}</span>${tnub}</a>`).join('') + `<a class="row" href="${urlOf('home', lang)}#commercial"><span class="row__name">${t('core.public.h')}</span><span class="row__desc">${t('core.public.cta')}</span>${tnub}</a>`,
     jsonld: jsonld(page.key, lang, t, ORIGIN + page.url[lang]),
     analytics,
     reviewSummary: reviews.summary, reviewSection: reviews.section, reviewFooter: reviews.footer,
@@ -204,7 +241,9 @@ function render(page, lang) {
     whatsappHero: WHATSAPP ? `<a class="hero__wa" href="${esc(WHATSAPP)}" rel="noopener">WhatsApp <span aria-hidden="true">↗</span></a>` : '',
     whatsappFooter: WHATSAPP ? `<a class="social__text" href="${esc(WHATSAPP)}" rel="noopener">WhatsApp<span class="vh"> FPC Construction</span></a>` : '',
     tiktok: TIKTOK ? `<a class="social__text" href="${esc(TIKTOK)}" rel="noopener">TikTok<span class="vh"> FPC Construction</span></a>` : '',
-    tiktokStory: TIKTOK && page.key !== 'estimate' ? `<a class="social-story" href="${esc(TIKTOK)}" rel="noopener"><span>TikTok</span><span>${t('field.watch')} <span aria-hidden="true">↗</span></span></a>` : '',
+    youtube: YOUTUBE ? `<a class="social__text" href="${esc(YOUTUBE)}" rel="noopener">YouTube<span class="vh"> FPC Construction</span></a>` : '',
+    youtubeStory: YOUTUBE && page.key !== 'estimate' ? `<a class="social-story panel" href="${esc(YOUTUBE)}" rel="noopener"><span>YouTube</span><span>${t('field.watch')} <span aria-hidden="true">↗</span></span></a>` : '',
+    tiktokStory: TIKTOK && page.key !== 'estimate' ? `<a class="social-story panel" href="${esc(TIKTOK)}" rel="noopener"><span>TikTok</span><span>${t('field.watch')} <span aria-hidden="true">↗</span></span></a>` : '',
     concreteUrl: services.find(s => s.id === 'concrete').url[lang],
     septicUrl: services.find(s => s.id === 'septic').url[lang],
     drainageUrl: services.find(s => s.id === 'drainage').url[lang],
@@ -222,9 +261,11 @@ function render(page, lang) {
   const expand = (html, depth = 0) => {
     if (depth > 4) throw new Error('partial nesting too deep');
     return html
+      .replace(/\{\{nub(?::([a-z]+))?\}\}/g, (_, id) => nub(id || 'chev'))
+      .replace(/\{\{tnub\}\}/g, tnub)
       .replace(/\{\{> ([a-z]+)\}\}/g, (_, n) => expand(partial(n), depth + 1))
       .replace(/\{\{row ([a-z-]+) ([a-z]+)\}\}/g, (_, slug, k) =>
-        `<li><a class="row" href="${slug === 'concrete' ? services.find(s => s.id === 'concrete').url[lang] : `${v.estimate}?type=${slug}`}"><span class="row__name">${t(`svc.${k}`)}</span><span class="row__desc">${t(`svc.${k}.d`)}</span><span class="row__nub" aria-hidden="true"><svg><use href="#i-chev"/></svg></span></a></li>`)
+        `<li><a class="row" href="${slug === 'concrete' ? services.find(s => s.id === 'concrete').url[lang] : `${v.estimate}?type=${slug}`}"><span class="row__name">${t(`svc.${k}`)}</span><span class="row__desc">${t(`svc.${k}.d`)}</span>${tnub}</a></li>`)
       .replace(/\{\{chip ([a-z-]+) ([a-z]+)\}\}/g, (_, slug, k) =>
         `<label class="chip"><input type="radio" name="project_type" value="${slug}"><span>${t(`t.${k}`)}</span></label>`)
       .replace(/\{\{img\.([a-z0-9]+)\}\}/g, (_, n) => { if (!PIC[n]) throw new Error(`unknown image ${n}`); return picture(PIC[n], t); })
@@ -232,10 +273,10 @@ function render(page, lang) {
       .replace(/\{\{t\.([a-z0-9.]+)\}\}/g, (_, k) => t(k));
   };
   // v.css and v.jsonld can contain "{" sequences, so substitute them last via placeholders.
-  const raw = src(page.tpl).replace('{{v.css}}', '\u0000CSS\u0000').replace('{{v.jsonld}}', '\u0000LD\u0000');
+  const raw = src(page.tpl).replace('{{v.inlineCss}}', '\u0000CSS\u0000').replace('{{v.jsonld}}', '\u0000LD\u0000');
   let html = expand(raw);
   if (/\{\{[^}]*\}\}/.test(html)) throw new Error(`unresolved token in ${page.key}/${lang}: ${html.match(/\{\{[^}]*\}\}/)[0]}`);
-  html = html.replace('\u0000CSS\u0000', v.css).replace('\u0000LD\u0000', v.jsonld).replace(/[ \t]+$/gm, '');
+  html = html.replace('\u0000CSS\u0000', v.inlineCss).replace('\u0000LD\u0000', v.jsonld).replace(/[ \t]+$/gm, '');
   return html;
 }
 
@@ -271,10 +312,12 @@ ${rows.join('\n')}
 const outputs = [];
 for (const p of PAGES) for (const lang of ['en', 'es']) outputs.push([fileFor(p.url[lang]), render(p, lang)]);
 outputs.push([join(root, 'sitemap.xml'), sitemap()]);
+outputs.push([join(root, 'assets', 'site', 'site.css'), siteCss]);
 
 let stale = 0;
 for (const [file, content] of outputs) {
   const rel = file.slice(root.length + 1);
+  if (GC_PREVIEW) { const out = join(GC_PREVIEW, rel); mkdirSync(dirname(out), { recursive: true }); writeFileSync(out, content); continue; }
   if (CHECK) {
     const now = existsSync(file) ? readFileSync(file, 'utf8') : null;
     if (now !== content) { stale++; console.error(`stale: ${rel} (run node tools/site/build.mjs)`); }
@@ -284,4 +327,5 @@ for (const [file, content] of outputs) {
     console.log(`wrote ${rel} ${Buffer.byteLength(content)} bytes`);
   }
 }
+if (GC_PREVIEW) console.log(`GC preview written to ${GC_PREVIEW} (not the repo)`);
 if (CHECK) { if (stale) process.exit(1); console.log(`all ${outputs.length} built files match their sources`); }

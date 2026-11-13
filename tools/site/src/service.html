@@ -2,34 +2,76 @@
 <html lang="{{v.lang}}">
 <head>
 {{> head}}
-<style>
-{{v.css}}
-</style>
+{{v.inlineCss}}
 {{v.jsonld}}
 </head>
-<body class="page-home page-service">
+<body class="page-service">
 {{> icons}}
 {{> header}}
 <main id="main">
-  <section class="service-hero wrap" aria-labelledby="h1">
-    <div>
-      <a class="service-back" href="{{v.home}}#services">← {{t.service.back}}</a>
-      <p class="eyebrow">{{t.service.label}}</p>
-      <h1 id="h1" class="display">{{t.service.h}}</h1>
-      <p class="lead">{{t.service.intro}}</p>
-      <div class="service-actions" data-bar-sentinel><a class="btn btn--red" href="{{v.estimate}}?type={{v.serviceType}}"><span>{{t.cta.estimate}}</span><span class="btn__nub" aria-hidden="true"><svg><use href="#i-chev"/></svg></span></a><a class="hero__call" href="tel:+18038849305"><span class="num">(803) 884-9305</span></a></div>
+  <section class="svc-hero" aria-labelledby="h1">
+    <div class="wrap">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="{{v.home}}">FPC Construction</a><span aria-hidden="true">/</span><a href="{{v.home}}#services">{{t.crumb.services}}</a><span aria-hidden="true">/</span><span aria-current="page">{{t.service.label}}</span></nav>
+      <div class="svc-hero__grid">
+        <div class="svc-hero__text">
+          <p class="label">01 / {{t.service.label}}</p>
+          <h1 id="h1" class="display">{{t.service.h}}</h1>
+          <p class="lead">{{t.service.intro}}</p>
+          <div class="hero__actions" data-bar-sentinel>
+            <a class="btn btn--cta" href="{{v.estimate}}?type={{v.serviceType}}"><span>{{t.cta.estimate}}</span>{{nub}}</a>
+            <a class="hero__call num" href="tel:+18038849305"><svg class="icon" aria-hidden="true"><use href="#i-phone"/></svg>(803) 884-9305</a>
+          </div>
+        </div>
+        <div class="svc-hero__media">
+          <figure class="bezel"><div class="frame">{{v.servicePhoto}}</div></figure>
+        </div>
+      </div>
     </div>
-    <figure class="service-photo"><div class="frame">{{v.servicePhoto}}</div></figure>
   </section>
-  <div class="service-detail wrap">
-    <div class="service-detail__body">
-      <section><h2 class="h2">{{t.service.detail.h}}</h2><p class="lead">{{t.service.detail}}</p></section>
-      <section><h2 class="h2">{{t.service.scope.h}}</h2><p class="lead">{{t.service.scope}}</p></section>
-      <section><p class="eyebrow">{{t.service.before}}</p><h2 class="h2">{{t.service.prepare.h}}</h2><p class="lead">{{t.service.prepare}}</p></section>
-      <section><p class="eyebrow">{{t.service.question.h}}</p><h2 class="h3">{{t.service.question}}</h2><p class="lead">{{t.service.answer}}</p></section>
+
+  <section class="section">
+    <div class="wrap svc-body">
+      <div class="svc-sections">
+        <section class="svc-section" data-reveal><h2 class="h2">{{t.service.detail.h}}</h2><p>{{t.service.detail}}</p></section>
+        <section class="svc-section" data-reveal><h2 class="h2">{{t.service.scope.h}}</h2><p>{{t.service.scope}}</p></section>
+        <section class="svc-section" data-reveal><p class="label">02 / {{t.service.before}}</p><h2 class="h2">{{t.service.prepare.h}}</h2><p>{{t.service.prepare}}</p></section>
+        <section class="qa panel" data-reveal>
+          <p><span class="sign">{{t.service.question.h}}</span></p>
+          <h3>{{t.service.question}}</h3>
+          <p>{{t.service.answer}}</p>
+        </section>
+      </div>
+      <aside class="svc-aside">
+        <div class="aside-card panel">
+          <span class="sign sign--gold">{{t.start.free}}</span>
+          <h2>{{t.service.label}}</h2>
+          <p>{{t.svc.aside.p}}</p>
+          <a class="btn btn--cta btn--block" href="{{v.estimate}}?type={{v.serviceType}}"><span>{{t.cta.estimate}}</span>{{nub}}</a>
+          <a class="hero__call num" href="tel:+18038849305"><svg class="icon" aria-hidden="true"><use href="#i-phone"/></svg>(803) 884-9305</a>
+        </div>
+        <div class="aside-list">
+          <h2>{{t.service.area.h}}</h2>
+          <p class="muted">{{t.service.area.p}}</p>
+          <a class="textlink" href="{{v.home}}#area"><span class="textlink__label">{{t.nav.area}}</span>{{tnub}}</a>
+        </div>
+        <div class="aside-list">
+          <h2>{{t.service.related}}</h2>
+          {{v.relatedRows}}
+        </div>
+      </aside>
     </div>
-    <aside class="service-aside"><p class="eyebrow">CSRA / GA + SC</p><h2 class="h3">{{t.service.area.h}}</h2><p>{{t.service.area.p}}</p><a class="textlink" href="{{v.home}}#area">{{t.nav.area}} <span aria-hidden="true">↗</span></a><h2 class="h3">{{t.service.related}}</h2>{{v.relatedServices}}</aside>
-  </div>
+  </section>
+
+  <section class="section section--asphalt joint" aria-labelledby="rel-h">
+    <div class="wrap">
+      <div class="section-head"><p class="label">03 / {{t.section.work3}}</p><h2 id="rel-h" class="h2">{{t.work.h}}</h2></div>
+      <div class="related__grid">
+        <figure class="shot" data-reveal><div class="frame">{{img.w2}}</div><figcaption><span class="tag">{{t.tag.septic}}</span><span>{{t.w2}}</span></figcaption></figure>
+        <figure class="shot" data-reveal><div class="frame">{{img.w1}}</div><figcaption><span class="tag">{{t.tag.concrete}}</span><span>{{t.w1}}</span></figcaption></figure>
+        <figure class="shot" data-reveal><div class="frame">{{img.w5}}</div><figcaption><span class="tag">{{t.tag.site}}</span><span>{{t.w5}}</span></figcaption></figure>
+      </div>
+    </div>
+  </section>
 </main>
 {{> footer}}
 {{> bars}}

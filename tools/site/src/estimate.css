@@ -26,10 +26,10 @@ legend { float: left; width: 100%; padding: 0; margin-bottom: var(--s-16); font-
 .fields { display: grid; gap: var(--s-8) var(--s-16); }
 @media (min-width: 600px) { .fields--2 { grid-template-columns: 1fr 1fr; } }
 .field { display: grid; align-content: start; }
-.field label, .field .label { font-weight: 600; font-size: var(--t-16); }
+.field label, .field .flabel { font-weight: 600; font-size: var(--t-16); }
 .req { color: var(--c-ink-2); font-weight: 500; font-size: var(--t-14); }
 .hint { font-size: var(--t-14); color: var(--c-ink-2); margin-top: 2px; }
-.control { margin-top: var(--s-8); }
+.ctl { margin-top: var(--s-8); }
 
 /* Form-control contrast fence: explicit colors + color-scheme + autofill override */
 input[type="text"], input[type="tel"], input[type="email"], textarea, select {

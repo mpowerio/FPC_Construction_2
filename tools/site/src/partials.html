@@ -12,6 +12,7 @@
 <meta name="description" content="{{t.meta.desc}}">
 <meta name="robots" content="index, follow, max-image-preview:large">
 <meta name="theme-color" content="#C2BCB0">
+<meta name="color-scheme" content="light">
 <link rel="canonical" href="{{v.canonical}}">
 <link rel="alternate" hreflang="en-US" href="{{v.enAbs}}">
 <link rel="alternate" hreflang="es-US" href="{{v.esAbs}}">
@@ -34,6 +35,7 @@
 </script>
 {{v.preload}}
 <link rel="preload" href="/assets/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/site/site.css?v={{v.cssHash}}">
 <link rel="icon" href="/assets/brand/favicon.ico" sizes="48x48">
 <link rel="icon" href="/assets/brand/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/assets/brand/apple-touch-icon.png">
@@ -79,97 +81,81 @@
 
 <!--@header-->
 <a class="skip" href="#main">{{t.a11y.skip}}</a>
-<header class="site-header">
-  <div class="wrap">
-    <a class="plate" href="{{v.home}}" aria-label="{{t.home.aria}}">
-      <span class="plate__core">{{v.logoHeader}}</span>
-    </a>
-    <nav class="site-nav" aria-label="{{t.nav.label}}">
-      <a href="{{v.home}}#services">{{t.nav.services}}</a>
-      <a href="{{v.home}}#work">{{t.nav.work}}</a>
-      <a href="{{v.home}}#area">{{t.nav.area}}</a>
-      <a href="{{v.estimate}}"{{v.estCurrent}}>{{t.nav.estimate}}</a>
-    </nav>
-    <div class="site-header__right">
-      {{> lang}}
-      <a class="call-icon" href="tel:+18038849305" aria-label="{{t.call.aria}}"><svg class="icon" aria-hidden="true"><use href="#i-phone"/></svg></a>
-      <a class="btn btn--line header-phone" href="tel:+18038849305"><span class="num">(803) 884-9305</span><span class="btn__nub" aria-hidden="true"><svg><use href="#i-phone"/></svg></span></a>
-    </div>
+<div class="util"><div class="wrap util__row"><p>{{t.util.area}}</p><p><span class="hours">{{t.foot.hours1}}</span><a class="num" href="tel:+18038849305"><svg aria-hidden="true"><use href="#i-phone"/></svg>(803) 884-9305</a></p></div></div>
+<header class="site-header"><div class="wrap site-header__row">
+  <a class="brand" href="{{v.home}}" aria-label="{{t.home.aria}}">{{v.logoHeader}}</a>
+  <nav class="site-nav" aria-label="{{t.nav.label}}">
+    <a href="{{v.septicUrl}}"{{v.septicCurrent}}>{{t.core.s.h}}</a>
+    <a href="{{v.concreteUrl}}"{{v.concreteCurrent}}>{{t.core.c.h}}</a>
+    <a href="{{v.commercialUrl}}"{{v.commercialCurrent}}>{{t.core.public.h}}</a>
+    <a href="{{v.home}}#work">{{t.nav.work}}</a>
+    <a href="{{v.home}}#area">{{t.nav.area}}</a>
+  </nav>
+  <div class="site-header__right">
+    {{> lang}}
+    <a class="header-phone num" href="tel:+18038849305"><svg class="icon" aria-hidden="true"><use href="#i-phone"/></svg>(803) 884-9305</a>
+    <a class="btn btn--cta btn--sm header-cta" href="{{v.estimate}}"{{v.estCurrent}}><span>{{t.nav.estimate}}</span>{{nub}}</a>
+    <a class="call-icon" href="tel:+18038849305" aria-label="{{t.call.aria}}"><svg class="icon" aria-hidden="true"><use href="#i-phone"/></svg></a>
+    <details class="menu"><summary aria-label="{{t.nav.menu}}"><span class="menu__bars" aria-hidden="true"></span></summary>
+      <nav class="menu__sheet panel" aria-label="{{t.nav.menu}}">
+        <a href="{{v.septicUrl}}">{{t.core.s.h}}<svg aria-hidden="true"><use href="#i-chev"/></svg></a>
+        <a href="{{v.concreteUrl}}">{{t.core.c.h}}<svg aria-hidden="true"><use href="#i-chev"/></svg></a>
+        <a href="{{v.commercialUrl}}">{{t.core.public.h}}<svg aria-hidden="true"><use href="#i-chev"/></svg></a>
+        <a href="{{v.drainageUrl}}">{{t.start.drainage}}<svg aria-hidden="true"><use href="#i-chev"/></svg></a>
+        <a href="{{v.home}}#work">{{t.nav.work}}<svg aria-hidden="true"><use href="#i-chev"/></svg></a>
+        <a href="{{v.home}}#area">{{t.nav.area}}<svg aria-hidden="true"><use href="#i-chev"/></svg></a>
+        <a class="btn btn--cta" href="{{v.estimate}}"><span>{{t.cta.estimate}}</span>{{nub}}</a>
+      </nav>
+    </details>
   </div>
-</header>
+</div></header>
 <!--@end-->
 
 <!--@bars-->
 <div class="island" role="region" aria-label="{{t.bar.label}}">
-  <a class="plate" href="{{v.home}}" aria-label="{{t.home.aria}}"><span class="plate__core">{{v.logoIsland}}</span></a>
+  <a href="{{v.home}}" aria-label="{{t.home.aria}}">{{v.logoIsland}}</a>
   <a class="island__phone num" href="tel:+18038849305">(803) 884-9305</a>
-  {{> lang}}
-  <a class="btn btn--red" href="{{v.estimate}}"><span>{{t.cta.estimate}}</span><span class="btn__nub" aria-hidden="true"><svg><use href="#i-chev"/></svg></span></a>
+  <a class="btn btn--cta btn--sm" href="{{v.estimate}}"><span>{{t.cta.estimate}}</span>{{nub}}</a>
 </div>
 <div class="action-bar" role="region" aria-label="{{t.bar.label}}">
-  <a class="btn btn--line" href="tel:+18038849305"><span>{{t.bar.call}}</span><span class="btn__nub" aria-hidden="true"><svg><use href="#i-phone"/></svg></span></a>
-  <a class="btn btn--red" href="{{v.estimate}}"><span>{{t.bar.estimate}}</span><span class="btn__nub" aria-hidden="true"><svg><use href="#i-chev"/></svg></span></a>
+  <a class="btn btn--line" href="tel:+18038849305"><span>{{t.bar.call}}</span>{{nub:phone}}</a>
+  <a class="btn btn--cta" href="{{v.estimate}}"><span>{{t.bar.estimate}}</span>{{nub}}</a>
 </div>
 <!--@end-->
 
 <!--@footer-->
-<footer class="site-footer on-dark cut-top" id="contact">
+<div class="brick" aria-hidden="true"></div>
+<footer class="site-footer" id="contact">
   <div class="wrap footer-cta">
-    <div>
-      <h2 class="h2">{{t.foot.h}}</h2>
-      <p class="lead muted" style="margin-top:var(--s-16)">{{t.foot.p}}</p>
-    </div>
+    <div class="footer-cta__text"><h2 class="h2">{{t.foot.h}}</h2><p class="lead muted">{{t.foot.p}}</p></div>
     <div class="footer-cta__actions">
       {{v.reviewFooter}}
-      <a class="btn btn--red btn--block" href="{{v.estimate}}"><span>{{t.cta.estimate}}</span><span class="btn__nub" aria-hidden="true"><svg><use href="#i-chev"/></svg></span></a>
-      <a class="btn btn--light btn--block" href="tel:+18038849305"><span>{{t.cta.callpre}} <span class="num">(803) 884-9305</span></span><span class="btn__nub" aria-hidden="true"><svg><use href="#i-phone"/></svg></span></a>
+      <a class="btn btn--cta btn--block" href="{{v.estimate}}"><span>{{t.cta.estimate}}</span>{{nub}}</a>
+      <a class="btn btn--line btn--block" href="tel:+18038849305"><span>{{t.cta.callpre}} <span class="num">(803) 884-9305</span></span>{{nub:phone}}</a>
     </div>
   </div>
   <div class="wrap footer-grid">
-    <div>
-      <a class="plate" href="{{v.home}}" aria-label="{{t.home.aria}}"><span class="plate__core">{{v.logoFooter}}</span></a>
-      <p class="small muted" style="margin-top:var(--s-16)">{{t.foot.fil}}</p>
+    <div class="footer-brand">{{v.logoFooter}}<p class="small muted">{{t.foot.fil}}</p>
       <div class="social">
         <a href="https://www.facebook.com/p/FPC-Construction-LLC-100066373038903/" aria-label="{{t.foot.fb}}" rel="noopener"><svg aria-hidden="true"><use href="#i-fb"/></svg></a>
         <a href="https://www.instagram.com/fpcconstructions" aria-label="{{t.foot.ig}}" rel="noopener"><svg aria-hidden="true"><use href="#i-ig"/></svg></a>
         {{v.whatsappFooter}}
         {{v.tiktok}}
+        {{v.youtube}}
       </div>
     </div>
-    <div>
-      <h3>{{t.foot.contact}}</h3>
-      <ul class="small">
-        <li><a class="num" href="tel:+18038849305">(803) 884-9305</a></li>
-        <li><a href="mailto:info@fpcconstructions.com">info@fpcconstructions.com</a></li>
-        <li class="muted">North Augusta, SC 29860</li>
-      </ul>
-    </div>
-    <div>
-      <h3>{{t.foot.hours}}</h3>
-      <ul class="small">
-        <li>{{t.foot.hours1}}</li>
-        <li>{{t.foot.hours2}}</li>
-      </ul>
-    </div>
-    <div>
-      <h3>{{t.foot.pages}}</h3>
-      <ul class="small">
-        <li><a href="{{v.home}}#services">{{t.nav.services}}</a></li>
-        <li><a href="{{v.home}}#work">{{t.nav.work}}</a></li>
-        <li><a href="{{v.home}}#area">{{t.nav.area}}</a></li>
-        <li><a href="{{v.estimate}}">{{t.nav.estimate}}</a></li>
-        <li><a class="muted" href="https://fpc-construction-crm.vercel.app/login" rel="nofollow">{{t.foot.signin}}</a></li>
-      </ul>
-    </div>
+    <div><h3>{{t.foot.contact}}</h3><ul><li><a class="num" href="tel:+18038849305">(803) 884-9305</a></li><li><a href="mailto:info@fpcconstructions.com">info@fpcconstructions.com</a></li><li class="muted">North Augusta, SC 29860</li></ul></div>
+    <div><h3>{{t.foot.hours}}</h3><ul><li><span class="hours">{{t.foot.hours1}}</span></li><li class="muted">{{t.foot.hours2}}</li></ul></div>
+    <div><h3>{{t.foot.pages}}</h3><ul>
+      <li><a href="{{v.septicUrl}}">{{t.core.s.h}}</a></li><li><a href="{{v.concreteUrl}}">{{t.core.c.h}}</a></li><li><a href="{{v.drainageUrl}}">{{t.start.drainage}}</a></li>
+      {{v.gcFooter}}<li><a href="{{v.estimate}}">{{t.nav.estimate}}</a></li>
+      <li><a class="muted" href="https://fpc-construction-crm.vercel.app/login" rel="nofollow">{{t.foot.signin}}</a></li>
+    </ul></div>
   </div>
   <div class="wrap footer-legal">
-    <p class="muted">&copy; <span data-year>2026</span> FPC Construction LLC</p>
-    <nav aria-label="{{t.foot.legal}}">
-      <a href="/privacy">{{t.foot.privacy}}</a>
-      <a href="/terms">{{t.foot.terms}}</a>
-      <a href="{{v.smsUrl}}">{{t.foot.sms}}</a>
-    </nav>
-    <a class="muted" href="https://mpowerio.ai" rel="noopener">{{t.foot.powered}}</a>
+    <p>&copy; <span data-year>2026</span> FPC Construction LLC</p>
+    <nav aria-label="{{t.foot.legal}}"><a href="/privacy">{{t.foot.privacy}}</a><a href="/terms">{{t.foot.terms}}</a><a href="{{v.smsUrl}}">{{t.foot.sms}}</a></nav>
+    <a href="https://mpowerio.ai" rel="noopener">{{t.foot.powered}}</a>
   </div>
 </footer>
 <!--@end-->

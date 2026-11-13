@@ -15,7 +15,7 @@ export const GOOGLE_REVIEWS = {
 
 export function renderReviews(t, { reviewUrl = GOOGLE_REVIEW_URL, snapshot = GOOGLE_REVIEWS } = {}) {
   const actionUrl = reviewUrl ? googleUrl(reviewUrl) : '';
-  const action = actionUrl ? `<a class="btn btn--red review-action" href="${esc(actionUrl)}" rel="noopener noreferrer"><span>${esc(t('reviews.leave'))}</span><span class="btn__nub" aria-hidden="true"><svg><use href="#i-chev"/></svg></span></a>` : '';
+  const action = actionUrl ? `<a class="btn btn--gold review-action" href="${esc(actionUrl)}" rel="noopener noreferrer"><span>${esc(t('reviews.leave'))}</span><span class="btn__nub" aria-hidden="true"><svg><use href="#i-chev"/></svg></span></a>` : '';
   if (!snapshot.verified) return { summary: '', section: '', footer: action };
   assert.ok(actionUrl && snapshot.listingId && snapshot.listingUrl, 'Verified review content needs the confirmed listing and review-action URL');
   const listingUrl = googleUrl(snapshot.listingUrl);
@@ -30,13 +30,13 @@ export function renderReviews(t, { reviewUrl = GOOGLE_REVIEW_URL, snapshot = GOO
     assert.ok(Number.isInteger(item.rating) && item.rating >= 1 && item.rating <= 5);
     assert.match(item.language, /^[a-z]{2,3}(?:-[A-Za-z0-9]{2,8})*$/);
     assert.equal(typeof item.excerpt, 'boolean', 'Label excerpts explicitly');
-    return `<figure class="review-quote"><figcaption><strong>${esc(item.author)}</strong><span>${item.rating}/5 · ${esc(item.dateLabel)}</span></figcaption><blockquote lang="${esc(item.language)}"><p>${esc(item.text)}</p></blockquote><a href="${esc(googleUrl(item.sourceUrl))}" rel="noopener noreferrer">${esc(t(item.excerpt ? 'reviews.excerpt' : 'reviews.original'))}</a></figure>`;
+    return `<figure class="review-quote quote panel"><figcaption><strong>${esc(item.author)}</strong><span>${item.rating}/5 · ${esc(item.dateLabel)}</span></figcaption><blockquote lang="${esc(item.language)}"><p>${esc(item.text)}</p></blockquote><a href="${esc(googleUrl(item.sourceUrl))}" rel="noopener noreferrer">${esc(t(item.excerpt ? 'reviews.excerpt' : 'reviews.original'))}</a></figure>`;
   }).join('');
   const facts = `${snapshot.rating.toFixed(1)} / 5 · ${snapshot.count} ${esc(t('reviews.count'))}`;
   const stamp = `${esc(t('reviews.observed'))} <time datetime="${snapshot.observedOn}">${snapshot.observedOn}</time>`;
   return {
     summary: `<p class="review-summary"><a href="#google-reviews">${facts}</a><span>${stamp}</span></p>`,
-    section: `<section class="reviews-feature" id="google-reviews" aria-labelledby="google-reviews-h"><div class="wrap"><div class="reviews-feature__head"><div><p class="eyebrow">Google</p><h2 class="h2" id="google-reviews-h">${esc(t('reviews.heading'))}</h2><p class="reviews-feature__rating">${facts}</p><p class="small muted">${stamp}</p></div><div class="reviews-feature__actions">${action}<a class="textlink" href="${esc(listingUrl)}" rel="noopener noreferrer">${esc(t('reviews.read'))}</a></div></div><div class="reviews-feature__quotes">${cards}</div></div></section>`,
+    section: `<section class="section section--band joint reviews-feature" id="google-reviews" aria-labelledby="google-reviews-h"><div class="wrap"><div class="reviews-feature__head"><div><p class="label">Google</p><h2 class="h2" id="google-reviews-h">${esc(t('reviews.heading'))}</h2><p class="reviews-feature__rating">${facts}</p><p class="small muted">${stamp}</p></div><div class="reviews-feature__actions">${action}<a class="textlink" href="${esc(listingUrl)}" rel="noopener noreferrer">${esc(t('reviews.read'))}</a></div></div><div class="reviews-feature__quotes">${cards}</div></div></section>`,
     footer: action,
   };
 }
