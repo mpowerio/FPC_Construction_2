@@ -48,19 +48,29 @@ import { services } from './services.mjs';
 const publicPages = ['index.html', 'es/index.html', 'estimate/index.html', 'es/estimado/index.html',
   ...services.flatMap((s) => Object.values(s.url).map((u) => u.slice(1) + 'index.html'))];
 export function pendingProblems(html) {
-  const text = html.replace(/<(script|style)\b[^>]*>[\s\S]*?<\/\1>/gi, '').replace(/<!--[\s\S]*?-->/g, '');
+  const body = html.replace(/<(script|style)\b[^>]*>[\s\S]*?<\/\1>/gi, '').replace(/<!--[\s\S]*?-->/g, '');
+  const text = (h) => h.replace(/<[^>]+>/g, ' ').replace(/&nbsp;|&#160;/g, ' ');
   const found = [];
-  if (/Pending verification|Pendiente de verificaci[oó]n/i.test(text.replace(/<[^>]+>/g, ' '))) found.push('pending wording');
-  if (/class="[^"]*\b(slot--pending|medal--pending|lane__pending)\b/.test(text)) found.push('pending credential slot');
-  if (/data-release-pending\b/.test(text)) found.push('release-pending marker');
+  // Any pending wording, in either language, anywhere in the visible page.
+  if (/\bpending\b|pendiente/i.test(text(body))) found.push('pending wording');
+  if (/class="[^"]*\b(slot--pending|medal--pending|lane__pending)\b/.test(body)) found.push('pending credential slot');
+  if (/data-release-pending\b/.test(body)) found.push('release-pending marker');
+  // No credential nouns in the qualifications section before license day (docs/GC-FLIP.md step 5).
+  const quals = body.match(/<section\b[^>]*aria-labelledby="quals-h"[\s\S]*?<\/section>/);
+  if (quals && /\b(licen[cs](?:e|ed|es|ing)|licencias?|bond(?:s|ed|ing)?|fianzas?|afianzad[oa]s?|insur(?:ance|ed)|seguros?|asegurad[oa]s?)\b/i.test(text(quals[0]))) found.push('credential noun in the qualifications section');
   return found;
 }
 for (const file of publicPages) test(`${file}: no pending wording or credential-pending slot`, () => {
   assert.deepEqual(pendingProblems(readFileSync(join(root, file), 'utf8')), []);
 });
 test('the pending guard catches each planted form', () => {
-  for (const planted of ['<p>License records: Pending verification</p>', '<p>Pendiente de verificación</p>', '<div class="slot slot--pending">x</div>', '<h1 data-release-pending>x</h1>']) {
+  for (const planted of ['<p>License records: Pending verification</p>', '<p>Pendiente de verificación</p>', '<div class="slot slot--pending">x</div>', '<h1 data-release-pending>x</h1>',
+    '<p>License verification pending</p>', '<span>Pending</span>', '<p>Licencia pendiente</p>']) {
     assert.ok(pendingProblems(`<main>${planted}</main>`).length, planted);
   }
+  // A bare credential label inside the qualifications panel, with no pending word at all.
+  const quals = (label) => `<main><section class="section" aria-labelledby="quals-h"><h2 id="quals-h">For buyers</h2><dl><div><dt>${label}</dt><dd>On file</dd></div></dl></section></main>`;
+  for (const label of ['License, bond and insurance records', 'Licencia, fianza y seguro', 'Insurance', 'Bonding']) assert.ok(pendingProblems(quals(label)).length, label);
+  assert.deepEqual(pendingProblems(quals('Service area')), [], 'true non-credential facts pass');
   assert.deepEqual(pendingProblems('<style>.slot--pending{}</style><main>Ready</main>'), []);
 });

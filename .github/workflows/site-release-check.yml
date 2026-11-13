@@ -18,8 +18,6 @@ jobs:
         run: node --test tools/site/jj-copy.test.mjs
       - name: GC pages stay unpublished until license day
         run: node --test tools/site/gc.test.mjs
-      - name: Spanish copy has had its native-speaker read (red until the read clears PENDING-ES)
-        run: node --test tools/site/spanish-read.test.mjs
       - name: Bilingual SMS policies
         run: node --test tools/site/policies.test.mjs
       - name: Prove release guard rejects planted placeholders
@@ -28,3 +26,5 @@ jobs:
         run: node tools/site/release-controls.mjs
       - name: SEO and release policy (pending copy blocks release)
         run: node tools/seo-check.mjs
+      - name: Spanish copy has had its native-speaker read (red until the read clears PENDING-ES)
+        run: node --test tools/site/spanish-read.test.mjs
