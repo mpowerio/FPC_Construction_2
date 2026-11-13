@@ -52,7 +52,7 @@ export function renderTreeWork(lang, t, media = TREE_WORK) {
     dimensions(clip);
     return `<video controls playsinline preload="none" width="${clip.width}" height="${clip.height}" poster="${localMedia(clip.poster, 'photo')}" aria-label="${esc(media.caption[lang])}"><source src="${localMedia(clip.src, 'video')}" type="video/mp4"><a href="${localMedia(clip.src, 'video')}">${esc(t('media.open'))}</a></video>`;
   }).join('');
-  return `<section class="section joint tree-work" aria-labelledby="tree-work-h"><div class="wrap"><div class="section-head"><p class="label">04 / ${esc(t('section.story'))}</p><h2 class="h2" id="tree-work-h">${esc(t('media.heading'))}</h2></div><div class="story"><figure class="story__photo bezel" data-reveal><div class="frame">${image}</div><figcaption>${esc(media.caption[lang])}</figcaption></figure><div class="story__side">${testimonial}<div class="clips" data-reveal>${clips}</div></div></div></div></section>`;
+  return `<section class="section joint tree-work" aria-labelledby="tree-work-h"><div class="wrap"><div class="section-head"><p class="label">04 / ${esc(t('section.story'))}</p><h2 class="h2" id="tree-work-h">${esc(t('media.heading'))}</h2></div><div class="story tree-work__story"><figure class="story__photo bezel" data-reveal><div class="frame">${image}</div><figcaption>${esc(media.caption[lang])}</figcaption></figure><div class="story__side">${testimonial}<div class="clips" data-reveal>${clips}</div></div></div></div></section>`;
 }
 
 // The real build checks these files exist; held media must not trigger any reads.

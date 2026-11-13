@@ -36,10 +36,10 @@ Every value comes from a document FPC holds. Nothing is typed from memory.
    - `tools/site/release-controls.mjs`: add the three GC pages to the scratch fixture list.
    - `tools/site/gc.test.mjs`: invert the "GC stays off" and "no GC page is published" tests into "GC is on" and "all three pages are published and in the sitemap".
 4. **Structured data.** In `tools/site/build.mjs` `business()`, change the comment and `@type` to `['LocalBusiness', 'HomeAndConstructionBusiness', 'GeneralContractor']`, and add the license as `hasCredential`.
-5. **Home page copy.** In `tools/site/strings.mjs` V3_HOME:
-   - `quals.records` becomes "License, bonding and insurance".
-   - `quals.note` becomes "Capability statement, certificates and bond letters on request."
-   - In `src/home.html`, the qualifications panel's single row becomes the license number, bonding and insurance summary, and the button points to `/capabilities/`.
+5. **Home page qualifications panel.** Today it shows true, non-credential facts only: main services, service area, site visit, languages. The operator said "no pending", so no credential slot is shown before the license. At flip, in `src/home.html` and the `quals.*` keys in `strings.mjs` (V3_HOME):
+   - Add a license row with the license number and classification, plus bonding and insurance rows, from `GC` in `gc.mjs`. Never use a "pending" slot.
+   - Point the panel's button to `/capabilities/`.
+   - Update the `gc.test.mjs` pending guard only if you add a new kind of public record; it already allows real records.
    - Optional, operator's call: the hero eyebrow and title can name general contracting.
 6. **Navigation.** This switches automatically when `GC.enabled` is true: "Commercial & public works" in the header and the home lane go to the GC landing page, and the footer gains Capabilities and Subcontractors.
 7. **Spanish.** Every key in `GC_PENDING_ES_KEYS` (gc.mjs) and `PENDING_ES_KEYS` (strings.mjs) gets a native-speaker read before release.

@@ -1,0 +1,22 @@
+name: spanish-read
+
+# Visible, not required. Red until a native speaker has read every shipped Spanish string added by
+# the v3 redesign and cleared PENDING_ES_KEYS in tools/site/strings.mjs (and GC_PENDING_ES_KEYS at
+# GC flip). Kept out of site-release-check (Chair 2026-11-13) so a Spanish read never blocks a fix.
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  spanish-read:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Shipped Spanish has had its native-speaker read
+        run: node --test tools/site/spanish-read.test.mjs

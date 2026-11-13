@@ -6,7 +6,7 @@ import { createRequire } from 'node:module';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { services } from './services.mjs';
-import { common } from './strings.mjs';
+import { common, home } from './strings.mjs';
 import { renderReviews } from './reviews.mjs';
 import { TREE_WORK } from './media.mjs';
 import { tiktokProfile, whatsappUrl, WHATSAPP_URL } from './social.mjs';
@@ -73,10 +73,12 @@ try {
         });
         assert.ok(hierarchy.treeBelow, 'Tree work follows all three main service paths');
         assert.ok(hierarchy.cards.every(card => Math.abs(card.width-hierarchy.cards[0].width)<1), 'Three equal service paths');
-        assert.equal(await page.locator('h1').innerText(), path === '/es/' ? 'Sépticos. Concreto. Obras comerciales y públicas.' : 'Septic. Concrete. Commercial & public works.');
+        assert.equal((await page.locator('h1').innerText()).replace(/\s+/g, ' '), path === '/es/' ? 'Sépticos. Concreto. Obras comerciales y públicas.' : 'Septic. Concrete. Commercial & public works.');
         assert.equal(await page.locator('[data-release-pending]').count(), 0, 'No held public copy remains');
-        assert.equal(await page.locator('.trade--public img').count(), 0, 'No unverified public-project photo');
-        assert.equal(await page.locator('.site-header .plate img').getAttribute('src'), '/assets/brand/fpc-lockup-enhanced-light.svg');
+        // v3 (Chair ruling A): the third lane carries a real FPC site-work photo with a factual caption, never a public-project claim.
+        assert.equal(await page.locator('.trade--public .lane__cap').innerText(), home[path === '/es/' ? 'es' : 'en']['core.d.cap']);
+        assert.equal(await page.locator('main').getByText(/Pending verification|Pendiente de verificación/).count(), 0, 'No pending wording on public pages');
+        assert.equal(await page.locator('.site-header .plate img').first().getAttribute('src'), '/assets/brand/fpc-lockup-enhanced-light.svg');
         assert.equal(await page.locator('.site-footer .plate img').getAttribute('src'), '/assets/brand/fpc-lockup-enhanced-light.svg');
         assert.ok(!(await page.content()).includes('agent-out/'));
         assert.equal(await page.locator('.tree-work video').count(), 3);

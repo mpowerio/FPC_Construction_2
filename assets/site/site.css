@@ -782,9 +782,9 @@ html.js.motion-ok [data-reveal].is-in { opacity: 1; transform: none; }
 }
 @media (forced-colors: active) { body, .section--band, .site-footer, .panel, .cred, .storycard { background-image: none; } .area::before, .area::after, .brick::before, .facts dt::before, .joint::before, .footer-legal::before { content: none; } }
 
-/* ---------- 13. Graphite + gold comparison theme (home page only, per the Chair) ----------
+/* ---------- 13. (The Asphalt & Gold skin lives in the design system, not in the shipped CSS) ----------
    Same markup and components. Only surface, text and line tokens change. */
-.theme-graphite, .section--asphalt {
+.section--asphalt {
   color-scheme: dark;
   --ground: #18201B; --band: #1E2821; --plate: #26302A; --stone: #303B30;
   --ink: #F4F0E8; --ink-2: #C3C8BA; --accent-ink: #E8C55A;
@@ -795,22 +795,10 @@ html.js.motion-ok [data-reveal].is-in { opacity: 1; transform: none; }
   --bedrock: #101612;
   --tex-grain: none; --tex-cure: none; --tex-broom: none; --tex-trowel: none; --tex-asphalt: none;
 }
-.theme-graphite :focus-visible, .section--asphalt :focus-visible { outline-color: #F4F0E8; box-shadow: 0 0 0 6px rgba(212, 169, 55, .5); }
-.theme-graphite .btn--line .btn__nub, .theme-graphite .call-icon, .theme-graphite .menu > summary { background: linear-gradient(155deg, var(--fpc-gold-hi), var(--fpc-gold)); color: var(--fpc-charcoal); }
-.theme-graphite .lang, .theme-graphite .island, .theme-graphite .action-bar { background: #E9E3D6; --ink: #262626; color: #262626; }
-.theme-graphite .island .btn--line, .theme-graphite .action-bar .btn--line { color: #262626; box-shadow: inset 0 0 0 1.5px #262626; }
-.theme-graphite .textlink__nub, .section--asphalt .textlink__nub { box-shadow: inset 0 0 0 1px var(--panel-line); }
-.theme-graphite .area::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 132 78'%3E%3Cg fill='%23C3C8BA' stroke='%23C3C8BA' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath fill='none' stroke-width='8' d='M79 44 49 13'/%3E%3Cpath fill='none' stroke-width='6' d='M49 13 27 45'/%3E%3Cpath fill='none' stroke-width='2.6' d='M66 43 59 25'/%3E%3Cpath stroke-width='2' d='M16 44l15 3.5-3 15.5q-12 1-15-9z'/%3E%3C/g%3E%3C/svg%3E"); }
-.theme-graphite .area::after { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 132 78'%3E%3Cg fill='%23C3C8BA' stroke='%23C3C8BA' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath stroke-width='2' d='M73 60V25q0-3 3-3h17q3 0 3.6 3l2.4 14h18q5 0 5 5v16z'/%3E%3Cpath d='M82 60h30v5H82z' stroke='none'/%3E%3Crect x='64' y='64' width='64' height='13' rx='6.5' stroke-width='2'/%3E%3C/g%3E%3Cpath d='M78 27h13.5l1.9 11H78z' fill='%231E2821'/%3E%3Cg fill='%231E2821'%3E%3Ccircle cx='72' cy='70.5' r='2.6'/%3E%3Ccircle cx='84' cy='70.5' r='2.6'/%3E%3Ccircle cx='96' cy='70.5' r='2.6'/%3E%3Ccircle cx='108' cy='70.5' r='2.6'/%3E%3Ccircle cx='120' cy='70.5' r='2.6'/%3E%3C/g%3E%3Cpath fill='%23FF6D00' d='M101 43h17q2 0 2 2v9h-19z'/%3E%3C/svg%3E"); }
-.theme-graphite .bank li.home { border-color: rgba(212, 169, 55, .6); box-shadow: inset 2px 2px 2px rgba(0, 0, 0, .5), inset -1px -1px 0 rgba(255, 255, 255, .08); outline-color: rgba(212, 169, 55, .3); }
-.theme-graphite .bezel { background: linear-gradient(145deg, rgba(212, 169, 55, .56), rgba(191, 197, 183, .13) 50%, rgba(232, 197, 90, .38)); box-shadow: 0 24px 44px -30px #000; }
-.theme-graphite .lane .frame, .theme-graphite .shot .frame, .section--asphalt .shot .frame, .theme-graphite .lane__pending { box-shadow: 0 0 0 5px rgba(212, 169, 55, .09), 0 0 0 6px rgba(212, 169, 55, .22); }
-.theme-graphite .lane__pending { --ink: #262626; background-color: #D9D3C8; }
-.theme-graphite .bank li, .section--asphalt .bank li { border-color: rgba(191, 197, 183, .32); }
-.theme-graphite .slot--pending, .theme-graphite .medal--pending, .section--asphalt .slot--pending, .section--asphalt .medal--pending { box-shadow: inset 0 0 0 1.5px var(--on-panel-2); }
-.theme-graphite .site-footer { background-color: #151B17; }
-.theme-graphite .social a { background: rgba(255, 255, 255, .1); }
-.theme-graphite .panel { box-shadow: inset 0 0 0 1px var(--panel-line), inset 0 1px 0 1px var(--panel-sheen), 0 24px 48px -30px #000; }
+.section--asphalt :focus-visible { outline-color: #F4F0E8; box-shadow: 0 0 0 6px rgba(212, 169, 55, .5); }
+.section--asphalt .textlink__nub { box-shadow: inset 0 0 0 1px var(--panel-line); }
+.section--asphalt .shot .frame { box-shadow: 0 0 0 5px rgba(212, 169, 55, .09), 0 0 0 6px rgba(212, 169, 55, .22); }
+.section--asphalt .bank li { border-color: rgba(191, 197, 183, .32); }
 
 /* ---------- 14. Print (capability statement) ---------- */
 @media print {
@@ -830,7 +818,7 @@ html.js.motion-ok [data-reveal].is-in { opacity: 1; transform: none; }
 
 
 /* ---------- 15. Final repair: two skins, starter in the hero, accent line, heavier photo, dark bands ----------
-   Skins are one token swap on <body>: Concrete (default) and Asphalt & Gold (.theme-graphite). */
+   Concrete is the shipped skin; Asphalt & Gold lives in the design system. */
 .hours { font-weight: 700; color: inherit; }
 
 /* Starter card sits in the hero again, as on v2 and #34: the first question is on the first screen. */
@@ -838,12 +826,12 @@ html.js.motion-ok [data-reveal].is-in { opacity: 1; transform: none; }
 .hero__text .starter__head { display: flex; }
 .hero__actions { margin-top: calc(var(--s-8) * -1); }
 /* On Asphalt & Gold the card flips to the light well, the way v2's card sat on its dark ground. */
-.theme-graphite .hero__text .starter { color-scheme: light; --on-panel: #262626; --on-panel-2: #383532; color: #262626; background-color: #EDE8DE; background-image: none; box-shadow: inset 0 0 0 1.5px var(--fpc-gold), inset 0 1px 0 #fff, 0 26px 50px -26px #000; }
-.theme-graphite .hero__text .starter :focus-visible { outline-color: #262626; box-shadow: none; }
+
+
 
 /* Headline accent: a painted gold line under the last phrase on Concrete, gold lettering on Asphalt & Gold. */
 .display__accent { background-image: linear-gradient(to top, transparent 0, transparent .04em, var(--fpc-gold-hi) .04em, var(--fpc-gold) .2em, transparent .2em); -webkit-box-decoration-break: clone; box-decoration-break: clone; }
-.theme-graphite .display__accent { background-image: none; color: var(--fpc-gold-hi); }
+
 
 /* Heavier photo: asphalt bezel with a gold keyline, and a second job photo lapped over the corner. */
 .hero__photo.bezel { padding: 10px; background-color: var(--panel); background-image: var(--tex-asphalt); box-shadow: inset 0 0 0 1.5px var(--fpc-gold), inset 0 0 0 3.5px rgba(0, 0, 0, .4), 0 34px 60px -36px rgba(0, 0, 0, .75); }
@@ -859,10 +847,10 @@ html.js.motion-ok [data-reveal].is-in { opacity: 1; transform: none; }
 
 /* Dark bands: asphalt sections between the concrete ones. Inside a band every component reads the dark token set. */
 .section--asphalt { --ground: #1F1E1C; --band: #1F1E1C; --plate: #2B2926; --stone: #34322E; --panel: #2B2926; --panel-hi: #34322E; --tex-asphalt: url("../img/tex-asphalt.webp"); color: var(--ink); background-color: var(--ground); background-image: var(--tex-asphalt), linear-gradient(180deg, rgba(255, 255, 255, .035), rgba(255, 255, 255, 0) 180px); box-shadow: inset 0 3px 0 var(--fpc-gold), inset 0 -1px 0 rgba(0, 0, 0, .5); }
-.theme-graphite .section--asphalt { --tex-asphalt: none; --ground: #101511; --band: #101511; --plate: #1A211C; --stone: #232B25; --panel: #1A211C; --panel-hi: #232B25; }
+
 /* Dark-skin gaps found when the service and capabilities pages were first rendered on Asphalt & Gold. */
-.theme-graphite .btn--plate, .section--asphalt .btn--plate { --plate: #D9D3C8; color: #262626; }
-.theme-graphite .bezel .caption-bar { color: #F4F0E8; }
+.section--asphalt .btn--plate { --plate: #D9D3C8; color: #262626; }
+
 
 /* ---------- 16. Runtime and modules carried from the previous site (language hint, voice widget, Google reviews, tree work, Pay Later) ---------- */
 :root {
@@ -993,3 +981,19 @@ elevenlabs-convai {
 .titleblock .checks { display: grid; gap: var(--s-12); margin-top: var(--s-16); }
 .titleblock .checks li { display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: var(--s-12); align-items: start; color: var(--on-panel); }
 .titleblock .checks svg { width: 20px; height: 20px; color: var(--fpc-orange); }
+
+/* ---------- 20. Review repair 1 ---------- */
+/* Primary calls to action are shiny, bold FPC gold (operator standard); orange stays an accent. */
+.btn--cta { color: var(--fpc-charcoal); background: linear-gradient(155deg, #F8E08F 0%, var(--fpc-gold-hi) 36%, var(--fpc-gold) 100%); box-shadow: inset 0 1.5px 0 #FFF4C4, inset 0 -2px 0 var(--fpc-gold-lo), 0 0 0 1px rgba(138, 108, 36, .35), 0 12px 30px -12px rgba(212, 169, 55, .85); }
+.btn--cta:hover { box-shadow: inset 0 1.5px 0 #FFF4C4, inset 0 -2px 0 var(--fpc-gold-lo), 0 0 0 1px rgba(138, 108, 36, .45), 0 14px 36px -10px rgba(212, 169, 55, .95); }
+/* Qualifications panel: true facts already on the site. */
+.quals__facts { display: grid; gap: 0; align-content: start; }
+.quals__facts > div { display: grid; gap: 4px; padding-block: var(--s-16); border-top: 1px solid var(--panel-hair); }
+.quals__facts dt { font-size: var(--t-12); font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--panel-accent); }
+.quals__facts dd { font-size: var(--t-18); font-weight: 700; color: var(--on-panel); }
+/* JJ's launcher rests bottom-right on phones: keep the hero starter's text and controls out of that lane. */
+@media (max-width: 899px) { .starter .starter__head, .starter .field { padding-right: 40px; } }
+/* 320px: the estimate link lives in the action bar, so the header keeps only the essentials. */
+@media (max-width: 359px) { .site-header__row { gap: var(--s-8); } .brand img { width: 80px; } .site-header__right { gap: 6px; } }
+.facts dd a { display: inline-flex; align-items: center; min-height: 44px; }
+.starter .starter__note { color: var(--on-panel); }
