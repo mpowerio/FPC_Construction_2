@@ -39,7 +39,7 @@ Every value comes from a document FPC holds. Nothing is typed from memory.
 5. **Home page qualifications panel.** Today it shows true, non-credential facts only: main services, service area, site visit, languages. The operator said "no pending", so no credential slot is shown before the license. At flip, in `src/home.html` and the `quals.*` keys in `strings.mjs` (V3_HOME):
    - Add a license row with the license number and classification, plus bonding and insurance rows, from `GC` in `gc.mjs`. Never use a "pending" slot.
    - Point the panel's button to `/capabilities/`.
-   - Update the `gc.test.mjs` pending guard only if you add a new kind of public record; it already allows real records.
+   - **Guard change, same PR:** `pendingProblems()` in `gc.test.mjs` fails on credential nouns (license, bond, insurance and their Spanish forms) inside the qualifications section. That rule is right before license day and wrong after it. At flip, change it to allow those nouns only when `GC.enabled` is true and the license number from `GC.license.number` appears in that section. Add a negative test: credential nouns with no license number on the page must still fail. The pending-wording rule (`pending`/`pendiente`) never changes.
    - Optional, operator's call: the hero eyebrow and title can name general contracting.
 6. **Navigation.** This switches automatically when `GC.enabled` is true: "Commercial & public works" in the header and the home lane go to the GC landing page, and the footer gains Capabilities and Subcontractors.
 7. **Spanish.** Every key in `GC_PENDING_ES_KEYS` (gc.mjs) and `PENDING_ES_KEYS` (strings.mjs) gets a native-speaker read before release.
