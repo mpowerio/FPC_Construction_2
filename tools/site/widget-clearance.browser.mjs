@@ -18,7 +18,6 @@ async function setup(width,path,motion='reduce',height=844){
   let name=u.pathname.replace(/^\//,'');if(!name||name.endsWith('/'))name+='index.html';
   try {let body=await readFile(new URL(name,root));
    if(control==='heading'&&name.endsWith('.html'))body=Buffer.from(body.toString().replace('.estimate-start__heading, .estimate-start__row, .estimate-start__note { padding-right: 60px; }','.estimate-start__row, .estimate-start__note { padding-right: 60px; }').replace('.estimate-start__heading { flex-wrap: wrap; }',''));
-   if(control==='reserve'&&name.endsWith('.html'))body=Buffer.from(body.toString().replace(/\.estimate-start__heading, \.estimate-start__row, \.estimate-start__note \{ padding-right: 60px; \}/,''));
    if(control==='focus'&&name==='assets/site/core.js')body=Buffer.from(body.toString().replace('focused || submitVisible','false || submitVisible'));
    if(control==='fallback'&&name==='assets/site/core.js')body=Buffer.from(body.toString().replace("if (!launcher) { clearSuppression(); return; }","if (!launcher) { el.style.opacity = '0'; return; }"));
    return route.fulfill({body,contentType:{html:'text/html',js:'text/javascript',css:'text/css',svg:'image/svg+xml',woff2:'font/woff2',webp:'image/webp',avif:'image/avif'}[name.split('.').pop()]||'application/octet-stream'});
@@ -36,7 +35,7 @@ try{
   const {p,c}=await setup(width,path);const initial=await state(p);
   assert.equal(initial.overflow,false);
   if(width<900){assert.ok(initial.width>=44&&initial.height>=44);assert.equal(initial.title,'Chat with JJ');assert.equal(initial.label,'Chat with JJ');}
-  if(width<=390&&(path==='/'||path==='/es/'))assert.equal(initial.opacity,1,'JJ visible on initial home load without any interaction');
+  if(width<900&&(path==='/'||path==='/es/'))assert.equal(initial.opacity,1,'JJ visible on initial home load without any interaction');
   if(width>=900){assert.equal(initial.position,'fixed');assert.equal(initial.height,36,'desktop visual height unchanged');}
   if(width<900){
    // Native focus scrolls a control into view; JJ hides, then returns after blur away from conflict.
