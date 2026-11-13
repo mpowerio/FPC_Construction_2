@@ -1,0 +1,24 @@
+/* FPC screen palette. Legal wording remains unchanged. */
+:root { color-scheme: light; --color-primary:#262626; --color-primary-dark:#20221F; --color-primary-light:#343832; --color-accent:#F4B80C; --color-accent-dark:#d4a937; --color-accent-light:#F4B80C; --color-accent-text:#553F09; --color-white:#DED8CB; --color-gray-50:#C2BCB0; --color-gray-100:#D9D3C8; --color-gray-200:#948E82; --color-gray-300:#DED8CB; --color-gray-400:#D9D3C8; --color-gray-600:#35332F; --color-gray-700:#302E2A; --color-gray-800:#262626; --color-gray-900:#20221F; }
+body { background:#C2BCB0; background-image:url('/assets/img/tex-broom.webp'); color:#262626; }
+.site-header { background:#DED8CB; border-top-color:#F4B80C; }
+.band { background:#343832 url('/assets/img/tex-asphalt.webp'); color:#F0EADD; }
+.band h1, .band .lead, .band .stamp { color:#F0EADD; }
+.doc, .card { background:#DED8CB; color:#262626; }
+.doc h2 { color:#262626; }
+.site-footer { background:#343832 url('/assets/img/tex-asphalt.webp'); color:#F0EADD; }
+.site-footer a, .footer-bottom { color:#F0EADD; }
+.site-footer a:hover { color:#F4B80C; }
+.site-header img, .site-footer img, .legal-logo { background:#DED8CB; padding:4px; border-radius:4px; }
+.legal-logo { width:176px; height:auto; display:block; margin-bottom:20px; }
+.btn-call { background:linear-gradient(#FF8E38,#FF6D00); color:#262626; min-height:44px; }
+input, textarea, select { color-scheme:light; color:#262626; background:#E8E2D7; }
+input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill { -webkit-text-fill-color:#262626; -webkit-box-shadow:0 0 0 1000px #E8E2D7 inset; }
+a:focus-visible { outline:3px solid #553F09; outline-offset:4px; }
+.site-footer a:focus-visible, .band a:focus-visible { outline-color:#F4B80C; }
+/* The SMS document uses its own minimal class names. */
+body.sms-legal h1 { color:#262626; }
+body.sms-legal h2, body.sms-legal h3, body.sms-legal .keyword, body.sms-legal a { color:#553F09; }
+body.sms-legal .biz, body.sms-legal footer { color:#35332F; }
+body.sms-legal header { border-color:#553F09; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior:auto; } }

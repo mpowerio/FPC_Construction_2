@@ -89,6 +89,20 @@
     reveal.forEach(function (el) { el.classList.add('is-in'); });
   }
 
+  // Keep a newly focused control above fixed conversion bars, including its focus outline.
+  document.addEventListener('focusin', function (event) {
+    var target = event.target;
+    if (!target.getBoundingClientRect || target.closest('.action-bar, .island, .lang-hint')) return;
+    requestAnimationFrame(function () {
+      var rect = target.getBoundingClientRect();
+      var obscured = Array.prototype.some.call(document.querySelectorAll('.action-bar, .island, .lang-hint'), function (bar) {
+        var b = bar.getBoundingClientRect(), style = getComputedStyle(bar);
+        return style.visibility !== 'hidden' && Number(style.opacity) > 0.01 && b.width && b.height && rect.bottom + 6 > b.top && rect.top - 6 < b.bottom && rect.right + 6 > b.left && rect.left - 6 < b.right;
+      });
+      if (obscured) window.scrollBy({ top: rect.top + rect.height / 2 - innerHeight / 2, behavior: 'instant' });
+    });
+  });
+
   // ---------- Call bar (mobile) + island (desktop) once the hero actions leave view ----------
   var sentinel = document.querySelector('[data-bar-sentinel]');
   var bars = document.querySelectorAll('.action-bar, .island');

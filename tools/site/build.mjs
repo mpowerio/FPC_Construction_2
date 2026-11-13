@@ -11,6 +11,8 @@ import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import * as S from './strings.mjs';
+import { renderReviews } from './reviews.mjs';
+import { renderTreeWork, treeMediaFiles } from './media.mjs';
 import { services, serviceLabels } from './services.mjs';
 import { whatsappUrl, tiktokProfile } from './social.mjs';
 const TIKTOK = tiktokProfile();
@@ -24,10 +26,11 @@ const LEAD_ENDPOINT = 'https://crm.fpcconstructions.com/api/public/webhook/lead-
 // is emitted commented out. Paste the site token from the Cloudflare dashboard and rebuild.
 const CF_WEB_ANALYTICS_TOKEN = '';
 // Sitemap lastmod for the pages built here (kept fixed so --check is deterministic).
-const LASTMOD = '2026-11-07';
+const LASTMOD = '2026-11-10';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const root = join(here, '..', '..');
+for (const asset of treeMediaFiles()) assert.ok(typeof asset === 'string' && existsSync(join(root, asset)), `Missing approved tree-work asset: ${asset}`);
 const src = (f) => readFileSync(join(here, 'src', f), 'utf8');
 const CHECK = process.argv.includes('--check');
 
@@ -53,6 +56,7 @@ const PIC = {
   // defer: these sit inside Chrome's native lazy-load distance on phones, so `loading=lazy`
   // still fetched ~210 KB during the hero load. core.js loads them 600px before they scroll in.
   septic: { id: 'gallery-12', alt: 'core.s.alt', sizes: '(min-width: 1280px) 672px, (min-width: 900px) 52vw, calc(100vw - 40px)', defer: true },
+  concrete: { id: 'gallery-3', alt: 'w1.alt', sizes: '(min-width: 900px) 31vw, calc(100vw - 40px)', defer: true },
   drainage: { id: 'gallery-9', alt: 'core.d.alt', sizes: '(min-width: 1280px) 480px, (min-width: 900px) 38vw, calc(100vw - 40px)', defer: true },
   w1: { id: 'gallery-3', alt: 'w1.alt', sizes: '(min-width: 1280px) 784px, (min-width: 900px) 62vw, 82vw' },
   w2: { id: 'gallery-8', alt: 'w2.alt', sizes: '(min-width: 1280px) 384px, (min-width: 900px) 31vw, 82vw' },
@@ -81,7 +85,7 @@ function picture(p, t, deferred = p.defer) {
   return `<picture><source type="image/avif" srcset="${srcset(p.id, 'avif')}" sizes="${p.sizes}">` +
     `<img src="/assets/img/${p.id}-${fallback}.webp" srcset="${srcset(p.id, 'webp')}" sizes="${p.sizes}" width="${max}" height="${max * 3 / 4}" ${load} alt="${esc(t(p.alt))}"></picture>`;
 }
-const logo = (sizes, alt, lazy) => `<img src="/assets/img/logo-176.webp" srcset="/assets/img/logo-176.webp 176w, /assets/img/logo-264.webp 264w" sizes="${sizes}" width="264" height="164" alt="${alt}"${lazy ? ' loading="lazy" decoding="async"' : ''}>`;
+const logo = (sizes, alt, lazy) => `<img src="/assets/brand/fpc-lockup-enhanced-light.svg" width="3543" height="2239" alt="${alt}"${lazy ? ' loading="lazy" decoding="async"' : ''}>`;
 
 // ---------- Structured data ----------
 const SERVICES = {
@@ -105,7 +109,7 @@ function business(lang) {
     url: `${ORIGIN}/`,
     telephone: '+1-803-884-9305',
     email: 'info@fpcconstructions.com',
-    logo: `${ORIGIN}/assets/img/logo-600.png`,
+    logo: `${ORIGIN}/assets/brand/fpc-lockup-enhanced-light.svg`,
     image: [`${ORIGIN}/assets/img/og-1200x630.jpg`],
     knowsLanguage: ['en-US', 'es-US'],
     founder: { '@type': 'Person', name: 'Filemon Pineda', jobTitle: 'Owner' },
@@ -114,7 +118,7 @@ function business(lang) {
     // 50 mi x 1,609.34 m/mi = 80,467 m
     areaServed: [{ '@type': 'GeoCircle', geoMidpoint: geo, geoRadius: '80467' },
       ...['North Augusta, SC', 'Aiken, SC', 'Edgefield, SC', 'Augusta, GA', 'Martinez, GA', 'Evans, GA', 'Grovetown, GA', 'Thomson, GA', 'Waynesboro, GA'].map((name) => ({ '@type': 'City', name }))],
-    // Hours per operator 2026-10-18 (matches the JJ voice agent). Pending Filemon's confirmation.
+    // Mon–Sat 7–7 confirmed by operator after Filemon phone check, 2026-11-13.
     openingHoursSpecification: [{ '@type': 'OpeningHoursSpecification', dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'], opens: '07:00', closes: '19:00' }],
     hasOfferCatalog: { '@type': 'OfferCatalog', name: lang === 'es' ? 'Servicios' : 'Services', itemListElement: SERVICES[lang].map((name) => ({ '@type': 'Offer', itemOffered: { '@type': 'Service', name } })) },
     sameAs: ['https://www.facebook.com/p/FPC-Construction-LLC-100066373038903/', 'https://www.instagram.com/fpcconstructions', ...(TIKTOK ? [TIKTOK] : [])],
@@ -174,6 +178,7 @@ const baseCss = src('base.css');
 function render(page, lang) {
   const dict = { ...S.common[lang], ...(page.key === 'service' ? { ...S.home[lang], ...serviceLabels[lang], ...page.service[lang] } : S[page.key][lang]) };
   const t = (k) => { if (!(k in dict)) throw new Error(`missing string ${k} (${page.key}/${lang})`); return dict[k]; };
+  const reviews = renderReviews(t);
   const other = lang === 'en' ? 'es' : 'en';
   const cur = ' aria-current="true"';
   const hero = PIC.hero;
@@ -191,13 +196,16 @@ function render(page, lang) {
     preload: page.key === 'home'
       ? `<link rel="preload" as="image" type="image/avif" imagesrcset="${srcset(hero.id, 'avif')}" imagesizes="${hero.sizes}" fetchpriority="high">`
       : '',
-    css: (baseCss + '\n' + (page.key === 'service' ? src('home.css') + '\n' : '') + src(page.css)).trim(),
+    css: (baseCss + '\n' + (page.key === 'service' ? src('home.css') + '\n' : '') + src(page.css) + '\n' + src('material.css')).trim(),
     jsonld: jsonld(page.key, lang, t, ORIGIN + page.url[lang]),
     analytics,
+    reviewSummary: reviews.summary, reviewSection: reviews.section, reviewFooter: reviews.footer,
+    treeWork: page.key === 'home' ? renderTreeWork(lang, t) : '',
     whatsappHero: WHATSAPP ? `<a class="hero__wa" href="${esc(WHATSAPP)}" rel="noopener">WhatsApp <span aria-hidden="true">↗</span></a>` : '',
     whatsappFooter: WHATSAPP ? `<a class="social__text" href="${esc(WHATSAPP)}" rel="noopener">WhatsApp<span class="vh"> FPC Construction</span></a>` : '',
     tiktok: TIKTOK ? `<a class="social__text" href="${esc(TIKTOK)}" rel="noopener">TikTok<span class="vh"> FPC Construction</span></a>` : '',
     tiktokStory: TIKTOK && page.key !== 'estimate' ? `<a class="social-story" href="${esc(TIKTOK)}" rel="noopener"><span>TikTok</span><span>${t('field.watch')} <span aria-hidden="true">↗</span></span></a>` : '',
+    concreteUrl: services.find(s => s.id === 'concrete').url[lang],
     septicUrl: services.find(s => s.id === 'septic').url[lang],
     drainageUrl: services.find(s => s.id === 'drainage').url[lang],
     serviceType: page.service?.type || '',

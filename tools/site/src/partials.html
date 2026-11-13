@@ -11,7 +11,7 @@
 <title>{{t.meta.title}}</title>
 <meta name="description" content="{{t.meta.desc}}">
 <meta name="robots" content="index, follow, max-image-preview:large">
-<meta name="theme-color" content="#18201B">
+<meta name="theme-color" content="#C2BCB0">
 <link rel="canonical" href="{{v.canonical}}">
 <link rel="alternate" hreflang="en-US" href="{{v.enAbs}}">
 <link rel="alternate" hreflang="es-US" href="{{v.esAbs}}">
@@ -34,9 +34,9 @@
 </script>
 {{v.preload}}
 <link rel="preload" href="/assets/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="icon" href="/favicon.ico" sizes="48x48">
-<link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
-<link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+<link rel="icon" href="/assets/brand/favicon.ico" sizes="48x48">
+<link rel="icon" href="/assets/brand/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/assets/brand/apple-touch-icon.png">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="FPC Construction LLC">
 <meta property="og:title" content="{{t.meta.title}}">
@@ -120,6 +120,7 @@
       <p class="lead muted" style="margin-top:var(--s-16)">{{t.foot.p}}</p>
     </div>
     <div class="footer-cta__actions">
+      {{v.reviewFooter}}
       <a class="btn btn--red btn--block" href="{{v.estimate}}"><span>{{t.cta.estimate}}</span><span class="btn__nub" aria-hidden="true"><svg><use href="#i-chev"/></svg></span></a>
       <a class="btn btn--light btn--block" href="tel:+18038849305"><span>{{t.cta.callpre}} <span class="num">(803) 884-9305</span></span><span class="btn__nub" aria-hidden="true"><svg><use href="#i-phone"/></svg></span></a>
     </div>

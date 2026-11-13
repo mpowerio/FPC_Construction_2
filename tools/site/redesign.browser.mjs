@@ -6,18 +6,21 @@ import { createRequire } from 'node:module';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { services } from './services.mjs';
+import { common } from './strings.mjs';
+import { renderReviews } from './reviews.mjs';
+import { TREE_WORK } from './media.mjs';
 import { tiktokProfile, whatsappUrl, WHATSAPP_URL } from './social.mjs';
 
 const { chromium } = createRequire(new URL('../contact-form/package.json', import.meta.url))('playwright');
 const root = fileURLToPath(new URL('../../', import.meta.url));
 const out = process.env.FPC_EVIDENCE_DIR || '/tmp/fpc-redesign-evidence';
 await mkdir(out, { recursive: true });
-const types = { html: 'text/html', js: 'text/javascript', css: 'text/css', avif: 'image/avif', webp: 'image/webp', woff2: 'font/woff2', svg: 'image/svg+xml', ico: 'image/x-icon' };
+const types = { html: 'text/html', js: 'text/javascript', css: 'text/css', avif: 'image/avif', webp: 'image/webp', woff2: 'font/woff2', svg: 'image/svg+xml', ico: 'image/x-icon', mp4: 'video/mp4' };
 const pages = ['/', '/es/', '/estimate/', '/es/estimado/', ...services.flatMap(s => Object.values(s.url))];
 const receipts = [];
 const browser = await chromium.launch({ headless: true });
 let productionPosts = 0;
-async function fixture(context) {
+async function fixture(context, insert = '', summary = '') {
   await context.route('**/*', async route => {
     const u = new URL(route.request().url());
     if (u.hostname !== 'fpc.test') {
@@ -26,7 +29,7 @@ async function fixture(context) {
     }
     if (route.request().method() !== 'GET') throw new Error('Unexpected fixture mutation');
     const path = join(root, u.pathname, u.pathname.endsWith('/') ? 'index.html' : '');
-    try { const body = await readFile(path); return route.fulfill({ contentType: types[path.split('.').pop()] || 'application/octet-stream', body }); }
+    try { let body = await readFile(path); if (insert && (u.pathname === '/' || u.pathname === '/es/')) body = Buffer.from(body.toString().replace('<footer class="site-footer', insert + '<footer class="site-footer').replace('<form class="estimate-start"', summary + '<form class="estimate-start"')); return route.fulfill({ contentType: types[path.split('.').pop()] || 'application/octet-stream', body }); }
     catch { return route.fulfill({ status: 404, body: 'missing local fixture' }); }
   });
 }
@@ -50,6 +53,39 @@ try {
       await page.evaluate(() => document.fonts.ready);
       assert.deepEqual(errors, [], `${path} JavaScript errors`);
       assert.equal(await page.locator('h1').count(), 1);
+      assert.equal(await page.locator('#google-reviews, .review-summary, .review-action').count(), 0, 'Unverified Google reviews remain absent');
+      const isHome = path === '/' || path === '/es/';
+      assert.equal(await page.locator('.tree-work').count(), isHome ? 1 : 0);
+      if (isHome) {
+        assert.equal(await page.locator('.tree-testimonial blockquote').innerText(), TREE_WORK.testimonial.text);
+        assert.equal(await page.locator('.tree-testimonial strong').innerText(), 'Michael Parker');
+        assert.equal(await page.locator('.tree-testimonial time').getAttribute('datetime'), '2026-11-10');
+        assert.equal(await page.locator('.tree-testimonial__rating').innerText(), '5/5');
+        assert.ok(!(await page.locator('.tree-testimonial').innerText()).includes('Google'));
+        assert.equal(await page.locator('.tree-testimonial__author span').innerText(), 'North Augusta, Foxchase subdivision', 'Only operator-approved town/subdivision wording');
+        assert.equal(await page.locator('.tree-testimonial__author span').getAttribute('lang'), 'en');
+        assert.equal(await page.locator('.tree-testimonial__disclosure').innerText(), common[path === '/es/' ? 'es' : 'en']['media.disclosure']);
+        assert.equal(await page.locator('#services .trade').count(), 3);
+        const hierarchy = await page.evaluate(() => {
+          const service = document.querySelector('#services'), tree = document.querySelector('.tree-work');
+          const cards = [...service.querySelectorAll('.trade')].map(e => {const r=e.getBoundingClientRect(); return {width:r.width,top:r.top};});
+          return {treeBelow: Boolean(service.compareDocumentPosition(tree) & Node.DOCUMENT_POSITION_FOLLOWING), cards};
+        });
+        assert.ok(hierarchy.treeBelow, 'Tree work follows all three main service paths');
+        assert.ok(hierarchy.cards.every(card => Math.abs(card.width-hierarchy.cards[0].width)<1), 'Three equal service paths');
+        assert.equal(await page.locator('h1').innerText(), path === '/es/' ? 'Sépticos. Concreto. Obras comerciales y públicas.' : 'Septic. Concrete. Commercial & public works.');
+        assert.equal(await page.locator('[data-release-pending]').count(), 0, 'No held public copy remains');
+        assert.equal(await page.locator('.trade--public img').count(), 0, 'No unverified public-project photo');
+        assert.equal(await page.locator('.site-header .plate img').getAttribute('src'), '/assets/brand/fpc-lockup-enhanced-light.svg');
+        assert.equal(await page.locator('.site-footer .plate img').getAttribute('src'), '/assets/brand/fpc-lockup-enhanced-light.svg');
+        assert.ok(!(await page.content()).includes('agent-out/'));
+        assert.equal(await page.locator('.tree-work video').count(), 3);
+        for (const video of await page.locator('.tree-work video').all()) {
+          assert.equal(await video.getAttribute('preload'), 'none');
+          assert.equal(await video.getAttribute('autoplay'), null);
+        }
+      }
+      assert.equal(await page.locator('a[href="https://mpowerio.ai"]').innerText(), path.startsWith('/es/') ? 'Desarrollado por mpowerio.ai' : 'Powered by mpowerio.ai', 'Agency credit is unchanged');
       const layout = await page.evaluate(() => {
         const box = e => { const b = e.getBoundingClientRect(); return { x: b.x, y: b.y, width: b.width, height: b.height }; };
         return { scroll: document.documentElement.scrollWidth, viewport: innerWidth,
@@ -102,6 +138,44 @@ try {
     }
     await context.close();
   }
+  // Synthetic populated layouts live only in fixture responses, never in generated files.
+  for (const width of [1440, 820, 390]) for (const lang of ['en', 'es']) {
+    const t = key => common[lang][key];
+    const source = 'https://www.google.com/maps?cid=synthetic-fixture';
+    const reviews = renderReviews(t, { reviewUrl: source, snapshot: { verified: true, listingId:'fixture-only', listingUrl:source, observedOn:'2026-11-10', rating:4.7, count:7, items:[
+      { listingId:'fixture-only', author:'Local fixture A', rating:5, dateLabel:'2026-11-10', text:'Synthetic layout fixture. This is not a real customer review.', language:'en', sourceUrl:source, excerpt:true },
+      { listingId:'fixture-only', author:'Local fixture B', rating:4, dateLabel:'2026-11-10', text:'Prueba de diseño local. No es una reseña de un cliente real.', language:'es', sourceUrl:source, excerpt:true }
+    ] } });
+    const c = await browser.newContext({ viewport:{width,height:1000}, reducedMotion:'reduce' });
+    await fixture(c, reviews.section, reviews.summary);
+    const p = await c.newPage(); await p.goto('https://fpc.test' + (lang === 'es' ? '/es/' : '/'));
+    await p.locator('#google-reviews').scrollIntoViewIfNeeded();
+    assert.equal(await p.locator('.review-quote').count(), 2);
+    assert.equal(await p.locator('.review-action').innerText(), t('reviews.leave'));
+    assert.equal(await p.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
+    for (const link of await p.locator('#google-reviews a').all()) {
+      const box = await link.boundingBox(); assert.ok(box.height >= 44 && box.width >= 44);
+    }
+    await p.screenshot({path:join(out, `synthetic-reviews-${lang}-${width}.png`)});
+    await p.locator('.tree-work').scrollIntoViewIfNeeded();
+    assert.equal(await p.locator('.tree-work img').getAttribute('loading'), 'lazy');
+    await p.locator('.tree-work__story').scrollIntoViewIfNeeded();
+    await p.locator('.tree-work img').evaluate(image => image.decode());
+    await p.locator('.tree-work__story').screenshot({path:join(out, `tree-testimonial-${lang}-${width}.png`)});
+    await c.close();
+  }
+  // Exercise actual silent local clips; no provider or external request is involved.
+  const playback = await browser.newContext({ viewport:{width:390,height:1000}, reducedMotion:'reduce' });
+  await fixture(playback);
+  const videoPage = await playback.newPage(); await videoPage.goto('https://fpc.test/');
+  for (const video of await videoPage.locator('.tree-work video').all()) {
+    await video.scrollIntoViewIfNeeded();
+    await video.evaluate(async v => { await v.play(); });
+    await videoPage.waitForFunction(v => v.currentTime > 0.1 && !v.error, await video.elementHandle());
+    const result = await video.evaluate(v => { v.pause(); return { width:v.videoWidth,height:v.videoHeight,duration:v.duration,error:v.error?.message }; });
+    assert.ok(result.width > 0 && result.height > 0 && result.duration > 6 && !result.error);
+  }
+  await playback.close();
   // No-JS: all service copy, language paths and the GET-only starter remain usable.
   const nojs = await browser.newContext({ javaScriptEnabled:false, viewport:{width:390,height:844} });
   await fixture(nojs);
@@ -127,6 +201,6 @@ try {
     await c.close();
   }
   assert.equal(productionPosts, 0);
-  await writeFile(join(out, 'responsive-results.json'), JSON.stringify({ pages:receipts.length, productionPosts, receipts }, null, 2));
-  console.log(`PASS: ${receipts.length} page/viewport combinations; starter handoff; no-JS; schema; local links; hidden TikTok; motion; zero external POST attempts. Evidence: ${out}`);
+  await writeFile(join(out, 'responsive-results.json'), JSON.stringify({ pages:receipts.length, syntheticLayouts:6, productionPosts, receipts }, null, 2));
+  console.log(`PASS: ${receipts.length} page/viewport combinations; starter handoff; no-JS; schema; local links; hidden TikTok/Google reviews; approved exact testimonial and three silent clips with playback; six synthetic review layouts; motion; zero external POST attempts. Evidence: ${out}`);
 } finally { await browser.close(); }

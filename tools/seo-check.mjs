@@ -1,6 +1,7 @@
 // Local SEO checks for the built pages. Run from the repository root: node tools/seo-check.mjs
 import fs from 'node:fs';
 import path from 'node:path';
+import { services } from './site/services.mjs';
 import { releaseProblems } from './site/release-policy.mjs';
 
 const root = process.cwd();
@@ -56,7 +57,7 @@ for (const page of PAGES) {
       const n = (html.match(new RegExp(` id="${id}"`, 'g')) || []).length;
       if (n !== 1) fail(page, `legacy fragment #${id} must exist exactly once (found ${n})`);
     }
-    // No testimonials are shown, so #testimonials must land on real job photos, never on the reviews block.
+    // Preserve the legacy bookmark target in the work gallery.
     const work = (html.match(/<section class="work" id="work"[\s\S]*?<\/section>/) || [''])[0];
     if (!work.includes(' id="testimonials"')) fail(page, '#testimonials must point into the Recent work section');
     const business = graphs.find((n) => types(n).includes('LocalBusiness'));
@@ -68,9 +69,9 @@ for (const page of PAGES) {
       if (!(business.sameAs || []).includes(profile)) fail(page, `sameAs missing ${profile}`);
     }
     const headings = [...html.matchAll(/<h1\b[^>]*>([\s\S]*?)<\/h1>/g)];
-    if (headings.length !== 1 || !decode(headings[0]?.[1] || '')) fail(page, 'one non-empty H1 is required');
-    const slogan = decode((html.match(/<p[^>]*class="hero__slogan"[^>]*lang="en"[^>]*>([\s\S]*?)<\/p>/) || [])[1] || '');
-    if (slogan !== SLOGAN) fail(page, 'locked English slogan paragraph must remain verbatim');
+    if (headings.length !== 1 || !decode(headings[0]?.[1] || '')) fail(page, 'exactly one non-empty H1 required');
+    const slogans = [...html.matchAll(/<p\b(?=[^>]*class="[^" ]*hero__slogan[^" ]*")(?=[^>]*lang="en")[^>]*>([\s\S]*?)<\/p>/g)];
+    if (slogans.length !== 1 || decode(slogans[0]?.[1] || '') !== SLOGAN) fail(page, 'locked English slogan paragraph must appear exactly once, verbatim');
 
     const faq = graphs.find((n) => types(n).includes('FAQPage'));
     const visible = [...html.matchAll(/<summary>([\s\S]*?)<span class="faq__nub"/g)].map((m) => decode(m[1]));
@@ -82,6 +83,12 @@ for (const page of PAGES) {
       if (onlyPage.length) fail(page, `visible FAQ questions missing from JSON-LD: ${onlyPage.join(' | ')}`);
     }
   }
+}
+
+// Release policy also covers generated service pages and the three legal documents.
+for (const file of [...services.flatMap(s => Object.values(s.url).map(url => url.slice(1) + 'index.html')), 'privacy.html', 'terms.html', 'sms-opt-in.html']) {
+  const html = fs.readFileSync(path.join(root, file), 'utf8');
+  for (const problem of releaseProblems(html, { allowDraft: process.argv.includes('--allow-draft') })) fail({file}, problem);
 }
 
 const sitemap = fs.readFileSync(path.join(root, 'sitemap.xml'), 'utf8');

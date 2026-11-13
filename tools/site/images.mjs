@@ -87,4 +87,6 @@ im('-size', '332x216', 'xc:none', '-fill', 'white', '-draw', 'roundrectangle 0,0
 im(og, plate, '-gravity', 'NorthWest', '-geometry', '+40+40', '-composite', '-strip', '-quality', '82', join(out, 'og-1200x630.jpg'));
 
 rmSync(tmp, { recursive: true, force: true });
-console.log('images written to assets/img/');
+// Restore the approved screen favicon aliases after the legacy flat-image pipeline.
+execFileSync('python3', [join(root, 'tools/site/brand-assets.py')], { stdio: 'inherit' });
+console.log('images written to assets/img/; approved screen favicon aliases refreshed');

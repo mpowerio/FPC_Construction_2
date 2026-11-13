@@ -99,7 +99,7 @@ export const home = {
     'core.d.cta': 'Get a drainage estimate',
     'idx.h': 'Everything else we do',
     'idx.p1': "If your job isn't on the list, ask anyway. Filemon comes out and looks at it.",
-    'idx.p2': 'FPC also takes county and state contract work.',
+    'idx.p2': 'Tell us about your commercial or public-works project.',
     'idx.g1': 'Site work', 'idx.g2': 'Concrete and paving', 'idx.g3': 'Building and finish work',
     'svc.excavation': 'Excavation', 'svc.excavation.d': 'Digging, trenching, hauling dirt',
     'svc.grading': 'Grading', 'svc.grading.d': 'Yards, pads, driveways, commercial sites',
@@ -125,7 +125,7 @@ export const home = {
     'w5.alt': 'Excavator clearing a wooded lot on a misty morning',
     'w6.alt': 'Crew member finishing fresh concrete next to an excavator bucket',
     'steps.h': 'How an estimate works',
-    'steps.1h': 'Call or send the form', 'steps.1p': 'JJ answers any time, day or night.',
+    'steps.1h': 'Call or send the form', 'steps.1p': 'Fil answers any time, day or night.',
     'steps.2h': 'Filemon comes out', 'steps.2p': 'He looks at the site in person. The estimate is free.',
     'steps.3h': 'You get a written estimate', 'steps.3p': 'You see the price before any work starts.',
     'steps.4h': 'We do the work', 'steps.4p': 'Filemon runs the job.',
@@ -168,7 +168,7 @@ export const home = {
     'core.d.cta': 'Estimado para drenaje',
     'idx.h': 'Todo lo demás que hacemos',
     'idx.p1': 'Si su trabajo no está en la lista, pregunte de todos modos. Filemon va a verlo en persona.',
-    'idx.p2': 'FPC también hace trabajos por contrato para el condado y el estado.',
+    'idx.p2': 'Cuéntenos sobre su proyecto comercial o de obras públicas.',
     'idx.g1': 'Trabajo de terreno', 'idx.g2': 'Concreto y pavimento', 'idx.g3': 'Construcción y acabados',
     'svc.excavation': 'Excavación', 'svc.excavation.d': 'Excavar, hacer zanjas, acarrear tierra',
     'svc.grading': 'Nivelación de terrenos', 'svc.grading.d': 'Patios, bases, entradas, terrenos comerciales',
@@ -194,7 +194,7 @@ export const home = {
     'w5.alt': 'Excavadora limpiando un terreno con árboles en una mañana con neblina',
     'w6.alt': 'Trabajador dando el acabado al concreto fresco junto al cucharón de una excavadora',
     'steps.h': 'Cómo funciona el estimado',
-    'steps.1h': 'Llame o mande el formulario', 'steps.1p': 'JJ contesta a cualquier hora, de día o de noche.',
+    'steps.1h': 'Llame o mande el formulario', 'steps.1p': 'Fil contesta a cualquier hora, de día o de noche.',
     'steps.2h': 'Filemon va a verlo', 'steps.2p': 'Revisa el lugar en persona. El estimado es gratis.',
     'steps.3h': 'Recibe un estimado por escrito', 'steps.3p': 'Usted ve el precio antes de empezar cualquier trabajo.',
     'steps.4h': 'Hacemos el trabajo', 'steps.4p': 'Filemon dirige el trabajo.',
@@ -311,18 +311,20 @@ export const estimate = {
 };
 
 // Keys the estimate script needs at runtime (emitted as a JSON block on the page).
-
+export const FORM_RUNTIME_KEYS = ['err.first', 'err.last', 'err.phone.req', 'err.phone.bad', 'err.email', 'sum.h', 'fail.h', 'fail.p', 'fail.retry',
+  'ok.h', 'ok.p', 'ok.ref', 'ok.sooner', 'ok.home', 'e.submit', 'e.sending',
+  'ok.sent', 'ok.s.name', 'ok.s.phone', 'ok.s.email', 'ok.s.addr', 'ok.s.type', 'ok.s.best', 'ok.s.lang', 'ok.s.details'];
 
 // November redesign copy. The locked slogan remains verbatim in the home template.
 Object.assign(home.en, {
   'hero.eyebrow': 'North Augusta · Augusta · Aiken',
-  'hero.heading': 'Septic, drainage<br><span>& site work.</span>',
+  'hero.heading': 'Septic. Concrete. Commercial &amp; public works.',
   'hero.intro': 'For your home, your land and what comes next. Filemon and the FPC crew handle the ground work, the concrete and the finishing touches across the CSRA.',
   'hero.seework': 'See the work', 'hero.badge': 'On the job',
   'start.h': 'What are you working on?', 'start.free': 'Free estimate',
   'start.label': 'Choose your project', 'start.septic': 'Septic systems', 'start.drainage': 'Drainage & site work', 'start.other': 'Something else',
   'start.cta': 'Start here', 'start.note': 'Next: tell us the details. Nothing is submitted at this step.',
-  'ribbon.label': 'FPC services', 'ribbon.1': 'Residential & commercial', 'ribbon.2': 'County & state contract work', 'ribbon.3': 'English & Español',
+  'ribbon.label': 'FPC services', 'ribbon.1': 'Residential & commercial', 'ribbon.2': 'Commercial & public works', 'ribbon.3': 'English & Español',
   'section.services': '01 / Ground work', 'section.work': '02 / From the job site',
   'field.eyebrow': 'More from FPC', 'field.h': 'See the work take shape.',
   'field.p': 'Follow FPC for job-site photos and updates. Have a project like one you see? Tell us what you have in mind.', 'field.watch': 'Visit FPC',
@@ -330,23 +332,59 @@ Object.assign(home.en, {
 });
 Object.assign(home.es, {
   'hero.eyebrow': 'North Augusta · Augusta · Aiken',
-  'hero.heading': 'Sépticos, drenaje<br><span>y terreno.</span>',
+  'hero.heading': 'Sépticos. Concreto. Obras comerciales y públicas.',
   'hero.intro': 'Para su casa, su terreno y su próximo proyecto. Filemon y el equipo de FPC hacen el trabajo de terreno, el concreto y los acabados en toda la zona del CSRA.',
   'hero.seework': 'Ver los trabajos', 'hero.badge': 'En la obra',
   'start.h': '¿Qué proyecto tiene?', 'start.free': 'Estimado gratis',
   'start.label': 'Elija su proyecto', 'start.septic': 'Sistemas sépticos', 'start.drainage': 'Drenaje y terreno', 'start.other': 'Otro trabajo',
   'start.cta': 'Empezar', 'start.note': 'Siguiente: cuéntenos los detalles. Este paso no envía una solicitud.',
-  'ribbon.label': 'Servicios de FPC', 'ribbon.1': 'Residencial y comercial', 'ribbon.2': 'Contratos del condado y del estado', 'ribbon.3': 'English y español',
+  'ribbon.label': 'Servicios de FPC', 'ribbon.1': 'Residencial y comercial', 'ribbon.2': 'Obras comerciales y públicas', 'ribbon.3': 'English y español',
   'section.services': '01 / Trabajo de terreno', 'section.work': '02 / Desde la obra',
   'field.eyebrow': 'Más de FPC', 'field.h': 'Vea cómo avanza el trabajo.',
   'field.p': 'Siga a FPC para ver fotos y novedades de las obras. ¿Tiene un proyecto parecido? Cuéntenos lo que quiere hacer.', 'field.watch': 'Visitar FPC',
   'work.h': 'El trabajo habla.', 'work.p': 'Líneas sépticas, drenaje, concreto y preparación de terreno. Vea los proyectos de FPC, desde la primera excavación hasta el acabado.',
 });
 
-export const FORM_RUNTIME_KEYS = ['err.first', 'err.last', 'err.phone.req', 'err.phone.bad', 'err.email', 'sum.h', 'fail.h', 'fail.p', 'fail.retry',
-  'ok.h', 'ok.p', 'ok.ref', 'ok.sooner', 'ok.home', 'e.submit', 'e.sending',
-  'ok.sent', 'ok.s.name', 'ok.s.phone', 'ok.s.email', 'ok.s.addr', 'ok.s.type', 'ok.s.best', 'ok.s.lang', 'ok.s.details'];
+// Interface labels only; actual Google review words stay in their original language.
+Object.assign(common.en, {
+  'reviews.leave': 'Leave a Google review', 'reviews.read': 'Read reviews on Google',
+  'reviews.heading': 'What our customers say', 'reviews.count': 'Google reviews',
+  'reviews.observed': 'Checked on', 'reviews.excerpt': 'Excerpt · Read original on Google',
+  'reviews.original': 'Read original on Google', 'media.heading': 'Tree work, by FPC', 'media.open': 'Open video', 'media.testimonial': 'Customer testimonial',
+});
+Object.assign(common.es, {
+  'reviews.leave': 'Dejar una reseña en Google', 'reviews.read': 'Leer reseñas en Google',
+  'reviews.heading': 'Lo que dicen nuestros clientes', 'reviews.count': 'reseñas de Google',
+  'reviews.observed': 'Consultado el', 'reviews.excerpt': 'Extracto · Leer original en Google',
+  'reviews.original': 'Leer original en Google', 'media.heading': 'Trabajo de árboles de FPC', 'media.open': 'Abrir video', 'media.testimonial': 'Testimonio de un cliente',
+});
 
-// Fail-closed estimate fallback; no online receipt is implied.
-Object.assign(common.en, { 'e.nojs': 'Online requests need JavaScript. Please call FPC to discuss your project. Nothing has been sent.' });
-Object.assign(common.es, { 'e.nojs': 'Las solicitudes en línea necesitan JavaScript. Llame a FPC para hablar de su proyecto. No se ha enviado nada.' });
+// Operator-approved service hierarchy; headline and public-job examples remain draft.
+Object.assign(home.en, {
+  'core.h': 'Septic. Concrete. Commercial & public works.',
+  'core.p': 'Choose your project. Talk through the details with Filemon.',
+  'core.c.h': 'Concrete', 'core.c.cap': 'Concrete work on site',
+  'core.c.p': 'Driveways, patios, sidewalks and slabs. Start with the space and what you need it to do.',
+  'core.c.cta': 'Discuss concrete work',
+  'core.public.h': 'Commercial & public works', 'core.public.pending': 'Project examples pending verification',
+  'core.public.cta': 'Discuss a commercial or public project',
+  'section.services': '01 / Main services',
+});
+Object.assign(home.es, {
+  'core.h': 'Sépticos. Concreto. Obras comerciales y públicas.',
+  'core.p': 'Elija su proyecto. Hable de los detalles con Filemon.',
+  'core.c.h': 'Concreto', 'core.c.cap': 'Trabajo de concreto en la obra',
+  'core.c.p': 'Entradas, patios, banquetas y losas. Cuéntenos cómo quiere usar el espacio.',
+  'core.c.cta': 'Consultar un trabajo de concreto',
+  'core.public.h': 'Obras comerciales y públicas', 'core.public.pending': 'Ejemplos de proyectos pendientes de verificación',
+  'core.public.cta': 'Consultar un proyecto comercial o público',
+  'section.services': '01 / Servicios principales',
+});
+Object.assign(common.en, { 'media.disclosure': "Michael is also FPC's technology partner." });
+Object.assign(common.es, { 'media.disclosure': 'Michael también es el socio tecnológico de FPC.' });
+
+Object.assign(common.en, { 'svc.public': 'Commercial & public works', 'e.nojs': 'Online requests need JavaScript. Please call FPC to discuss your project. Nothing has been sent.' });
+Object.assign(common.es, { 'svc.public': 'Obras comerciales y públicas', 'e.nojs': 'Las solicitudes en línea necesitan JavaScript. Llame a FPC para hablar de su proyecto. No se ha enviado nada.' });
+
+Object.assign(estimate.en, { 't.public': 'Commercial & public works' });
+Object.assign(estimate.es, { 't.public': 'Obras comerciales y públicas' });

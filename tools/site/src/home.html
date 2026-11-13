@@ -19,6 +19,7 @@
         <h1 id="h1" class="display hero__h1">{{t.hero.heading}}</h1>
         <p class="lead" id="about">{{t.hero.intro}}</p>
         <p class="hero__slogan" lang="en">No job too small, no dream too big — FPC Construction for all your needs.</p>
+        {{v.reviewSummary}}
         <form class="estimate-start" action="{{v.estimate}}" method="get" aria-labelledby="start-h" data-bar-sentinel>
           <div class="estimate-start__heading"><h2 id="start-h">{{t.start.h}}</h2><span class="gold-label">{{t.start.free}}</span></div>
           <label for="start-type">{{t.start.label}}</label>
@@ -28,6 +29,7 @@
               <option value="septic-systems">{{t.start.septic}}</option>
               <option value="drainage-and-site-work">{{t.start.drainage}}</option>
               <option value="concrete">{{t.svc.concrete}}</option>
+              <option value="commercial-and-public-works">{{t.core.public.h}}</option>
               <option value="other">{{t.start.other}}</option>
             </select>
             <button class="btn btn--red" type="submit"><span>{{t.start.cta}}</span><span class="btn__nub" aria-hidden="true"><svg><use href="#i-chev"/></svg></span></button>
@@ -49,6 +51,8 @@
     <div class="wrap"><div class="trade-ribbon" aria-label="{{t.ribbon.label}}"><span>{{t.ribbon.1}}</span><span>{{t.ribbon.2}}</span><span>{{t.ribbon.3}}</span></div></div>
   </section>
 
+  {{v.reviewSection}}
+
   <!-- ======================= CORE TRADES (clay band) ======================= -->
   <section class="core cut-both on-dark" id="services" aria-labelledby="core-h">
     <div class="wrap">
@@ -56,6 +60,7 @@
         <p class="eyebrow">{{t.section.services}}</p>
         <h2 id="core-h" class="h2">{{t.core.h}}</h2>
         <p class="lead muted">{{t.core.p}}</p>
+        <a class="textlink" href="{{v.drainageUrl}}">{{t.start.drainage}}</a>
       </div>
       <div class="core__grid">
         <article class="trade trade--a" data-reveal>
@@ -69,16 +74,23 @@
         </article>
         <article class="trade trade--b" data-reveal>
           <figure>
-            <div class="frame">{{img.drainage}}</div>
-            <figcaption><span>{{t.core.d.cap}}</span></figcaption>
+            <div class="frame">{{img.concrete}}</div>
+            <figcaption><span>{{t.core.c.cap}}</span></figcaption>
           </figure>
-          <h3 class="h3">{{t.core.d.h}}</h3>
-          <p>{{t.core.d.p}}</p>
-          <a class="textlink" href="{{v.drainageUrl}}"><span class="textlink__label">{{t.core.d.cta}}</span><span class="textlink__nub" aria-hidden="true"><svg><use href="#i-chev"/></svg></span></a>
+          <h3 class="h3">{{t.core.c.h}}</h3>
+          <p>{{t.core.c.p}}</p>
+          <a class="textlink" href="{{v.concreteUrl}}"><span class="textlink__label">{{t.core.c.cta}}</span><span class="textlink__nub" aria-hidden="true"><svg><use href="#i-chev"/></svg></span></a>
+        </article>
+        <article class="trade trade--public" data-reveal>
+          <div class="frame public-scope" aria-hidden="true"><svg><use href="#i-chev"/></svg></div>
+          <h3 class="h3">{{t.core.public.h}}</h3>
+          <a class="textlink" href="{{v.estimate}}"><span class="textlink__label">{{t.core.public.cta}}</span><span class="textlink__nub" aria-hidden="true"><svg><use href="#i-chev"/></svg></span></a>
         </article>
       </div>
     </div>
   </section>
+
+  {{v.treeWork}}
 
   <!-- ======================= TRADE INDEX ======================= -->
   <section class="index" aria-labelledby="index-h">

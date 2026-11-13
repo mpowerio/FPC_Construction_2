@@ -16,7 +16,7 @@
 
 /* Form plate: machined double bezel */
 .formplate { padding: 6px; border-radius: 20px; background: rgba(38,38,38,.07); box-shadow: inset 0 0 0 1px var(--c-hair); }
-.formplate__core { position: relative; padding: var(--s-24) var(--s-16); border-radius: 14px; background: var(--c-plate); box-shadow: inset 0 1px 0 #fff, 0 1px 2px rgba(38,30,24,.08), 0 24px 48px -32px rgba(38,30,24,.35); }
+.formplate__core { position: relative; padding: var(--s-24) var(--s-16); border-radius: 14px; background: var(--c-plate); box-shadow: inset 0 1px 0 rgba(255,255,255,.55), 0 1px 2px rgba(38,30,24,.08), 0 24px 48px -32px rgba(38,30,24,.35); }
 @media (min-width: 600px) { .formplate__core { padding: var(--s-32); } }
 
 fieldset { margin: 0; padding: 0; border: 0; min-width: 0; }
@@ -41,7 +41,7 @@ input[type="text"], input[type="tel"], input[type="email"], textarea, select {
 }
 textarea { min-height: 128px; resize: vertical; }
 select { background-image: none; }
-input::placeholder, textarea::placeholder { color: #6B675F; opacity: 1; }
+input::placeholder, textarea::placeholder { color: var(--c-placeholder); opacity: 1; }
 input:hover, textarea:hover, select:hover { border-color: var(--c-ink); }
 input:focus-visible, textarea:focus-visible, select:focus-visible { border-color: var(--c-ink); border-radius: var(--r-8); }
 input:-webkit-autofill, input:-webkit-autofill:hover, textarea:-webkit-autofill, select:-webkit-autofill {
@@ -55,7 +55,7 @@ input:-webkit-autofill:focus-visible {
 [aria-invalid="true"] { border-color: var(--c-error) !important; box-shadow: inset 0 0 0 1px var(--c-error); }
 /* Locked while sending (disabled fieldsets): same explicit colors, so the fence holds; no edits */
 fieldset:disabled input, fieldset:disabled textarea { opacity: 1; color: var(--c-ink); -webkit-text-fill-color: var(--c-ink); cursor: not-allowed; }
-fieldset:disabled input::placeholder, fieldset:disabled textarea::placeholder { color: #6B675F; -webkit-text-fill-color: #6B675F; }
+fieldset:disabled input::placeholder, fieldset:disabled textarea::placeholder { color: var(--c-placeholder); -webkit-text-fill-color: var(--c-placeholder); }
 fieldset:disabled input:hover, fieldset:disabled textarea:hover { border-color: var(--c-field-line); }
 fieldset:disabled .chip span { cursor: not-allowed; }
 fieldset:disabled .chip span:active { transform: none; }
@@ -92,7 +92,7 @@ fieldset:disabled .chip span:active { transform: none; }
 
 /* Submit with a continuous progress sweep (transform only) */
 .submit { margin-top: var(--s-24); overflow: hidden; }
-.submit__bar { position: absolute; left: 0; bottom: 0; height: 3px; width: 40%; background: rgba(255,255,255,.85); transform: translateX(-100%); opacity: 0; }
+.submit__bar { position: absolute; left: 0; bottom: 0; height: 3px; width: 40%; background: rgba(38,38,38,.85); transform: translateX(-100%); opacity: 0; }
 .submit[aria-busy="true"] { cursor: progress; }
 .submit[aria-busy="true"] .submit__bar { opacity: 1; animation: sweep 1.2s var(--ease-io) infinite; }
 @keyframes sweep { from { transform: translateX(-100%); } to { transform: translateX(250%); } }
@@ -100,8 +100,8 @@ fieldset:disabled .chip span:active { transform: none; }
 /* Banners */
 .banner { display: grid; grid-template-columns: auto 1fr; gap: var(--s-12); padding: var(--s-16); border-radius: var(--r-8); margin-bottom: var(--s-24); animation: banner-in 320ms var(--ease-out) both; }
 .banner svg { width: 22px; height: 22px; margin-top: 1px; }
-.banner--error { background: #FBE6E5; color: #5E0006; box-shadow: inset 0 0 0 1.5px var(--c-error), inset 6px 0 0 var(--c-error); }
-.banner--error a { color: #5E0006; font-weight: 700; }
+.banner--error { background: var(--c-error-bg); color: var(--c-error-ink); box-shadow: inset 0 0 0 1.5px var(--c-error), inset 6px 0 0 var(--c-error); }
+.banner--error a { color: var(--c-error-ink); font-weight: 700; }
 .banner h2 { font-size: var(--t-16); font-weight: 700; }
 .banner ul { margin-top: var(--s-4); }
 .banner li a { color: inherit; }
@@ -133,14 +133,14 @@ fieldset:disabled .chip span:active { transform: none; }
   .est__aside { position: sticky; top: var(--s-32); }
   .est__h1 { font-size: var(--t-72); font-stretch: 112%; }
   .est__photo { display: block; margin-top: var(--s-32); }
-  .est__photo .frame { aspect-ratio: 4 / 3; overflow: hidden; border-radius: var(--r-8) var(--r-8) var(--r-8) 0; background: #B9A99A;
+  .est__photo .frame { aspect-ratio: 4 / 3; overflow: hidden; border-radius: var(--r-8) var(--r-8) var(--r-8) 0; background: var(--c-stone);
     clip-path: polygon(0 0, 100% 0, 100% 100%, calc(var(--step) * 4) 100%, calc(var(--step) * 4) calc(100% - var(--step)), calc(var(--step) * 2) calc(100% - var(--step)), calc(var(--step) * 2) calc(100% - var(--step) * 2), 0 calc(100% - var(--step) * 2)); }
   .est__photo img { width: 100%; height: 100%; object-fit: cover; }
 }
 
 /* Keep the real form near the first viewport on phones. The explanatory aside remains below it. */
 .est__h1 { font-size: var(--t-36); }
-.formplate { border-radius: 26px; background: linear-gradient(145deg, #E8C55A, #B78B2B 35%, #E9E3D6 70%); }
+.formplate { border-radius: 26px; background: linear-gradient(145deg, var(--c-gold-hi), #B78B2B 35%, var(--c-plate) 70%); }
 .formplate__core { border-radius: 20px; }
 .est__photo .frame { clip-path: none; border-radius: 20px; }
 @media (max-width: 899px) {
