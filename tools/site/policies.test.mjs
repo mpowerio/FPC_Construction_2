@@ -120,14 +120,16 @@ export function privacyTruthProblems(html) {
   const en = decoded(html.slice(0, cut)), es = decoded(html.slice(cut)), found = [];
   const all = en + ' ' + es;
   if (/whenever the home page loads|cada vez que carga la página principal/i.test(all)) found.push('claims every component loads on every home-page visit');
+  // core.js only reads fpc-lang to stop re-showing the language suggestion; nothing routes on it (review c9e00ea9).
+  if (/next page opens in|siguiente página abra en|opens in (?:that|your) language|abra en (?:ese|su) idioma/i.test(all)) found.push('claims the saved language picks the page language');
   if (/supabase/i.test(all)) found.push('names a gallery provider the public pages no longer load');
   if (/\bpending\b|\bpendientes?\b/i.test(all)) found.push('pending wording');
   // No retention number until it is verified or approved (backup period: operator decision 20).
   // ("menores de 13 años" is the children's age, not a retention period, so tie the number to a keep word.)
   if (/\b(?:kept|keep|keeps|retain\w*|stored|delet\w*|backups?|guarda\w*|conserv\w*|borra\w*|copias? de seguridad)\b[^.]{0,80}\b\d+\s*(?:days?|weeks?|months?|years?|días|semanas?|meses|años)\b/i.test(all)) found.push('retention-style number');
   for (const [part, lang, needles] of [
-    [en, 'en', ['as soon as the page opens', 'first click, tap, key press or scroll', 'only when you open the question about payment methods', 'Our Spanish pages do not load it', 'Do Not Track', 'Information stored in your browser', 'How long we keep information', 'we are setting a fixed period', 'Information from other sources']],
-    [es, 'es', ['en cuanto se abre la página', 'Nuestras páginas en español no lo cargan', 'No rastrear', 'Información guardada en su navegador', 'estamos fijando un plazo concreto', 'Información de otras fuentes']]]) {
+    [en, 'en', ['as soon as the page opens', 'first click, tap, key press or scroll', 'only when you open the question about payment methods', 'Our Spanish pages do not load it', 'Do Not Track', 'Information stored in your browser', 'How long we keep information', 'we are setting a fixed period', 'Information from other sources', 'does not keep suggesting a language switch']],
+    [es, 'es', ['en cuanto se abre la página', 'Nuestras páginas en español no lo cargan', 'No rastrear', 'Información guardada en su navegador', 'estamos fijando un plazo concreto', 'Información de otras fuentes', 'no le siga sugiriendo cambiar de idioma']]]) {
     for (const n of needles) if (!part.includes(n)) found.push(`${lang}: missing "${n}"`);
   }
   return found;
@@ -143,6 +145,7 @@ test('the privacy truth guard catches each planted regression', () => {
     [clean.replace('</main>', '<p>Retention period pending.</p></main>'), 'pending wording'],
     [clean.replace('</main>', '<p>Gallery hosted by Supabase.</p></main>'), 'stale gallery provider'],
     [clean.replace('Our Spanish pages do not load it.', ''), 'dropped PayPal language fact'],
+    [clean.replace('</main>', '<p>Your browser remembers the choice so the next page opens in that language.</p></main>'), 'language routing claim'],
     [clean.replaceAll('estamos fijando un plazo concreto', 'X'), 'dropped Spanish retention wording'],
   ]) assert.ok(privacyTruthProblems(planted).length, why);
 });
