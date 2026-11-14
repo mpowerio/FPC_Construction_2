@@ -110,3 +110,39 @@ test('SMS program headings and current/planned bullet labels form a clear hierar
     assert.doesNotMatch(html, /<\/h2>\s*<h[23]>/);
   }
 });
+
+// Privacy truth pass, 2026-11-14 (card PRIVACY-POLICY-TRUTH-PASS-20261113, evidence in
+// agent-out/privacy-truth-pass-20261113/FACTS.md). Keep the page matched to what the site does.
+const ENT = { aacute: 'á', eacute: 'é', iacute: 'í', oacute: 'ó', uacute: 'ú', ntilde: 'ñ', Uacute: 'Ú', rsquo: '’', ldquo: '“', rdquo: '”', middot: '·', larr: '←' };
+const decoded = (html) => visible(html).replace(/&([a-zA-Z]+);/g, (m, n) => ENT[n] ?? m);
+export function privacyTruthProblems(html) {
+  const cut = html.indexOf('<article class="doc" id="es"');
+  const en = decoded(html.slice(0, cut)), es = decoded(html.slice(cut)), found = [];
+  const all = en + ' ' + es;
+  if (/whenever the home page loads|cada vez que carga la página principal/i.test(all)) found.push('claims every component loads on every home-page visit');
+  if (/supabase/i.test(all)) found.push('names a gallery provider the public pages no longer load');
+  if (/\bpending\b|\bpendientes?\b/i.test(all)) found.push('pending wording');
+  // No retention number until it is verified or approved (backup period: operator decision 20).
+  // ("menores de 13 años" is the children's age, not a retention period, so tie the number to a keep word.)
+  if (/\b(?:kept|keep|keeps|retain\w*|stored|delet\w*|backups?|guarda\w*|conserv\w*|borra\w*|copias? de seguridad)\b[^.]{0,80}\b\d+\s*(?:days?|weeks?|months?|years?|días|semanas?|meses|años)\b/i.test(all)) found.push('retention-style number');
+  for (const [part, lang, needles] of [
+    [en, 'en', ['as soon as the page opens', 'first click, tap, key press or scroll', 'only when you open the question about payment methods', 'Our Spanish pages do not load it', 'Do Not Track', 'Information stored in your browser', 'How long we keep information', 'we are setting a fixed period', 'Information from other sources']],
+    [es, 'es', ['en cuanto se abre la página', 'Nuestras páginas en español no lo cargan', 'No rastrear', 'Información guardada en su navegador', 'estamos fijando un plazo concreto', 'Información de otras fuentes']]]) {
+    for (const n of needles) if (!part.includes(n)) found.push(`${lang}: missing "${n}"`);
+  }
+  return found;
+}
+test('privacy page states component timing, browser storage, other sources and retention truthfully', () => {
+  assert.deepEqual(privacyTruthProblems(read('privacy.html')), []);
+});
+test('the privacy truth guard catches each planted regression', () => {
+  const clean = read('privacy.html');
+  for (const [planted, why] of [
+    [clean.replace('</main>', '<p>Whenever the home page loads, your browser connects to those providers.</p></main>'), 'every-load claim'],
+    [clean.replace('</main>', '<p>Backups are kept for 30 days.</p></main>'), 'retention number'],
+    [clean.replace('</main>', '<p>Retention period pending.</p></main>'), 'pending wording'],
+    [clean.replace('</main>', '<p>Gallery hosted by Supabase.</p></main>'), 'stale gallery provider'],
+    [clean.replace('Our Spanish pages do not load it.', ''), 'dropped PayPal language fact'],
+    [clean.replaceAll('estamos fijando un plazo concreto', 'X'), 'dropped Spanish retention wording'],
+  ]) assert.ok(privacyTruthProblems(planted).length, why);
+});
