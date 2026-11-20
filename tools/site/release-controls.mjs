@@ -35,5 +35,18 @@ try {
   assert.match(run().stderr,/locked English slogan/);
   writeFileSync(file,clean.replace('</main>','<h1>Second heading</h1></main>'));
   assert.match(run().stderr,/one non-empty H1/);
-  console.log(`Real SEO command: release-eligible scratch baseline passes; ${rejected} planted placeholders, removed slogan and duplicate H1 all fail.`);
+  writeFileSync(file,clean);
+  // Stylesheets anywhere in the tree, and every linked stylesheet, are claim-checked (site PR #51 r6).
+  const priv=join(dir,'privacy.html'), privClean=readFileSync(priv,'utf8');
+  writeFileSync(join(dir,'footer.css'),'.site-footer::before { content: "Fully insured."; }\n');
+  let r=run(); assert.notEqual(r.status,0,'root-level stylesheet (unlinked) was not scanned'); assert.match(r.stderr,/footer\.css: license\/insurance\/GC claim in CSS content/);
+  writeFileSync(priv,privClean.replace('</head>','<link rel="stylesheet" href="/footer.css"></head>'));
+  r=run(); assert.notEqual(r.status,0,'root-level linked stylesheet was not scanned'); assert.match(r.stderr,/footer\.css: license\/insurance\/GC claim in CSS content/);
+  rmSync(join(dir,'footer.css'));
+  r=run(); assert.notEqual(r.status,0,'missing linked stylesheet passed'); assert.match(r.stderr,/linked stylesheet not found in the repo: \/footer\.css/);
+  writeFileSync(priv,privClean.replace('</head>','<link rel="stylesheet" href="https://example.com/footer.css"></head>'));
+  r=run(); assert.notEqual(r.status,0,'external stylesheet passed'); assert.match(r.stderr,/external stylesheet cannot be claim-checked/);
+  writeFileSync(priv,privClean);
+  assert.equal(run().status,0,'scratch baseline did not recover');
+  console.log(`Real SEO command: release-eligible scratch baseline passes; ${rejected} planted placeholders, removed slogan and duplicate H1 all fail; root-level, linked, missing and external stylesheets all fail.`);
 } finally { rmSync(dir,{recursive:true,force:true}); }

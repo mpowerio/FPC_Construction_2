@@ -3,7 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { services } from './site/services.mjs';
 import { releaseProblems } from './site/release-policy.mjs';
-import { claimProblems, publicPages, cssProblems } from './site/claim-guard.mjs';
+import { claimProblems, publicPages, cssProblems, linkedStylesheets } from './site/claim-guard.mjs';
 
 const root = process.cwd();
 const ORIGIN = 'https://fpcconstructions.com';
@@ -101,16 +101,33 @@ for (const file of publicPages(services)) {
   for (const problem of claimProblems(html, { file })) fail({ file }, problem);
 }
 
-// Linked stylesheets render generated content too (content: "…"); check every shipped CSS file.
-for (const dir of ['assets']) {
-  const stack = [path.join(root, dir)];
+// Stylesheets render generated content too (content: "…"). Check EVERY .css file in the tree (outside node_modules
+// and .git), and every stylesheet any public page links, wherever it lives. An external stylesheet cannot be checked
+// here, so it fails closed.
+const scannedCss = new Set();
+const scanCss = (abs, rel) => {
+  if (scannedCss.has(abs)) return; scannedCss.add(abs);
+  for (const problem of cssProblems(fs.readFileSync(abs, 'utf8'))) fail({ file: rel }, problem);
+};
+{
+  const stack = [root];
   while (stack.length) {
     const d = stack.pop();
     for (const e of fs.readdirSync(d, { withFileTypes: true })) {
+      if (e.name === 'node_modules' || e.name === '.git') continue;
       const f = path.join(d, e.name);
       if (e.isDirectory()) stack.push(f);
-      else if (e.name.endsWith('.css')) for (const problem of cssProblems(fs.readFileSync(f, 'utf8'))) fail({ file: path.relative(root, f) }, problem);
+      else if (e.name.toLowerCase().endsWith('.css')) scanCss(f, path.relative(root, f));
     }
+  }
+}
+for (const file of publicPages(services)) {
+  for (const href of linkedStylesheets(fs.readFileSync(path.join(root, file), 'utf8'))) {
+    if (/^([a-z][a-z0-9+.-]*:|\/\/)/i.test(href)) { fail({ file }, `external stylesheet cannot be claim-checked: ${href}`); continue; }
+    const clean = decodeURIComponent(href.split(/[?#]/)[0]);
+    const abs = clean.startsWith('/') ? path.join(root, clean) : path.join(root, path.dirname(file), clean);
+    if (!abs.startsWith(root) || !fs.existsSync(abs)) { fail({ file }, `linked stylesheet not found in the repo: ${href}`); continue; }
+    scanCss(abs, path.relative(root, abs));
   }
 }
 

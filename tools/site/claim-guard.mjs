@@ -193,6 +193,20 @@ function checkCss(css, problems) {
   }
 }
 
+// Every stylesheet a page links (<link rel~=stylesheet href>), parsed with parse5 so markup tricks decode as a browser
+// decodes them. Inert copies (template) are included: strict.
+export function linkedStylesheets(html) {
+  const doc = parse(html, { scriptingEnabled: false });
+  const out = [];
+  walk(doc, (n) => {
+    if (n.tagName !== 'link') return;
+    const rel = (attr(n, 'rel') || '').toLowerCase().split(/\s+/);
+    const href = attr(n, 'href');
+    if (rel.includes('stylesheet') && href) out.push(href.trim());
+  });
+  return out;
+}
+
 // Every public page the guard covers (generated + hand-written).
 export function publicPages(services) {
   return [
