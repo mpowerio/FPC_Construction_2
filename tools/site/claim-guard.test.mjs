@@ -69,3 +69,48 @@ test('caught: a second business node repeating the approved credential', () => {
   const extra = `<script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', '@id': biz['@id'], '@type': biz['@type'], hasCredential: biz.hasCredential })}</script>`;
   assert.notDeepEqual(check(inject(EN, extra)), []);
 });
+
+// Review round 3 (REVIEW-51-sol62.md) evasions.
+const r3 = [
+  ['comment splitting a word', '<p>Fully ins<!--ignored-->ured.</p>'],
+  ['noscript fallback', '<noscript><p>Fully ins<b>ured</b>.</p></noscript>'],
+  ['output element', '<output><span>General </span><span>Contractor</span></output>'],
+  ['img alt split', '<p><img alt="General "><img alt="Contractor"></p>'],
+  ['zero-width joiner', '<p>Li&#8205;censed for residential construction throughout Georgia.</p>'],
+  ['Cyrillic i homoglyph', '<p>Lіcensed for residential construction.</p>'],
+  ['soft hyphen', '<p>Fully insur&shy;ed.</p>'],
+  ['declarative shadow root', '<div><template shadowrootmode="open"><pre>Lifetime warranty.</pre></template></div>'],
+  ['"license" noun claim', '<p>Our license covers grading, residential building and construction in Georgia.</p>'],
+  ['input value warranty', '<input aria-label="Offer" value="Lifetime warranty.">'],
+  ['abbr title warranty', '<abbr title="Lifetime warranty.">LW</abbr>'],
+  ['svg desc warranty', '<svg role="img" aria-label="Offer"><desc>Lifetime warranty.</desc><rect width="20" height="20"/></svg>'],
+];
+for (const [name, snippet] of r3) test(`caught (r3): ${name}`, () => assert.notDeepEqual(check(inject(EN, snippet)), [], name));
+
+test('caught (r3): CSS generated content', () => {
+  assert.notDeepEqual(check(inject(inject(EN, '<style>#rc::before { content: "Fully insured."; }</style>', '</head>'), '<output id="rc"></output>')), []);
+});
+test('caught (r3): og:description warranty', () => {
+  assert.notDeepEqual(check(inject(EN, '<meta property="og:description" content="Lifetime warranty.">', '</head>')), []);
+});
+test('caught (r3): Terms exempt paragraph with a warranty title attribute', () => {
+  const t = page('terms.html').replace('<p>We provide land clearing', '<p title="Lifetime warranty.">We provide land clearing');
+  assert.notDeepEqual(check(t, 'terms.html'), []);
+});
+test('caught (r3): the only footer line wrapped in <template>', () => {
+  const m = EN.match(/<p class="small footer-license">[^<]*<\/p>/)[0];
+  assert.notDeepEqual(check(EN.replace(m, `<template>${m}</template>`)), []);
+});
+test('caught (r3): business node loses its credential', () => {
+  const ld = EN.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)[1];
+  const g = JSON.parse(ld); const biz = g['@graph'].find((n) => n.hasCredential); const cred = biz.hasCredential; delete biz.hasCredential;
+  assert.notDeepEqual(check(EN.replace(ld, JSON.stringify(g))), [], 'deleted');
+  biz.subjectOf = { '@type': 'CreativeWork', '@id': biz['@id'], hasCredential: cred };
+  assert.notDeepEqual(check(EN.replace(ld, JSON.stringify(g))), [], 'moved to subjectOf');
+});
+test('caught (r3): expanded-IRI hasCredential after expiry', () => {
+  const after = new Date('2028-11-01T00:00:00Z');
+  const snippet = '<script type="application/ld+json">{"@context":"https://schema.org","@id":"https://fpcconstructions.com/#business","https://schema.org/hasCredential":{"@type":"Certification","identifier":"CLG.128085"}}</script>';
+  assert.notDeepEqual(check(inject(EN, snippet), 'index.html', after), []);
+  assert.notDeepEqual(check(inject(EN, snippet)), [], 'also while active');
+});
