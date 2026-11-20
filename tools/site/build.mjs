@@ -240,7 +240,7 @@ function render(page, lang) {
     treeWork: page.key === 'home' ? renderTreeWork(lang, t) : '',
     whatsappHero: WHATSAPP ? `<a class="hero__wa" href="${esc(WHATSAPP)}" rel="noopener">WhatsApp <span aria-hidden="true">↗</span></a>` : '',
     whatsappFooter: WHATSAPP ? `<a class="social__text" href="${esc(WHATSAPP)}" rel="noopener">WhatsApp<span class="vh"> FPC Construction</span></a>` : '',
-    tiktok: TIKTOK ? `<a class="social__text" href="${esc(TIKTOK)}" rel="noopener">TikTok<span class="vh"> FPC Construction</span></a>` : '',
+    tiktok: TIKTOK ? `<a href="${esc(TIKTOK)}" aria-label="${esc(t('foot.tt'))}" rel="noopener"><svg aria-hidden="true"><use href="#i-tt"/></svg></a>` : '',
     youtube: YOUTUBE ? `<a class="social__text" href="${esc(YOUTUBE)}" rel="noopener">YouTube<span class="vh"> FPC Construction</span></a>` : '',
     youtubeStory: YOUTUBE && page.key !== 'estimate' ? `<a class="social-story panel" href="${esc(YOUTUBE)}" rel="noopener"><span>YouTube</span><span>${t('field.watch')} <span aria-hidden="true">↗</span></span></a>` : '',
     tiktokStory: TIKTOK && page.key !== 'estimate' ? `<a class="social-story panel" href="${esc(TIKTOK)}" rel="noopener"><span>TikTok</span><span>${t('field.watch')} <span aria-hidden="true">↗</span></span></a>` : '',
