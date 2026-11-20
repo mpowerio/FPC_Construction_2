@@ -40,6 +40,7 @@ export const common = {
     'foot.powered': 'Powered by mpowerio.ai',
     'foot.fb': 'FPC on Facebook',
     'foot.ig': 'FPC on Instagram',
+    'foot.tt': 'FPC on TikTok',
   },
   es: {
     'a11y.skip': 'Saltar al contenido principal',
@@ -73,6 +74,7 @@ export const common = {
     'foot.powered': 'Desarrollado por mpowerio.ai',
     'foot.fb': 'FPC en Facebook',
     'foot.ig': 'FPC en Instagram',
+    'foot.tt': 'FPC en TikTok',
   },
 };
 

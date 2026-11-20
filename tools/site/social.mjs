@@ -1,6 +1,9 @@
 // Set only after the operator verifies FPC's own profile URL. Empty hides every TikTok slot.
 // No embed script is loaded. A specific approved post and permission are separate decisions.
-export const TIKTOK_PROFILE_URL = '';
+// Operator-verified 2026-11-20: TikTok Verified Business Account @fpc.construction4.
+export const TIKTOK_PROFILE_URL = 'https://www.tiktok.com/@fpc.construction4';
+// Home Field Notes TikTok card: off until the operator asks for it (2026-11-20 scope = footer + JSON-LD only).
+export const TIKTOK_IN_FIELD_NOTES = false;
 // Set only after the operator verifies FPC's own YouTube channel URL (operator 2026-11-13: "add tik tok ... and youtube").
 // Empty hides every YouTube slot. No embed script is loaded.
 export const YOUTUBE_CHANNEL_URL = '';

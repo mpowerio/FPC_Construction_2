@@ -15,7 +15,7 @@ import * as S from './strings.mjs';
 import { renderReviews } from './reviews.mjs';
 import { renderTreeWork, treeMediaFiles } from './media.mjs';
 import { services, serviceLabels } from './services.mjs';
-import { whatsappUrl, tiktokProfile, youtubeChannel } from './social.mjs';
+import { whatsappUrl, tiktokProfile, youtubeChannel, TIKTOK_IN_FIELD_NOTES } from './social.mjs';
 import { GC, GC_PAGES, GC_STRINGS, renderGcPage, assertReadyToPublish } from './gc.mjs';
 const TIKTOK = tiktokProfile();
 const YOUTUBE = youtubeChannel();
@@ -135,7 +135,7 @@ function business(lang) {
     // Mon–Sat 7–7 confirmed by operator after Filemon phone check, 2026-11-13.
     openingHoursSpecification: [{ '@type': 'OpeningHoursSpecification', dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'], opens: '07:00', closes: '19:00' }],
     hasOfferCatalog: { '@type': 'OfferCatalog', name: lang === 'es' ? 'Servicios' : 'Services', itemListElement: SERVICES[lang].map((name) => ({ '@type': 'Offer', itemOffered: { '@type': 'Service', name } })) },
-    sameAs: ['https://www.facebook.com/p/FPC-Construction-LLC-100066373038903/', 'https://www.instagram.com/fpcconstructions', ...(TIKTOK ? [TIKTOK] : []), ...(YOUTUBE ? [YOUTUBE] : [])],
+    sameAs: ['https://www.facebook.com/p/FPC-Construction-LLC-100066373038903/', 'https://www.instagram.com/fpc2488', ...(TIKTOK ? [TIKTOK] : []), ...(YOUTUBE ? [YOUTUBE] : [])],
   };
 }
 const ldScript = (obj) => `<script type="application/ld+json">\n${JSON.stringify(obj, null, 2).replace(/</g, '\\u003c')}\n</script>`;
@@ -240,10 +240,10 @@ function render(page, lang) {
     treeWork: page.key === 'home' ? renderTreeWork(lang, t) : '',
     whatsappHero: WHATSAPP ? `<a class="hero__wa" href="${esc(WHATSAPP)}" rel="noopener">WhatsApp <span aria-hidden="true">↗</span></a>` : '',
     whatsappFooter: WHATSAPP ? `<a class="social__text" href="${esc(WHATSAPP)}" rel="noopener">WhatsApp<span class="vh"> FPC Construction</span></a>` : '',
-    tiktok: TIKTOK ? `<a class="social__text" href="${esc(TIKTOK)}" rel="noopener">TikTok<span class="vh"> FPC Construction</span></a>` : '',
+    tiktok: TIKTOK ? `<a href="${esc(TIKTOK)}" aria-label="${esc(t('foot.tt'))}" rel="noopener"><svg aria-hidden="true"><use href="#i-tt"/></svg></a>` : '',
     youtube: YOUTUBE ? `<a class="social__text" href="${esc(YOUTUBE)}" rel="noopener">YouTube<span class="vh"> FPC Construction</span></a>` : '',
     youtubeStory: YOUTUBE && page.key !== 'estimate' ? `<a class="social-story panel" href="${esc(YOUTUBE)}" rel="noopener"><span>YouTube</span><span>${t('field.watch')} <span aria-hidden="true">↗</span></span></a>` : '',
-    tiktokStory: TIKTOK && page.key !== 'estimate' ? `<a class="social-story panel" href="${esc(TIKTOK)}" rel="noopener"><span>TikTok</span><span>${t('field.watch')} <span aria-hidden="true">↗</span></span></a>` : '',
+    tiktokStory: TIKTOK && TIKTOK_IN_FIELD_NOTES && page.key !== 'estimate' ? `<a class="social-story panel" href="${esc(TIKTOK)}" rel="noopener"><span>TikTok</span><span>${t('field.watch')} <span aria-hidden="true">↗</span></span></a>` : '',
     concreteUrl: services.find(s => s.id === 'concrete').url[lang],
     septicUrl: services.find(s => s.id === 'septic').url[lang],
     drainageUrl: services.find(s => s.id === 'drainage').url[lang],

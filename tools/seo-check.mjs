@@ -65,7 +65,7 @@ for (const page of PAGES) {
     if (!types(business).includes('HomeAndConstructionBusiness')) fail(page, 'LocalBusiness should also be HomeAndConstructionBusiness');
     if (business.slogan !== SLOGAN) fail(page, 'JSON-LD slogan must be the locked slogan, verbatim');
     if (business.telephone !== '+1-803-884-9305') fail(page, 'telephone must be +1-803-884-9305');
-    for (const profile of ['https://www.facebook.com/p/FPC-Construction-LLC-100066373038903/', 'https://www.instagram.com/fpcconstructions']) {
+    for (const profile of ['https://www.facebook.com/p/FPC-Construction-LLC-100066373038903/', 'https://www.instagram.com/fpc2488']) {
       if (!(business.sameAs || []).includes(profile)) fail(page, `sameAs missing ${profile}`);
     }
     const headings = [...html.matchAll(/<h1\b[^>]*>([\s\S]*?)<\/h1>/g)];
