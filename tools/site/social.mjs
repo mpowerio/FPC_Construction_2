@@ -2,9 +2,12 @@
 // No embed script is loaded. A specific approved post and permission are separate decisions.
 // Operator-verified 2026-11-20: TikTok Verified Business Account @fpc.construction4.
 export const TIKTOK_PROFILE_URL = 'https://www.tiktok.com/@fpc.construction4';
-// Home Field Notes TikTok card: off until the operator asks for it (2026-11-20 scope = footer + JSON-LD only).
-export const TIKTOK_IN_FIELD_NOTES = false;
+// Home Field Notes TikTok card: ON (Chair 2026-11-20, after the operator moved posting to TikTok / YouTube Shorts /
+// Snapchat). Profile re-checked 2026-11-20: https://www.tiktok.com/@fpc.construction4 resolves (uniqueId fpc.construction4).
+export const TIKTOK_IN_FIELD_NOTES = true;
 // Set only after the operator verifies FPC's own YouTube channel URL (operator 2026-11-13: "add tik tok ... and youtube").
+// SLOT: FPC has no channel yet (2026-11-20); one is being set up under the fpcconstructions.com Google account.
+// When it exists, put its https://www.youtube.com/@handle URL here and rebuild; the footer link and JSON-LD sameAs follow.
 // Empty hides every YouTube slot. No embed script is loaded.
 export const YOUTUBE_CHANNEL_URL = '';
 // Empty until the operator confirms the WhatsApp destination recorded in PLAN.md.
