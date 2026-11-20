@@ -16,6 +16,7 @@ import { renderReviews } from './reviews.mjs';
 import { renderTreeWork, treeMediaFiles } from './media.mjs';
 import { services, serviceLabels } from './services.mjs';
 import { whatsappUrl, tiktokProfile, youtubeChannel, TIKTOK_IN_FIELD_NOTES } from './social.mjs';
+import { licenseLine, licenseCredential } from './license.mjs';
 import { GC, GC_PAGES, GC_STRINGS, renderGcPage, assertReadyToPublish } from './gc.mjs';
 const TIKTOK = tiktokProfile();
 const YOUTUBE = youtubeChannel();
@@ -136,6 +137,7 @@ function business(lang) {
     openingHoursSpecification: [{ '@type': 'OpeningHoursSpecification', dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'], opens: '07:00', closes: '19:00' }],
     hasOfferCatalog: { '@type': 'OfferCatalog', name: lang === 'es' ? 'Servicios' : 'Services', itemListElement: SERVICES[lang].map((name) => ({ '@type': 'Offer', itemOffered: { '@type': 'Service', name } })) },
     sameAs: ['https://www.facebook.com/p/FPC-Construction-LLC-100066373038903/', 'https://www.instagram.com/fpc2488', ...(TIKTOK ? [TIKTOK] : []), ...(YOUTUBE ? [YOUTUBE] : [])],
+    ...(licenseCredential(lang) ? { hasCredential: licenseCredential(lang) } : {}),
   };
 }
 const ldScript = (obj) => `<script type="application/ld+json">\n${JSON.stringify(obj, null, 2).replace(/</g, '\\u003c')}\n</script>`;
@@ -231,6 +233,7 @@ function render(page, lang) {
     cssHash,
     heading: page.key === 'home' ? headingHtml(t('hero.heading')) : '',
     footFil: page.key === 'home' ? '' : `<p class="small muted">${t('foot.fil')}</p>`,
+    licenseFooter: licenseLine(lang) ? `<p class="small footer-license">${esc(licenseLine(lang))}</p>` : '',
     septicCurrent: page.service?.id === 'septic' ? ' aria-current="page"' : '',
     concreteCurrent: page.service?.id === 'concrete' ? ' aria-current="page"' : '',
     relatedRows: page.key !== 'service' ? '' : services.filter(s => s.id !== page.service?.id).map(s => `<a class="row" href="${s.url[lang]}"><span class="row__name">${s[lang]['service.label']}</span><span class="row__desc">${s[lang]['service.h']}</span>${tnub}</a>`).join('') + `<a class="row" href="${urlOf('home', lang)}#commercial"><span class="row__name">${t('core.public.h')}</span><span class="row__desc">${t('core.public.cta')}</span>${tnub}</a>`,

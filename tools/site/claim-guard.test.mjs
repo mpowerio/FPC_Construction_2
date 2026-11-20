@@ -1,0 +1,71 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+import { claimProblems } from './claim-guard.mjs';
+
+const NOW = new Date('2026-11-20T12:00:00Z');
+const page = (file) => readFileSync(new URL(`../../${file}`, import.meta.url), 'utf8');
+const inject = (html, snippet, where = '</body>') => html.replace(where, `${snippet}${where}`);
+const check = (html, file = 'index.html', now = NOW) => claimProblems(html, { file, now });
+
+test('every published page passes as committed', () => {
+  for (const f of ['index.html', 'es/index.html', 'estimate/index.html', 'es/estimado/index.html', 'services/concrete/index.html',
+    'es/servicios/concreto/index.html', 'privacy.html', 'terms.html', 'sms-opt-in.html', 'es/sms-opt-in/index.html']) {
+    assert.deepEqual(check(page(f), f), [], f);
+  }
+});
+
+// Review r1 + r2 evasions (REVIEW-50-license-sol62*.md). Every one must be caught.
+const EN = page('index.html'), ES = page('es/index.html');
+const evasions = [
+  ['other license number', EN, '<p>SC Licensed General Contractor · Water &amp; Sewer Lines (WL2) · Lic. CLG.1280859</p>'],
+  ['Georgia/residential suffix', EN, '<p>SC Licensed General Contractor · Water &amp; Sewer Lines (WL2) · Lic. CLG.128085 for residential construction throughout Georgia.</p>'],
+  ['tag inside "General" (ES)', ES, '<p>Somos Contratista <b>General</b></p>'],
+  ['ES line with <strong>', ES, '<p>Contratista <strong>General</strong> con Licencia de SC · Líneas de Agua y Alcantarillado (WL2) · Lic. CLG.128085</p>'],
+  ['numeric entity', EN, '<p>Fully insur&#101;d.</p>'],
+  ['numeric entity, no semicolon', EN, '<p>Fully insur&#101d.</p>'],
+  ['&Tab; entity', EN, '<p>General&Tab;Contractor.</p>'],
+  ['exact element inside a claim sentence', EN, '<div>For residential construction throughout Georgia, our credentials are:<p class="small footer-license">SC Licensed General Contractor · Water &amp; Sewer Lines (WL2) · Lic. CLG.128085</p></div>'],
+  ['second exact footer element in body', EN, '<p class="small footer-license">SC Licensed General Contractor · Water &amp; Sewer Lines (WL2) · Lic. CLG.128085</p>'],
+  ['allowed line then "and insured"', EN, '<p>and insured</p>'],
+  ['second credential with Georgia', EN, '<script type="application/ld+json">{"@type": "EducationalOccupationalCredential", "name": "SC Licensed General Contractor · Water & Sewer Lines (WL2) · Lic. CLG.128085", "areaServed": "Georgia", "description": "For residential construction throughout Georgia."}</script>'],
+  ['GeneralContractor @type', EN, '<script type="application/ld+json">{"@type": "GeneralContractor", "name": "FPC"}</script>'],
+  ['claim in aria-label', EN, '<a href="/" aria-label="Licensed and bonded contractor">x</a>'],
+  ['claim in meta description', EN, '<meta name="description" content="Licensed general contractor">', '</head>'],
+];
+for (const [name, base, snippet, where] of evasions) {
+  test(`caught: ${name}`, () => assert.notDeepEqual(check(inject(base, snippet, where)), [], name));
+}
+
+test('caught: marketing claims on legal pages (only the 4 exact Terms passages are exempt)', () => {
+  assert.notDeepEqual(check(inject(page('terms.html'), '<p>We offer a lifetime warranty, with 15+ years and 500+ completed projects.</p>'), 'terms.html'), []);
+  assert.notDeepEqual(check(inject(page('es/sms-opt-in/index.html'), '<p>Garantía de por vida y 15+ años.</p>'), 'es/sms-opt-in/index.html'), []);
+  // An exempt passage with a claim appended is no longer exact, so it fails.
+  const t = page('terms.html').replace('Nothing in this section changes the warranties in your written agreement with us.', 'Nothing in this section changes the warranties in your written agreement with us. Lifetime warranty.');
+  assert.notDeepEqual(check(t, 'terms.html'), []);
+});
+
+test('caught: altered or missing footer line on a hand-written page', () => {
+  assert.notDeepEqual(check(page('privacy.html').replace('CLG.128085', 'CLG.128086'), 'privacy.html'), []);
+  assert.notDeepEqual(check(page('privacy.html').replace(/<p class="small footer-license">[^<]*<\/p>/, ''), 'privacy.html'), []);
+});
+
+test('after expiry any remaining license line or credential fails', () => {
+  const after = new Date('2028-11-01T12:00:00Z');
+  for (const f of ['index.html', 'privacy.html', 'es/sms-opt-in/index.html']) assert.notDeepEqual(check(page(f), f, after), [], f);
+});
+
+test('caught: the only license line moved out of <footer>', () => {
+  const m = EN.match(/<p class="small footer-license">[^<]*<\/p>/)[0];
+  const moved = EN.replace(m, '').replace('<main', `${m}<main`);
+  assert.notDeepEqual(check(moved), []);
+});
+
+test('caught: a second business node repeating the approved credential', () => {
+  const ld = EN.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)[1];
+  const graph = JSON.parse(ld);
+  const biz = (graph['@graph'] || [graph]).find((n) => n.hasCredential);
+  assert.ok(biz, 'fixture has the approved credential');
+  const extra = `<script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', '@id': biz['@id'], '@type': biz['@type'], hasCredential: biz.hasCredential })}</script>`;
+  assert.notDeepEqual(check(inject(EN, extra)), []);
+});

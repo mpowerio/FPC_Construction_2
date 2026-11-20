@@ -8,7 +8,7 @@ import { fileURLToPath } from 'node:url';
 import { services } from './services.mjs';
 const root = fileURLToPath(new URL('../../', import.meta.url));
 const command = join(root, 'tools/seo-check.mjs');
-const files = ['index.html', 'es/index.html', 'estimate/index.html', 'es/estimado/index.html', ...services.flatMap(s => Object.values(s.url).map(u => u.slice(1) + 'index.html')), 'privacy.html', 'terms.html', 'sms-opt-in.html', 'sitemap.xml'];
+const files = ['index.html', 'es/index.html', 'estimate/index.html', 'es/estimado/index.html', ...services.flatMap(s => Object.values(s.url).map(u => u.slice(1) + 'index.html')), 'privacy.html', 'terms.html', 'sms-opt-in.html', 'es/sms-opt-in/index.html', 'sitemap.xml'];
 const dir = mkdtempSync(join(tmpdir(), 'fpc-release-controls-'));
 function run() { return spawnSync(process.execPath, [command], {cwd:dir, encoding:'utf8'}); }
 try {

@@ -1,0 +1,8 @@
+{
+  "name": "fpc-construction-site-tools",
+  "private": true,
+  "description": "Check-script dependencies only. Nothing here ships to visitors; the site is static HTML.",
+  "devDependencies": {
+    "parse5": "8.1.1"
+  }
+}

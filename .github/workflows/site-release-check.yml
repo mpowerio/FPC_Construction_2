@@ -12,6 +12,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check-script dependencies (parse5, pinned; nothing ships to visitors)
+        run: npm ci --no-audit --no-fund
+      - name: Claim guard tests (parser, positive structure)
+        run: node --test tools/site/claim-guard.test.mjs tools/site/license.test.mjs
       - name: Generated pages are fresh
         run: node tools/site/build.mjs --check
       - name: Phone copy names JJ (guards the 2026-11-13 merge revert)
