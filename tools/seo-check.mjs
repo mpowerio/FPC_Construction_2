@@ -3,7 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { services } from './site/services.mjs';
 import { releaseProblems } from './site/release-policy.mjs';
-import { claimProblems, publicPages } from './site/claim-guard.mjs';
+import { claimProblems, publicPages, cssProblems } from './site/claim-guard.mjs';
 
 const root = process.cwd();
 const ORIGIN = 'https://fpcconstructions.com';
@@ -99,6 +99,19 @@ if (locs.some((u) => u.includes('#'))) failures.push('sitemap.xml: lists fragmen
 for (const file of publicPages(services)) {
   const html = fs.readFileSync(path.join(root, file), 'utf8');
   for (const problem of claimProblems(html, { file })) fail({ file }, problem);
+}
+
+// Linked stylesheets render generated content too (content: "…"); check every shipped CSS file.
+for (const dir of ['assets']) {
+  const stack = [path.join(root, dir)];
+  while (stack.length) {
+    const d = stack.pop();
+    for (const e of fs.readdirSync(d, { withFileTypes: true })) {
+      const f = path.join(d, e.name);
+      if (e.isDirectory()) stack.push(f);
+      else if (e.name.endsWith('.css')) for (const problem of cssProblems(fs.readFileSync(f, 'utf8'))) fail({ file: path.relative(root, f) }, problem);
+    }
+  }
 }
 
 if (failures.length) {

@@ -114,3 +114,31 @@ test('caught (r3): expanded-IRI hasCredential after expiry', () => {
   assert.notDeepEqual(check(inject(EN, snippet), 'index.html', after), []);
   assert.notDeepEqual(check(inject(EN, snippet)), [], 'also while active');
 });
+
+// Review round 4 (REVIEW-51-sol62-r2.md) evasions.
+import { cssProblems } from './claim-guard.mjs';
+test('caught (r4): footer line hidden by a hidden wrapper or inline style', () => {
+  const P = page('privacy.html'); const m = P.match(/<p class="small footer-license">[^<]*<\/p>/)[0];
+  assert.notDeepEqual(check(P.replace(m, `<div hidden>${m}</div>`), 'privacy.html'), []);
+  assert.notDeepEqual(check(P.replace(m, `<div style="display:none">${m}</div>`), 'privacy.html'), []);
+});
+test('caught (r4): linked CSS generated content', () => {
+  assert.notDeepEqual(cssProblems('.site-footer::before { content: "Fully insured."; }'), []);
+  for (const f of ['assets/site/site.css', 'assets/site/legal.css']) assert.deepEqual(cssProblems(page(f)), [], f);
+});
+test('caught (r4): attr()-backed data attribute text', () => {
+  assert.notDeepEqual(check(inject(page('privacy.html'), '<style>#rb::before { content: attr(data-label); }</style><span id="rb" data-label="Fully insured."></span>'), 'privacy.html'), []);
+});
+test('caught (r4): business JSON-LD moved into an inert <template>', () => {
+  const ldTag = EN.match(/<script type="application\/ld\+json">[\s\S]*?<\/script>/)[0];
+  assert.notDeepEqual(check(EN.replace(ldTag, `<template>${ldTag}</template>`)), []);
+});
+test('caught (r4): modified Terms paragraph keeps no exemption', () => {
+  const t = page('terms.html').replace('<p>We provide land clearing', '<p>Our promise for every project. We provide land clearing');
+  assert.notDeepEqual(check(t, 'terms.html'), []);
+  const copied = inject(page('terms.html'), '<div><p>Lifetime warranty on all work.</p></div>');
+  assert.notDeepEqual(check(copied, 'terms.html'), []);
+});
+test('caught (r4): surety bond wording', () => {
+  assert.notDeepEqual(check(inject(page('privacy.html'), '<p>We hold a surety bond on every project.</p>'), 'privacy.html'), []);
+});

@@ -1,6 +1,8 @@
 // Claim guard for every public page.
-// Threat model: careless or mistaken copy by FPC's own authors and agents, plus every evasion the independent
-// reviews produced. Not covered: text drawn by images/canvas or fetched at runtime by script (the site ships none). Positive structure, not pattern-stripping:
+// Threat model (Chair, 2026-11-20): guards against careless or mistaken copy by FPC's own authors and agents, plus
+// every evasion class already found in review. Out of scope: deliberate obfuscation by someone with commit access (a
+// trust and review problem, not a guard problem), and text drawn by images/canvas or fetched at runtime (the site ships
+// none). Reviewers: a new in-scope miss is a blocker; an out-of-scope one is a note.
 //   1. Parse the page with parse5 (the WHATWG HTML parser), so entities and markup decode exactly as a browser
 //      decodes them (&Tab;, &#101 without a semicolon, tags inside words...).
 //   2. The ONLY allowed contractor-license wording is:
@@ -17,7 +19,7 @@
 import { parse } from 'parse5';
 import { licenseLine, licenseCredential, licenseActive } from './license.mjs';
 
-const LICENSE_CLAIM = /\b(licen[cs]ed?|licen[cs]es|licencia|licenciad[oa]s?|insured|insurance|asegurad[oa]s?|bonded|bonding|afianzad[oa]s?|fianza|general\s+contractors?|contratistas?\s+generale?s?)\b/i;
+const LICENSE_CLAIM = /\b(licen[cs]ed?|licen[cs]es|licencia|licenciad[oa]s?|insured|insurance|asegurad[oa]s?|bonded|bonding|bonds?|surety|afianzad[oa]s?|fianzas?|general\s+contractors?|contratistas?\s+generale?s?)\b/i;
 const MARKETING_CLAIM = /warrant|garant[ií]as?|\b15\s*\+|\b500\s*\+/i;
 const ORIGIN = 'https://fpcconstructions.com';
 const BUSINESS_ID = `${ORIGIN}/#business`;
@@ -39,6 +41,10 @@ const seen = (s) => String(s).normalize('NFKC').replace(/[­​-‍⁠﻿᠎]/g,
 const attr = (node, name) => node.attrs?.find((a) => a.name === name)?.value;
 const classes = (node) => (attr(node, 'class') || '').split(/\s+/).filter(Boolean);
 const childElements = (node) => (node.childNodes || []).filter((c) => c.tagName);
+// Hidden from readers: the HTML hidden attribute, inline display:none / visibility:hidden, or inert content.
+const isHidden = (n) => n.attrs?.some((a) => a.name === 'hidden' || a.name === 'inert' || (a.name === 'aria-hidden' && a.value === 'true')
+  || (a.name === 'style' && /(display\s*:\s*none|visibility\s*:\s*hidden|content-visibility\s*:\s*hidden)/i.test(a.value)));
+const inertAncestor = (anc) => anc.some((a) => /^(template|noscript)$/.test(a.tagName || '') || a.nodeName === '#document-fragment');
 const kids = (n) => (n.tagName === 'template' ? n.content?.childNodes : n.childNodes) || [];
 const BLOCK = /^(address|article|aside|blockquote|br|dd|div|dl|dt|figcaption|figure|footer|form|h[1-6]|header|hr|li|main|nav|ol|p|pre|section|table|td|th|tr|ul|output|summary|details)$/;
 
@@ -88,7 +94,7 @@ export function claimProblems(html, { file = '', now = new Date() } = {}) {
     problems.push(`expected exactly one footer license line, found ${licenseEls.length}`);
   } else {
     const { n, anc } = licenseEls[0];
-    const live = anc.some((a) => a.tagName === 'footer') && !anc.some((a) => /^(template|noscript)$/.test(a.tagName || '') || a.nodeName === '#document-fragment');
+    const live = anc.some((a) => a.tagName === 'footer') && !inertAncestor(anc) && !anc.some(isHidden) && !isHidden(n);
     const exact = n.tagName === 'p' && deepEqual(classes(n).sort(), ['footer-license', 'small']) && n.attrs.length === 1
       && childElements(n).length === 0 && (n.childNodes || []).every((c) => c.nodeName === '#text') && readable(n).trim() === line;
     if (!live) problems.push('footer license line is not a live element inside <footer>');
@@ -100,8 +106,10 @@ export function claimProblems(html, { file = '', now = new Date() } = {}) {
   const credential = licenseCredential(lang, now);
   const ldStrings = [];
   let credentials = 0, businessNodes = 0, credentialOnBusiness = false;
-  walk(doc, (n) => {
+  walk(doc, (n, anc) => {
     if (n.tagName !== 'script' || attr(n, 'type') !== 'application/ld+json') return;
+    const liveScript = !inertAncestor(anc) && !anc.some(isHidden);
+    if (!liveScript) problems.push('JSON-LD inside inert/hidden markup (template, noscript or hidden): not read by indexers');
     let data;
     try { data = JSON.parse(kids(n).map((c) => c.value || '').join('')); } catch { problems.push('JSON-LD does not parse'); return; }
     const scrub = (v) => {
@@ -109,7 +117,7 @@ export function claimProblems(html, { file = '', now = new Date() } = {}) {
       if (!v || typeof v !== 'object') return v;
       const isBusiness = v['@id'] === BUSINESS_ID && BUSINESS_TYPES.every((t) => typesOf(v).includes(t));
       if (v['@id'] === BUSINESS_ID && !isBusiness && Object.keys(v).some((k) => k !== '@id')) problems.push('another JSON-LD object reuses the business @id');
-      if (isBusiness) businessNodes++;
+      if (isBusiness && liveScript) businessNodes++;
       const out = {};
       for (const [k, x] of Object.entries(v)) {
         if (isCredentialKey(k)) {
@@ -117,7 +125,7 @@ export function claimProblems(html, { file = '', now = new Date() } = {}) {
           if (!active) problems.push('license expired: JSON-LD hasCredential must be removed and the site republished');
           else if (!isBusiness) problems.push('hasCredential appears outside the business node');
           else if (k !== 'hasCredential' || !deepEqual(x, credential)) problems.push('JSON-LD credential differs from the approved credential');
-          else credentialOnBusiness = true;
+          else if (liveScript) credentialOnBusiness = true;
           continue;
         }
         out[k] = scrub(x);
@@ -134,25 +142,27 @@ export function claimProblems(html, { file = '', now = new Date() } = {}) {
   if (active && businessNodes > 0 && !credentialOnBusiness) problems.push('the business node is missing the approved hasCredential');
 
   // --- 3. every element's readable text (strict: nested elements are checked too) ---
-  const exemptTerms = file.endsWith('terms.html');
+  // The Terms warranty exemption is bound to the exact <p> NODES whose whole text equals an approved passage;
+  // their text is removed only for the warranty check, never for license/insurance claims, never for attributes.
+  const exemptNodes = new Set();
+  if (file.endsWith('terms.html')) walk(doc, (n, anc) => {
+    if (n.tagName === 'p' && !inertAncestor(anc) && childElements(n).length === 0 && TERMS_WARRANTY_PASSAGES.includes(seen(readable(n)))) exemptNodes.add(n);
+  });
+  const skipForMarketing = new Set([...approved, ...exemptNodes]);
   walk(doc, (n, anc) => {
     if (!n.tagName || approved.has(n) || anc.some((a) => approved.has(a))) return;
     if (n.tagName === 'script' || n.tagName === 'style') return;
     const text = seen(readable(n, approved));
-    if (!text) return;
-    if (LICENSE_CLAIM.test(text)) problems.push(`license/insurance/GC claim in <${n.tagName}>: "${text.slice(0, 90)}"`);
-    const warrantyAllowed = exemptTerms && n.tagName === 'p' && TERMS_WARRANTY_PASSAGES.includes(text);
-    if (MARKETING_CLAIM.test(text) && !warrantyAllowed) {
-      // A parent of an exempt passage is fine only if the claim words come from that passage alone.
-      const stripped = exemptTerms ? TERMS_WARRANTY_PASSAGES.reduce((t, p) => t.split(p).join(''), text) : text;
-      if (MARKETING_CLAIM.test(stripped)) problems.push(`marketing claim (warranty/years/projects) in <${n.tagName}>: "${text.slice(0, 90)}"`);
-    }
+    if (text && LICENSE_CLAIM.test(text)) problems.push(`license/insurance/GC claim in <${n.tagName}>: "${text.slice(0, 90)}"`);
+    if (exemptNodes.has(n) || anc.some((a) => exemptNodes.has(a))) return;
+    const marketing = seen(readable(n, skipForMarketing));
+    if (marketing && MARKETING_CLAIM.test(marketing)) problems.push(`marketing claim (warranty/years/projects) in <${n.tagName}>: "${marketing.slice(0, 90)}"`);
   });
   // Attributes people and indexers read: every attribute value except URLs/ids/classes/styles (styles checked as CSS).
   walk(doc, (n, anc) => {
     if (!n.attrs || approved.has(n)) return;
     for (const a of n.attrs) {
-      if (/^(href|src|srcset|class|id|style|rel|type|lang|dir|width|height|viewbox|d|xmlns.*|data-.*|on.*)$/i.test(a.name)) continue;
+      if (/^(href|src|srcset|class|id|style|rel|type|lang|dir|width|height|viewbox|d|xmlns.*|on.*)$/i.test(a.name)) continue;
       const v = seen(a.value);
       if (LICENSE_CLAIM.test(v)) problems.push(`license/insurance/GC claim in ${n.tagName}[${a.name}]: "${v.slice(0, 90)}"`);
       if (MARKETING_CLAIM.test(v)) problems.push(`marketing claim in ${n.tagName}[${a.name}]: "${v.slice(0, 90)}"`);
@@ -169,6 +179,8 @@ export function claimProblems(html, { file = '', now = new Date() } = {}) {
 }
 
 // CSS generated content (content: "…") is rendered text; check every quoted string in CSS.
+export function cssProblems(css) { const p = []; checkCss(css, p); return [...new Set(p)]; }
+
 function checkCss(css, problems) {
   for (const m of css.matchAll(/(["'])((?:\\.|(?!\1).)*)\1/g)) {
     const v = seen(m[2].replace(/\\([0-9a-f]{1,6})\s?/gi, (_, h) => String.fromCodePoint(parseInt(h, 16))).replace(/\\(.)/g, '$1'));
