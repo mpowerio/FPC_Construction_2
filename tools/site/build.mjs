@@ -15,7 +15,7 @@ import * as S from './strings.mjs';
 import { renderReviews } from './reviews.mjs';
 import { renderTreeWork, treeMediaFiles } from './media.mjs';
 import { services, serviceLabels } from './services.mjs';
-import { whatsappUrl, tiktokProfile, youtubeChannel } from './social.mjs';
+import { whatsappUrl, tiktokProfile, youtubeChannel, TIKTOK_IN_FIELD_NOTES } from './social.mjs';
 import { GC, GC_PAGES, GC_STRINGS, renderGcPage, assertReadyToPublish } from './gc.mjs';
 const TIKTOK = tiktokProfile();
 const YOUTUBE = youtubeChannel();
@@ -243,7 +243,7 @@ function render(page, lang) {
     tiktok: TIKTOK ? `<a href="${esc(TIKTOK)}" aria-label="${esc(t('foot.tt'))}" rel="noopener"><svg aria-hidden="true"><use href="#i-tt"/></svg></a>` : '',
     youtube: YOUTUBE ? `<a class="social__text" href="${esc(YOUTUBE)}" rel="noopener">YouTube<span class="vh"> FPC Construction</span></a>` : '',
     youtubeStory: YOUTUBE && page.key !== 'estimate' ? `<a class="social-story panel" href="${esc(YOUTUBE)}" rel="noopener"><span>YouTube</span><span>${t('field.watch')} <span aria-hidden="true">↗</span></span></a>` : '',
-    tiktokStory: TIKTOK && page.key !== 'estimate' ? `<a class="social-story panel" href="${esc(TIKTOK)}" rel="noopener"><span>TikTok</span><span>${t('field.watch')} <span aria-hidden="true">↗</span></span></a>` : '',
+    tiktokStory: TIKTOK && TIKTOK_IN_FIELD_NOTES && page.key !== 'estimate' ? `<a class="social-story panel" href="${esc(TIKTOK)}" rel="noopener"><span>TikTok</span><span>${t('field.watch')} <span aria-hidden="true">↗</span></span></a>` : '',
     concreteUrl: services.find(s => s.id === 'concrete').url[lang],
     septicUrl: services.find(s => s.id === 'septic').url[lang],
     drainageUrl: services.find(s => s.id === 'drainage').url[lang],
