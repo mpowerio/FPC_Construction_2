@@ -3,6 +3,7 @@
   "private": true,
   "description": "Check-script dependencies only. Nothing here ships to visitors; the site is static HTML.",
   "devDependencies": {
-    "parse5": "8.1.1"
+    "parse5": "8.1.1",
+    "playwright": "1.62.1"
   }
 }

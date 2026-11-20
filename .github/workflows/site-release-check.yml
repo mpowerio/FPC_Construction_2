@@ -15,8 +15,12 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Check-script dependencies (parse5, pinned; nothing ships to visitors)
+      - name: Check-script dependencies (parse5 + Playwright, pinned; nothing ships to visitors)
         run: npm ci --no-audit --no-fund
+      - name: Headless Chromium for the rendered license-line check
+        run: npx playwright install --with-deps chromium
+      - name: License line is rendered, in the footer and visible on every page (with must-fail controls)
+        run: node tools/site/license-visible.browser.mjs
       - name: Claim guard tests (parser, positive structure)
         run: node --test tools/site/claim-guard.test.mjs tools/site/license.test.mjs
       - name: Generated pages are fresh

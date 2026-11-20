@@ -142,3 +142,21 @@ test('caught (r4): modified Terms paragraph keeps no exemption', () => {
 test('caught (r4): surety bond wording', () => {
   assert.notDeepEqual(check(inject(page('privacy.html'), '<p>We hold a surety bond on every project.</p>'), 'privacy.html'), []);
 });
+
+// r5: the vocabulary is the closed, operator-owned list in claim-vocabulary.mjs (Chair 2026-11-20).
+test('caught (r5): Spanish insurance wording and "GC"', () => {
+  assert.notDeepEqual(check(inject(page('es/sms-opt-in/index.html'), '<p>Contamos con seguro de responsabilidad civil.</p>'), 'es/sms-opt-in/index.html'), []);
+  assert.notDeepEqual(check(inject(page('es/sms-opt-in/index.html'), '<p>Tenemos seguro.</p>'), 'es/sms-opt-in/index.html'), []);
+  assert.notDeepEqual(check(inject(page('privacy.html'), '<p>FPC is your local GC.</p>'), 'privacy.html'), []);
+});
+test('caught (r5): prose counts of years and projects, English and Spanish', () => {
+  for (const s of ['We have more than 15 years of experience.', 'We have completed over 500 projects.',
+    'Más de 15 años de experiencia.', 'Cientos de proyectos terminados.', 'Decades of experience in the CSRA.']) {
+    assert.notDeepEqual(check(inject(page('privacy.html'), `<p>${s}</p>`), 'privacy.html'), [], s);
+  }
+});
+test('not a claim (r5): ages and the live pages\' "seguro" (secure, Seguro Social, copia de seguridad)', () => {
+  for (const s of ['Not directed to children under 13 years of age.', 'No dirigido a menores de 13 años.', 'Ningún método es completamente seguro.', 'Un número de Seguro Social.']) {
+    assert.deepEqual(check(inject(page('privacy.html'), `<p>${s}</p>`), 'privacy.html'), [], s);
+  }
+});

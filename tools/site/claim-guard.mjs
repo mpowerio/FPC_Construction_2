@@ -13,14 +13,18 @@
 //      After expiry, neither may appear at all.
 //   3. Every other piece of visible text, every attribute a person or search engine reads (title, alt, aria-label,
 //      meta content) and every JSON-LD string is checked for licensed / insured / bonded / general-contractor claims
-//      in English and Spanish, and for marketing claims (warranty, 15+, 500+).
+//      in English and Spanish, and for marketing claims (warranty, counts of years or projects). The words are
+//      the CLOSED, operator-owned list in ./claim-vocabulary.mjs: a newly found claim word is a (b) note proposing
+//      an addition, not a blocker.
+//   5. Visibility of the footer line is proven by rendering, not by reading markup: tools/site/license-visible.browser.mjs
+//      opens every page in headless Chromium and asserts the exact line is in the footer, has client rects and is
+//      computed-visible (covers stylesheets, <details>, hidden, inert, display/visibility/opacity/content-visibility).
 //   4. The only exemption: the two Terms passages that describe the customer's written agreement may say
 //      "warranties"; they are matched by their full text, and only the warranty check is skipped for them.
 import { parse } from 'parse5';
 import { licenseLine, licenseCredential, licenseActive } from './license.mjs';
 
-const LICENSE_CLAIM = /\b(licen[cs]ed?|licen[cs]es|licencia|licenciad[oa]s?|insured|insurance|asegurad[oa]s?|bonded|bonding|bonds?|surety|afianzad[oa]s?|fianzas?|general\s+contractors?|contratistas?\s+generale?s?)\b/i;
-const MARKETING_CLAIM = /warrant|garant[ií]as?|\b15\s*\+|\b500\s*\+/i;
+import { LICENSE_CLAIM, MARKETING_CLAIM } from './claim-vocabulary.mjs';
 const ORIGIN = 'https://fpcconstructions.com';
 const BUSINESS_ID = `${ORIGIN}/#business`;
 const BUSINESS_TYPES = ['LocalBusiness', 'HomeAndConstructionBusiness'];
