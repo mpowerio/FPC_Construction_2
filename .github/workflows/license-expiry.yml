@@ -1,0 +1,29 @@
+name: license-expiry
+# The site is static (GitHub Pages serves committed HTML), so nothing removes the license line by itself.
+# Weekly: fail 60 days before the SC contractor license expires and after it; run the claim guard over all
+# public pages (it fails if any page still shows the line after expiry) and the freshness check. Every step
+# runs even if an earlier one is red. Owner reminder outside GitHub: CRM Company Papers expiry alerts
+# (card FPC-LICENSE-RENEWAL-REMINDER-20261120), because GitHub disables schedules after 60 idle days.
+on:
+  schedule:
+    - cron: '17 12 * * 1'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci --no-audit --no-fund
+      - name: Expiry window
+        run: node tools/site/license-expiry-check.mjs
+      - name: Claim guard over every public page
+        if: always()
+        run: node tools/seo-check.mjs
+      - name: Generated pages are fresh
+        if: always()
+        run: node tools/site/build.mjs --check

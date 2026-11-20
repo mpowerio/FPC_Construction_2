@@ -3,6 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { services } from './site/services.mjs';
 import { releaseProblems } from './site/release-policy.mjs';
+import { claimProblems, publicPages, cssProblems, linkedStylesheets } from './site/claim-guard.mjs';
 
 const root = process.cwd();
 const ORIGIN = 'https://fpcconstructions.com';
@@ -34,8 +35,6 @@ for (const page of PAGES) {
   if (!description.includes('North Augusta')) fail(page, 'meta description should name North Augusta');
   if (description.length < 110 || description.length > 200) fail(page, `meta description length ${description.length} (want 110-200)`);
 
-  if (/GeneralContractor|general contractor|contratista general/i.test(html)) fail(page, 'must not describe FPC as a general contractor');
-  if (/licensed|insured|warrant|15\+|500\+/i.test(decode(html))) fail(page, 'unverified claim (licensed/insured/warranty/years/projects) found');
 
   const graphs = [...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].flatMap((m) => {
     try { const j = JSON.parse(m[1]); return j['@graph'] || [j]; } catch (e) { fail(page, `JSON-LD does not parse: ${e.message}`); return []; }
@@ -95,6 +94,42 @@ const sitemap = fs.readFileSync(path.join(root, 'sitemap.xml'), 'utf8');
 const locs = [...sitemap.matchAll(/<loc>(.*?)<\/loc>/g)].map((m) => m[1]);
 for (const p of PAGES) if (!locs.includes(ORIGIN + p.url)) failures.push(`sitemap.xml: missing ${ORIGIN + p.url}`);
 if (locs.some((u) => u.includes('#'))) failures.push('sitemap.xml: lists fragment URLs');
+
+// Claim guard (parse5, positive structure) over every public page. See tools/site/claim-guard.mjs.
+for (const file of publicPages(services)) {
+  const html = fs.readFileSync(path.join(root, file), 'utf8');
+  for (const problem of claimProblems(html, { file })) fail({ file }, problem);
+}
+
+// Stylesheets render generated content too (content: "…"). Check EVERY .css file in the tree (outside node_modules
+// and .git), and every stylesheet any public page links, wherever it lives. An external stylesheet cannot be checked
+// here, so it fails closed.
+const scannedCss = new Set();
+const scanCss = (abs, rel) => {
+  if (scannedCss.has(abs)) return; scannedCss.add(abs);
+  for (const problem of cssProblems(fs.readFileSync(abs, 'utf8'))) fail({ file: rel }, problem);
+};
+{
+  const stack = [root];
+  while (stack.length) {
+    const d = stack.pop();
+    for (const e of fs.readdirSync(d, { withFileTypes: true })) {
+      if (e.name === 'node_modules' || e.name === '.git') continue;
+      const f = path.join(d, e.name);
+      if (e.isDirectory()) stack.push(f);
+      else if (e.name.toLowerCase().endsWith('.css')) scanCss(f, path.relative(root, f));
+    }
+  }
+}
+for (const file of publicPages(services)) {
+  for (const href of linkedStylesheets(fs.readFileSync(path.join(root, file), 'utf8'))) {
+    if (/^([a-z][a-z0-9+.-]*:|\/\/)/i.test(href)) { fail({ file }, `external stylesheet cannot be claim-checked: ${href}`); continue; }
+    const clean = decodeURIComponent(href.split(/[?#]/)[0]);
+    const abs = clean.startsWith('/') ? path.join(root, clean) : path.join(root, path.dirname(file), clean);
+    if (!abs.startsWith(root) || !fs.existsSync(abs)) { fail({ file }, `linked stylesheet not found in the repo: ${href}`); continue; }
+    scanCss(abs, path.relative(root, abs));
+  }
+}
 
 if (failures.length) {
   console.error('SEO check failed:');
