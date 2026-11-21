@@ -25,6 +25,8 @@ jobs:
         run: node --test tools/site/claim-guard.test.mjs tools/site/license.test.mjs
       - name: Generated pages are fresh
         run: node tools/site/build.mjs --check
+      - name: GitHub Pages publishes only public paths (every tracked file is public or excluded in _config.yml)
+        run: node --test tools/site/pages-publish.test.mjs
       - name: Phone copy names JJ (guards the 2026-11-13 merge revert)
         run: node --test tools/site/jj-copy.test.mjs
       - name: GC pages stay unpublished until license day
