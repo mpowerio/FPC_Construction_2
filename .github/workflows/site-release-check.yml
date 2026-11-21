@@ -25,8 +25,6 @@ jobs:
         run: node --test tools/site/claim-guard.test.mjs tools/site/license.test.mjs
       - name: Generated pages are fresh
         run: node tools/site/build.mjs --check
-      - name: GitHub Pages publishes only public paths (every tracked file is public or excluded in _config.yml)
-        run: node --test tools/site/pages-publish.test.mjs
       - name: Phone copy names JJ (guards the 2026-11-13 merge revert)
         run: node --test tools/site/jj-copy.test.mjs
       - name: GC pages stay unpublished until license day
@@ -39,3 +37,12 @@ jobs:
         run: node tools/site/release-controls.mjs
       - name: SEO and release policy (pending copy blocks release)
         run: node tools/seo-check.mjs
+      # Last, so no other step sees the built copy: build with GitHub's own Pages builder (the legacy Jekyll that
+      # serves fpcconstructions.com) and check what it would actually publish.
+      - name: Build the site exactly as GitHub Pages does
+        uses: actions/jekyll-build-pages@v1.0.13
+        with:
+          source: ./
+          destination: ./_pages_out
+      - name: Pages output holds every public file and nothing else
+        run: PAGES_OUT=_pages_out node --test tools/site/pages-publish.test.mjs
