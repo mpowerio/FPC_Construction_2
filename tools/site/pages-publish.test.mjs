@@ -40,7 +40,8 @@ export function outputProblems(files, required = requiredOutputs()) {
   const problems = [];
   const want = new Set([...required, ...BUILDER_EXTRAS]);
   for (const f of files) if (!want.has(f)) problems.push(`published but not public: ${f}`);
-  for (const f of required) if (!files.includes(f)) problems.push(`public file missing from the Pages output: ${f}`);
+  // Exact in both directions: the builder extras are expected too, so a build that loses one fails (#55 review, cycle 4).
+  for (const f of [...required, ...BUILDER_EXTRAS]) if (!files.includes(f)) problems.push(`public file missing from the Pages output: ${f}`);
   return problems;
 }
 function listFiles(dir) {
@@ -72,19 +73,21 @@ test('the real Pages output publishes every public file and nothing else', { ski
 });
 test('controls: an extra published file, a missing public file, and internals all fail', () => {
   const good = requiredOutputs();
-  assert.deepEqual(outputProblems(good), []);
-  assert.deepEqual(outputProblems([...good, '.htaccess']), ['published but not public: .htaccess']);
-  assert.deepEqual(outputProblems(good.filter((f) => f !== 'robots.txt')), ['public file missing from the Pages output: robots.txt']);
+  const full = [...good, ...BUILDER_EXTRAS];
+  assert.deepEqual(outputProblems(full), []);
+  assert.deepEqual(outputProblems([...full, '.htaccess']), ['published but not public: .htaccess']);
+  assert.deepEqual(outputProblems(full.filter((f) => f !== 'robots.txt')), ['public file missing from the Pages output: robots.txt']);
   for (const f of ['tools/site/src/home.html', 'package.json', 'README.html', 'assets/data/gallery-config.json', 'assets/brand/README.md', 'docs/GC-FLIP.html'])
-    assert.ok(outputProblems([...good, f]).length === 1, f);
+    assert.ok(outputProblems([...full, f]).length === 1, f);
   // Cycle 2: any tracked public asset dropped from the output fails (the logo is on every page).
   const logo = 'assets/brand/fpc-lockup-enhanced-light.svg';
   assert.ok(good.includes(logo), 'the logo must be a required output');
-  assert.deepEqual(outputProblems(good.filter((f) => f !== logo)), [`public file missing from the Pages output: ${logo}`]);
+  assert.deepEqual(outputProblems(full.filter((f) => f !== logo)), [`public file missing from the Pages output: ${logo}`]);
   assert.ok(good.length > 150, `required list too short to trust (${good.length})`);
   // Cycle 3: a rendered note under assets/ is not public even though the path looks like an asset.
-  assert.deepEqual(outputProblems([...good, 'assets/brand/maintenance.html']), ['published but not public: assets/brand/maintenance.html']);
+  assert.deepEqual(outputProblems([...full, 'assets/brand/maintenance.html']), ['published but not public: assets/brand/maintenance.html']);
   assert.deepEqual(outputProblems([...good, ...BUILDER_EXTRAS]), [], 'the theme stylesheet is a named builder extra');
+  assert.deepEqual(outputProblems(good), ['public file missing from the Pages output: assets/css/style.css'], 'a build missing the builder extra fails');
 });
 test('an accented tracked asset is required (NUL-delimited listing)', () => {
   const f = 'assets/images/projects/ba\u00f1o.webp';
