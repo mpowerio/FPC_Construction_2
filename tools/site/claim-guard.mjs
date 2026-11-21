@@ -215,3 +215,28 @@ export function publicPages(services) {
     'privacy.html', 'terms.html', 'sms-opt-in.html', 'es/sms-opt-in/index.html',
   ];
 }
+
+// FPC channels (operator ruling 2026-11-20): no Meta/Facebook anywhere, and every business node's sameAs is exactly
+// TikTok + YouTube (Instagram stays a visible link only). Parsed with parse5 like the claim guard, so character
+// references and attribute quoting decode as a browser decodes them (site #54 review, cycle 2).
+export const FPC_SAME_AS = ['https://www.tiktok.com/@fpc.construction4', 'https://www.youtube.com/@FPCbuilds'];
+const META = /(?:^|[^a-z0-9-])(?:facebook\.com|fb\.com|fb\.me|fb\.watch|m\.me)(?:[^a-z0-9-]|$)/i;
+export function socialProblems(html) {
+  const problems = [];
+  walk(parse(html), (n) => {
+    for (const a of n.attrs || []) if (META.test(a.value)) problems.push(`Facebook/Meta link in <${n.tagName} ${a.name}> (no Meta for FPC, operator 2026-11-20)`);
+    if (n.nodeName === '#text' && META.test(n.value)) problems.push('Facebook/Meta address in page text (no Meta for FPC, operator 2026-11-20)');
+    if (n.tagName !== 'script' || (attr(n, 'type') || '').trim().toLowerCase() !== 'application/ld+json') return;
+    const text = kids(n).map((c) => c.value || '').join('');
+    let data; try { data = JSON.parse(text); } catch { problems.push('JSON-LD does not parse'); return; }
+    if (META.test(text)) problems.push('Facebook/Meta address in JSON-LD (no Meta for FPC, operator 2026-11-20)');
+    for (const node of [data, ...(Array.isArray(data?.['@graph']) ? data['@graph'] : [])]) {
+      if (!typesOf(node).includes('LocalBusiness')) continue;
+      const got = node.sameAs;
+      const ok = Array.isArray(got) && got.length === FPC_SAME_AS.length && got.every((u) => typeof u === 'string') &&
+        [...got].sort().every((u, i) => u === [...FPC_SAME_AS].sort()[i]);
+      if (!ok) problems.push(`business sameAs must be exactly ${FPC_SAME_AS.join(', ')} (got ${JSON.stringify(got ?? null)})`);
+    }
+  });
+  return [...new Set(problems)];
+}

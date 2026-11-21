@@ -160,3 +160,23 @@ test('not a claim (r5): ages and the live pages\' "seguro" (secure, Seguro Socia
     assert.deepEqual(check(inject(page('privacy.html'), `<p>${s}</p>`), 'privacy.html'), [], s);
   }
 });
+
+import { socialProblems } from './claim-guard.mjs';
+const BIZ = (sameAs, q = '"') => `<script type=${q}application/ld+json${q}>${JSON.stringify({ '@graph': [{ '@type': ['LocalBusiness'], sameAs }] })}</script>`;
+const GOOD = ['https://www.youtube.com/@FPCbuilds', 'https://www.tiktok.com/@fpc.construction4'];
+test('social guard: every shipped page is clean', () => {
+  for (const f of ['index.html', 'es/index.html', 'services/concrete/index.html', 'privacy.html']) assert.deepEqual(socialProblems(page(f)), [], f);
+  assert.deepEqual(socialProblems(BIZ(GOOD)), [], 'order does not matter');
+});
+test('social guard: Meta links fail however they are written (#54 review)', () => {
+  for (const h of ['<a href="https://www.facebook.com/x">x</a>', '<a href="https://www.facebook&#46;com/x">x</a>', "<a href='https://FACEBOOK.com/x'>x</a>", '<a href="https://fb.me/x">x</a>', '<p>facebook.com/fpc</p>'])
+    assert.ok(socialProblems(h).length > 0, h);
+  assert.deepEqual(socialProblems('<p>Our concrete form.me is fine</p>'), [], 'no false match inside other words');
+});
+test('social guard: sameAs is exactly TikTok + YouTube, entry by entry, whatever the quoting (#54 review)', () => {
+  assert.ok(socialProblems(BIZ([...GOOD, 'https://www.instagram.com/fpc2488'])).length > 0, 'extra Instagram');
+  assert.ok(socialProblems(BIZ([...GOOD, 'https://www.instagram.com/fpc2488'], "'")).length > 0, 'single-quoted script type');
+  assert.ok(socialProblems(BIZ([[...GOOD].sort().join(' ')])).length > 0, 'two URLs in one entry (sorted, so a joined-string compare would pass it)');
+  assert.ok(socialProblems(BIZ([GOOD[0]])).length > 0, 'missing one');
+  assert.ok(socialProblems(BIZ(undefined)).length > 0, 'missing sameAs');
+});

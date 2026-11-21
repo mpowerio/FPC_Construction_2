@@ -3,7 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { services } from './site/services.mjs';
 import { releaseProblems } from './site/release-policy.mjs';
-import { claimProblems, publicPages, cssProblems, linkedStylesheets } from './site/claim-guard.mjs';
+import { claimProblems, publicPages, cssProblems, linkedStylesheets, socialProblems } from './site/claim-guard.mjs';
 
 const root = process.cwd();
 const ORIGIN = 'https://fpcconstructions.com';
@@ -93,21 +93,11 @@ for (const p of PAGES) if (!locs.includes(ORIGIN + p.url)) failures.push(`sitema
 if (locs.some((u) => u.includes('#'))) failures.push('sitemap.xml: lists fragment URLs');
 
 // Claim guard (parse5, positive structure) over every public page. See tools/site/claim-guard.mjs.
-// FPC channels (operator 2026-11-20): every business node's sameAs is exactly TikTok + YouTube (Instagram is a visible
-// link only), and no page carries Facebook/Meta anywhere. Checked on EVERY public page, not just the homes (#54 review).
-const SAME_AS = ['https://www.tiktok.com/@fpc.construction4', 'https://www.youtube.com/@FPCbuilds'];
+// FPC channels (operator 2026-11-20): no Meta anywhere; every business node's sameAs is exactly TikTok + YouTube.
+// Parser-based (claim-guard.mjs socialProblems), on EVERY public page (site #54 review).
 for (const file of publicPages(services)) {
   const html = fs.readFileSync(path.join(root, file), 'utf8');
-  if (/facebook\.com|fb\.com|fb\.me/i.test(html)) fail({ file }, 'Facebook link or profile present (no Meta for FPC, operator 2026-11-20)');
-  for (const m of html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)) {
-    let data; try { data = JSON.parse(m[1]); } catch { fail({ file }, 'JSON-LD does not parse'); continue; }
-    for (const node of [data, ...(data['@graph'] || [])]) {
-      const t = [].concat(node['@type'] || []);
-      if (!t.includes('LocalBusiness')) continue;
-      const got = [...(node.sameAs || [])].sort().join(' '), want = [...SAME_AS].sort().join(' ');
-      if (got !== want) fail({ file }, `business sameAs must be exactly ${SAME_AS.join(', ')} (got ${got || 'none'})`);
-    }
-  }
+  for (const problem of socialProblems(html)) fail({ file }, problem);
   for (const problem of claimProblems(html, { file })) fail({ file }, problem);
 }
 

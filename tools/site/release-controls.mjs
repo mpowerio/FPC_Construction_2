@@ -40,7 +40,7 @@ try {
   for (const f of ['index.html', 'services/concrete/index.html', 'privacy.html']) {
     const p=join(dir,f), c=readFileSync(p,'utf8');
     writeFileSync(p,c.replace('</main>','<a href="https://www.facebook.com/x">x</a></main>').replace('</body>','<a href="https://www.facebook.com/x">x</a></body>'));
-    assert.match(run().stderr,/Facebook link or profile present/,`${f}: planted Facebook passed`);
+    assert.match(run().stderr,/Facebook\/Meta/,`${f}: planted Facebook passed`);
     writeFileSync(p,c);
   }
   for (const f of ['index.html', 'services/concrete/index.html']) {
