@@ -184,3 +184,16 @@ test('holiday pages: clean as shipped, and a planted claim or placeholder fails 
     assert.ok(releaseProblems(html.replace('</main>', '<p>Placeholder: photo</p></main>')).length > 0, `${file}: planted placeholder must fail`);
   }
 });
+// Whole tree (#53 review, cycle 2): every HTML file GitHub Pages would serve is guarded, even one missing from the
+// sitemap. Named allowlist: the Google Search Console verification file (one line, no visible page).
+import { execFileSync } from 'node:child_process';
+const NOT_A_PAGE = ['google6af8ccc14927c3cc.html'];
+export function unguardedHtml(tracked, pages = publicPages(services)) {
+  return tracked.filter((f) => f.endsWith('.html') && !/^(tools|node_modules|\.github)\//.test(f) && !NOT_A_PAGE.includes(f) && !pages.includes(f));
+}
+test('every served HTML file in the tree is in publicPages() or the named allowlist', () => {
+  const tracked = execFileSync('git', ['ls-files'], { cwd: new URL('../../', import.meta.url), encoding: 'utf8' }).split('\n');
+  assert.ok(tracked.filter((f) => f.endsWith('.html')).length >= 16, 'git ls-files returned too few pages to trust');
+  assert.deepEqual(unguardedHtml(tracked), []);
+  assert.deepEqual(unguardedHtml(['new-page/index.html', 'tools/x.html', 'google6af8ccc14927c3cc.html']), ['new-page/index.html'], 'control: an unlisted page is caught');
+});

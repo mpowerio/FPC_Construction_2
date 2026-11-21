@@ -44,9 +44,18 @@ test('no projects are invented: past performance is omitted while the list is em
 });
 
 // Operator, 2026-11-13: "no pending". Public pages carry no pending-credential wording or slots.
+// Every public page, from the one shared inventory (site #53 review: a private list here skipped the holiday pages).
 import { services } from './services.mjs';
-const publicPages = ['index.html', 'es/index.html', 'estimate/index.html', 'es/estimado/index.html',
-  ...services.flatMap((s) => Object.values(s.url).map((u) => u.slice(1) + 'index.html'))];
+import { publicPages as allPublicPages } from './claim-guard.mjs';
+const publicPages = allPublicPages(services);
+test('the pending guard covers the holiday pages, and catches each pending form planted in them', () => {
+  for (const file of ['holidays/index.html', 'es/fiestas/index.html']) {
+    assert.ok(publicPages.includes(file), `${file} is outside the pending guard`);
+    const html = readFileSync(join(root, file), 'utf8');
+    for (const planted of ['<p>Pending</p>', '<div class="slot slot--pending">x</div>', '<p>Trámites pendientes</p>', '<p data-release-pending>x</p>'])
+      assert.ok(pendingProblems(html.replace('</main>', planted + '</main>')).length, `${file}: ${planted}`);
+  }
+});
 export function pendingProblems(html) {
   const body = html.replace(/<(script|style)\b[^>]*>[\s\S]*?<\/\1>/gi, '').replace(/<!--[\s\S]*?-->/g, '');
   const text = (h) => h.replace(/<[^>]+>/g, ' ').replace(/&nbsp;|&#160;/g, ' ');
