@@ -25,6 +25,8 @@ jobs:
         run: node --test tools/site/claim-guard.test.mjs tools/site/license.test.mjs
       - name: Generated pages are fresh
         run: node tools/site/build.mjs --check
+      - name: Holiday page and home strip switch by date (both sides of each boundary, shipped script)
+        run: node --test tools/site/holiday.test.mjs
       - name: Phone copy names JJ (guards the 2026-11-13 merge revert)
         run: node --test tools/site/jj-copy.test.mjs
       - name: GC pages stay unpublished until license day

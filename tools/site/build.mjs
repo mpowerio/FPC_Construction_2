@@ -18,6 +18,7 @@ import { services, serviceLabels } from './services.mjs';
 import { whatsappUrl, tiktokProfile, youtubeChannel, TIKTOK_IN_FIELD_NOTES } from './social.mjs';
 import { licenseLine, licenseCredential } from './license.mjs';
 import { GC, GC_PAGES, GC_STRINGS, renderGcPage, assertReadyToPublish } from './gc.mjs';
+import { seasonScript } from './holiday.mjs';
 const TIKTOK = tiktokProfile();
 const YOUTUBE = youtubeChannel();
 const WHATSAPP = whatsappUrl();
@@ -46,7 +47,7 @@ assertReadyToPublish(GC);
 const GC_ON = GC.enabled || !!GC_PREVIEW;
 
 // ---------- Strings: both languages must carry the same keys ----------
-for (const [name, dict] of Object.entries({ common: S.common, home: S.home, estimate: S.estimate })) {
+for (const [name, dict] of Object.entries({ common: S.common, home: S.home, estimate: S.estimate, holiday: S.holiday })) {
   const en = Object.keys(dict.en).sort(), es = Object.keys(dict.es).sort();
   assert.deepEqual(es, en, `strings.${name}: EN and ES keys differ`);
 }
@@ -185,6 +186,8 @@ const ppSlot = (lang) => PAYPAL_MESSAGE_LANGS.includes(lang)
 const PAGES = [
   { key: 'home', tpl: 'home.html', url: { en: '/', es: '/es/' } },
   { key: 'estimate', tpl: 'estimate.html', url: { en: '/estimate/', es: '/es/estimado/' } },
+  // Holiday thank-you (2026-11-21). The season copy and the home strip switch by date in the browser.
+  { key: 'holiday', tpl: 'holidays.html', url: { en: '/holidays/', es: '/es/fiestas/' } },
   ...services.map(service => ({ key: 'service', tpl: 'service.html', url: service.url, service })),
   // General-contractor pages: emitted only on license day (GC.enabled) or into a --gc-preview folder.
   ...(GC_ON ? Object.entries(GC_PAGES).map(([gc, url]) => ({ key: 'gc', gc, tpl: 'gc.html', url })) : []),
@@ -199,7 +202,7 @@ const estimateCss = src('estimate.css');
 const headingHtml = (h) => { const parts = h.split(/(?<=\.)\s+/); return parts.slice(0, -1).join('<br>') + '<br><span class="display__accent">' + parts[parts.length - 1] + '</span>'; };
 
 function render(page, lang) {
-  const dict = { ...S.common[lang], ...(page.key === 'service' || page.key === 'gc' ? { ...S.home[lang], ...serviceLabels[lang], ...(page.service ? page.service[lang] : {}), ...(page.key === 'gc' ? { 'meta.title': GC_STRINGS[lang][`gc.${page.gc === 'commercial' ? 'c' : page.gc === 'capabilities' ? 'cap' : 'sub'}.meta.title`], 'meta.desc': GC_STRINGS[lang][`gc.${page.gc === 'commercial' ? 'c' : page.gc === 'capabilities' ? 'cap' : 'sub'}.meta.desc`] } : {}) } : S[page.key][lang]) };
+  const dict = { ...S.common[lang], ...(page.key === 'holiday' ? { ...S.home[lang], ...serviceLabels[lang], ...S.holiday[lang] } : page.key === 'service' || page.key === 'gc' ? { ...S.home[lang], ...serviceLabels[lang], ...(page.service ? page.service[lang] : {}), ...(page.key === 'gc' ? { 'meta.title': GC_STRINGS[lang][`gc.${page.gc === 'commercial' ? 'c' : page.gc === 'capabilities' ? 'cap' : 'sub'}.meta.title`], 'meta.desc': GC_STRINGS[lang][`gc.${page.gc === 'commercial' ? 'c' : page.gc === 'capabilities' ? 'cap' : 'sub'}.meta.desc`] } : {}) } : S[page.key][lang]) };
   const t = (k) => { if (!(k in dict)) throw new Error(`missing string ${k} (${page.key}/${lang})`); return dict[k]; };
   const reviews = renderReviews(t);
   const other = lang === 'en' ? 'es' : 'en';
@@ -209,6 +212,10 @@ function render(page, lang) {
     lang,
     home: urlOf('home', lang),
     estimate: urlOf('estimate', lang),
+    holidays: urlOf('holiday', lang),
+    seasonScript: page.key === 'holiday' ? seasonScript('[data-season-scope]') : '',
+    stripScript: page.key === 'home' ? seasonScript('[data-season-strip]') : '',
+    holidayRows: page.key !== 'holiday' ? '' : services.map(s => `<a class="row" href="${s.url[lang]}"><span class="row__name">${s[lang]['service.label']}</span><span class="row__desc">${s[lang]['service.h']}</span>${tnub}</a>`).join(''),
     smsUrl: lang === 'es' ? '/es/sms-opt-in/' : '/sms-opt-in',
     enUrl: page.url.en, esUrl: page.url.es,
     enAbs: ORIGIN + page.url.en, esAbs: ORIGIN + page.url.es,
@@ -293,7 +300,7 @@ function sitemap() {
     <xhtml:link rel="alternate" hreflang="es-US" href="${ORIGIN}${p.url.es}"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="${ORIGIN}${p.url.en}"/>
     <changefreq>monthly</changefreq>
-    <priority>${p.key === 'home' ? '1.0' : '0.8'}</priority>
+    <priority>${p.key === 'home' ? '1.0' : p.key === 'holiday' ? '0.5' : '0.8'}</priority>
   </url>`);
   }
   for (const legal of ['privacy', 'terms', 'sms-opt-in', 'es/sms-opt-in/']) rows.push(`  <url>

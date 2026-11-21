@@ -5,7 +5,7 @@
 // so it never blocks a fix (Chair, 2026-11-13).
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { PENDING_ES_KEYS, home, common } from './strings.mjs';
+import { PENDING_ES_KEYS, home, common, holiday } from './strings.mjs';
 import { GC, GC_PENDING_ES_KEYS } from './gc.mjs';
 import { readFileSync } from 'node:fs';
 
@@ -20,7 +20,7 @@ export function unreadSpanish({ pending = PENDING_ES_KEYS, gcPending = GC_PENDIN
   return [...pending, ...(gcOn ? gcPending : [])];
 }
 test('every pending key names a real shipped Spanish string', () => {
-  for (const k of PENDING_ES_KEYS) assert.ok(k in home.es || k in common.es, `unknown key ${k}`);
+  for (const k of PENDING_ES_KEYS) assert.ok(k in home.es || k in common.es || k in holiday.es, `unknown key ${k}`);
 });
 test('shipped Spanish has had its native-speaker read (no PENDING-ES markers left)', () => {
   const left = [...unreadSpanish(), ...unreadLegalSpanish()];

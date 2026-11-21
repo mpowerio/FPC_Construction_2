@@ -8,6 +8,8 @@
 <body class="page-home">
 {{> icons}}
 {{> header}}
+<div class="season-strip" data-season-strip hidden><div class="wrap season-strip__row"><p class="season-strip__text"><span data-season="thanks" hidden>{{t.strip.thanks}}</span><span data-season="winter" hidden>{{t.strip.winter}}</span></p><a class="textlink" href="{{v.holidays}}"><span class="textlink__label">{{t.strip.link}}</span>{{tnub}}</a></div></div>
+{{v.stripScript}}
 
 <main id="main">
   <section class="hero" id="home" aria-labelledby="h1">

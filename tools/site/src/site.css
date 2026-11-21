@@ -987,3 +987,15 @@ elevenlabs-convai {
 @media (max-width: 359px) { .site-header__row { gap: var(--s-8); } .brand img { width: 80px; } .site-header__right { gap: 6px; } }
 .facts dd a { display: inline-flex; align-items: center; min-height: 44px; }
 .starter .starter__note { color: var(--on-panel); }
+/* ---------- Holiday strip and page (2026-11-21). A seasonal touch built from the existing
+   sign, label, panel, row and area parts; nothing else on the site changes. ---------- */
+.season-strip { border-bottom: 1px solid var(--hair); background: var(--band); }
+.season-strip__row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0 var(--s-16); padding-block: var(--s-4); }
+.season-strip__text { font-weight: 700; font-stretch: 104%; padding-block: var(--s-8); }
+.hol-sign { margin: 0; }
+.hol-sig { font-weight: 700; font-stretch: 104%; color: var(--ink-2); }
+.hol-sig::before { content: "— "; }
+.page-holiday .hero__actions { flex-wrap: wrap; gap: var(--s-8) var(--s-24); }
+.hol-rows { margin-top: var(--s-24); }
+/* Room under the rows for the excavator that drives in along the bottom of .area. */
+.hol-work { padding-bottom: calc(var(--section) + var(--fpc-dig) * 78 / 132); }

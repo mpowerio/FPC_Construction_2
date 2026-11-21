@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="{{v.lang}}">
+<head>
+{{> head}}
+{{v.inlineCss}}
+{{v.jsonld}}
+</head>
+<body class="page-service page-holiday">
+{{> icons}}
+{{> header}}
+<main id="main">
+  <section class="svc-hero hol-hero" aria-labelledby="h1" data-season-scope>
+    <div class="wrap">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="{{v.home}}">FPC Construction</a><span aria-hidden="true">/</span><span aria-current="page">{{t.crumb.holidays}}</span></nav>
+      <div class="svc-hero__grid">
+        <div class="svc-hero__text">
+          <p class="hol-sign"><span class="sign sign--gold" data-season="default">{{t.hol.sign.default}}</span><span class="sign sign--gold" data-season="thanks" hidden>{{t.hol.sign.thanks}}</span><span class="sign sign--gold" data-season="winter" hidden>{{t.hol.sign.winter}}</span></p>
+          <h1 id="h1" class="display">{{t.hol.h}}</h1>
+          <p class="lead">{{t.hol.lead}}</p>
+          <p class="lead"><span data-season="default">{{t.hol.wish.default}}</span><span data-season="thanks" hidden>{{t.hol.wish.thanks}}</span><span data-season="winter" hidden>{{t.hol.wish.winter}}</span></p>
+          <p class="hol-sig">{{t.hol.sig}}</p>
+          <div class="hero__actions" data-bar-sentinel>
+            <a class="hero__call num" href="tel:+18038849305"><svg class="icon" aria-hidden="true"><use href="#i-phone"/></svg>{{t.hol.call}} (803) 884-9305</a>
+            <a class="hero__call" href="sms:+18038849305" aria-label="{{t.hol.text.aria}}"><svg class="icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v11H9l-5 4z"/></svg>{{t.hol.text}}</a>
+          </div>
+        </div>
+        <aside class="svc-aside hol-aside" aria-labelledby="spring-h">
+          <div class="aside-card panel">
+            <span class="sign sign--gold">{{t.spring.label}}</span>
+            <h2 id="spring-h">{{t.spring.h}}</h2>
+            <p>{{t.spring.p}}</p>
+            <a class="btn btn--cta btn--block" href="{{v.estimate}}"><span>{{t.cta.estimate}}</span>{{nub}}</a>
+            <a class="hero__call num" href="tel:+18038849305"><svg class="icon" aria-hidden="true"><use href="#i-phone"/></svg>(803) 884-9305</a>
+          </div>
+        </aside>
+      </div>
+    </div>
+    {{v.seasonScript}}
+  </section>
+
+  <section class="section section--band joint area hol-work" aria-labelledby="work-h">
+    <div class="wrap">
+      <div class="section-head"><h2 id="work-h" class="h2">{{t.spring.list}}</h2></div>
+      <div class="hol-rows">{{v.holidayRows}}</div>
+    </div>
+  </section>
+</main>
+{{> footer}}
+{{> bars}}
+{{> scripts}}
+</body>
+</html>
