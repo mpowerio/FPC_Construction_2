@@ -64,9 +64,11 @@ for (const page of PAGES) {
     if (!types(business).includes('HomeAndConstructionBusiness')) fail(page, 'LocalBusiness should also be HomeAndConstructionBusiness');
     if (business.slogan !== SLOGAN) fail(page, 'JSON-LD slogan must be the locked slogan, verbatim');
     if (business.telephone !== '+1-803-884-9305') fail(page, 'telephone must be +1-803-884-9305');
-    for (const profile of ['https://www.facebook.com/p/FPC-Construction-LLC-100066373038903/', 'https://www.instagram.com/fpc2488']) {
+    // FPC channels (operator 2026-11-20): TikTok and YouTube, Instagram as a link; no Meta/Facebook.
+    for (const profile of ['https://www.instagram.com/fpc2488', 'https://www.tiktok.com/@fpc.construction4', 'https://www.youtube.com/@FPCbuilds']) {
       if (!(business.sameAs || []).includes(profile)) fail(page, `sameAs missing ${profile}`);
     }
+    if (/facebook\.com/i.test(html)) fail(page, 'Facebook link or profile present (no Meta for FPC, operator 2026-11-20)');
     const headings = [...html.matchAll(/<h1\b[^>]*>([\s\S]*?)<\/h1>/g)];
     if (headings.length !== 1 || !decode(headings[0]?.[1] || '')) fail(page, 'exactly one non-empty H1 required');
     const slogans = [...html.matchAll(/<p\b(?=[^>]*class="[^" ]*hero__slogan[^" ]*")(?=[^>]*lang="en")[^>]*>([\s\S]*?)<\/p>/g)];

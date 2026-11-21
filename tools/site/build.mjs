@@ -136,7 +136,8 @@ function business(lang) {
     // Mon–Sat 7–7 confirmed by operator after Filemon phone check, 2026-11-13.
     openingHoursSpecification: [{ '@type': 'OpeningHoursSpecification', dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'], opens: '07:00', closes: '19:00' }],
     hasOfferCatalog: { '@type': 'OfferCatalog', name: lang === 'es' ? 'Servicios' : 'Services', itemListElement: SERVICES[lang].map((name) => ({ '@type': 'Offer', itemOffered: { '@type': 'Service', name } })) },
-    sameAs: ['https://www.facebook.com/p/FPC-Construction-LLC-100066373038903/', 'https://www.instagram.com/fpc2488', ...(TIKTOK ? [TIKTOK] : []), ...(YOUTUBE ? [YOUTUBE] : [])],
+    // No Meta/Facebook for FPC (operator ruling 2026-11-20): TikTok, YouTube and Snap; Instagram is a link only.
+    sameAs: ['https://www.instagram.com/fpc2488', ...(TIKTOK ? [TIKTOK] : []), ...(YOUTUBE ? [YOUTUBE] : [])],
     ...(licenseCredential(lang) ? { hasCredential: licenseCredential(lang) } : {}),
   };
 }

@@ -9,7 +9,9 @@ export const TIKTOK_IN_FIELD_NOTES = true;
 // SLOT: FPC has no channel yet (2026-11-20); one is being set up under the fpcconstructions.com Google account.
 // When it exists, put its https://www.youtube.com/@handle URL here and rebuild; the footer link and JSON-LD sameAs follow.
 // Empty hides every YouTube slot. No embed script is loaded.
-export const YOUTUBE_CHANNEL_URL = '';
+// Verified 2026-11-21: https://www.youtube.com/@FPCbuilds is public, titled "FPC Construction" (canonical channel
+// UCzIF9gvROXsCmgwhu_hay8A); a made-up handle on the same request returns 404 (control).
+export const YOUTUBE_CHANNEL_URL = 'https://www.youtube.com/@FPCbuilds';
 // Empty until the operator confirms the WhatsApp destination recorded in PLAN.md.
 // The historical candidate is absent from the current live site and base.
 export const WHATSAPP_URL = '';
