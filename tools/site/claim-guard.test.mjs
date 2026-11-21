@@ -160,3 +160,27 @@ test('not a claim (r5): ages and the live pages\' "seguro" (secure, Seguro Socia
     assert.deepEqual(check(inject(page('privacy.html'), `<p>${s}</p>`), 'privacy.html'), [], s);
   }
 });
+
+// Coverage: every page the sitemap publishes must be in the guards' inventory (review of site #53 found the holiday
+// pages outside it). One list feeds the claim guard, the release-policy scan and the rendered license check.
+import { publicPages } from './claim-guard.mjs';
+import { services } from './services.mjs';
+import { releaseProblems } from './release-policy.mjs';
+test('every sitemap page is in publicPages()', () => {
+  const pages = new Set(publicPages(services));
+  const locs = [...page('sitemap.xml').matchAll(/<loc>https:\/\/fpcconstructions\.com\/(.*?)<\/loc>/g)].map((m) => m[1]);
+  assert.ok(locs.length >= 16, `sitemap too short to trust (${locs.length})`);
+  const file = (u) => (u === '' || u.endsWith('/') ? u + 'index.html' : (pages.has(u + '.html') ? u + '.html' : u));
+  const missing = locs.map(file).filter((f) => !pages.has(f));
+  assert.deepEqual(missing, [], `published but unguarded: ${missing.join(', ')}`);
+});
+test('holiday pages: clean as shipped, and a planted claim or placeholder fails in each', () => {
+  for (const file of ['holidays/index.html', 'es/fiestas/index.html']) {
+    const html = page(file);
+    assert.deepEqual(claimProblems(html, { file }), [], `${file} as shipped`);
+    assert.deepEqual(releaseProblems(html), [], `${file} release policy as shipped`);
+    const planted = html.replace('</main>', '<p>We are fully insured.</p></main>');
+    assert.ok(claimProblems(planted, { file }).length > 0, `${file}: planted insurance claim must fail`);
+    assert.ok(releaseProblems(html.replace('</main>', '<p>Placeholder: photo</p></main>')).length > 0, `${file}: planted placeholder must fail`);
+  }
+});

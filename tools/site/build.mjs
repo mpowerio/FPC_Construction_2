@@ -18,7 +18,7 @@ import { services, serviceLabels } from './services.mjs';
 import { whatsappUrl, tiktokProfile, youtubeChannel, TIKTOK_IN_FIELD_NOTES } from './social.mjs';
 import { licenseLine, licenseCredential } from './license.mjs';
 import { GC, GC_PAGES, GC_STRINGS, renderGcPage, assertReadyToPublish } from './gc.mjs';
-import { seasonScript } from './holiday.mjs';
+import { seasonScript, HOLIDAY_URL } from './holiday.mjs';
 const TIKTOK = tiktokProfile();
 const YOUTUBE = youtubeChannel();
 const WHATSAPP = whatsappUrl();
@@ -187,7 +187,7 @@ const PAGES = [
   { key: 'home', tpl: 'home.html', url: { en: '/', es: '/es/' } },
   { key: 'estimate', tpl: 'estimate.html', url: { en: '/estimate/', es: '/es/estimado/' } },
   // Holiday thank-you (2026-11-21). The season copy and the home strip switch by date in the browser.
-  { key: 'holiday', tpl: 'holidays.html', url: { en: '/holidays/', es: '/es/fiestas/' } },
+  { key: 'holiday', tpl: 'holidays.html', url: HOLIDAY_URL, lastmod: '2026-11-21' },
   ...services.map(service => ({ key: 'service', tpl: 'service.html', url: service.url, service })),
   // General-contractor pages: emitted only on license day (GC.enabled) or into a --gc-preview folder.
   ...(GC_ON ? Object.entries(GC_PAGES).map(([gc, url]) => ({ key: 'gc', gc, tpl: 'gc.html', url })) : []),
@@ -295,7 +295,7 @@ function sitemap() {
   for (const p of PAGES) for (const lang of ['en', 'es']) {
     rows.push(`  <url>
     <loc>${ORIGIN}${p.url[lang]}</loc>
-    <lastmod>${LASTMOD}</lastmod>
+    <lastmod>${p.lastmod || LASTMOD}</lastmod>
     <xhtml:link rel="alternate" hreflang="en-US" href="${ORIGIN}${p.url.en}"/>
     <xhtml:link rel="alternate" hreflang="es-US" href="${ORIGIN}${p.url.es}"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="${ORIGIN}${p.url.en}"/>

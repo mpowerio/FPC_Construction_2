@@ -4,6 +4,9 @@
 // strip and the holiday page, so this file is the one place the dates live and the tests run
 // the same function the pages run. Dates are calendar days in Augusta (America/New_York),
 // both ends included. Update SEASONS for next year's holidays.
+// Where the holiday page lives. build.mjs publishes it and claim-guard.mjs's publicPages() guards it.
+export const HOLIDAY_URL = { en: '/holidays/', es: '/es/fiestas/' };
+
 export const SEASONS = [
   { id: 'thanks', from: '2026-11-23', to: '2026-11-29' },
   { id: 'winter', from: '2026-11-30', to: '2027-01-03' },
