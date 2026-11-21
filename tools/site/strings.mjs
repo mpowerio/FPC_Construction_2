@@ -453,3 +453,69 @@ Object.assign(home.en, V3_HOME.en); Object.assign(home.es, V3_HOME.es);
 // The estimate page also renders the shared header and footer.
 for (const k of ['core.s.h', 'core.c.h', 'core.public.h', 'start.drainage']) { estimate.en[k] ??= home.en[k]; estimate.es[k] ??= home.es[k]; }
 export const PENDING_ES_KEYS = [...Object.keys(V3_COMMON.es), ...Object.keys(V3_HOME.es).filter(k => !['facts.1v'].includes(k))];
+
+// Holiday page + home strip (operator 2026-11-21). No offer, no prices, no sales tax, no customer
+// names. The season copy swaps by date in the browser (tools/site/holiday.mjs).
+// PENDING-ES: the Spanish below is a draft that needs a native-speaker read (HOLIDAY_PENDING_ES_KEYS).
+const HOLIDAY_STRIP = {
+  en: {
+    'strip.thanks': 'Happy Thanksgiving from the Pineda family and the FPC crew.',
+    'strip.winter': 'Merry Christmas and a happy New Year from the Pineda family and the FPC crew.',
+    'strip.link': 'Read our thank-you',
+  },
+  es: {
+    'strip.thanks': 'Feliz Día de Acción de Gracias de parte de la familia Pineda y el equipo de FPC.',
+    'strip.winter': 'Feliz Navidad y próspero Año Nuevo de parte de la familia Pineda y el equipo de FPC.',
+    'strip.link': 'Lea nuestro mensaje',
+  },
+};
+Object.assign(home.en, HOLIDAY_STRIP.en); Object.assign(home.es, HOLIDAY_STRIP.es);
+
+export const holiday = {
+  en: {
+    'meta.title': 'Happy holidays from FPC Construction | North Augusta, SC',
+    'meta.desc': 'A thank-you from the Pineda family and the FPC crew. Call or text (803) 884-9305 to get on the schedule for spring septic, concrete and site work.',
+    'crumb.holidays': 'Holidays',
+    'hol.sign.default': 'Happy holidays',
+    'hol.sign.thanks': 'Happy Thanksgiving',
+    'hol.sign.winter': 'Merry Christmas and happy New Year',
+    'hol.h': 'Thank you from the Pineda family and the FPC crew.',
+    'hol.lead': 'This year you trusted us with your septic systems, concrete, drainage and land. You called us, you sent your neighbors our way, and you let us work on your property. We don’t take that lightly.',
+    'hol.wish.default': 'From our family and our crew to yours, we wish you a good holiday season.',
+    'hol.wish.thanks': 'From our family and our crew to yours, we hope your table is full and your Thanksgiving week is easy.',
+    'hol.wish.winter': 'From our family and our crew to yours, merry Christmas and a good start to the new year.',
+    'hol.sig': 'Filemon Pineda, his family and the FPC crew',
+    'hol.call': 'Call',
+    'hol.text': 'Text us',
+    'hol.text.aria': 'Text us at (803) 884-9305',
+    'spring.label': 'Spring',
+    'spring.h': 'Get on the schedule for spring work.',
+    'spring.p': 'If you’re planning work for the spring, now is a good time to get on the list. Call or text, or send the estimate form. Filemon comes out and looks at it, free.',
+    'spring.list': 'The work we do',
+    'crumb.aria': 'Breadcrumb',
+  },
+  es: {
+    'meta.title': 'Felices fiestas de parte de FPC Construction | North Augusta, SC',
+    'meta.desc': 'Un mensaje de agradecimiento de la familia Pineda y el equipo de FPC. Llame o mande un texto al (803) 884-9305 para agendar su proyecto séptico, de concreto o de terreno para la primavera.',
+    'crumb.holidays': 'Fiestas',
+    'hol.sign.default': 'Felices fiestas',
+    'hol.sign.thanks': 'Feliz Día de Acción de Gracias',
+    'hol.sign.winter': 'Feliz Navidad y próspero Año Nuevo',
+    'hol.h': 'Gracias de parte de la familia Pineda y el equipo de FPC.',
+    'hol.lead': 'Gracias por confiar en nosotros este año para sus trabajos de sistemas sépticos, concreto, drenaje y preparación de terreno. Nos llamaron, nos recomendaron con sus vecinos y nos dejaron trabajar en su propiedad. Eso lo valoramos mucho.',
+    'hol.wish.default': 'De parte de nuestra familia y de todo el equipo de FPC, les deseamos unas felices fiestas.',
+    'hol.wish.thanks': 'De parte de nuestra familia y de todo el equipo de FPC, les deseamos un feliz Día de Acción de Gracias en familia.',
+    'hol.wish.winter': 'De parte de nuestra familia y de todo el equipo de FPC, les deseamos una feliz Navidad y un buen comienzo de año.',
+    'hol.sig': 'Filemon Pineda, su familia y el equipo de FPC',
+    'hol.call': 'Llamar',
+    'hol.text': 'Mándenos un texto',
+    'hol.text.aria': 'Mándenos un texto al (803) 884-9305',
+    'spring.label': 'Primavera',
+    'spring.h': 'Agende su proyecto de primavera.',
+    'spring.p': 'Si está planeando un trabajo para la primavera, ahora es buen momento para agendarlo. Llame, mande un texto o solicite un estimado. Filemon va a revisar el lugar en persona, gratis.',
+    'spring.list': 'Nuestros servicios',
+    'crumb.aria': 'Ruta de navegación',
+  },
+};
+export const HOLIDAY_PENDING_ES_KEYS = [...Object.keys(HOLIDAY_STRIP.es), ...Object.keys(holiday.es)];
+PENDING_ES_KEYS.push(...HOLIDAY_PENDING_ES_KEYS);

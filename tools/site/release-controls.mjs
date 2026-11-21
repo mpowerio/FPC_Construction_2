@@ -6,9 +6,11 @@ import { tmpdir } from 'node:os';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { services } from './services.mjs';
+import { publicPages } from './claim-guard.mjs';
 const root = fileURLToPath(new URL('../../', import.meta.url));
 const command = join(root, 'tools/seo-check.mjs');
-const files = ['index.html', 'es/index.html', 'estimate/index.html', 'es/estimado/index.html', ...services.flatMap(s => Object.values(s.url).map(u => u.slice(1) + 'index.html')), 'privacy.html', 'terms.html', 'sms-opt-in.html', 'es/sms-opt-in/index.html', 'sitemap.xml', 'assets/site/site.css', 'assets/site/legal.css'];
+// Every public page from the shared inventory (so a new page is in the fixture), plus the sitemap and stylesheets.
+const files = [...publicPages(services), 'sitemap.xml', 'assets/site/site.css', 'assets/site/legal.css'];
 const dir = mkdtempSync(join(tmpdir(), 'fpc-release-controls-'));
 function run() { return spawnSync(process.execPath, [command], {cwd:dir, encoding:'utf8'}); }
 try {
@@ -21,7 +23,7 @@ try {
   const baseline = run(); assert.equal(baseline.status,0,baseline.stderr);
   const markers = ['<span class="ph">caption</span>', '<span class=ph>caption</span>', '<div class="reviews__ph">note</div>', '<h1>[Headline pending approval]</h1>', '<h1>[Titular pendiente de aprobación]</h1>', '<p>Project examples pending verification</p>', '<p>Ejemplos de proyectos pendientes de verificación</p>', '<p data-release-pending>Changed words</p>'];
   let rejected = 0;
-  for (const file of ['index.html','es/index.html','services/concrete/index.html','privacy.html']) {
+  for (const file of ['index.html','es/index.html','services/concrete/index.html','privacy.html','holidays/index.html','es/fiestas/index.html']) {
     const clean = readFileSync(join(dir,file),'utf8');
     for (const marker of markers) {
       writeFileSync(join(dir,file),clean.replace('</body>', marker+'</body>'));

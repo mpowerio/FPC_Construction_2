@@ -81,8 +81,8 @@ for (const page of PAGES) {
   }
 }
 
-// Release policy also covers generated service pages and the three legal documents.
-for (const file of [...services.flatMap(s => Object.values(s.url).map(url => url.slice(1) + 'index.html')), 'privacy.html', 'terms.html', 'sms-opt-in.html']) {
+// Release policy covers every public page (the same inventory as the claim guard), so a new page cannot skip it.
+for (const file of publicPages(services)) {
   const html = fs.readFileSync(path.join(root, file), 'utf8');
   for (const problem of releaseProblems(html, { allowDraft: process.argv.includes('--allow-draft') })) fail({file}, problem);
 }

@@ -23,6 +23,7 @@
 //      "warranties"; they are matched by their full text, and only the warranty check is skipped for them.
 import { parse } from 'parse5';
 import { licenseLine, licenseCredential, licenseActive } from './license.mjs';
+import { HOLIDAY_URL } from './holiday.mjs';
 
 import { LICENSE_CLAIM, MARKETING_CLAIM } from './claim-vocabulary.mjs';
 const ORIGIN = 'https://fpcconstructions.com';
@@ -212,6 +213,7 @@ export function publicPages(services) {
   return [
     'index.html', 'es/index.html', 'estimate/index.html', 'es/estimado/index.html',
     ...services.flatMap((s) => Object.values(s.url).map((u) => u.slice(1) + 'index.html')),
+    ...Object.values(HOLIDAY_URL).map((u) => u.slice(1) + 'index.html'),
     'privacy.html', 'terms.html', 'sms-opt-in.html', 'es/sms-opt-in/index.html',
   ];
 }

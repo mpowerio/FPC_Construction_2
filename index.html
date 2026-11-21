@@ -30,7 +30,7 @@
 </script>
 <link rel="preload" as="image" type="image/avif" imagesrcset="/assets/img/gallery-19-480.avif 480w, /assets/img/gallery-19-800.avif 800w, /assets/img/gallery-19-1200.avif 1200w" imagesizes="(min-width: 1280px) 580px, (min-width: 900px) 44vw, calc(100vw - 40px)" fetchpriority="high">
 <link rel="preload" href="/assets/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/assets/site/site.css?v=e0fcc524af">
+<link rel="stylesheet" href="/assets/site/site.css?v=621370ccf3">
 <link rel="icon" href="/assets/brand/favicon.ico" sizes="48x48">
 <link rel="icon" href="/assets/brand/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/assets/brand/apple-touch-icon.png">
@@ -383,6 +383,17 @@
     </details>
   </div>
 </div></header>
+<div class="season-strip" data-season-strip hidden><div class="wrap season-strip__row"><p class="season-strip__text"><span data-season="thanks" hidden>Happy Thanksgiving from the Pineda family and the FPC crew.</span><span data-season="winter" hidden>Merry Christmas and a happy New Year from the Pineda family and the FPC crew.</span></p><a class="textlink" href="/holidays/"><span class="textlink__label">Read our thank-you</span><span class="textlink__nub" aria-hidden="true"><svg><use href="#i-chev"/></svg></span></a></div></div>
+<script>(function(){try{var S=[{"id":"thanks","from":"2026-11-23","to":"2026-11-29"},{"id":"winter","from":"2026-11-30","to":"2027-01-03"}];var seasonFor=function seasonFor(ymd, seasons) {
+  for (var i = 0; i < seasons.length; i++) {
+    if (ymd >= seasons[i].from && ymd <= seasons[i].to) return seasons[i].id;
+  }
+  return null;
+};var augustaDate=function augustaDate(when) {
+  var p = new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', year: 'numeric', month: '2-digit', day: '2-digit' }).formatToParts(when);
+  var get = function (t) { for (var i = 0; i < p.length; i++) if (p[i].type === t) return p[i].value; return ''; };
+  return get('year') + '-' + get('month') + '-' + get('day');
+};var q=(location.search.match(/[?&]season=(thanks|winter|none)\b/)||[])[1];var s=q?(q==="none"?null:q):seasonFor(augustaDate(new Date()),S);if(!s)return;var root=document.querySelector("[data-season-strip]");if(!root)return;root.hidden=false;root.setAttribute("data-season-now",s);root.querySelectorAll("[data-season]").forEach(function(el){el.hidden=el.getAttribute("data-season")!==s;});}catch(e){}})();</script>
 
 <main id="main">
   <section class="hero" id="home" aria-labelledby="h1">
