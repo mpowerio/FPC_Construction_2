@@ -24,16 +24,22 @@ const ALLOWED = [
 // Must be in the published output: EVERY tracked file the allowlist calls public (pages, legal pages, every asset,
 // crawler files), not a hand-picked few (#55 review cycle 2: an exclusion dropping the logo SVGs went unseen).
 export function trackedFiles() {
-  return execFileSync('git', ['ls-files'], { cwd: root, encoding: 'utf8' }).split('\n').filter(Boolean);
+  // -z: NUL-delimited, so names with accents or spaces are not quoted and escaped by git (#55 review, cycle 3).
+  return execFileSync('git', ['ls-files', '-z'], { cwd: root, encoding: 'utf8' }).split('\0').filter(Boolean);
 }
 export function requiredOutputs(tracked = trackedFiles()) {
   // Dot-files (e.g. assets/images/projects/.gitkeep) are repo plumbing that Jekyll never publishes.
   const pub = tracked.filter((f) => ALLOWED.some((rx) => rx.test(f)) && !f.split('/').some((seg) => seg.startsWith('.')));
   return [...new Set([...pub, ...publicPages(services)])];
 }
+// Files GitHub Pages adds on its own that have no tracked source: the default (Primer) theme stylesheet.
+export const BUILDER_EXTRAS = ['assets/css/style.css'];
+// The output must be EXACTLY the required set plus the named builder extras (#55 review, cycle 3): an allowlist
+// match alone let a rendered Markdown note under assets/ publish.
 export function outputProblems(files, required = requiredOutputs()) {
   const problems = [];
-  for (const f of files) if (!ALLOWED.some((rx) => rx.test(f))) problems.push(`published but not public: ${f}`);
+  const want = new Set([...required, ...BUILDER_EXTRAS]);
+  for (const f of files) if (!want.has(f)) problems.push(`published but not public: ${f}`);
   for (const f of required) if (!files.includes(f)) problems.push(`public file missing from the Pages output: ${f}`);
   return problems;
 }
@@ -76,6 +82,14 @@ test('controls: an extra published file, a missing public file, and internals al
   assert.ok(good.includes(logo), 'the logo must be a required output');
   assert.deepEqual(outputProblems(good.filter((f) => f !== logo)), [`public file missing from the Pages output: ${logo}`]);
   assert.ok(good.length > 150, `required list too short to trust (${good.length})`);
+  // Cycle 3: a rendered note under assets/ is not public even though the path looks like an asset.
+  assert.deepEqual(outputProblems([...good, 'assets/brand/maintenance.html']), ['published but not public: assets/brand/maintenance.html']);
+  assert.deepEqual(outputProblems([...good, ...BUILDER_EXTRAS]), [], 'the theme stylesheet is a named builder extra');
+});
+test('an accented tracked asset is required (NUL-delimited listing)', () => {
+  const f = 'assets/images/projects/ba\u00f1o.webp';
+  assert.ok(requiredOutputs(['index.html', f]).includes(f), 'accented asset missing from the required set');
+  assert.ok(outputProblems(requiredOutputs(['index.html', f]).filter((x) => x !== f), requiredOutputs(['index.html', f])).some((p) => p.includes('ba\u00f1o')));
 });
 test('_config.yml excludes the internals and no exclude entry is a prefix of a public path', () => {
   const excludes = excludesFrom(readFileSync(new URL('_config.yml', root), 'utf8'));
