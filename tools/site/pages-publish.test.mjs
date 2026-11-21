@@ -21,9 +21,14 @@ const ALLOWED = [
   /^assets\/(?!data\/)(?!.*\.md$)/,
   /^(?:CNAME|robots\.txt|sitemap\.xml|favicon\.ico|google[0-9a-f]+\.html)$/,
 ];
-// Must be in the published output.
-export function requiredOutputs() {
-  return [...publicPages(services), 'robots.txt', 'sitemap.xml', 'favicon.ico', 'assets/site/site.css', 'assets/site/core.js'];
+// Must be in the published output: EVERY tracked file the allowlist calls public (pages, legal pages, every asset,
+// crawler files), not a hand-picked few (#55 review cycle 2: an exclusion dropping the logo SVGs went unseen).
+export function trackedFiles() {
+  return execFileSync('git', ['ls-files'], { cwd: root, encoding: 'utf8' }).split('\n').filter(Boolean);
+}
+export function requiredOutputs(tracked = trackedFiles()) {
+  const pub = tracked.filter((f) => ALLOWED.some((rx) => rx.test(f)));
+  return [...new Set([...pub, ...publicPages(services)])];
 }
 export function outputProblems(files, required = requiredOutputs()) {
   const problems = [];
@@ -65,12 +70,17 @@ test('controls: an extra published file, a missing public file, and internals al
   assert.deepEqual(outputProblems(good.filter((f) => f !== 'robots.txt')), ['public file missing from the Pages output: robots.txt']);
   for (const f of ['tools/site/src/home.html', 'package.json', 'README.html', 'assets/data/gallery-config.json', 'assets/brand/README.md', 'docs/GC-FLIP.html'])
     assert.ok(outputProblems([...good, f]).length === 1, f);
+  // Cycle 2: any tracked public asset dropped from the output fails (the logo is on every page).
+  const logo = 'assets/brand/fpc-lockup-enhanced-light.svg';
+  assert.ok(good.includes(logo), 'the logo must be a required output');
+  assert.deepEqual(outputProblems(good.filter((f) => f !== logo)), [`public file missing from the Pages output: ${logo}`]);
+  assert.ok(good.length > 150, `required list too short to trust (${good.length})`);
 });
 test('_config.yml excludes the internals and no exclude entry is a prefix of a public path', () => {
   const excludes = excludesFrom(readFileSync(new URL('_config.yml', root), 'utf8'));
   for (const f of ['tools', 'docs', 'fixes', 'package.json', 'package-lock.json', 'README.md', 'assets/data']) assert.ok(excludes.includes(f), `${f} must be excluded`);
   // Jekyll 3.10 also matches exclude entries as prefixes ("robots" would drop robots.txt).
-  const tracked = execFileSync('git', ['ls-files'], { cwd: root, encoding: 'utf8' }).split('\n').filter((f) => ALLOWED.some((rx) => rx.test(f)));
+  const tracked = trackedFiles().filter((f) => ALLOWED.some((rx) => rx.test(f)));
   const clashes = tracked.filter((f) => excludes.some((e) => f.startsWith(e)));
   assert.deepEqual(clashes, [], 'an exclude entry matches a public path');
 });
