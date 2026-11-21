@@ -232,14 +232,20 @@ export function socialProblems(html) {
     const text = kids(n).map((c) => c.value || '').join('');
     let data; try { data = JSON.parse(text); } catch { problems.push('JSON-LD does not parse'); return; }
     if (META.test(text)) problems.push('Facebook/Meta address in JSON-LD (no Meta for FPC, operator 2026-11-20)');
-    // Any JSON-LD shape: one node, a top-level array of nodes, or @graph (nested anywhere).
+    // Every object at any depth (single node, top-level array, @graph, or embedded such as Service.provider).
+    // Rule: ANY sameAs anywhere must be exactly the channel list, and every business-like node must carry it.
+    const BUSINESS = /^(LocalBusiness|HomeAndConstructionBusiness|GeneralContractor|Organization|Corporation|ProfessionalService|.*Business|.*Contractor)$/;
     const nodes = [];
-    (function collect(v) { if (Array.isArray(v)) v.forEach(collect); else if (v && typeof v === 'object') { nodes.push(v); if (v['@graph']) collect(v['@graph']); } })(data);
+    (function collect(v) { if (Array.isArray(v)) v.forEach(collect); else if (v && typeof v === 'object') { nodes.push(v); Object.values(v).forEach(collect); } })(data);
+    const want = [...FPC_SAME_AS].sort();
     for (const node of nodes) {
-      if (!typesOf(node).includes('LocalBusiness')) continue;
+      // A bare {"@id": ...} is a reference to a node described elsewhere, not a node: skip it.
+      if (Object.keys(node).every((k) => k === '@id')) continue;
+      const business = typesOf(node).some((t) => BUSINESS.test(String(t))) || /#business$/.test(String(node['@id'] || ''));
+      if (!business && !('sameAs' in node)) continue;
       const got = node.sameAs;
-      const ok = Array.isArray(got) && got.length === FPC_SAME_AS.length && got.every((u) => typeof u === 'string') &&
-        [...got].sort().every((u, i) => u === [...FPC_SAME_AS].sort()[i]);
+      const ok = Array.isArray(got) && got.length === want.length && got.every((u) => typeof u === 'string') &&
+        [...got].sort().every((u, i) => u === want[i]);
       if (!ok) problems.push(`business sameAs must be exactly ${FPC_SAME_AS.join(', ')} (got ${JSON.stringify(got ?? null)})`);
     }
   });

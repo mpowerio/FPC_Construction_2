@@ -186,4 +186,12 @@ test('social guard: sameAs is exactly TikTok + YouTube, entry by entry, whatever
   const arr = (sameAs) => `<script type="application/ld+json">${JSON.stringify([{ '@context': 'https://schema.org', '@type': 'WebPage' }, { '@context': 'https://schema.org', '@type': ['LocalBusiness'], sameAs }])}</script>`;
   assert.deepEqual(socialProblems(arr(GOOD)), [], 'array form, correct list');
   assert.ok(socialProblems(arr([...GOOD, 'https://www.instagram.com/fpc2488'])).length > 0, 'array form, extra Instagram');
+  // Cycle 4: the business embedded in Service.provider, a business subtype, and a stray sameAs on any node.
+  const ld = (obj) => `<script type="application/ld+json">${JSON.stringify(obj)}</script>`;
+  const svc = (sameAs) => ld({ '@graph': [{ '@type': 'Service', provider: { '@type': ['LocalBusiness', 'HomeAndConstructionBusiness'], '@id': 'https://fpcconstructions.com/#business', sameAs } }] });
+  assert.deepEqual(socialProblems(svc(GOOD)), [], 'embedded provider, correct list');
+  assert.ok(socialProblems(svc([...GOOD, 'https://example.com/x'])).length > 0, 'embedded provider, extra URL');
+  assert.ok(socialProblems(ld({ '@type': 'HomeAndConstructionBusiness', sameAs: [...GOOD, 'https://www.instagram.com/fpc2488'] })).length > 0, 'business subtype only');
+  assert.ok(socialProblems(ld({ '@type': 'Person', sameAs: ['https://www.facebook.com/x'] })).length > 0, 'stray sameAs on another node');
+  assert.deepEqual(socialProblems(ld({ '@type': 'WebPage', about: { '@id': 'https://fpcconstructions.com/#business' } })), [], 'a bare @id reference is not a node');
 });
