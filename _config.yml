@@ -1,0 +1,18 @@
+# GitHub Pages (legacy Jekyll build from the root of main) publishes every file it is not told to skip.
+# These are repo internals, not pages: generator sources and raw templates with {{...}} placeholders,
+# tests, notes and package files. Keep this list in step with tools/site/pages-publish.test.mjs, which fails
+# when a tracked file is neither a named public path nor excluded here.
+# To undo: delete this file (Pages goes back to publishing everything).
+exclude:
+  - tools
+  - docs
+  - fixes
+  - node_modules
+  - package.json
+  - package-lock.json
+  - deno.json
+  - README.md
+  - PHOTO_UPLOAD_GUIDE.md
+  - assets/data
+  - assets/brand/README.md
+  - assets/images/placeholder/ATTRIBUTION.md
