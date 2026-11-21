@@ -172,6 +172,9 @@ test('social guard: Meta links fail however they are written (#54 review)', () =
   for (const h of ['<a href="https://www.facebook.com/x">x</a>', '<a href="https://www.facebook&#46;com/x">x</a>', "<a href='https://FACEBOOK.com/x'>x</a>", '<a href="https://fb.me/x">x</a>', '<p>facebook.com/fpc</p>'])
     assert.ok(socialProblems(h).length > 0, h);
   assert.deepEqual(socialProblems('<p>Our concrete form.me is fine</p>'), [], 'no false match inside other words');
+  // Cycle 3: plain promotional copy and a Messenger link.
+  assert.ok(socialProblems('<p>Follow FPC Construction on Facebook.</p>').length > 0, 'plain Facebook copy');
+  assert.ok(socialProblems('<a href="https://www.messenger.com/t/1">Message us</a>').length > 0, 'Messenger link');
 });
 test('social guard: sameAs is exactly TikTok + YouTube, entry by entry, whatever the quoting (#54 review)', () => {
   assert.ok(socialProblems(BIZ([...GOOD, 'https://www.instagram.com/fpc2488'])).length > 0, 'extra Instagram');
@@ -179,4 +182,8 @@ test('social guard: sameAs is exactly TikTok + YouTube, entry by entry, whatever
   assert.ok(socialProblems(BIZ([[...GOOD].sort().join(' ')])).length > 0, 'two URLs in one entry (sorted, so a joined-string compare would pass it)');
   assert.ok(socialProblems(BIZ([GOOD[0]])).length > 0, 'missing one');
   assert.ok(socialProblems(BIZ(undefined)).length > 0, 'missing sameAs');
+  // Cycle 3: a top-level JSON-LD array of nodes.
+  const arr = (sameAs) => `<script type="application/ld+json">${JSON.stringify([{ '@context': 'https://schema.org', '@type': 'WebPage' }, { '@context': 'https://schema.org', '@type': ['LocalBusiness'], sameAs }])}</script>`;
+  assert.deepEqual(socialProblems(arr(GOOD)), [], 'array form, correct list');
+  assert.ok(socialProblems(arr([...GOOD, 'https://www.instagram.com/fpc2488'])).length > 0, 'array form, extra Instagram');
 });

@@ -220,7 +220,9 @@ export function publicPages(services) {
 // TikTok + YouTube (Instagram stays a visible link only). Parsed with parse5 like the claim guard, so character
 // references and attribute quoting decode as a browser decodes them (site #54 review, cycle 2).
 export const FPC_SAME_AS = ['https://www.tiktok.com/@fpc.construction4', 'https://www.youtube.com/@FPCbuilds'];
-const META = /(?:^|[^a-z0-9-])(?:facebook\.com|fb\.com|fb\.me|fb\.watch|m\.me)(?:[^a-z0-9-]|$)/i;
+// Bounded list (Chair threat model): Facebook and Messenger addresses, and the plain word "Facebook" in any text or
+// attribute. Instagram is an approved link and WhatsApp has its own operator-confirmed slot (social.mjs), so neither is here.
+const META = /(?:^|[^a-z0-9-])(?:facebook\.com|fb\.com|fb\.me|fb\.watch|m\.me|messenger\.com)(?:[^a-z0-9-]|$)|\bfacebook\b/i;
 export function socialProblems(html) {
   const problems = [];
   walk(parse(html), (n) => {
@@ -230,7 +232,10 @@ export function socialProblems(html) {
     const text = kids(n).map((c) => c.value || '').join('');
     let data; try { data = JSON.parse(text); } catch { problems.push('JSON-LD does not parse'); return; }
     if (META.test(text)) problems.push('Facebook/Meta address in JSON-LD (no Meta for FPC, operator 2026-11-20)');
-    for (const node of [data, ...(Array.isArray(data?.['@graph']) ? data['@graph'] : [])]) {
+    // Any JSON-LD shape: one node, a top-level array of nodes, or @graph (nested anywhere).
+    const nodes = [];
+    (function collect(v) { if (Array.isArray(v)) v.forEach(collect); else if (v && typeof v === 'object') { nodes.push(v); if (v['@graph']) collect(v['@graph']); } })(data);
+    for (const node of nodes) {
       if (!typesOf(node).includes('LocalBusiness')) continue;
       const got = node.sameAs;
       const ok = Array.isArray(got) && got.length === FPC_SAME_AS.length && got.every((u) => typeof u === 'string') &&
