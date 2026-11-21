@@ -236,7 +236,14 @@ export function socialProblems(html) {
     // Rule: ANY sameAs anywhere must be exactly the channel list, and every business-like node must carry it.
     const BUSINESS = /^(LocalBusiness|HomeAndConstructionBusiness|GeneralContractor|Organization|Corporation|ProfessionalService|.*Business|.*Contractor)$/;
     const nodes = [];
-    (function collect(v) { if (Array.isArray(v)) v.forEach(collect); else if (v && typeof v === 'object') { nodes.push(v); Object.values(v).forEach(collect); } })(data);
+    // Schema.org terms may be written short ("sameAs"), compact ("schema:sameAs") or as full IRIs
+    // ("http(s)://schema.org/sameAs"); keys and @type values are normalized to the short form first (#54 cycle 5).
+    const short = (t) => String(t).replace(/^(?:https?:\/\/schema\.org\/|schema:)/, '');
+    const norm = (v) => Array.isArray(v) ? v.map(norm) : v && typeof v === 'object'
+      ? Object.fromEntries(Object.entries(v).reduce((acc, [k, x]) => { const sk = short(k); const nx = sk === '@type' ? [].concat(x).map(short) : norm(x);
+          const prev = acc.find((e) => e[0] === sk); if (prev) prev[1] = [].concat(prev[1], nx); else acc.push([sk, nx]); return acc; }, []))
+      : v;
+    (function collect(v) { if (Array.isArray(v)) v.forEach(collect); else if (v && typeof v === 'object') { nodes.push(v); Object.values(v).forEach(collect); } })(norm(data));
     const want = [...FPC_SAME_AS].sort();
     for (const node of nodes) {
       // A bare {"@id": ...} is a reference to a node described elsewhere, not a node: skip it.

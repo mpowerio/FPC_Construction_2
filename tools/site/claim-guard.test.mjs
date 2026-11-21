@@ -194,4 +194,9 @@ test('social guard: sameAs is exactly TikTok + YouTube, entry by entry, whatever
   assert.ok(socialProblems(ld({ '@type': 'HomeAndConstructionBusiness', sameAs: [...GOOD, 'https://www.instagram.com/fpc2488'] })).length > 0, 'business subtype only');
   assert.ok(socialProblems(ld({ '@type': 'Person', sameAs: ['https://www.facebook.com/x'] })).length > 0, 'stray sameAs on another node');
   assert.deepEqual(socialProblems(ld({ '@type': 'WebPage', about: { '@id': 'https://fpcconstructions.com/#business' } })), [], 'a bare @id reference is not a node');
+  // Cycle 5: full-IRI and compact Schema.org terms are the same terms.
+  assert.ok(socialProblems(ld({ '@type': 'LocalBusiness', sameAs: GOOD, 'http://schema.org/sameAs': ['https://www.instagram.com/fpc2488'] })).length > 0, 'full-IRI sameAs beside the short one');
+  assert.ok(socialProblems(ld({ '@type': 'LocalBusiness', 'schema:sameAs': [...GOOD, 'https://example.com/x'] })).length > 0, 'compact sameAs');
+  assert.ok(socialProblems(ld({ '@type': 'WebPage', publisher: { '@type': 'http://schema.org/Organization', name: 'FPC Construction' } })).length > 0, 'full-IRI Organization without the list');
+  assert.deepEqual(socialProblems(ld({ '@type': 'https://schema.org/LocalBusiness', 'https://schema.org/sameAs': GOOD })), [], 'full-IRI business with the right list passes');
 });
