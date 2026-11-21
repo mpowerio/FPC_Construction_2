@@ -27,7 +27,8 @@ export function trackedFiles() {
   return execFileSync('git', ['ls-files'], { cwd: root, encoding: 'utf8' }).split('\n').filter(Boolean);
 }
 export function requiredOutputs(tracked = trackedFiles()) {
-  const pub = tracked.filter((f) => ALLOWED.some((rx) => rx.test(f)));
+  // Dot-files (e.g. assets/images/projects/.gitkeep) are repo plumbing that Jekyll never publishes.
+  const pub = tracked.filter((f) => ALLOWED.some((rx) => rx.test(f)) && !f.split('/').some((seg) => seg.startsWith('.')));
   return [...new Set([...pub, ...publicPages(services)])];
 }
 export function outputProblems(files, required = requiredOutputs()) {
