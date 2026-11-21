@@ -39,3 +39,12 @@ jobs:
         run: node tools/site/release-controls.mjs
       - name: SEO and release policy (pending copy blocks release)
         run: node tools/seo-check.mjs
+      # Last, so no other step sees the built copy: build with GitHub's own Pages builder (the legacy Jekyll that
+      # serves fpcconstructions.com) and check what it would actually publish.
+      - name: Build the site exactly as GitHub Pages does
+        uses: actions/jekyll-build-pages@v1.0.13
+        with:
+          source: ./
+          destination: ./_pages_out
+      - name: Pages output holds every public file and nothing else
+        run: PAGES_OUT=_pages_out node --test tools/site/pages-publish.test.mjs
