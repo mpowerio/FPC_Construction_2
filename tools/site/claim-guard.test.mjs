@@ -160,3 +160,43 @@ test('not a claim (r5): ages and the live pages\' "seguro" (secure, Seguro Socia
     assert.deepEqual(check(inject(page('privacy.html'), `<p>${s}</p>`), 'privacy.html'), [], s);
   }
 });
+
+import { socialProblems } from './claim-guard.mjs';
+const BIZ = (sameAs, q = '"') => `<script type=${q}application/ld+json${q}>${JSON.stringify({ '@graph': [{ '@type': ['LocalBusiness'], sameAs }] })}</script>`;
+const GOOD = ['https://www.youtube.com/@FPCbuilds', 'https://www.tiktok.com/@fpc.construction4'];
+test('social guard: every shipped page is clean', () => {
+  for (const f of ['index.html', 'es/index.html', 'services/concrete/index.html', 'privacy.html']) assert.deepEqual(socialProblems(page(f)), [], f);
+  assert.deepEqual(socialProblems(BIZ(GOOD)), [], 'order does not matter');
+});
+test('social guard: Meta links fail however they are written (#54 review)', () => {
+  for (const h of ['<a href="https://www.facebook.com/x">x</a>', '<a href="https://www.facebook&#46;com/x">x</a>', "<a href='https://FACEBOOK.com/x'>x</a>", '<a href="https://fb.me/x">x</a>', '<p>facebook.com/fpc</p>'])
+    assert.ok(socialProblems(h).length > 0, h);
+  assert.deepEqual(socialProblems('<p>Our concrete form.me is fine</p>'), [], 'no false match inside other words');
+  // Cycle 3: plain promotional copy and a Messenger link.
+  assert.ok(socialProblems('<p>Follow FPC Construction on Facebook.</p>').length > 0, 'plain Facebook copy');
+  assert.ok(socialProblems('<a href="https://www.messenger.com/t/1">Message us</a>').length > 0, 'Messenger link');
+});
+test('social guard: sameAs is exactly TikTok + YouTube, entry by entry, whatever the quoting (#54 review)', () => {
+  assert.ok(socialProblems(BIZ([...GOOD, 'https://www.instagram.com/fpc2488'])).length > 0, 'extra Instagram');
+  assert.ok(socialProblems(BIZ([...GOOD, 'https://www.instagram.com/fpc2488'], "'")).length > 0, 'single-quoted script type');
+  assert.ok(socialProblems(BIZ([[...GOOD].sort().join(' ')])).length > 0, 'two URLs in one entry (sorted, so a joined-string compare would pass it)');
+  assert.ok(socialProblems(BIZ([GOOD[0]])).length > 0, 'missing one');
+  assert.ok(socialProblems(BIZ(undefined)).length > 0, 'missing sameAs');
+  // Cycle 3: a top-level JSON-LD array of nodes.
+  const arr = (sameAs) => `<script type="application/ld+json">${JSON.stringify([{ '@context': 'https://schema.org', '@type': 'WebPage' }, { '@context': 'https://schema.org', '@type': ['LocalBusiness'], sameAs }])}</script>`;
+  assert.deepEqual(socialProblems(arr(GOOD)), [], 'array form, correct list');
+  assert.ok(socialProblems(arr([...GOOD, 'https://www.instagram.com/fpc2488'])).length > 0, 'array form, extra Instagram');
+  // Cycle 4: the business embedded in Service.provider, a business subtype, and a stray sameAs on any node.
+  const ld = (obj) => `<script type="application/ld+json">${JSON.stringify(obj)}</script>`;
+  const svc = (sameAs) => ld({ '@graph': [{ '@type': 'Service', provider: { '@type': ['LocalBusiness', 'HomeAndConstructionBusiness'], '@id': 'https://fpcconstructions.com/#business', sameAs } }] });
+  assert.deepEqual(socialProblems(svc(GOOD)), [], 'embedded provider, correct list');
+  assert.ok(socialProblems(svc([...GOOD, 'https://example.com/x'])).length > 0, 'embedded provider, extra URL');
+  assert.ok(socialProblems(ld({ '@type': 'HomeAndConstructionBusiness', sameAs: [...GOOD, 'https://www.instagram.com/fpc2488'] })).length > 0, 'business subtype only');
+  assert.ok(socialProblems(ld({ '@type': 'Person', sameAs: ['https://www.facebook.com/x'] })).length > 0, 'stray sameAs on another node');
+  assert.deepEqual(socialProblems(ld({ '@type': 'WebPage', about: { '@id': 'https://fpcconstructions.com/#business' } })), [], 'a bare @id reference is not a node');
+  // Cycle 5: full-IRI and compact Schema.org terms are the same terms.
+  assert.ok(socialProblems(ld({ '@type': 'LocalBusiness', sameAs: GOOD, 'http://schema.org/sameAs': ['https://www.instagram.com/fpc2488'] })).length > 0, 'full-IRI sameAs beside the short one');
+  assert.ok(socialProblems(ld({ '@type': 'LocalBusiness', 'schema:sameAs': [...GOOD, 'https://example.com/x'] })).length > 0, 'compact sameAs');
+  assert.ok(socialProblems(ld({ '@type': 'WebPage', publisher: { '@type': 'http://schema.org/Organization', name: 'FPC Construction' } })).length > 0, 'full-IRI Organization without the list');
+  assert.deepEqual(socialProblems(ld({ '@type': 'https://schema.org/LocalBusiness', 'https://schema.org/sameAs': GOOD })), [], 'full-IRI business with the right list passes');
+});

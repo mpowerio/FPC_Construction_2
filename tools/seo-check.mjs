@@ -3,7 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { services } from './site/services.mjs';
 import { releaseProblems } from './site/release-policy.mjs';
-import { claimProblems, publicPages, cssProblems, linkedStylesheets } from './site/claim-guard.mjs';
+import { claimProblems, publicPages, cssProblems, linkedStylesheets, socialProblems } from './site/claim-guard.mjs';
 
 const root = process.cwd();
 const ORIGIN = 'https://fpcconstructions.com';
@@ -64,9 +64,6 @@ for (const page of PAGES) {
     if (!types(business).includes('HomeAndConstructionBusiness')) fail(page, 'LocalBusiness should also be HomeAndConstructionBusiness');
     if (business.slogan !== SLOGAN) fail(page, 'JSON-LD slogan must be the locked slogan, verbatim');
     if (business.telephone !== '+1-803-884-9305') fail(page, 'telephone must be +1-803-884-9305');
-    for (const profile of ['https://www.facebook.com/p/FPC-Construction-LLC-100066373038903/', 'https://www.instagram.com/fpc2488']) {
-      if (!(business.sameAs || []).includes(profile)) fail(page, `sameAs missing ${profile}`);
-    }
     const headings = [...html.matchAll(/<h1\b[^>]*>([\s\S]*?)<\/h1>/g)];
     if (headings.length !== 1 || !decode(headings[0]?.[1] || '')) fail(page, 'exactly one non-empty H1 required');
     const slogans = [...html.matchAll(/<p\b(?=[^>]*class="[^" ]*hero__slogan[^" ]*")(?=[^>]*lang="en")[^>]*>([\s\S]*?)<\/p>/g)];
@@ -96,8 +93,11 @@ for (const p of PAGES) if (!locs.includes(ORIGIN + p.url)) failures.push(`sitema
 if (locs.some((u) => u.includes('#'))) failures.push('sitemap.xml: lists fragment URLs');
 
 // Claim guard (parse5, positive structure) over every public page. See tools/site/claim-guard.mjs.
+// FPC channels (operator 2026-11-20): no Meta anywhere; every business node's sameAs is exactly TikTok + YouTube.
+// Parser-based (claim-guard.mjs socialProblems), on EVERY public page (site #54 review).
 for (const file of publicPages(services)) {
   const html = fs.readFileSync(path.join(root, file), 'utf8');
+  for (const problem of socialProblems(html)) fail({ file }, problem);
   for (const problem of claimProblems(html, { file })) fail({ file }, problem);
 }
 
