@@ -136,8 +136,9 @@ function business(lang) {
     // Mon–Sat 7–7 confirmed by operator after Filemon phone check, 2026-11-13.
     openingHoursSpecification: [{ '@type': 'OpeningHoursSpecification', dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'], opens: '07:00', closes: '19:00' }],
     hasOfferCatalog: { '@type': 'OfferCatalog', name: lang === 'es' ? 'Servicios' : 'Services', itemListElement: SERVICES[lang].map((name) => ({ '@type': 'Offer', itemOffered: { '@type': 'Service', name } })) },
-    // No Meta/Facebook for FPC (operator ruling 2026-11-20): TikTok, YouTube and Snap; Instagram is a link only.
-    sameAs: ['https://www.instagram.com/fpc2488', ...(TIKTOK ? [TIKTOK] : []), ...(YOUTUBE ? [YOUTUBE] : [])],
+    // FPC channels (operator ruling 2026-11-20): TikTok and YouTube. No Meta/Facebook. Instagram is a visible link only,
+    // so it is not a structured identity here. seo-check enforces this exact list on every business node.
+    sameAs: [...(TIKTOK ? [TIKTOK] : []), ...(YOUTUBE ? [YOUTUBE] : [])],
     ...(licenseCredential(lang) ? { hasCredential: licenseCredential(lang) } : {}),
   };
 }

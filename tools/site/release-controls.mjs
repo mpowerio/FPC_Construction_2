@@ -36,6 +36,19 @@ try {
   writeFileSync(file,clean.replace('</main>','<h1>Second heading</h1></main>'));
   assert.match(run().stderr,/one non-empty H1/);
   writeFileSync(file,clean);
+  // No Meta, and the exact channel list, on interior pages too (site PR #54 review): a home and an interior control each.
+  for (const f of ['index.html', 'services/concrete/index.html', 'privacy.html']) {
+    const p=join(dir,f), c=readFileSync(p,'utf8');
+    writeFileSync(p,c.replace('</main>','<a href="https://www.facebook.com/x">x</a></main>').replace('</body>','<a href="https://www.facebook.com/x">x</a></body>'));
+    assert.match(run().stderr,/Facebook link or profile present/,`${f}: planted Facebook passed`);
+    writeFileSync(p,c);
+  }
+  for (const f of ['index.html', 'services/concrete/index.html']) {
+    const p=join(dir,f), c=readFileSync(p,'utf8');
+    writeFileSync(p,c.replace('"sameAs": [','"sameAs": [\n        "https://www.instagram.com/fpc2488",'));
+    assert.match(run().stderr,/business sameAs must be exactly/,`${f}: extra sameAs entry passed`);
+    writeFileSync(p,c);
+  }
   // Stylesheets anywhere in the tree, and every linked stylesheet, are claim-checked (site PR #51 r6).
   const priv=join(dir,'privacy.html'), privClean=readFileSync(priv,'utf8');
   writeFileSync(join(dir,'footer.css'),'.site-footer::before { content: "Fully insured."; }\n');

@@ -6,8 +6,7 @@ export const TIKTOK_PROFILE_URL = 'https://www.tiktok.com/@fpc.construction4';
 // Snapchat). Profile re-checked 2026-11-20: https://www.tiktok.com/@fpc.construction4 resolves (uniqueId fpc.construction4).
 export const TIKTOK_IN_FIELD_NOTES = true;
 // Set only after the operator verifies FPC's own YouTube channel URL (operator 2026-11-13: "add tik tok ... and youtube").
-// SLOT: FPC has no channel yet (2026-11-20); one is being set up under the fpcconstructions.com Google account.
-// When it exists, put its https://www.youtube.com/@handle URL here and rebuild; the footer link and JSON-LD sameAs follow.
+// The footer link, the home Field Notes card and JSON-LD sameAs follow from this value; empty hides them.
 // Empty hides every YouTube slot. No embed script is loaded.
 // Verified 2026-11-21: https://www.youtube.com/@FPCbuilds is public, titled "FPC Construction" (canonical channel
 // UCzIF9gvROXsCmgwhu_hay8A); a made-up handle on the same request returns 404 (control).
