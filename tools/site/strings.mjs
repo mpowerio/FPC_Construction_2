@@ -456,6 +456,9 @@ export const PENDING_ES_KEYS = [...Object.keys(V3_COMMON.es), ...Object.keys(V3_
 
 // Holiday page + home strip (operator 2026-11-21). No offer, no prices, no sales tax, no customer
 // names. The season copy swaps by date in the browser (tools/site/holiday.mjs).
+// Operator 2026-11-22: FPC's tradition is Latin Catholic. Winter copy uses Nochebuena and Feliz
+// Navidad. Specific observances (la Virgen de Guadalupe Dec 12, las Posadas Dec 16-24, Día de
+// los Reyes Jan 6) are NOT named until the Pineda family confirms them.
 // PENDING-ES: the Spanish below is a draft that needs a native-speaker read (HOLIDAY_PENDING_ES_KEYS).
 const HOLIDAY_STRIP = {
   en: {
@@ -483,7 +486,7 @@ export const holiday = {
     'hol.lead': 'This year you trusted us with your septic systems, concrete, drainage and land. You called us, you sent your neighbors our way, and you let us work on your property. We don’t take that lightly.',
     'hol.wish.default': 'From our family and our crew to yours, we wish you a good holiday season.',
     'hol.wish.thanks': 'From our family and our crew to yours, we hope your table is full and your Thanksgiving week is easy.',
-    'hol.wish.winter': 'From our family and our crew to yours, merry Christmas and a good start to the new year.',
+    'hol.wish.winter': 'From our family and our crew to yours, a blessed Nochebuena, a merry Christmas and a good start to the new year.',
     'hol.sig': 'Filemon Pineda, his family and the FPC crew',
     'hol.call': 'Call',
     'hol.text': 'Text us',
@@ -505,7 +508,7 @@ export const holiday = {
     'hol.lead': 'Gracias por confiar en nosotros este año para sus trabajos de sistemas sépticos, concreto, drenaje y preparación de terreno. Nos llamaron, nos recomendaron con sus vecinos y nos dejaron trabajar en su propiedad. Eso lo valoramos mucho.',
     'hol.wish.default': 'De parte de nuestra familia y de todo el equipo de FPC, les deseamos unas felices fiestas.',
     'hol.wish.thanks': 'De parte de nuestra familia y de todo el equipo de FPC, les deseamos un feliz Día de Acción de Gracias en familia.',
-    'hol.wish.winter': 'De parte de nuestra familia y de todo el equipo de FPC, les deseamos una feliz Navidad y un buen comienzo de año.',
+    'hol.wish.winter': 'De parte de nuestra familia y de todo el equipo de FPC, les deseamos una bendecida Nochebuena, una feliz Navidad y un próspero Año Nuevo.',
     'hol.sig': 'Filemon Pineda, su familia y el equipo de FPC',
     'hol.call': 'Llamar',
     'hol.text': 'Mándenos un texto',
