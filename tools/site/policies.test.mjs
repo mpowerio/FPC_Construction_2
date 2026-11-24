@@ -49,7 +49,7 @@ test('SMS pages have reciprocal language links, canonical and sitemap entries', 
     assert.ok(html.includes(`rel="canonical" href="https://fpcconstructions.com${url}"`));
     for (const [hl,path] of [['en-US','/sms-opt-in'],['es-US','/es/sms-opt-in/'],['x-default','/sms-opt-in']]) assert.ok(html.includes(`hreflang="${hl}" href="https://fpcconstructions.com${path}"`));
     assert.ok(read('sitemap.xml').includes(`<loc>https://fpcconstructions.com${url}</loc>`));
-    assert.ok(html.includes('mailto:fpineda@fpcconstructions.com'));
+    assert.ok(html.includes('mailto:info@fpcconstructions.com'));
   }
 });
 test('both language copies disclose the marketing ceiling and separate optional consent', () => {
