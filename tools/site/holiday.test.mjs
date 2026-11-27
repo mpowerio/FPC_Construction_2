@@ -9,7 +9,7 @@ import { SEASONS, seasonFor, augustaDate } from './holiday.mjs';
 const read = (f) => readFileSync(new URL('../../' + f, import.meta.url), 'utf8');
 
 test('each boundary, on both sides', () => {
-  const cases = { '2026-11-22': null, '2026-11-23': 'thanks', '2026-11-26': 'thanks', '2026-11-29': 'thanks', '2026-11-30': 'winter', '2026-12-25': 'winter', '2027-01-03': 'winter', '2027-01-04': null };
+  const cases = { '2026-11-22': null, '2026-11-23': 'thanks', '2026-11-26': 'thanks', '2026-11-29': 'thanks', '2026-11-30': 'winter', '2026-12-25': 'winter', '2027-01-04': 'winter', '2027-01-05': 'winter', '2027-01-06': 'winter', '2027-01-07': null };
   for (const [day, want] of Object.entries(cases)) assert.equal(seasonFor(day, SEASONS), want, day);
 });
 
@@ -50,7 +50,7 @@ test('home strip (EN and ES): hidden outside the dates, the right greeting insid
     assert.deepEqual(runAt(file, scope, '2026-11-23T05:00:00Z'), { rootHidden: false, shown: ['thanks'] }, `${file} 11-23 midnight`);
     assert.deepEqual(runAt(file, scope, '2026-11-30T04:59:59Z'), { rootHidden: false, shown: ['thanks'] }, `${file} 11-29 late evening`);
     assert.deepEqual(runAt(file, scope, '2026-11-30T05:00:00Z'), { rootHidden: false, shown: ['winter'] }, `${file} 11-30 midnight`);
-    assert.deepEqual(runAt(file, scope, '2027-01-04T05:00:00Z'), { rootHidden: true, shown: [] }, `${file} after New Year`);
+    assert.deepEqual(runAt(file, scope, '2027-01-07T05:00:00Z'), { rootHidden: true, shown: [] }, `${file} after New Year`);
   }
 });
 

@@ -9,7 +9,7 @@ export const HOLIDAY_URL = { en: '/holidays/', es: '/es/fiestas/' };
 
 export const SEASONS = [
   { id: 'thanks', from: '2026-11-23', to: '2026-11-29' },
-  { id: 'winter', from: '2026-11-30', to: '2027-01-03' },
+  { id: 'winter', from: '2026-11-30', to: '2027-01-06' },
 ];
 
 // Plain ES5 on purpose: build.mjs inlines this function's source text into the pages.
